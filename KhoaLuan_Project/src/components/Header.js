@@ -21,18 +21,66 @@ const timkiem = require('../assets/images/search.png');
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 //make a Component
-const Header = ({nthis}) => {
+export default class Header extends React.Component {
   // console.log('nthis cua ma hinh :', nthis);
-  return (
-    <View style={styles.bgHeader}>
-      {/* <Image source={iconMenu} style={styles.icon}></Image> */}
-      <Text style={styles.headerStyle}>Jee</Text>
-      <TouchableOpacity style={styles.khung_icon}>
-        <Image source={timkiem} style={styles.icon}></Image>
-      </TouchableOpacity>
-    </View>
-  );
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      ShowTextInput: true,
+    };
+  }
+
+  onPressShowTextInput = () => {
+    this.setState({
+      ShowTextInput: !this.state.ShowTextInput,
+    });
+  };
+
+  render() {
+    const {nthis} = this.props;
+
+    const Timkiem = () => {
+      return (
+        <View style={styles.bgHeader}>
+          <Text style={styles.headerStyle}>Jee</Text>
+          <TouchableOpacity
+            style={styles.khung_icon}
+            onPress={() => this.onPressShowTextInput()}>
+            <Image source={timkiem} style={styles.icon}></Image>
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
+    const Timkiem_TextInput = () => {
+      return (
+        <View style={styles.header2}>
+          <Text style={styles.headerStyle}>Jee</Text>
+          <TextInput
+            autoFocus={true}
+            style={styles.khung_timkiem_Text}
+            placeholder="Nhập thông tin bàn cần tìm"></TextInput>
+          <TouchableOpacity
+            style={styles.khung_icon}
+            onPress={() => this.onPressShowTextInput()}>
+            <Image source={timkiem} style={styles.icon}></Image>
+          </TouchableOpacity>
+        </View>
+      );
+    };
+
+    var {ShowTextInput} = this.state;
+    return (
+      <View>
+        {ShowTextInput == true ? (
+          <Timkiem></Timkiem>
+        ) : (
+          <Timkiem_TextInput></Timkiem_TextInput>
+        )}
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   bgHeader: {
@@ -47,7 +95,6 @@ const styles = StyleSheet.create({
     width: width,
     height: FontSize.scale(40),
     padding: 10,
-    // backgroundColor: 'blue',
   },
   headerStyle: {
     fontSize: 25,
@@ -68,6 +115,24 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     tintColor: '#000000',
   },
+  khung_timkiem_Text: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    flex: 1,
+    paddingLeft: 5,
+  },
+  header2: {
+    backgroundColor: '#EEEEEE',
+    // justifyContent: 'center',
+    // backgroundColor: 'blue',
+    alignItems: 'center',
+    elevation: 10,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.2,
+    position: 'relative',
+    flexDirection: 'row',
+    width: width,
+    height: FontSize.scale(40),
+    paddingHorizontal: 10,
+  },
 });
-
-module.exports = Header;

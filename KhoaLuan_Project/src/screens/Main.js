@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './HomeScreen';
 import DetailsScreen from './DetailScreen';
-import MainTabScreen from './MainTabScreen';
+import MainTabScreen from '../stackScreen/MainTabScreen';
 
 const Stack = createStackNavigator();
 const HomeStack = createStackNavigator();

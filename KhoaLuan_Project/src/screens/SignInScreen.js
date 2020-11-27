@@ -12,17 +12,14 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Button,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
+
 import FontSize from '../components/size';
 
-import {AuthContext} from '../components/context';
-
-import Users from '../model/user';
+import {Login} from '../apis/apiUser';
+// import {Id_user} from '../apis/GetIdUser';
 
 const logo = require('../assets/images/Jee.png');
 const user = require('../assets/images/user.png');
@@ -31,97 +28,115 @@ const visibility = require('../assets/images/visibility.png');
 const invisible = require('../assets/images/invisible.png');
 const imagebackgroung = require('../assets/images/backgroundTong.png');
 
-const SignInScreen = () => {
-  const [data, setData] = React.useState({
-    taikhoan: '',
-    matkhau: '',
-    check_textInputChange: false,
-    secureTextEntry: true,
-  });
+export default class SignInScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ShowPassword: true,
+      DsThongTinUser: [],
+      id_userne: '',
+    };
+    this.Username = '';
+    this.Password = '';
+  }
 
-  const textInputChange = (text) => {};
+  _loginJee = async () => {
+    console.log('=-=-=mail', this.Username);
+    console.log('=-=-=pass', this.Password);
 
-  const handlePasswordChange = (text) => {
-    setData({
-      ...data,
-      matkhau: text,
-    });
+    let res = await Login(this.Username, this.Password);
+    console.log('ress', res);
+
+    if (res.status == 1) {
+      alert('Đăng nhập thành công');
+      this.chuyenTrang();
+      this.setState({DsThongTinUser: res.data});
+    } else {
+      alert('Đăng nhập thất bại');
+    }
+
+    console.log('res stat', res.status);
+    console.log('ds thong tin', this.state.DsThongTinUser);
   };
 
-  const updateSecureTextEntry = () => {
-    setData({
-      ...data,
-      secureTextEntry: !data.secureTextEntry,
-    });
+  chuyenTrang = () => {
+    this.props.navigation.navigate('HomeStackScreen');
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground source={imagebackgroung} style={styles.image_background}>
-        <View style={styles.header}>
-          <View style={styles.khung_logo}>
-            <Image source={logo} style={styles.logo}></Image>
+  onPressShowPassword = () => {
+    this.setState({
+      ShowPassword: !this.state.ShowPassword,
+    });
+  };
+  render() {
+    var {ShowPassword} = this.state;
+    return (
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={imagebackgroung}
+          style={styles.image_background}>
+          <View style={styles.header}>
+            <View style={styles.khung_logo}>
+              <Image source={logo} style={styles.logo}></Image>
+            </View>
           </View>
-        </View>
-        <View style={[styles.footer]}>
-          <View style={styles.khung}>
-            <Text style={styles.textVuiLong}>
-              Vui lòng sử dụng tài khoản đã đăng ký để đăng nhập
-            </Text>
-            <View>
-              {/* tài khoản */}
-              <View style={styles.khungtextinput}>
-                <Image source={user} style={styles.image_icon}></Image>
-                <TextInput
-                  autoCapitalize="none"
-                  placeholderTextColor="white"
-                  placeholder="Tài khoản"
-                  style={styles.textinput}
-                  onChangeText={(text) => textInputChange(text)}></TextInput>
-              </View>
-              {/* mật khẩu */}
-              <View style={styles.khungtextinputMK}>
-                <Image source={lock} style={styles.image_icon_mk}></Image>
-                <TextInput
-                  secureTextEntry={data.secureTextEntry ? true : false}
-                  autoCapitalize="none"
-                  placeholder="Mật khẩu"
-                  placeholderTextColor="white"
-                  style={styles.textinput}
-                  onChangeText={(text) =>
-                    handlePasswordChange(text)
-                  }></TextInput>
-                <TouchableOpacity onPress={updateSecureTextEntry}>
-                  {data.secureTextEntry ? (
+          {/* {this.state.DsThongTinUser.map((item, index) => {
+            return <Text>{item.Email}</Text>;
+          })} */}
+          <View style={[styles.footer]}>
+            <View style={styles.khung}>
+              <Text style={styles.textVuiLong}>
+                Vui lòng sử dụng tài khoản đã đăng ký để đăng nhập
+              </Text>
+              <View>
+                {/* tài khoản */}
+                <View style={styles.khungtextinput}>
+                  <Image source={user} style={styles.image_icon}></Image>
+                  <TextInput
+                    autoCapitalize="none"
+                    placeholderTextColor="white"
+                    placeholder="Tài khoản"
+                    style={styles.textinput}
+                    onChangeText={(text) => (this.Username = text)}>
+                    {this.Username}
+                  </TextInput>
+                </View>
+                {/* mật khẩu */}
+                <View style={styles.khungtextinputMK}>
+                  <Image source={lock} style={styles.image_icon_mk}></Image>
+                  <TextInput
+                    secureTextEntry={ShowPassword}
+                    autoCapitalize="none"
+                    placeholder="Mật khẩu"
+                    placeholderTextColor="white"
+                    style={styles.textinput}
+                    onChangeText={(text) => (this.Password = text)}>
+                    {this.Password}
+                  </TextInput>
+                  <TouchableOpacity onPress={() => this.onPressShowPassword()}>
                     <Image
-                      source={invisible}
+                      source={ShowPassword == true ? invisible : visibility}
                       style={styles.image_icon_mk_visibility}
                     />
-                  ) : (
-                    <Image
-                      source={visibility}
-                      style={styles.image_icon_mk_visibility}></Image>
-                  )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {/* button đăng nhập */}
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.buttonDangnhap}
+                  onPress={() => this._loginJee()}>
+                  <Text style={styles.textDangNhap}>ĐĂNG NHẬP</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            {/* button đăng nhập */}
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.buttonDangnhap}
-                // onPress={}
-              >
-                <Text style={styles.textDangNhap}>ĐĂNG NHẬP</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
-  );
-};
+        </ImageBackground>
+      </SafeAreaView>
+    );
+  }
+}
 
-export default SignInScreen;
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
@@ -154,14 +169,8 @@ const styles = StyleSheet.create({
     // width: '20%',
   },
   logo: {
-    // fontSize: FontSize.reText(40),
-    // backgroundColor: 'red',
-    // color: '#33FF33',
     justifyContent: 'center',
     alignItems: 'center',
-    // textAlign: 'center',
-    // height: '100%',
-    // width: '25%',
     borderRadius: 20,
     height: '80%',
     width: '40%',

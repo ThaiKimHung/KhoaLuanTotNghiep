@@ -7,8 +7,15 @@ import App from './App';
 import {name as appName} from './app.json';
 import SplashScreen from './src/screens/SplashScreen';
 import SignInScreen from './src/screens/SignInScreen';
-import Main from './src/screens/Main';
-import RootStackScreen from './src/screens/RootStackScreen';
-import HomeScreen from './src/screens/HomeScreen';
 
+import Main from './src/screens/Main';
+import RootStackScreen from './src/stackScreen/RootStackScreen';
+
+import HomeScreen from './src/screens/HomeScreen';
+import PhanChonLoaiBaiDang from './src/components/ChonLoaiBaiDang';
+import ScreenLoaiBaiDang from './src/screens/ScreenLoaiBaiDang';
+
+import BaiDangComponenet from './src/components/BaiDangComponenet';
+
+import HomeStackScreen from './src/stackScreen/HomeStackScreen';
 AppRegistry.registerComponent(appName, () => RootStackScreen);

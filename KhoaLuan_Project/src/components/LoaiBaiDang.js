@@ -36,34 +36,9 @@ export default class LoaiBaiDang extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
-    // height: FontSize.scale(100),
-    borderColor: '#000000',
-    borderWidth: 1,
     width: FontSize.verticalScale(100),
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
-    paddingTop: 5,
-    // backgroundColor: 'green',
-  },
-  khungchua: {
-    flexDirection: 'row',
-    padding: 10,
-    margin: 5,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#C0C0C0',
-    backgroundColor: 'yellow',
-  },
-  khung_textinput: {
-    backgroundColor: 'blue',
-    flex: 1,
-    marginLeft: 5,
-    borderRadius: 50,
-    borderColor: '#000000',
-    borderWidth: 1,
-    height: FontSize.scale(30),
-    justifyContent: 'center',
-    paddingLeft: 10,
+    margin: 2,
   },
 });

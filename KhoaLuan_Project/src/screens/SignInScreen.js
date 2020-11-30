@@ -15,6 +15,7 @@ import {
   Button,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import Utils from '../apis/Utils';
 
 import FontSize from '../components/size';
 
@@ -28,6 +29,7 @@ const visibility = require('../assets/images/visibility.png');
 const invisible = require('../assets/images/invisible.png');
 const imagebackgroung = require('../assets/images/backgroundTong.png');
 
+// const res = '';
 export default class SignInScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,7 @@ export default class SignInScreen extends React.Component {
       alert('Đăng nhập thành công');
       this.chuyenTrang();
       this.setState({DsThongTinUser: res.data});
+      this._SetAsync();
     } else {
       alert('Đăng nhập thất bại');
     }
@@ -68,6 +71,19 @@ export default class SignInScreen extends React.Component {
       ShowPassword: !this.state.ShowPassword,
     });
   };
+
+  _SetAsync = async () => {
+    this.state.DsThongTinUser.map((e) => {
+      return this.setState({id_userne: e.ID_user});
+    });
+    await Utils.nsetStorage('idUser', this.state.id_userne);
+    console.log('iduser bên aysn set', this.state.id_userne);
+  };
+
+  componentDidMoun() {
+    // this._SetAsync();
+  }
+
   render() {
     var {ShowPassword} = this.state;
     return (
@@ -80,9 +96,6 @@ export default class SignInScreen extends React.Component {
               <Image source={logo} style={styles.logo}></Image>
             </View>
           </View>
-          {/* {this.state.DsThongTinUser.map((item, index) => {
-            return <Text>{item.Email}</Text>;
-          })} */}
           <View style={[styles.footer]}>
             <View style={styles.khung}>
               <Text style={styles.textVuiLong}>

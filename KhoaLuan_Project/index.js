@@ -15,7 +15,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import PhanChonLoaiBaiDang from './src/components/ChonLoaiBaiDang';
 import ScreenLoaiBaiDang from './src/screens/ScreenLoaiBaiDang';
 
-import BaiDangComponenet from './src/components/BaiDangComponenet';
-
 import HomeStackScreen from './src/stackScreen/HomeStackScreen';
-AppRegistry.registerComponent(appName, () => RootStackScreen);
+import ScreenAllUser from './src/screens/ScreenAllUser';
+import ScreenAllBaiDang from './src/screens/ScreenAllBaiDang';
+AppRegistry.registerComponent(appName, () => ScreenAllUser);

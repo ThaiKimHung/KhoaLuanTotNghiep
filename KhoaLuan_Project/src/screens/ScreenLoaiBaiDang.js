@@ -17,9 +17,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FontSize from '../components/size';
-import LoaiBaiDang from '../components/LoaiBaiDang';
 import {GetLoaiBaiDang} from '../apis/apiUser';
 import Utils from '../apis/Utils';
+import {nkey} from '../apis/keyStore';
+import LoaiBaiDang from '../components/LoaiBaiDang';
+
 const thaoluan = require('../assets/images/conversation.png');
 // const congratulation = require('../assets/images/congratulations.png');
 export default class ScreenLoaiBaiDang extends React.Component {
@@ -29,20 +31,19 @@ export default class ScreenLoaiBaiDang extends React.Component {
       DsLoaiBaiDang: [],
       userID: 0,
     };
-    // this.userID = 1;
   }
-
+  // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
   _GetAsync = async () => {
     this.setState({
-      userID: await Utils.ngetStorage('idUser'),
+      userID: await Utils.ngetStorage(nkey.id_user),
     });
     console.log('iduser bên get asyn', this.state.userID);
   };
 
   _GetDsLoaiBaiDang = async () => {
-    console.log('userid khi truyền lấy ds:', this.state.userID);
+    // console.log('userid khi truyền lấy ds:', this.state.userID);
     let res = await GetLoaiBaiDang(this.state.userID);
-    console.log('ress', res);
+    // console.log('ress', res);
     this.setState({DsLoaiBaiDang: res.data});
   };
 

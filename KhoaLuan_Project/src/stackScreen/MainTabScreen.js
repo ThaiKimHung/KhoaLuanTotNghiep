@@ -55,7 +55,9 @@ export default MainTabScreen;
 const HomeStackScreen = ({navigation}) => {
   return (
     <HomeStack.Navigator headerMode="none">
-      <HomeStack.Screen name="Home" component={HomeScreen}></HomeStack.Screen>
+      <HomeStack.Screen
+        name="HomeScreen"
+        component={HomeScreen}></HomeStack.Screen>
     </HomeStack.Navigator>
   );
 };

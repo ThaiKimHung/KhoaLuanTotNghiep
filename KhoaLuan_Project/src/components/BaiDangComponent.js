@@ -34,6 +34,8 @@ const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
   render() {
+    const {HinhDaiDien, Username, NoiDung, Solike, SoComment} = this.props;
+    // console.log('this bên trang testcom', this);
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -42,14 +44,14 @@ export default class BaiDangComponenet extends React.Component {
             <TouchableOpacity>
               <Avatar.Image
                 style={{margin: 5}}
-                source={avatar}
+                source={{uri: HinhDaiDien}}
                 size={FontSize.reSize(40)}
               />
             </TouchableOpacity>
 
             <View style={styles.khung_tenUser}>
               <TouchableOpacity>
-                <Text style={styles.txt_TenUser}>Tên user</Text>
+                <Text style={styles.txt_TenUser}>{Username}</Text>
               </TouchableOpacity>
             </View>
 
@@ -60,23 +62,7 @@ export default class BaiDangComponenet extends React.Component {
 
           {/* khung chứa nội dung bài đăng và cmt*/}
           <View style={styles.footer}>
-            <Text>
-              đây là 1 loại bài đăng gì đó rất dài, rất dai iiiiiiiiiiiiii
-              iiiiiiiiiiiiiiiii iiiiiiiiiiiiiiii iiiiiiiiiiiii
-              iiiiiiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiii iiiiiiiiiiiiiii
-              iiiiiiiiiiiiii iiiiiiiiiiiiiiiii iiiiiiiiiiiiiiii iiiiiiiiiiiii
-              iiiiiiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiii iiiiiiiiiiiiiii
-              iiiiiiiiiiiiii iiiiiiiiiiiiiiiii iiiiiiiiiiiiiiii iiiiiiiiiiiii
-              iiiiiiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiii iiiiiiiiiiiiiii
-              iiiiiiiiiiiiii iiiiiiiiiiiiiiiii iiiiiiiiiiiiiiii iiiiiiiiiiiii
-              iiiiiiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiii iiiiiiiiiiiiiii
-              iiiiiiiiiiiiii iiiiiiiiiiiiiiiii iiiiiiiiiiiiiiii iiiiiiiiiiiii
-              iiiiiiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiii iiiiiiiiiiiiiii
-              iiiiiiiiiiiiii iiiiiiiiiiiiiiiii iiiiiiiiiiiiiiii iiiiiiiiiiiii
-              iiiiiiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiii iiiiiiiiiiiiiii hhhhhh
-              hhhhhh hhhhhh hhhhhhhhhhhh hhhhhhhhhhhh hhhhhhhhhhhh hhhhhhhhhhhh
-              hhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhh
-            </Text>
+            <Text>{NoiDung}</Text>
           </View>
           {/* khung chứa số like và cmt */}
           <View style={styles.khung_DemSoLike_Comt}>
@@ -86,7 +72,7 @@ export default class BaiDangComponenet extends React.Component {
                 source={like}
                 //   size={FontSize.reSize(20)}
               />
-              <Text style={{textAlign: 'center'}}> 1</Text>
+              <Text style={{textAlign: 'center'}}> {Solike}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.khung_DemSoComment}>
               <Image
@@ -94,7 +80,7 @@ export default class BaiDangComponenet extends React.Component {
                 source={commnet}
                 //   size={FontSize.reSize(20)}
               />
-              <Text> 1</Text>
+              <Text> {SoComment}</Text>
             </TouchableOpacity>
           </View>
         </View>

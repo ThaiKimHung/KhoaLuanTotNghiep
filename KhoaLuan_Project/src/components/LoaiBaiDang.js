@@ -18,7 +18,7 @@ import SvgUri from 'react-native-svg-uri';
 export default class LoaiBaiDang extends React.Component {
   render() {
     const {anh, tennhom} = this.props;
-
+    // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
     return (
       <TouchableOpacity style={styles.container}>
         <SvgUri

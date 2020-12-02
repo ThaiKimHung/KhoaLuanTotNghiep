@@ -20,7 +20,8 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 
 import {Login} from '../apis/apiUser';
-// import {Id_user} from '../apis/GetIdUser';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
 
 const logo = require('../assets/images/Jee.png');
 const user = require('../assets/images/user.png');
@@ -36,30 +37,27 @@ export default class SignInScreen extends React.Component {
     this.state = {
       ShowPassword: true,
       DsThongTinUser: [],
-      id_userne: '',
+      id_user: '',
     };
-    this.Username = '';
-    this.Password = '';
+    this.Username = 'hung@gmail.com';
+    this.Password = '111111';
   }
 
   _loginJee = async () => {
-    console.log('=-=-=mail', this.Username);
-    console.log('=-=-=pass', this.Password);
-
+    // console.log('=-=-=mail', this.Username);
+    // console.log('=-=-=pass', this.Password);
     let res = await Login(this.Username, this.Password);
     console.log('ress', res);
 
     if (res.status == 1) {
       alert('Đăng nhập thành công');
-      this.chuyenTrang();
       this.setState({DsThongTinUser: res.data});
+      Utils.setGlobal(nGlobalKeys.Avatar, this.state.DsThongTinUser[0].Avatar);
       this._SetAsync();
+      this.chuyenTrang();
     } else {
       alert('Đăng nhập thất bại');
     }
-
-    console.log('res stat', res.status);
-    console.log('ds thong tin', this.state.DsThongTinUser);
   };
 
   chuyenTrang = () => {
@@ -73,15 +71,17 @@ export default class SignInScreen extends React.Component {
   };
 
   _SetAsync = async () => {
-    this.state.DsThongTinUser.map((e) => {
-      return this.setState({id_userne: e.ID_user});
+    this.setState({
+      id_user: this.state.DsThongTinUser[0].ID_user,
     });
-    await Utils.nsetStorage('idUser', this.state.id_userne);
-    console.log('iduser bên aysn set', this.state.id_userne);
+    await Utils.nsetStorage(nkey.id_user, this.state.id_user);
   };
 
-  componentDidMoun() {
-    // this._SetAsync();
+  componentDidMount() {
+    // this.state.DsThongTinUser.map((e) => {
+    //   return this.setState({ava: e.Avatar});
+    // });
+    // console.log('ava', this.state.ava);
   }
 
   render() {

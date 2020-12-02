@@ -10,32 +10,32 @@ import {
 
 import Header from '../components/Header';
 import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
-import BaiDangComponenet from '../components/BaiDangComponenet';
 // import {useTheme} from '@react-navigation/native';
 // const {colors} = useTheme();
+import ScreenAllBaiDang from './ScreenAllBaiDang';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      DsUser: [],
+    };
   }
   render() {
-    console.log('props_homesceen', this);
+    // const {ds} = this.props.route.params;
+    // console.log('props_homesrceen', this.props);
+    // console.log('item id', ds);
     return (
       <View style={styles.container}>
         <Header nthis={this}></Header>
 
         <ChonLoaiBaiDang
-          onPress={
-            () => {
-              this.props.navigation.navigate('ScreenLoaiBaiDang');
-            }
-            //
-          }></ChonLoaiBaiDang>
+          onPress={() => {
+            this.props.navigation.navigate('ScreenLoaiBaiDang');
+          }}></ChonLoaiBaiDang>
 
         <ScrollView style={{flex: 1}}>
-          <BaiDangComponenet></BaiDangComponenet>
-          <BaiDangComponenet></BaiDangComponenet>
-          <BaiDangComponenet></BaiDangComponenet>
+          <ScreenAllBaiDang></ScreenAllBaiDang>
         </ScrollView>
 
         {/* <Button

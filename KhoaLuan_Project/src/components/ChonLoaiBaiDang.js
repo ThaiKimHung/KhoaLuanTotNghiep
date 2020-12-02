@@ -24,17 +24,20 @@ import {
 } from 'react-native-paper';
 import FontSize from './size';
 const avatar = require('../assets/images/avatar.png');
-
+import {nGlobalKeys} from '../apis/globalKey';
+import Utils from '../apis/Utils';
 export default class PhanChonLoaiBaiDang extends React.Component {
   render() {
-    console.log('this của chọn loại bài đăng', this);
+    // console.log('this của chọn loại bài đăng', this);
+    let ava = Utils.getGlobal(nGlobalKeys.Avatar, '');
+    console.log('ava ne', ava);
     return (
       <View>
         {/* khung chứa avata và khung text input*/}
         <View style={styles.khungchua}>
           <Avatar.Image
             style={{margin: 5}}
-            source={avatar}
+            source={{uri: ava}}
             size={FontSize.reSize(50)}
           />
           <TouchableOpacity

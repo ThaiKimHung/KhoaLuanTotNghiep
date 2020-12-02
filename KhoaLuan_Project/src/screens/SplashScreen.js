@@ -31,7 +31,7 @@ class SplashScreen extends React.Component {
   }
 
   render() {
-    console.log('navi', this.props);
+    // console.log('navi', this.props);
     return (
       <SafeAreaView style={styles.container}>
         <ImageBackground

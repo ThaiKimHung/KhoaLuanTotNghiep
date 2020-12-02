@@ -23,5 +23,9 @@ async function GetLoaiBaiDang(user = '') {
   );
   return res;
 }
+async function GetAllUser() {
+  let res = await Utils.get_api(apiUser + `GetDSUser`);
+  return res;
+}
 
-export {Login, Logout, GetLoaiBaiDang};
+export {Login, Logout, GetLoaiBaiDang, GetAllUser};

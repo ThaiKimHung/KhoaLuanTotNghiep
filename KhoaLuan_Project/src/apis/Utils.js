@@ -1,11 +1,16 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {Alert} from 'react-native';
-
+import {
+  AppgetGlobal,
+  AppgetRootGlobal,
+  AppsetGlobal,
+  ROOTGlobal,
+} from './dataGlobal';
 // --call API
 
-// const domain = 'http://192.168.3.49/';
+const domain = 'http://192.168.3.49/';
 // const domain = 'http://192.168.3.43/';
-const domain = 'http:/192.168.100.5/';
+// const domain = 'http:/192.168.100.5/';
 
 async function post_api(
   strUrl,
@@ -29,7 +34,7 @@ async function post_api(
       body: strBody,
     });
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
     if (res.status == 0) {
       nlog('[API]Lỗi API------------:', res);
     }
@@ -116,6 +121,7 @@ function handleResponse(res) {
   }
   return resFalse(res);
 }
+
 let resFalse = (res = null, message = 'Xử lý thất bại') => {
   try {
     if (
@@ -155,6 +161,20 @@ let resTrue = (res = {}, message = 'Xử lý thành công') => {
   };
 };
 
+// -- Các hàm xử lý thao tác với biến gốc rootGlobal
+// Hàm get giá trị theo keys - read only. Giá trị thay đổi không làm thay đổi giá trị root
+function getGlobal(keys, defaultValue) {
+  return AppgetGlobal(keys, defaultValue);
+}
+// Hàm get giá trị gốc theo keys - read write. Giá trị thay đổi làm thay đổi giá trị root
+function getRootGlobal(keys, defaultValue) {
+  return AppgetRootGlobal(keys, defaultValue);
+}
+// Hàm khởi tạo một biến gốc, cũng có thể dùng để thay đổi một gốc.
+function setGlobal(keys, value) {
+  AppsetGlobal(keys, value);
+}
+//--
 //-------END---------
 export default {
   goscreen,
@@ -170,4 +190,7 @@ export default {
   handleResponse,
   resFalse,
   resTrue,
+  getGlobal,
+  getRootGlobal,
+  setGlobal,
 };

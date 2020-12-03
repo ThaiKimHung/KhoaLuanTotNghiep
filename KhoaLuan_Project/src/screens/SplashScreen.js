@@ -11,82 +11,210 @@ import {
   ImageBackground,
   Button,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import FontSize from '../components/size';
-const imagebackgroung = require('../assets/images/backgroundTong.png');
+import * as Animatable from 'react-native-animatable';
+import LinearGradient from 'react-native-linear-gradient';
+import Utils from '../apis/Utils';
+import {nkey} from '../apis/keyStore';
+import AsyncStorage from '@react-native-community/async-storage';
+import {Login, PostTinhTrang} from '../apis/apiUser';
+
 const logo = require('../assets/images/Jee.png');
-const height = Dimensions.get('screen').height;
-const width = Dimensions.get('screen').width;
-class SplashScreen extends React.Component {
+const bg = require('../assets/images/bg.png');
+export default class SplashScreen2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loader: true,
+      flagLuu: '0',
+      avatar: '',
+      name: '',
+      id: '',
     };
   }
+
+  async _getThongTin() {
+    this.setState({
+      avatar: await Utils.ngetStorage(nkey.avatar),
+      name: await Utils.ngetStorage(nkey.Username),
+      flagLuu: await Utils.ngetStorage(nkey.flag),
+      id: await Utils.ngetStorage(nkey.id_user),
+    });
+    // console.log('ava thoing tin', avatar);
+  }
+  async _logout() {
+    let flag = await Utils.ngetStorage(nkey.flag);
+    console.log('flag trc out', flag);
+    let flag1 = await Utils.nsetStorage(nkey.flag, '0');
+    console.log('flag1 sau out', flag1);
+    AsyncStorage.clear();
+    this.updateTinhTrangUser();
+    this.props.navigation.navigate('SigninScreen');
+  }
+
+  updateTinhTrangUser = async () => {
+    let strBody = JSON.stringify({
+      ID_User: this.state.id,
+      TinhTrang: false,
+    });
+
+    console.log('strBody', strBody);
+    let res = await PostTinhTrang(strBody);
+    console.log('res update tình trạng sau khi đăng xuất', res);
+  };
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({loader: false});
-    }, 3000);
+    this._getThongTin();
   }
 
   render() {
-    // console.log('navi', this.props);
     return (
-      <SafeAreaView style={styles.container}>
-        <ImageBackground
-          source={imagebackgroung}
-          style={styles.image_background}>
+      <View style={styles.container}>
+        <ImageBackground source={bg} style={styles.image_bg}>
           <View style={styles.header}>
-            <View style={styles.khung_logo}>
-              <Image source={logo} style={styles.logo}></Image>
-            </View>
+            <Animatable.Image
+              animation="bounceIn"
+              duraton="1500"
+              source={logo}
+              style={styles.logo}
+              resizeMode="stretch"
+            />
           </View>
-          <View style={[styles.footer]}>
-            {this.state.loader ? (
-              <ActivityIndicator size="small" color="#0000ff" />
-            ) : (
-              this.props.navigation.navigate('SigninScreen')
-            )}
-          </View>
+          {this.state.flagLuu === null ? (
+            <Animatable.View
+              style={[styles.footer]}
+              animation="fadeInUp"
+              duraton="1500">
+              <Animatable.View
+                style={styles.button}
+                animation="fadeInDown"
+                duraton="1500">
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('SigninScreen')
+                  }>
+                  <LinearGradient
+                    colors={['#00FFFF', '#006699']}
+                    style={styles.signIn}>
+                    <Text style={styles.textSign}>Sign In</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animatable.View>
+            </Animatable.View>
+          ) : (
+            <Animatable.View
+              style={[styles.footer2]}
+              animation="fadeInUp"
+              duraton="1500">
+              <Animatable.View
+                style={styles.button}
+                animation="fadeInDown"
+                duraton="1500">
+                <TouchableOpacity
+                  style={styles.khung_Chuaava}
+                  onPress={() =>
+                    this.props.navigation.navigate('HomeStackScreen')
+                  }>
+                  <Image
+                    source={{uri: this.state.avatar}}
+                    style={styles.khung_ava}></Image>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.st_button}
+                  onPress={() =>
+                    Alert.alert(
+                      'Thông Báo',
+                      'Bạn Muốn Đăng Xuất',
+                      [
+                        {text: 'OK', onPress: () => this._logout()},
+                        {
+                          text: 'Cancel',
+                          //   onPress: () => console.log('Cancel Pressed'),
+                          style: 'cancel',
+                        },
+                      ],
+                      {cancelable: false},
+                    )
+                  }>
+                  <Text style={{fontSize: FontSize.reSize(20), marginLeft: 15}}>
+                    Logout
+                  </Text>
+                </TouchableOpacity>
+              </Animatable.View>
+            </Animatable.View>
+          )}
         </ImageBackground>
-      </SafeAreaView>
+      </View>
     );
   }
 }
-export default SplashScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'green',
   },
   header: {
-    // backgroundColor: 'blue',
-    height: '40%',
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   footer: {
-    flex: 1,
-    // backgroundColor: 'yellow',
-    padding: 20,
+    height: '30%',
+    backgroundColor: '#CCCCCC',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 50,
+    paddingHorizontal: 30,
   },
-
-  khung_logo: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  footer2: {
+    flex: 1,
+    backgroundColor: '#CCCCCC',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 50,
+    paddingHorizontal: 30,
+  },
+  image_bg: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
   },
   logo: {
+    width: FontSize.scale(150),
+    height: FontSize.verticalScale(150),
+    borderRadius: 100,
+  },
+  button: {
+    alignItems: 'center',
+  },
+  signIn: {
+    width: FontSize.scale(150),
+    height: FontSize.verticalScale(40),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-    height: '80%',
-    width: '40%',
+    borderRadius: 50,
+    flexDirection: 'row',
   },
-  image_background: {
-    resizeMode: 'cover',
+  textSign: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: FontSize.reSize(20),
+  },
+  khung_ava: {
+    height: FontSize.scale(100),
+    width: FontSize.verticalScale(100),
+    backgroundColor: 'black',
+  },
+  khung_Chuaava: {
+    borderColor: '#FFFFFF',
+    borderWidth: 5,
+  },
+  st_button: {
+    backgroundColor: 'blue',
+    height: FontSize.scale(40),
+    width: '90%',
     justifyContent: 'center',
-    height: height,
-    width: width,
-    flex: 1,
   },
 });

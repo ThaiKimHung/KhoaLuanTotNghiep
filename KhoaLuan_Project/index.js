@@ -18,4 +18,7 @@ import ScreenLoaiBaiDang from './src/screens/ScreenLoaiBaiDang';
 import HomeStackScreen from './src/stackScreen/HomeStackScreen';
 import ScreenAllUser from './src/screens/ScreenAllUser';
 import ScreenAllBaiDang from './src/screens/ScreenAllBaiDang';
-AppRegistry.registerComponent(appName, () => ScreenAllUser);
+
+import ScreenCaiDat from './src/screens/ScreenCaiDat';
+
+AppRegistry.registerComponent(appName, () => RootStackScreen);

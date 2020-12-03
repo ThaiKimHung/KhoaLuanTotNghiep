@@ -20,10 +20,12 @@ import FontSize from '../components/size';
 import {GetLoaiBaiDang} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
+import SvgUri from 'react-native-svg-uri';
 import LoaiBaiDang from '../components/LoaiBaiDang';
 
 const thaoluan = require('../assets/images/conversation.png');
 // const congratulation = require('../assets/images/congratulations.png');
+
 export default class ScreenLoaiBaiDang extends React.Component {
   constructor(props) {
     super(props);
@@ -54,11 +56,12 @@ export default class ScreenLoaiBaiDang extends React.Component {
 
   renderItem = ({item, index}) => {
     return (
-      <View style={[styles.khung, {marginLeft: index % 3 != 0 ? 5 : 0}]}>
+      <TouchableOpacity
+        style={[styles.khung, {marginLeft: index % 3 != 0 ? 5 : 0}]}>
         <LoaiBaiDang
           anh={item.Icon_BaiDang}
           tennhom={item.TenLoaiDang}></LoaiBaiDang>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -118,5 +121,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: 'yellow',
     borderRadius: 10,
+  },
+  container_khung: {
+    width: FontSize.verticalScale(100),
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 2,
   },
 });

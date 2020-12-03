@@ -6,22 +6,16 @@ export const nkey = {
   lang: 'lang',
   token: 'token',
   //--user
+  flag: '0',
   id_user: 'id_user',
   avatar: 'avatar',
+  Username: 'Username',
+
   phonenumber: 'phonenumber',
-  nameuser: 'nameuser',
   password: 'password',
   Fullname: 'Fullname',
   PhoneNumber: 'PhoneNumber',
   cmnd: 'cmnd',
   Strgender: 'Strgender',
   DiaChi: 'DiaChi',
-  // 1: Email, 2: SDT, 3: Google, 4: Facebook
-  typeLogin: '1',
-  // infoUser sau khi loginByOuthToken(firstName,lastName,idAcc,email)
-  infoUser: 'infoUser',
-  RecentSearch: 'RecentSearch',
-  country: 'country',
-  NotificationPushList: 'NotificationPushList',
-  SearchFlight: 'SearchFlight',
 };

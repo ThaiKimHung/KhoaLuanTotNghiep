@@ -20,7 +20,7 @@ export default class LoaiBaiDang extends React.Component {
     const {anh, tennhom} = this.props;
     // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
     return (
-      <TouchableOpacity style={styles.container}>
+      <View style={styles.container}>
         <SvgUri
           width={FontSize.scale(100)}
           height={FontSize.verticalScale(100)}
@@ -30,7 +30,7 @@ export default class LoaiBaiDang extends React.Component {
           }}
         />
         <Text style={{margin: 5, textAlign: 'center'}}>{tennhom}</Text>
-      </TouchableOpacity>
+      </View>
     );
   }
 }

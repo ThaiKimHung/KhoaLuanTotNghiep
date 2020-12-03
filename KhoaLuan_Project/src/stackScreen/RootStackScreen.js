@@ -12,6 +12,7 @@ const RootStackScreen = () => (
   <NavigationContainer>
     <RootStack.Navigator headerMode="none" initialRouteName="SplashScreen">
       <RootStack.Screen name="SplashScreen" component={SplashScreen} />
+      {/* <RootStack.Screen name="SplashScreen2" component={SplashScreen2} /> */}
       <RootStack.Screen name="SigninScreen" component={SigninScreen} />
       <RootStack.Screen name="HomeStackScreen" component={HomeStackScreen} />
     </RootStack.Navigator>

@@ -34,9 +34,9 @@ export default class HomeScreen extends React.Component {
             this.props.navigation.navigate('ScreenLoaiBaiDang');
           }}></ChonLoaiBaiDang>
 
-        <ScrollView style={{flex: 1}}>
+        <View style={{flex: 1}}>
           <ScreenAllBaiDang></ScreenAllBaiDang>
-        </ScrollView>
+        </View>
 
         {/* <Button
           title="Go to details screen"

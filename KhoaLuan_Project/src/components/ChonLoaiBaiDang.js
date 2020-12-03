@@ -13,31 +13,40 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  TouchableRipple,
-  Switch,
-} from 'react-native-paper';
+import {Avatar} from 'react-native-paper';
 import FontSize from './size';
 const avatar = require('../assets/images/avatar.png');
 import {nGlobalKeys} from '../apis/globalKey';
 import Utils from '../apis/Utils';
-export default class PhanChonLoaiBaiDang extends React.Component {
+import {nkey} from '../apis/keyStore';
+export default class ChonLoaiBaiDang extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      avatar: '',
+    };
+  }
+  _getThongTin = async () => {
+    this.setState({
+      avatar: await Utils.ngetStorage(nkey.avatar),
+    });
+  };
+  componentDidMount() {
+    if (this.state.avatar === '') {
+      setInterval(this._getThongTin, 1000);
+    } else {
+      clearInterval(1000);
+    }
+  }
   render() {
-    // console.log('this của chọn loại bài đăng', this);
-    let ava = Utils.getGlobal(nGlobalKeys.Avatar, '');
-    console.log('ava ne', ava);
     return (
       <View>
         {/* khung chứa avata và khung text input*/}
         <View style={styles.khungchua}>
           <Avatar.Image
             style={{margin: 5}}
-            source={{uri: ava}}
+            source={{uri: this.state.avatar}}
+            // source={avatar}
             size={FontSize.reSize(50)}
           />
           <TouchableOpacity

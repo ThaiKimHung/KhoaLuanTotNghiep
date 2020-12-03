@@ -61,7 +61,11 @@ export default class ScreenAllUser extends React.Component {
             paddingRight: 10,
           }}>
           <Text>{item.Username}</Text>
-          <this.online></this.online>
+          {item.TinhTrang === true ? (
+            <this.online></this.online>
+          ) : (
+            <this._offine></this._offine>
+          )}
         </View>
       </View>
     );
@@ -74,9 +78,6 @@ export default class ScreenAllUser extends React.Component {
       </Text>
     );
   };
-  componentDidMount() {
-    this._GetAllUser();
-  }
 
   online() {
     return (
@@ -100,6 +101,9 @@ export default class ScreenAllUser extends React.Component {
           borderRadius: 8,
         }}></View>
     );
+  }
+  componentDidMount() {
+    this._GetAllUser();
   }
 
   render() {

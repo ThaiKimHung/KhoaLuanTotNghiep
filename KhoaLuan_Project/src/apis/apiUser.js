@@ -28,4 +28,9 @@ async function GetAllUser() {
   return res;
 }
 
-export {Login, Logout, GetLoaiBaiDang, GetAllUser};
+async function PostTinhTrang(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateUserName`, strbody);
+  return res;
+}
+
+export {Login, Logout, GetLoaiBaiDang, GetAllUser, PostTinhTrang};

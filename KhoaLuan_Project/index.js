@@ -20,5 +20,6 @@ import ScreenAllUser from './src/screens/ScreenAllUser';
 import ScreenAllBaiDang from './src/screens/ScreenAllBaiDang';
 
 import ScreenCaiDat from './src/screens/ScreenCaiDat';
+import KhenThuong from './src/baidang/KhenThuong';
 
-AppRegistry.registerComponent(appName, () => RootStackScreen);
+AppRegistry.registerComponent(appName, () => KhenThuong);

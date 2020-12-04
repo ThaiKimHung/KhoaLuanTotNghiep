@@ -33,4 +33,16 @@ async function PostTinhTrang(strbody) {
   return res;
 }
 
-export {Login, Logout, GetLoaiBaiDang, GetAllUser, PostTinhTrang};
+async function GetDSKhenThuong() {
+  let res = await Utils.get_api(apiUser + `GetDSKhenThuong`);
+  return res;
+}
+
+export {
+  Login,
+  Logout,
+  GetLoaiBaiDang,
+  GetAllUser,
+  PostTinhTrang,
+  GetDSKhenThuong,
+};

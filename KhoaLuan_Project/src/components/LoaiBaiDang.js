@@ -18,6 +18,7 @@ import SvgUri from 'react-native-svg-uri';
 export default class LoaiBaiDang extends React.Component {
   render() {
     const {anh, tennhom} = this.props;
+    console.log('ảnh', anh);
     // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
     return (
       <View style={styles.container}>
@@ -25,8 +26,7 @@ export default class LoaiBaiDang extends React.Component {
           width={FontSize.scale(100)}
           height={FontSize.verticalScale(100)}
           source={{
-            uri:
-              'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
+            uri: this.props.anh,
           }}
         />
         <Text style={{margin: 5, textAlign: 'center'}}>{tennhom}</Text>
@@ -36,7 +36,7 @@ export default class LoaiBaiDang extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
-    width: FontSize.verticalScale(100),
+    // width: FontSize.verticalScale(100),
     justifyContent: 'center',
     alignItems: 'center',
     margin: 2,

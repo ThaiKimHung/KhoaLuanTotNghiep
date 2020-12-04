@@ -4,59 +4,43 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Platform,
   StyleSheet,
-  StatusBar,
   Alert,
-  SafeAreaView,
-  Dimensions,
-  Image,
-  ImageBackground,
-  ScrollView,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
-import FontSize from '../components/size';
-import {GetLoaiBaiDang} from '../apis/apiUser';
+import * as Animatable from 'react-native-animatable';
+
 import Utils from '../apis/Utils';
-import {nkey} from '../apis/keyStore';
+import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
-import LoaiBaiDang from '../components/LoaiBaiDang';
 
-const thaoluan = require('../assets/images/conversation.png');
-// const congratulation = require('../assets/images/congratulations.png');
+import {GetDSKhenThuong} from '../apis/apiUser';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
 
-export default class ScreenLoaiBaiDang extends React.Component {
+export default class KhenThuong extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      DsLoaiBaiDang: [],
-      userID: 0,
+      DsKhenThuong: [],
     };
   }
-  // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
-  _GetAsync = async () => {
-    this.setState({
-      userID: await Utils.ngetStorage(nkey.id_user),
-    });
-    console.log('iduser bên get asyn', this.state.userID);
+
+  _GetDsKhenThuong = async () => {
+    let res = await GetDSKhenThuong();
+    console.log('res ds khen thưởng', res);
+    this.setState({DsKhenThuong: res.data.Data});
+    console.log('ds khen thưởng', this.state.DsKhenThuong);
   };
 
-  _GetDsLoaiBaiDang = async () => {
-    // console.log('userid khi truyền lấy ds:', this.state.userID);
-    let res = await GetLoaiBaiDang(this.state.userID);
-    // console.log('ress', res);
-    this.setState({DsLoaiBaiDang: res.data});
-    console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
-  };
-
-  async componentDidMount() {
-    await this._GetAsync();
-    await this._GetDsLoaiBaiDang();
+  componentDidMount() {
+    // await this._GetAsync();
+    this._GetDsKhenThuong();
   }
 
   renderItem = ({item, index}) => {
-    console.log('item', item);
     return (
       <TouchableOpacity
         style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 0}]}>
@@ -64,17 +48,11 @@ export default class ScreenLoaiBaiDang extends React.Component {
           <SvgUri
             width={FontSize.scale(100)}
             height={FontSize.verticalScale(100)}
-            // source={{
-            //   uri: item.Icon_BaiDang,
-            // }}
             source={{
-              uri:
-                'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
+              uri: item.icon,
             }}
           />
-          <Text style={{margin: 5, textAlign: 'center'}}>
-            {item.TenLoaiDang}
-          </Text>
+          <Text style={{margin: 5, textAlign: 'center'}}>{item.tieude}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -89,17 +67,22 @@ export default class ScreenLoaiBaiDang extends React.Component {
           </Text>
         </View>
         <View style={styles.footer}>
-          {this.state.DsLoaiBaiDang.length != 0 ? (
+          {this.state.DsKhenThuong.length != 0 ? (
             <FlatList
-              data={this.state.DsLoaiBaiDang}
+              data={this.state.DsKhenThuong}
               renderItem={this.renderItem}
-              ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
+              ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
               numColumns={2}
               keyExtractor={(item, index) => index.toString()}
             />
           ) : (
             <ActivityIndicator size="large" color="#0000ff" />
           )}
+          {/* <FlatList
+            data={this.state.DsKhenThuong}
+            renderItem={this.renderItem}
+            keyExtractor={(item, index) => index.toString()}></FlatList>
+          {console.log('state', this.state.DsKhenThuong)} */}
         </View>
       </View>
     );

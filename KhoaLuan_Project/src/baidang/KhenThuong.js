@@ -11,6 +11,9 @@ import {
   Dimensions,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import {SearchBar} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Feather';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -25,20 +28,44 @@ export default class KhenThuong extends React.Component {
     super(props);
     this.state = {
       DsKhenThuong: [],
+      refresh: true,
+      search: '',
+      setSearch: '',
     };
   }
 
+  // const [filteredDataSource, setFilteredDataSource] = useState([]);
+  // const [masterDataSource, setMasterDataSource] = useState([]);
+  EmptyListMessage = ({item}) => {
+    return (
+      // Flat List Item
+      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+        No Data Found
+      </Text>
+    );
+  };
   _GetDsKhenThuong = async () => {
     let res = await GetDSKhenThuong();
     console.log('res ds khen thưởng', res);
-    this.setState({DsKhenThuong: res.data.Data});
-    console.log('ds khen thưởng', this.state.DsKhenThuong);
+    if (res.status === 1) {
+      this.setState({
+        DsKhenThuong: res.Data,
+        refresh: !this.state.refresh,
+      });
+      console.log('ds khen thưởng', this.state.DsKhenThuong);
+    } else {
+      this.setState({
+        refresh: !this.state.refresh,
+      });
+    }
   };
 
   componentDidMount() {
-    // await this._GetAsync();
     this._GetDsKhenThuong();
   }
+  updateSearch = (search) => {
+    this.setState({search});
+  };
 
   renderItem = ({item, index}) => {
     return (
@@ -63,8 +90,32 @@ export default class KhenThuong extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
-            Bạn muốn đăng bài gì?
+            Chọn thành viên
           </Text>
+          <SearchBar
+            placeholder="@ Để gắn thẻ thành viên..."
+            onChangeText={this.updateSearch}
+            value={this.state.search}
+            showCancel="true"
+            showLoading="false"
+            platform="android"
+            containerStyle={{
+              backgroundColor: '#DDDDDD80',
+              borderRadius: 20,
+              height: FontSize.scale(40),
+              justifyContent: 'center',
+            }}
+            // inputContainerStyle={}
+          />
+          <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
+            Nhập nội dung:
+          </Text>
+          <TextInput
+            autoCapitalize="none"
+            placeholderTextColor="#BBBBBB	"
+            placeholder="Nội dung"
+            multiline={true}
+            style={styles.textinput}></TextInput>
         </View>
         <View style={styles.footer}>
           {this.state.DsKhenThuong.length != 0 ? (
@@ -74,15 +125,15 @@ export default class KhenThuong extends React.Component {
               ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
               numColumns={2}
               keyExtractor={(item, index) => index.toString()}
+              ListEmptyComponent={this.EmptyListMessage}
+              refreshing={this.state.refresh}
+              onRefresh={() => {
+                this.setState({refresh: true}, this._GetDsKhenThuong);
+              }}
             />
           ) : (
             <ActivityIndicator size="large" color="#0000ff" />
           )}
-          {/* <FlatList
-            data={this.state.DsKhenThuong}
-            renderItem={this.renderItem}
-            keyExtractor={(item, index) => index.toString()}></FlatList>
-          {console.log('state', this.state.DsKhenThuong)} */}
         </View>
       </View>
     );
@@ -99,17 +150,15 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    backgroundColor: '#4285F4',
-    height: '8%',
+    backgroundColor: 'blue',
+    // height: '8%',
     justifyContent: 'center',
     width: '100%',
     padding: 10,
     borderRadius: 10,
+    flex: 1,
   },
   footer: {
-    // flex: 1,
-    // backgroundColor: 'green',
-    // flexDirection: 'row',
     height: '100%',
     width: '100%',
     paddingTop: 10,
@@ -134,5 +183,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 2,
+  },
+  textinput: {
+    backgroundColor: '#DDDDDD80',
+    borderRadius: 20,
+    paddingLeft: 20,
+    fontSize: FontSize.reSize(20),
   },
 });

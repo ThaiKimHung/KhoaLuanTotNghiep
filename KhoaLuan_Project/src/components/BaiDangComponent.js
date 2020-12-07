@@ -13,15 +13,16 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  TouchableRipple,
-  Switch,
-} from 'react-native-paper';
+// import {
+//   Avatar,
+//   Title,
+//   Caption,
+//   Paragraph,
+//   Drawer,
+//   TouchableRipple,
+//   Switch,
+// } from 'react-native-paper';
+import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from './size';
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -34,26 +35,36 @@ const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
   render() {
-    const {HinhDaiDien, Username, NoiDung, Solike, SoComment} = this.props;
-    // console.log('this bên trang testcom', this);
+    const {item = {}, onPress} = this.props;
+    // console.log('nthis của Bai dang component', this.props);
+    // console.log('item', item);
+    // console.log('onpress', onPress);
+    let user = item.User_DangBai ? item.User_DangBai[0] : {};
+    let Solike = item.Like_BaiDang.length;
+    let SoComment = item.Coment.length;
+    // console.log('onpress', this.props.onPress);
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
         <View>
           <View style={styles.header}>
-            <TouchableOpacity>
-              <Avatar.Image
+            <TouchableOpacity style={{flexDirection: 'row'}}>
+              {/* <Avatar.Image
                 style={{margin: 5}}
-                source={{uri: HinhDaiDien}}
+                source={user ? {uri: user.avatar} : avatar}
                 size={FontSize.reSize(40)}
-              />
-            </TouchableOpacity>
+              /> */}
 
-            <View style={styles.khung_tenUser}>
-              <TouchableOpacity>
-                <Text style={styles.txt_TenUser}>{Username}</Text>
-              </TouchableOpacity>
-            </View>
+              <Avatar
+                size="small"
+                rounded
+                source={user ? {uri: user.avatar} : ''}
+                activeOpacity={0.7}
+              />
+              <View style={styles.khung_tenUser}>
+                <Text style={styles.txt_TenUser}>{user.Username}</Text>
+              </View>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.khung_daubacham}>
               <Image style={styles.imageLike_Commnet} source={daubacham} />
@@ -61,26 +72,20 @@ export default class BaiDangComponenet extends React.Component {
           </View>
 
           {/* khung chứa nội dung bài đăng và cmt*/}
-          <View style={styles.footer}>
-            <Text>{NoiDung}</Text>
-          </View>
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.NoiDung}</Text>
+          </TouchableOpacity>
           {/* khung chứa số like và cmt */}
           <View style={styles.khung_DemSoLike_Comt}>
             <TouchableOpacity style={styles.khung_DemSoLike}>
-              <Image
-                style={styles.imageLike_Commnet}
-                source={like}
-                //   size={FontSize.reSize(20)}
-              />
-              <Text style={{textAlign: 'center'}}> {Solike}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.khung_DemSoComment}>
-              <Image
-                style={styles.imageLike_Commnet}
-                source={commnet}
-                //   size={FontSize.reSize(20)}
-              />
-              <Text> {SoComment}</Text>
+              <View style={{flexDirection: 'row', padding: 3}}>
+                <Image style={styles.imageLike_Commnet} source={like} />
+                <Text style={{textAlign: 'center'}}> {Solike}</Text>
+              </View>
+              <View style={{flexDirection: 'row', marginLeft: 5}}>
+                <Image style={styles.imageLike_Commnet} source={commnet} />
+                <Text> {SoComment}</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,11 +130,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     padding: 5,
+    justifyContent: 'space-between',
     // backgroundColor: 'yellow',
   },
   khung_tenUser: {
     // backgroundColor: 'blue',
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
   },
   khung_daubacham: {
@@ -174,7 +180,8 @@ const styles = StyleSheet.create({
     width: FontSize.verticalScale(15),
   },
   khungLike_Commnet: {
-    borderTopWidth: 0.5,
+    borderTopWidth: 1,
+    borderColor: '#696969',
     flexDirection: 'row',
     padding: 5,
     // backgroundColor: 'blue',

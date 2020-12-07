@@ -9,8 +9,8 @@ import {
 // --call API
 
 // const domain = 'http://192.168.3.49/';
-// const domain = 'http://192.168.3.43/';
-const domain = 'http:/192.168.100.5/';
+const domain = 'http://192.168.3.43/';
+// const domain = 'http:/192.168.100.5/';
 
 async function post_api(
   strUrl,

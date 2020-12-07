@@ -38,6 +38,11 @@ async function GetDSKhenThuong() {
   return res;
 }
 
+async function GetDSBaiDang() {
+  let res = await Utils.get_api(apiUser + `getDSBaiDang`);
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -45,4 +50,5 @@ export {
   GetAllUser,
   PostTinhTrang,
   GetDSKhenThuong,
+  GetDSBaiDang,
 };

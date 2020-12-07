@@ -28,8 +28,11 @@ export default class ScreenAllUser extends React.Component {
   _GetAllUser = async () => {
     let res = await GetAllUser();
     console.log('ress', res);
-    if (res.status == 0) {
-      this.setState({DsUser: res.data.Data, refresh: !this.state.refresh});
+    if (res.status == 1) {
+      this.setState({
+        DsUser: res.Data,
+        refresh: !this.state.refresh,
+      });
     } else {
       this.setState({refresh: !this.state.refresh});
       alert('thất bại');

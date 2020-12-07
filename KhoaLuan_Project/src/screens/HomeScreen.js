@@ -26,7 +26,7 @@ export default class HomeScreen extends React.Component {
     // console.log('props_homesrceen', this.props);
     // console.log('item id', ds);
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1}}>
         <Header nthis={this}></Header>
 
         <ChonLoaiBaiDang
@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
           }}></ChonLoaiBaiDang>
 
         <View style={{flex: 1}}>
-          <ScreenAllBaiDang></ScreenAllBaiDang>
+          <ScreenAllBaiDang nthis={this}></ScreenAllBaiDang>
         </View>
 
         {/* <Button

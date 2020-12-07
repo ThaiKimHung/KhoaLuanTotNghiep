@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import SplashScreen from '../screens/SplashScreen';
 import SigninScreen from '../screens/SignInScreen';
 import HomeStackScreen from '../stackScreen/HomeStackScreen';
-
+import KhenThuong from '../baidang/KhenThuong';
 const RootStack = createStackNavigator();
 
 const RootStackScreen = () => (

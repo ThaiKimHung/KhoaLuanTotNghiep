@@ -32,34 +32,75 @@ export default class ScreenLoaiBaiDang extends React.Component {
     this.state = {
       DsLoaiBaiDang: [],
       userID: 0,
+      refresh: true,
+      ds: 0,
     };
+    // let id = '';
   }
-  // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
+
   _GetAsync = async () => {
     this.setState({
       userID: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('iduser bên get asyn', this.state.userID);
+    // console.log('iduser bên get asyn', this.state.userID);
   };
 
   _GetDsLoaiBaiDang = async () => {
-    // console.log('userid khi truyền lấy ds:', this.state.userID);
     let res = await GetLoaiBaiDang(this.state.userID);
-    // console.log('ress', res);
-    this.setState({DsLoaiBaiDang: res.data});
-    console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
+    console.log('res ds loại bài đăng', res);
+    if (res.status === 1) {
+      this.setState({
+        DsLoaiBaiDang: res.data,
+        refresh: !this.state.refresh,
+      });
+      // console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
+    } else {
+      this.setState({
+        refresh: !this.state.refresh,
+      });
+    }
   };
+
+  EmptyListMessage = ({item}) => {
+    return (
+      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+        No Data Found
+      </Text>
+    );
+  };
+
+  _chuyenTrang(item) {
+    let id = item;
+    console.log('id', id);
+    // alert(5);
+    switch (id) {
+      case 1:
+        console.log('this', this);
+        return this.props.navigation.push('KhenThuong');
+      case 2:
+        alert(2);
+        break;
+      case 3:
+        alert(3);
+        break;
+      case 4:
+        return alert(4);
+
+      default:
+        alert('defat');
+    }
+  }
 
   async componentDidMount() {
     await this._GetAsync();
     await this._GetDsLoaiBaiDang();
   }
-
+  // Id_LoaiDang
   renderItem = ({item, index}) => {
-    console.log('item', item);
     return (
       <TouchableOpacity
-        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 0}]}>
+        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 0}]}
+        onPress={() => this._chuyenTrang(item.Id_LoaiDang)}>
         <View style={styles.khung_DS}>
           <SvgUri
             width={FontSize.scale(100)}
@@ -96,6 +137,11 @@ export default class ScreenLoaiBaiDang extends React.Component {
               ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
               numColumns={2}
               keyExtractor={(item, index) => index.toString()}
+              ListEmptyComponent={this.EmptyListMessage}
+              refreshing={this.state.refresh}
+              onRefresh={() => {
+                this.setState({refresh: true}, this._GetDsLoaiBaiDang);
+              }}
             />
           ) : (
             <ActivityIndicator size="large" color="#0000ff" />
@@ -113,7 +159,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: 10,
-    // backgroundColor: 'yellow',
+    // height: '80%',
+    backgroundColor: 'green',
   },
   header: {
     backgroundColor: '#4285F4',
@@ -150,6 +197,6 @@ const styles = StyleSheet.create({
     // width: FontSize.verticalScale(100),
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 2,
+    // margin: 2,
   },
 });

@@ -11,36 +11,93 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import FontSize from '../components/size';
 // import {Avatar} from 'react-native-paper';
 // import {GetAllUser} from '../apis/apiUser';
 import flatListData from '../data/Dulieu';
 import BaiDangComponent from '../components/BaiDangComponent';
 
+import * as Animatable from 'react-native-animatable';
+
+import Utils from '../apis/Utils';
+import FontSize from '../components/size';
+import SvgUri from 'react-native-svg-uri';
+
+import {GetDSBaiDang} from '../apis/apiUser';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
 export default class BaiDangComponentScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      DSBaiDang: [],
+      refresh: true,
+    };
   }
-  _renderItem = ({item}) => {
+
+  _GetDSBaiDang = async () => {
+    let res = await GetDSBaiDang();
+    console.log('Danh sách bài đăng:', res);
+    if (res.status == 1) {
+      this.setState({
+        DSBaiDang: res.data,
+        refresh: !this.state.refresh,
+      });
+      // console.log('ds bài đăng', this.state.DSBaiDang);
+    } else {
+      this.setState({refresh: !this.state.refresh});
+      alert('thất bại');
+    }
+  };
+
+  EmptyListMessage = ({item}) => {
+    return (
+      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+        No Data Found
+      </Text>
+    );
+  };
+
+  componentDidMount() {
+    // await this._GetAsync();
+    this._GetDSBaiDang();
+    // this.test();
+    // console.log('this com', this.state.DSCommnet);
+  }
+  _renderItem = ({item, index}) => {
     return (
       <BaiDangComponent
-        HinhDaiDien={item.Avatar}
-        Username={item.Username}
-        NoiDung={item.NoiDung}
-        Solike={item.Solike}
-        SoComment={item.SoComment}></BaiDangComponent>
+        key={index}
+        item={item}
+        onPress={() =>
+          this.props.nthis.props.navigation.navigate('ScreenDetailBaiDang', {
+            item,
+          })
+        }></BaiDangComponent>
     );
-    // alert(item);
   };
   render() {
+    console.log('nthis props', this.props.nthis.props);
+    console.log('nthis', this.props.nthis);
     return (
       <View>
         <FlatList
-          data={flatListData}
+          data={this.state.DSBaiDang}
           renderItem={this._renderItem}
-          keyExtractor={(item, index) => item.ID_user}
+          keyExtractor={(item, index) => index.toString()}
+          refreshing={this.state.refresh}
+          onRefresh={() => {
+            this.setState({refresh: true}, this._GetDSBaiDang);
+          }}
+          ListEmptyComponent={this.EmptyListMessage}
         />
       </View>
     );
   }
 }
+const styles = StyleSheet.create({
+  emptyListStyle: {
+    padding: 10,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+});

@@ -21,5 +21,7 @@ import ScreenAllBaiDang from './src/screens/ScreenAllBaiDang';
 
 import ScreenCaiDat from './src/screens/ScreenCaiDat';
 import KhenThuong from './src/baidang/KhenThuong';
+import TinNhanh from './src/baidang/TinNhanh';
+import ScreenDetailBaiDang from './src/screens/ScreenDetailBaiDang';
 
-AppRegistry.registerComponent(appName, () => KhenThuong);
+AppRegistry.registerComponent(appName, () => TinNhanh);

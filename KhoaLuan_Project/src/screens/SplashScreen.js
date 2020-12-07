@@ -16,6 +16,8 @@ import {
 import FontSize from '../components/size';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
+import {Avatar, Accessory} from 'react-native-elements';
+
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -23,6 +25,8 @@ import {Login, PostTinhTrang} from '../apis/apiUser';
 
 const logo = require('../assets/images/Jee.png');
 const bg = require('../assets/images/bg.png');
+const add = require('../assets/images/add.png');
+
 export default class SplashScreen2 extends React.Component {
   constructor(props) {
     super(props);
@@ -108,7 +112,7 @@ export default class SplashScreen2 extends React.Component {
               animation="fadeInUp"
               duraton="1500">
               <Animatable.View
-                style={styles.button}
+                style={styles.button1}
                 animation="fadeInDown"
                 duraton="1500">
                 <TouchableOpacity
@@ -116,9 +120,15 @@ export default class SplashScreen2 extends React.Component {
                   onPress={() =>
                     this.props.navigation.navigate('HomeStackScreen')
                   }>
-                  <Image
+                  <Avatar
+                    size="medium"
                     source={{uri: this.state.avatar}}
-                    style={styles.khung_ava}></Image>
+                    activeOpacity={0.7}
+                    rounded
+                  />
+                  <View style={{justifyContent: 'center', margin: 10}}>
+                    <Text style={styles.name}>{this.state.name}</Text>
+                  </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -138,8 +148,9 @@ export default class SplashScreen2 extends React.Component {
                       {cancelable: false},
                     )
                   }>
+                  <Image source={add} style={styles.add}></Image>
                   <Text style={{fontSize: FontSize.reSize(20), marginLeft: 15}}>
-                    Logout
+                    Đăng nhập bằng tài khoản khác
                   </Text>
                 </TouchableOpacity>
               </Animatable.View>
@@ -188,6 +199,13 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
+    // marginBottom: 30,
+    justifyContent: 'center',
+  },
+  button1: {
+    // alignItems: 'center',
+    // marginBottom: 30,
+    justifyContent: 'center',
   },
   signIn: {
     width: FontSize.scale(150),
@@ -203,18 +221,34 @@ const styles = StyleSheet.create({
     fontSize: FontSize.reSize(20),
   },
   khung_ava: {
-    height: FontSize.scale(100),
-    width: FontSize.verticalScale(100),
+    // height: FontSize.scale(100),
+    // width: FontSize.verticalScale(100),
     backgroundColor: 'black',
   },
   khung_Chuaava: {
-    borderColor: '#FFFFFF',
-    borderWidth: 5,
+    // borderColor: '#FFFFFF',
+    // borderWidth: 5,
+    backgroundColor: '#00CCCC',
+    flexDirection: 'row',
+    padding: 10,
+    // padd/ingLeft: 10,
+    marginBottom: 10,
+    borderRadius: 20,
   },
   st_button: {
     backgroundColor: 'blue',
     height: FontSize.scale(40),
-    width: '90%',
+    // width: '90%',
     justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  add: {
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
+  },
+  name: {
+    fontSize: FontSize.reSize(30),
   },
 });

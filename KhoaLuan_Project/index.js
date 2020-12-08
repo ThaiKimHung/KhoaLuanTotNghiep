@@ -23,5 +23,5 @@ import ScreenCaiDat from './src/screens/ScreenCaiDat';
 import KhenThuong from './src/baidang/KhenThuong';
 import TinNhanh from './src/baidang/TinNhanh';
 import ScreenDetailBaiDang from './src/screens/ScreenDetailBaiDang';
-
-AppRegistry.registerComponent(appName, () => TinNhanh);
+import SearchUser from './src/screens/SearchUser';
+AppRegistry.registerComponent(appName, () => RootStackScreen);

@@ -29,8 +29,17 @@ export default class TinNhanh extends React.Component {
   }
   render() {
     return (
-      <View>
-        <Text>hi</Text>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Tin Nhanh</Text>
+        </View>
+
+        <View style={styles.footer}>
+          <Text>Nhập tiêu đề</Text>
+          <TextInput placeholder="Tiêu đề"></TextInput>
+          <Text>Nội dung</Text>
+          <TextInput placeholder="Nội dung" multiline={true}></TextInput>
+        </View>
       </View>
     );
   }
@@ -41,24 +50,22 @@ const heightScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 10,
-    // backgroundColor: 'yellow',
+    backgroundColor: '#009387',
   },
   header: {
-    backgroundColor: 'blue',
-    // height: '8%',
+    height: '10%',
     justifyContent: 'center',
-    width: '100%',
-    padding: 10,
-    borderRadius: 10,
-    flex: 1,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   footer: {
-    height: '100%',
-    width: '100%',
-    paddingTop: 10,
+    flex: 1,
+    backgroundColor: '#EEEEEE',
+  },
+  title: {
+    fontSize: FontSize.reSize(30),
+    textAlign: 'center',
   },
   khung: {
     // flex: 1,

@@ -9,6 +9,7 @@ import {
   FlatList,
   ActivityIndicator,
   Dimensions,
+  Image,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
@@ -23,6 +24,7 @@ import {GetDSKhenThuong} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
+const search = require('../assets/images/search.png');
 export default class KhenThuong extends React.Component {
   constructor(props) {
     super(props);
@@ -86,34 +88,61 @@ export default class KhenThuong extends React.Component {
   };
 
   render() {
+    const item = this.props.route.params;
+    console.log('item', item);
+    console.log('props', this.props);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
-            Chọn thành viên
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: FontSize.reSize(20),
+              marginBottom: 5,
+            }}>
+            Chọn thành viên:
           </Text>
-          <SearchBar
-            placeholder="@ Để gắn thẻ thành viên..."
-            onChangeText={this.updateSearch}
-            value={this.state.search}
-            showCancel="true"
-            showLoading="false"
-            platform="android"
-            containerStyle={{
-              backgroundColor: '#DDDDDD80',
-              borderRadius: 20,
-              height: FontSize.scale(40),
-              justifyContent: 'center',
-            }}
-            // inputContainerStyle={}
-          />
-          <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
+          <TouchableOpacity
+            style={styles.thanh_search}
+            onPress={() => {
+              this.props.navigation.navigate('SearchUser');
+            }}>
+            <Image source={search} style={styles.icon}></Image>
+            {item ? (
+              <Text
+                style={{
+                  fontSize: FontSize.reSize(20),
+                  marginLeft: 10,
+                  color: '#000000',
+                  flex: 1,
+                }}>
+                {item.Username}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: FontSize.reSize(20),
+                  marginLeft: 10,
+                  color: '#69696980',
+                  flex: 1,
+                }}>
+                Mời bạn chọn nhân viên
+              </Text>
+            )}
+          </TouchableOpacity>
+
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: FontSize.reSize(20),
+              marginBottom: 5,
+            }}>
             Nhập nội dung:
           </Text>
           <TextInput
             autoCapitalize="none"
-            placeholderTextColor="#BBBBBB	"
-            placeholder="Nội dung"
+            placeholderTextColor="#69696980"
+            placeholder="Nội dung bài đăng"
             multiline={true}
             style={styles.textinput}></TextInput>
         </View>
@@ -150,9 +179,9 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    backgroundColor: 'blue',
-    // height: '8%',
-    justifyContent: 'center',
+    backgroundColor: '#9C9C9C',
+    // height: '24%',
+    justifyContent: 'flex-start',
     width: '100%',
     padding: 10,
     borderRadius: 10,
@@ -189,5 +218,22 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 20,
     fontSize: FontSize.reSize(20),
+  },
+  thanh_search: {
+    // flex: 1,
+    height: FontSize.scale(40),
+    backgroundColor: '#DDDDDD80',
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginBottom: 5,
+  },
+  icon: {
+    width: FontSize.scale(25),
+    height: FontSize.verticalScale(25),
+    marginLeft: 5,
+    tintColor: '#696969',
+    marginLeft: 10,
   },
 });

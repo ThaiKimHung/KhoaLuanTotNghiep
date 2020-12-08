@@ -12,17 +12,19 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FontSize from '../components/size';
-import {Avatar, Accessory} from 'react-native-elements';
+import {Avatar, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 
 const avatar = require('../assets/images/avatar.png');
 // const congratulation = require('../assets/images/congratulations.png');
-export default class ScreenAllUser extends React.Component {
+export default class SearchUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       DsUser: [],
       refresh: true,
+      searchText: '',
+      filteredData: [],
     };
   }
   _GetAllUser = async () => {
@@ -41,7 +43,11 @@ export default class ScreenAllUser extends React.Component {
 
   _renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity style={[styles.khungchua]}>
+      <TouchableOpacity
+        style={[styles.khungchua]}
+        onPress={() => {
+          this.props.navigation.navigate('KhenThuong', item);
+        }}>
         {item.Avatar ? (
           <Avatar
             size="medium"
@@ -61,18 +67,13 @@ export default class ScreenAllUser extends React.Component {
         )}
         <View
           style={{
-            justifyContent: 'space-between',
+            // justifyContent: 'ce',
             flexDirection: 'row',
             alignItems: 'center',
             flex: 1,
             paddingRight: 10,
           }}>
           <Text>{item.Username}</Text>
-          {item.TinhTrang === true ? (
-            <this.online></this.online>
-          ) : (
-            <this._offine></this._offine>
-          )}
         </View>
       </TouchableOpacity>
     );
@@ -86,29 +87,16 @@ export default class ScreenAllUser extends React.Component {
     );
   };
 
-  online() {
-    return (
-      <View
-        style={{
-          height: FontSize.scale(10),
-          width: FontSize.verticalScale(10),
-          backgroundColor: 'green',
-          borderRadius: 8,
-        }}></View>
-    );
-  }
+  search = (searchText) => {
+    this.setState({searchText: searchText});
 
-  _offine() {
-    return (
-      <View
-        style={{
-          height: FontSize.scale(10),
-          width: FontSize.verticalScale(10),
-          backgroundColor: 'gray',
-          borderRadius: 8,
-        }}></View>
-    );
-  }
+    let filteredData = this.state.DsUser.filter(function (item) {
+      return item.Username.includes(searchText);
+    });
+
+    this.setState({filteredData: filteredData});
+  };
+
   componentDidMount() {
     this._GetAllUser();
   }
@@ -119,13 +107,31 @@ export default class ScreenAllUser extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
-            Danh sách
-          </Text>
+          <SearchBar
+            placeholder="@ Để gắn thẻ thành viên..."
+            onChangeText={this.updateSearch}
+            value={this.state.search}
+            showCancel="true"
+            showLoading="false"
+            platform="android"
+            containerStyle={{
+              backgroundColor: '#DDDDDD80',
+              borderRadius: 20,
+              height: FontSize.scale(40),
+              justifyContent: 'center',
+            }}
+            onChangeText={this.search}
+            value={this.state.searchText}
+            // inputContainerStyle={}
+          />
         </View>
         <View style={styles.footer}>
           <FlatList
-            data={this.state.DsUser}
+            data={
+              this.state.filteredData && this.state.filteredData.length > 0
+                ? this.state.filteredData
+                : this.state.DsUser
+            }
             renderItem={this._renderItem}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    backgroundColor: '#4285F4',
+    // backgroundColor: '#4285F4',
     height: '8%',
     justifyContent: 'center',
     width: '100%',

@@ -12,6 +12,7 @@ import BaiDangStackScreen from './BaiDangStackScreen';
 import KhenThuong from '../baidang/KhenThuong';
 import ScreenDetailBaiDang from '../screens/ScreenDetailBaiDang';
 import BaiDangComponent from '../components/BaiDangComponent';
+import SearchUser from '../screens/SearchUser';
 const HomeStack = createStackNavigator();
 
 const HomeStackScreen = () => (
@@ -20,6 +21,7 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="MainTabScreen" component={MainTabScreen} />
     <HomeStack.Screen name="ScreenLoaiBaiDang" component={ScreenLoaiBaiDang} />
     <HomeStack.Screen name="KhenThuong" component={KhenThuong} />
+    <HomeStack.Screen name="SearchUser" component={SearchUser} />
     <HomeStack.Screen
       name="ScreenDetailBaiDang"
       component={ScreenDetailBaiDang}

@@ -14,17 +14,10 @@ import {
   ImageBackground,
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-// import {
-//   Avatar,
-//   Title,
-//   Caption,
-//   Paragraph,
-//   Drawer,
-//   TouchableRipple,
-//   Switch,
-// } from 'react-native-paper';
 import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from '../components/size';
+import GoBack from '../components/GoBack';
+
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
@@ -46,7 +39,6 @@ export default class BaiDangComponenet extends React.Component {
       this.setState({
         refresh: !this.state.refresh,
       });
-      //   alert(5);
       console.log('state refesh', this.state.refresh);
     } else {
       this.setState({refresh: !this.state.refresh});
@@ -55,7 +47,6 @@ export default class BaiDangComponenet extends React.Component {
 
   EmptyListMessage = ({item}) => {
     return (
-      // Flat List Item
       <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
         No Data Found
       </Text>
@@ -109,11 +100,9 @@ export default class BaiDangComponenet extends React.Component {
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;
-    // console.log('item');
-    // let hi = this.state.DS[0].User_DangBai;
-    // console.log('user', hi);
     return (
       <View style={styles.container}>
+        <GoBack nthis={this.props} name=""></GoBack>
         {/* khung chứa avata và khung text input*/}
         <View style={{margin: 5}}>
           <View style={styles.header}>

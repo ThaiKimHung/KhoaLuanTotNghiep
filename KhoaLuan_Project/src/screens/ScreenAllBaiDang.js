@@ -36,13 +36,12 @@ export default class BaiDangComponentScreen extends React.Component {
 
   _GetDSBaiDang = async () => {
     let res = await GetDSBaiDang();
-    console.log('Danh sách bài đăng:', res);
+    console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       this.setState({
         DSBaiDang: res.data,
         refresh: !this.state.refresh,
       });
-      // console.log('ds bài đăng', this.state.DSBaiDang);
     } else {
       this.setState({refresh: !this.state.refresh});
       alert('thất bại');
@@ -58,10 +57,7 @@ export default class BaiDangComponentScreen extends React.Component {
   };
 
   componentDidMount() {
-    // await this._GetAsync();
     this._GetDSBaiDang();
-    // this.test();
-    // console.log('this com', this.state.DSCommnet);
   }
   _renderItem = ({item, index}) => {
     return (
@@ -76,8 +72,6 @@ export default class BaiDangComponentScreen extends React.Component {
     );
   };
   render() {
-    console.log('nthis props', this.props.nthis.props);
-    console.log('nthis', this.props.nthis);
     return (
       <View>
         <FlatList

@@ -3,12 +3,8 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
-  Platform,
   StyleSheet,
   StatusBar,
-  Alert,
-  SafeAreaView,
   Dimensions,
   Image,
   ImageBackground,
@@ -21,10 +17,7 @@ import {GetLoaiBaiDang} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import SvgUri from 'react-native-svg-uri';
-import LoaiBaiDang from '../components/LoaiBaiDang';
-
-const thaoluan = require('../assets/images/conversation.png');
-// const congratulation = require('../assets/images/congratulations.png');
+import GoBack from '../components/GoBack';
 
 export default class ScreenLoaiBaiDang extends React.Component {
   constructor(props) {
@@ -76,7 +69,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
     switch (id) {
       case 1:
         console.log('this', this);
-        return this.props.navigation.push('KhenThuong');
+        return this.props.navigation.navigate('KhenThuong');
       case 2:
         alert(2);
         break;
@@ -84,8 +77,13 @@ export default class ScreenLoaiBaiDang extends React.Component {
         alert(3);
         break;
       case 4:
-        return alert(4);
-
+        alert(4);
+        break;
+      case 5:
+        alert(4);
+        break;
+      case 6:
+        return this.props.navigation.navigate('TinNhanh');
       default:
         alert('defat');
     }
@@ -124,6 +122,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <GoBack nthis={this.props} name="Chọn loại bài đăng"></GoBack>
         <View style={styles.header}>
           <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
             Bạn muốn đăng bài gì?
@@ -156,19 +155,17 @@ const heightScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 10,
+
     // height: '80%',
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
   },
   header: {
     backgroundColor: '#4285F4',
-    height: '8%',
+    height: FontSize.scale(50),
     justifyContent: 'center',
-    width: '100%',
     padding: 10,
     borderRadius: 10,
+    marginHorizontal: 10,
   },
   footer: {
     // flex: 1,
@@ -176,7 +173,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     height: '100%',
     width: '100%',
-    paddingTop: 10,
+    padding: 10,
   },
   khung: {
     // flex: 1,

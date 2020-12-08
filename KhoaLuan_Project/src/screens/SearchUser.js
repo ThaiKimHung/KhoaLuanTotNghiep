@@ -15,6 +15,7 @@ import FontSize from '../components/size';
 import {Avatar, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 
+const goback = require('../assets/images/go-back-left-arrow.png');
 const avatar = require('../assets/images/avatar.png');
 // const congratulation = require('../assets/images/congratulations.png');
 export default class SearchUser extends React.Component {
@@ -67,7 +68,6 @@ export default class SearchUser extends React.Component {
         )}
         <View
           style={{
-            // justifyContent: 'ce',
             flexDirection: 'row',
             alignItems: 'center',
             flex: 1,
@@ -80,7 +80,6 @@ export default class SearchUser extends React.Component {
   };
   EmptyListMessage = ({item}) => {
     return (
-      // Flat List Item
       <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
         No Data Found
       </Text>
@@ -89,11 +88,9 @@ export default class SearchUser extends React.Component {
 
   search = (searchText) => {
     this.setState({searchText: searchText});
-
     let filteredData = this.state.DsUser.filter(function (item) {
-      return item.Username.includes(searchText);
+      return item.Username.toLowerCase().includes(searchText);
     });
-
     this.setState({filteredData: filteredData});
   };
 
@@ -102,17 +99,29 @@ export default class SearchUser extends React.Component {
   }
 
   render() {
-    console.log(' ds user dưới body', this.state.DsUser);
+    // console.log(' ds user dưới body', this.state.DsUser);
 
     return (
       <View style={styles.container}>
+        <View style={styles.back}>
+          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={this.props.navigation.goBack}
+              style={{justifyContent: 'center', marginLeft: 5}}>
+              <Image
+                source={goback}
+                style={{
+                  height: FontSize.scale(13),
+                  width: FontSize.verticalScale(18),
+                }}></Image>
+            </TouchableOpacity>
+            <Text style={styles.title}>Tìm kiếm nhân viên</Text>
+          </View>
+        </View>
         <View style={styles.header}>
           <SearchBar
-            placeholder="@ Để gắn thẻ thành viên..."
-            onChangeText={this.updateSearch}
-            value={this.state.search}
+            placeholder="Tìm thành viên..."
             showCancel="true"
-            showLoading="false"
             platform="android"
             containerStyle={{
               backgroundColor: '#DDDDDD80',
@@ -122,7 +131,6 @@ export default class SearchUser extends React.Component {
             }}
             onChangeText={this.search}
             value={this.state.searchText}
-            // inputContainerStyle={}
           />
         </View>
         <View style={styles.footer}>
@@ -149,7 +157,7 @@ const widthScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    // padding: 10,
     // backgroundColor: 'yellow',
   },
   header: {
@@ -166,7 +174,8 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     height: '92%',
     width: '100%',
-    paddingTop: 5,
+    // paddingTop: 5,
+    // padding: 10,
   },
   khungchua: {
     flexDirection: 'row',
@@ -182,5 +191,19 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     textAlign: 'center',
+  },
+  back: {
+    flexDirection: 'row',
+    backgroundColor: 'green',
+    height: '6%',
+    backgroundColor: '#4F94CD',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    // marginLeft: 5,
+  },
+  title: {
+    fontSize: FontSize.reSize(20),
+    marginLeft: 10,
+    // textAlign: 'center',
   },
 });

@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
@@ -19,11 +20,13 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
+import GoBack from '../components/GoBack';
 
 import {GetDSKhenThuong} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
+const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 export default class KhenThuong extends React.Component {
   constructor(props) {
@@ -31,13 +34,9 @@ export default class KhenThuong extends React.Component {
     this.state = {
       DsKhenThuong: [],
       refresh: true,
-      search: '',
-      setSearch: '',
+      selectedItem: '0',
     };
   }
-
-  // const [filteredDataSource, setFilteredDataSource] = useState([]);
-  // const [masterDataSource, setMasterDataSource] = useState([]);
   EmptyListMessage = ({item}) => {
     return (
       // Flat List Item
@@ -71,28 +70,75 @@ export default class KhenThuong extends React.Component {
 
   renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity
-        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 0}]}>
-        <View style={styles.khung_DS}>
-          <SvgUri
-            width={FontSize.scale(100)}
-            height={FontSize.verticalScale(100)}
-            source={{
-              uri: item.icon,
+      <View>
+        {this.state.selectedItem == item.ID_khenthuong ? (
+          <TouchableOpacity
+            onPress={() => {
+              if (this.state.selectedItem == item.ID_khenthuong) {
+                this.setState({
+                  selectedItem: '0',
+                });
+              } else {
+                this.setState({
+                  selectedItem: item.ID_khenthuong,
+                });
+              }
             }}
-          />
-          <Text style={{margin: 5, textAlign: 'center'}}>{item.tieude}</Text>
-        </View>
-      </TouchableOpacity>
+            style={[
+              styles.khung,
+              {
+                marginLeft: index % 2 != 0 ? 10 : 0,
+                backgroundColor: '#87CEFF',
+              },
+            ]}>
+            <View style={styles.khung_DS}>
+              <SvgUri
+                width={FontSize.scale(100)}
+                height={FontSize.verticalScale(100)}
+                source={{
+                  uri: item.icon,
+                }}
+              />
+              <Text style={{margin: 5, textAlign: 'center'}}>
+                {item.tieude}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({
+                selectedItem: item.ID_khenthuong,
+              });
+            }}
+            style={[
+              styles.khung,
+              {marginLeft: index % 2 != 0 ? 10 : 0, backgroundColor: 'yellow'},
+            ]}>
+            <View style={styles.khung_DS}>
+              <SvgUri
+                width={FontSize.scale(100)}
+                height={FontSize.verticalScale(100)}
+                source={{
+                  uri: item.icon,
+                }}
+              />
+              <Text style={{margin: 5, textAlign: 'center'}}>
+                {item.tieude}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
     );
   };
 
   render() {
-    const item = this.props.route.params;
-    console.log('item', item);
-    console.log('props', this.props);
+    const user = this.props.route.params;
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <GoBack nthis={this.props} name="Tạo bài khen thưởng"></GoBack>
+
         <View style={styles.header}>
           <Text
             style={{
@@ -108,7 +154,7 @@ export default class KhenThuong extends React.Component {
               this.props.navigation.navigate('SearchUser');
             }}>
             <Image source={search} style={styles.icon}></Image>
-            {item ? (
+            {user ? (
               <Text
                 style={{
                   fontSize: FontSize.reSize(20),
@@ -116,7 +162,7 @@ export default class KhenThuong extends React.Component {
                   color: '#000000',
                   flex: 1,
                 }}>
-                {item.Username}
+                {user.Username}
               </Text>
             ) : (
               <Text
@@ -164,7 +210,7 @@ export default class KhenThuong extends React.Component {
             <ActivityIndicator size="large" color="#0000ff" />
           )}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -173,30 +219,26 @@ const heightScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 10,
+    // padding: 10,
     // backgroundColor: 'yellow',
   },
   header: {
     backgroundColor: '#9C9C9C',
-    // height: '24%',
     justifyContent: 'flex-start',
-    width: '100%',
     padding: 10,
     borderRadius: 10,
-    flex: 1,
+    marginHorizontal: 10,
+    // marginVertical: 10,
   },
   footer: {
     height: '100%',
     width: '100%',
-    paddingTop: 10,
+    padding: 10,
   },
   khung: {
     // flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: 'yellow',
     borderRadius: 10,
     height: FontSize.scale(heightScreen / 2.5),
     width: FontSize.verticalScale(widthScreen / 2.5),

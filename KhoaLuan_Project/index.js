@@ -25,4 +25,4 @@ import ScreenAllBaiDang from './src/screens/ScreenAllBaiDang';
 import KhenThuong from './src/baidang/KhenThuong';
 import TinNhanh from './src/baidang/TinNhanh';
 
-AppRegistry.registerComponent(appName, () => RootStackScreen);
+AppRegistry.registerComponent(appName, () => App);

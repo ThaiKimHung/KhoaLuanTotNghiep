@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     backgroundColor: 'green',
-    height: FontSize.scale(35),
+    height: FontSize.scale(50),
     backgroundColor: '#4F94CD',
     alignItems: 'center',
     // justifyContent: 'center',

@@ -14,6 +14,7 @@ import {
   Alert,
 } from 'react-native';
 import FontSize from '../components/size';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar, Accessory} from 'react-native-elements';
@@ -23,7 +24,7 @@ import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Login, PostTinhTrang} from '../apis/apiUser';
 
-const logo = require('../assets/images/Jee.png');
+const logo = require('../assets/images/Jeelogo.png');
 const bg = require('../assets/images/bg.png');
 const add = require('../assets/images/add.png');
 
@@ -36,6 +37,7 @@ export default class SplashScreen2 extends React.Component {
       avatar: '',
       name: '',
       id: '',
+      loading: true,
     };
   }
 
@@ -68,64 +70,72 @@ export default class SplashScreen2 extends React.Component {
     let res = await PostTinhTrang(strBody);
     console.log('res update tình trạng sau khi đăng xuất', res);
   };
+
+  chuyenTrang() {
+    this.props.navigation.navigate('HomeStackScreen');
+    showMessage({
+      message: 'Thông báo',
+      description: 'Chào mừng bạn quay lại',
+      type: 'success',
+      duration: 1500,
+      backgroundColor: '#1A90D9',
+      icon: 'success',
+    });
+  }
+
+  closeActivityIndicator = () =>
+    setTimeout(
+      () =>
+        this.setState({
+          loading: false,
+        }),
+      2000,
+    );
+
   componentDidMount() {
     this._getThongTin();
+    this.closeActivityIndicator();
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <ImageBackground source={bg} style={styles.image_bg}>
-          <View style={styles.header}>
-            <Animatable.Image
-              animation="bounceIn"
-              duraton="1500"
-              source={logo}
-              style={styles.logo}
-              resizeMode="stretch"
-            />
-          </View>
+    const Load = () => {
+      return (
+        <View style={styles.footerTong}>
           {this.state.flagLuu === null ? (
-            <Animatable.View
-              style={[styles.footer]}
-              animation="fadeInUp"
-              duraton="1500">
+            <View style={[styles.footer]}>
               <Animatable.View
                 style={styles.button}
-                animation="fadeInDown"
+                animation="bounceInLeft"
                 duraton="1500">
                 <TouchableOpacity
+                  style={styles.khung_buttonSignin}
                   onPress={() =>
                     this.props.navigation.navigate('SigninScreen')
                   }>
-                  <LinearGradient
-                    colors={['#00FFFF', '#006699']}
-                    style={styles.signIn}>
-                    <Text style={styles.textSign}>Sign In</Text>
-                  </LinearGradient>
+                  <Text style={styles.textSign}>Sign In</Text>
                 </TouchableOpacity>
               </Animatable.View>
-            </Animatable.View>
+            </View>
           ) : (
-            <Animatable.View
-              style={[styles.footer2]}
-              animation="fadeInUp"
-              duraton="1500">
+            <View style={[styles.footer2]}>
               <Animatable.View
                 style={styles.button1}
                 animation="fadeInDown"
                 duraton="1500">
                 <TouchableOpacity
                   style={styles.khung_Chuaava}
-                  onPress={() =>
-                    this.props.navigation.navigate('HomeStackScreen')
-                  }>
-                  <Avatar
-                    size="medium"
-                    source={{uri: this.state.avatar}}
-                    activeOpacity={0.7}
-                    rounded
-                  />
+                  onPress={() => this.chuyenTrang()}>
+                  {this.state.avatar ? (
+                    <Avatar
+                      size="medium"
+                      source={{uri: this.state.avatar}}
+                      activeOpacity={0.7}
+                      rounded
+                    />
+                  ) : (
+                    <ActivityIndicator size="small" color="#0078D7" />
+                  )}
+
                   <View style={{justifyContent: 'center', margin: 10}}>
                     <Text style={styles.name}>{this.state.name}</Text>
                   </View>
@@ -148,16 +158,48 @@ export default class SplashScreen2 extends React.Component {
                       {cancelable: false},
                     )
                   }>
-                  <Image source={add} style={styles.add}></Image>
-                  <Text style={{fontSize: FontSize.reSize(20), marginLeft: 15}}>
+                  <View style={styles.khung_Add}>
+                    <Image source={add} style={styles.add}></Image>
+                  </View>
+
+                  <Text style={styles.text_DangNhapOder}>
                     Đăng nhập bằng tài khoản khác
                   </Text>
                 </TouchableOpacity>
               </Animatable.View>
-            </Animatable.View>
+            </View>
           )}
-        </ImageBackground>
-      </View>
+        </View>
+      );
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Animatable.Image
+            animation="bounceInLeft"
+            duraton="1500"
+            source={logo}
+            style={styles.logo}
+            resizeMode="stretch"
+          />
+        </View>
+
+        {this.state.loading ? (
+          <Animatable.View
+            style={{flex: 1, backgroundColor: '#E9EBEE'}}
+            animation="zoomInUp"
+            duraton="2000">
+            <ActivityIndicator
+              size="large"
+              color="#0078D7"
+              animating={this.state.loading}
+            />
+          </Animatable.View>
+        ) : (
+          <Load></Load>
+        )}
+      </SafeAreaView>
     );
   }
 }
@@ -165,37 +207,36 @@ export default class SplashScreen2 extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#E9EBEE',
   },
   header: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#E9EBEE',
     alignItems: 'center',
   },
+  footerTong: {
+    flex: 1,
+    backgroundColor: '#E9EBEE',
+    justifyContent: 'center',
+  },
+
   footer: {
-    height: '30%',
-    backgroundColor: '#CCCCCC',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingVertical: 50,
-    paddingHorizontal: 30,
+    // backgroundColor: '#CCCCCC',
+    // paddingVertical: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   footer2: {
     flex: 1,
-    backgroundColor: '#CCCCCC',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
     paddingVertical: 50,
-    paddingHorizontal: 30,
-  },
-  image_bg: {
-    flex: 1,
-    height: '100%',
-    width: '100%',
+    paddingHorizontal: 10,
   },
   logo: {
     width: FontSize.scale(150),
     height: FontSize.verticalScale(150),
     borderRadius: 100,
+    tintColor: '#007DE3',
   },
   button: {
     alignItems: 'center',
@@ -219,36 +260,57 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: FontSize.reSize(20),
+    // fontFamily: 'Zocail',
   },
   khung_ava: {
-    // height: FontSize.scale(100),
-    // width: FontSize.verticalScale(100),
     backgroundColor: 'black',
   },
   khung_Chuaava: {
-    // borderColor: '#FFFFFF',
-    // borderWidth: 5,
-    backgroundColor: '#00CCCC',
+    // backgroundColor: '#00CCCC',
+    borderWidth: 1,
+    borderColor: '#69696980',
     flexDirection: 'row',
-    padding: 10,
-    // padd/ingLeft: 10,
+    padding: 5,
     marginBottom: 10,
     borderRadius: 20,
   },
   st_button: {
-    backgroundColor: 'blue',
-    height: FontSize.scale(40),
-    // width: '90%',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    // borderWidth: 1,
+    // borderColor: '#69696980',
     alignItems: 'center',
+    padding: 5,
+    flexDirection: 'row',
     borderRadius: 20,
   },
+  khung_Add: {
+    backgroundColor: '#00BFFF20',
+    height: FontSize.scale(25),
+    width: FontSize.verticalScale(25),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
   add: {
-    height: FontSize.scale(20),
-    width: FontSize.verticalScale(20),
+    height: FontSize.scale(15),
+    width: FontSize.verticalScale(15),
+    tintColor: '#0078D7',
   },
   name: {
     fontSize: FontSize.reSize(30),
+    fontWeight: '800',
+  },
+  khung_buttonSignin: {
+    backgroundColor: '#007DE3',
+    height: FontSize.scale(40),
+    width: FontSize.verticalScale(140),
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text_DangNhapOder: {
+    fontSize: FontSize.reSize(20),
+    marginLeft: 10,
+    color: '#007DE3',
+    fontWeight: 'bold',
   },
 });

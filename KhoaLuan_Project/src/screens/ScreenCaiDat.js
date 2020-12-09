@@ -10,9 +10,12 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  Button,
 } from 'react-native';
 import FontSize from '../components/size';
 import {Avatar} from 'react-native-paper';
+import FlashMessage, {showMessage} from 'react-native-flash-message';
+
 import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 
@@ -20,7 +23,6 @@ import {Login, PostTinhTrang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);

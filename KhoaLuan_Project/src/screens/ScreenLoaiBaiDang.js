@@ -35,12 +35,11 @@ export default class ScreenLoaiBaiDang extends React.Component {
     this.setState({
       userID: await Utils.ngetStorage(nkey.id_user),
     });
-    // console.log('iduser bên get asyn', this.state.userID);
   };
 
   _GetDsLoaiBaiDang = async () => {
     let res = await GetLoaiBaiDang(this.state.userID);
-    console.log('res ds loại bài đăng', res);
+    console.log('res ds loại bài đăng screen all bài đăng', res);
     if (res.status === 1) {
       this.setState({
         DsLoaiBaiDang: res.data,
@@ -65,7 +64,6 @@ export default class ScreenLoaiBaiDang extends React.Component {
   _chuyenTrang(item) {
     let id = item;
     console.log('id', id);
-    // alert(5);
     switch (id) {
       case 1:
         console.log('this', this);
@@ -83,7 +81,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
         alert(4);
         break;
       case 6:
-        return this.props.navigation.navigate('TinNhanh');
+        return this.props.navigation.navigate('TinNhanh', item);
       default:
         alert('defat');
     }
@@ -155,9 +153,6 @@ const heightScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    // height: '80%',
-    // backgroundColor: 'green',
   },
   header: {
     backgroundColor: '#4285F4',
@@ -168,9 +163,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   footer: {
-    // flex: 1,
-    // backgroundColor: 'green',
-    // flexDirection: 'row',
     height: '100%',
     width: '100%',
     padding: 10,

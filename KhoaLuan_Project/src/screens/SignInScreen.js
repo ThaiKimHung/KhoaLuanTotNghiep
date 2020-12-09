@@ -15,6 +15,7 @@ import {
   Button,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -23,7 +24,7 @@ import {Login, PostTinhTrang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
-const logo = require('../assets/images/Jee.png');
+const logo = require('../assets/images/Jeelogo.png');
 const user = require('../assets/images/user.png');
 const lock = require('../assets/images/locked-padlock.png');
 const visibility = require('../assets/images/visibility.png');
@@ -46,7 +47,13 @@ export default class SignInScreen extends React.Component {
     let res = await Login(this.Username, this.Password);
     console.log('ress', res);
     if (res.status == 1) {
-      alert('Đăng nhập thành công');
+      showMessage({
+        message: 'Thông báo',
+        description: 'Đăng nhập thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
       this.setState({DsThongTinUser: res.data});
       this.chuyenTrang();
 
@@ -68,7 +75,13 @@ export default class SignInScreen extends React.Component {
 
       this.updateTinhTrangUser();
     } else {
-      alert('Đăng nhập thất bại');
+      showMessage({
+        message: 'Thông báo',
+        description: 'Đăng nhập thất bại.Tài khoản hoặc Mật khẩu không đúng! ',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
     }
   };
 
@@ -90,35 +103,30 @@ export default class SignInScreen extends React.Component {
         TinhTrang: true,
       });
     }
-    console.log('strBody', strBody);
+    console.log('strBody tình trạng sau khi đăng nhập', strBody);
     let res = await PostTinhTrang(strBody);
-    console.log('res update tình trạng', res);
+    console.log('res update tình trạng sau khi đăng nhập', res);
   };
 
   render() {
     var {ShowPassword} = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <ImageBackground source={bg} style={styles.image_background}>
-          <View style={styles.header}>
-            <View style={styles.khung_logo}>
-              <Animatable.Image
-                animation="bounceIn"
-                duraton="1500"
-                source={logo}
-                style={styles.logo}></Animatable.Image>
-            </View>
+        <View style={styles.header}>
+          <View style={styles.khung_logo}>
+            <Animatable.Image
+              animation="bounceInLeft"
+              duraton="1500"
+              source={logo}
+              style={styles.logo}></Animatable.Image>
           </View>
-          <Animatable.View
-            style={[styles.footer]}
-            animation="bounceInLeft"
-            duraton="2000">
-            {/* <View style={styles.khung}> */}
-            <Text style={styles.textVuiLong}>
-              Vui lòng sử dụng tài khoản đã đăng ký để đăng nhập
-            </Text>
-            <View>
-              {/* tài khoản */}
+        </View>
+        <Animatable.View
+          style={[styles.footer]}
+          animation="bounceInLeft"
+          duraton="2000">
+          <View style={styles.khung_baoboc}>
+            <View style={{marginVertical: 10}}>
               <View>
                 <Text style={styles.text_tkmk}>Tài khoản</Text>
                 <View style={styles.khungtextinput}>
@@ -162,12 +170,14 @@ export default class SignInScreen extends React.Component {
               <TouchableOpacity
                 style={styles.buttonDangnhap}
                 onPress={() => this._loginJee()}>
-                <Text style={styles.textDangNhap}>ĐĂNG NHẬP</Text>
+                <Text style={styles.textDangNhap}>Đăng Nhập</Text>
               </TouchableOpacity>
             </View>
-            {/* </View> */}
-          </Animatable.View>
-        </ImageBackground>
+          </View>
+          {/* tài khoản */}
+
+          {/* </View> */}
+        </Animatable.View>
       </SafeAreaView>
     );
   }
@@ -178,20 +188,22 @@ const width = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#009387',
+    backgroundColor: '#C0C0C020',
   },
   header: {
-    flex: 1,
+    height: '35%',
+    // flex: 1,
+    backgroundColor: '#C0C0C020',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 50,
   },
   footer: {
-    flex: 2,
-    backgroundColor: '#EEEEEE',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
+    flex: 1,
+    backgroundColor: '#C0C0C020',
+    // backgroundColor: 'yellow',
+    paddingHorizontal: 10,
     paddingVertical: 30,
   },
 
@@ -210,6 +222,7 @@ const styles = StyleSheet.create({
     width: FontSize.scale(150),
     height: FontSize.verticalScale(150),
     borderRadius: 100,
+    tintColor: '#007DE3',
   },
   textVuiLong: {
     fontSize: FontSize.reText(20),
@@ -221,26 +234,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     // color: 'black',
-    backgroundColor: 'gray',
+    backgroundColor: '#B5B5B5',
     padding: 3,
     borderRadius: 10,
   },
   image_icon: {
     height: FontSize.scale(20),
     width: FontSize.verticalScale(20),
-    tintColor: 'black',
+    tintColor: '#4F4F4F',
+    // backgroundColor: '#0078D7',r
     marginLeft: 5,
   },
   image_icon_mk: {
     height: FontSize.scale(20),
     width: FontSize.verticalScale(20),
-    tintColor: 'black',
+    tintColor: '#4F4F4F',
     marginLeft: 5,
   },
   image_icon_mk_visibility: {
     height: FontSize.scale(15),
     width: FontSize.verticalScale(15),
-    tintColor: 'black',
+    tintColor: '#4F4F4F',
     marginRight: 5,
   },
   khungtextinputMK: {
@@ -248,7 +262,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     // color: 'black',
-    backgroundColor: 'gray',
+    backgroundColor: '#B5B5B5',
     padding: 3,
     borderRadius: 10,
   },
@@ -293,25 +307,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    // height: FontSize.scale(50),
-    marginTop: 20,
+    marginTop: 5,
     alignItems: 'center',
-    // backgroundColor: 'red',
     flex: 1,
-    // width: '90%',
   },
   buttonDangnhap: {
-    backgroundColor: '#3180CC',
+    backgroundColor: '#007DE3',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    // marginHorizontal: 5,
     padding: 10,
-    width: '90%',
+    width: '60%',
   },
   textDangNhap: {
     fontSize: 20,
-    color: '#fff',
+    color: 'white',
+    fontWeight: 'bold',
   },
   image_background: {
     resizeMode: 'cover',
@@ -322,5 +333,14 @@ const styles = StyleSheet.create({
   },
   text_tkmk: {
     fontSize: FontSize.reSize(20),
+    marginBottom: 5,
+    color: '#504B44',
+  },
+  khung_baoboc: {
+    // backgroundColor: '#0078D7',
+    padding: 10,
+    height: FontSize.scale(250),
+    // width: '100%',
+    borderRadius: 10,
   },
 });

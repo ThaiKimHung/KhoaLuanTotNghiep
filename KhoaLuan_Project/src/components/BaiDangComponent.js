@@ -37,7 +37,8 @@ export default class BaiDangComponenet extends React.Component {
   render() {
     const {item = {}, onPress} = this.props;
     // console.log('nthis của Bai dang component', this.props);
-    // console.log('item', item);
+    console.log('item', item);
+    console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let Solike = item.Like_BaiDang.length;

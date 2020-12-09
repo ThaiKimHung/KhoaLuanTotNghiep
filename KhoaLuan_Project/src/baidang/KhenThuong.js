@@ -16,6 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -35,11 +36,12 @@ export default class KhenThuong extends React.Component {
       DsKhenThuong: [],
       refresh: true,
       selectedItem: '0',
+      userSelected: '0',
+      noidung: '',
     };
   }
   EmptyListMessage = ({item}) => {
     return (
-      // Flat List Item
       <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
         No Data Found
       </Text>
@@ -47,13 +49,12 @@ export default class KhenThuong extends React.Component {
   };
   _GetDsKhenThuong = async () => {
     let res = await GetDSKhenThuong();
-    console.log('res ds khen thưởng', res);
+    // console.log('res ds khen thưởng', res);
     if (res.status === 1) {
       this.setState({
         DsKhenThuong: res.Data,
         refresh: !this.state.refresh,
       });
-      console.log('ds khen thưởng', this.state.DsKhenThuong);
     } else {
       this.setState({
         refresh: !this.state.refresh,
@@ -67,7 +68,11 @@ export default class KhenThuong extends React.Component {
   updateSearch = (search) => {
     this.setState({search});
   };
-
+  handleNoiDung(text) {
+    this.setState({
+      noidung: text,
+    });
+  }
   renderItem = ({item, index}) => {
     return (
       <View>
@@ -134,10 +139,39 @@ export default class KhenThuong extends React.Component {
   };
 
   render() {
-    const user = this.props.route.params;
+    const user = this.props.route.params ? this.props.route.params : '';
+    console.log('user khen thưởng', user);
+    console.log('props', this.props);
     return (
-      <ScrollView style={styles.container}>
-        <GoBack nthis={this.props} name="Tạo bài khen thưởng"></GoBack>
+      <View style={styles.container}>
+        <View style={styles.back}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+            <View
+              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+              <TouchableOpacity onPress={this.props.navigation.goBack}>
+                <Image
+                  source={goback}
+                  style={{
+                    height: FontSize.scale(13),
+                    width: FontSize.verticalScale(18),
+                  }}></Image>
+              </TouchableOpacity>
+              <Text style={styles.title}>Tạo tin khen thưởng</Text>
+            </View>
+
+            <View style={{justifyContent: 'center'}}>
+              {this.state.userSelected &&
+              this.state.noidung &&
+              this.state.selectedItem ? (
+                <TouchableOpacity>
+                  <Text style={styles.textDang}>Đăng</Text>
+                </TouchableOpacity>
+              ) : (
+                <Text style={styles.textDang_invisibale}>Đăng</Text>
+              )}
+            </View>
+          </View>
+        </View>
 
         <View style={styles.header}>
           <Text
@@ -152,6 +186,10 @@ export default class KhenThuong extends React.Component {
             style={styles.thanh_search}
             onPress={() => {
               this.props.navigation.navigate('SearchUser');
+              this.setState({
+                userSelected: user ? user.ID_user : '',
+              });
+              console.log('user select', this.state.userSelected);
             }}>
             <Image source={search} style={styles.icon}></Image>
             {user ? (
@@ -190,7 +228,8 @@ export default class KhenThuong extends React.Component {
             placeholderTextColor="#69696980"
             placeholder="Nội dung bài đăng"
             multiline={true}
-            style={styles.textinput}></TextInput>
+            style={styles.textinput}
+            onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
         </View>
         <View style={styles.footer}>
           {this.state.DsKhenThuong.length != 0 ? (
@@ -210,7 +249,7 @@ export default class KhenThuong extends React.Component {
             <ActivityIndicator size="large" color="#0000ff" />
           )}
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -219,12 +258,10 @@ const heightScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 10,
-    // backgroundColor: 'yellow',
   },
   header: {
     backgroundColor: '#9C9C9C',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     padding: 10,
     borderRadius: 10,
     marginHorizontal: 10,
@@ -260,13 +297,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 20,
     fontSize: FontSize.reSize(20),
+    maxHeight: 150,
   },
   thanh_search: {
-    // flex: 1,
     height: FontSize.scale(40),
     backgroundColor: '#DDDDDD80',
     flexDirection: 'row',
-    // justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
     marginBottom: 5,
@@ -277,5 +313,28 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     tintColor: '#696969',
     marginLeft: 10,
+  },
+  back: {
+    flexDirection: 'row',
+    backgroundColor: 'green',
+    height: FontSize.scale(50),
+    backgroundColor: '#4F94CD',
+    // alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: FontSize.reSize(20),
+    marginLeft: 10,
+    // textAlign: 'center',
+  },
+  textDang: {
+    fontSize: FontSize.reSize(20),
+    marginRight: 10,
+  },
+  textDang_invisibale: {
+    fontSize: FontSize.reSize(20),
+    marginRight: 10,
+    color: '#696969',
   },
 });

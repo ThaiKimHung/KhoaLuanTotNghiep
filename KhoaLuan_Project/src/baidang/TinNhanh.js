@@ -16,12 +16,13 @@ import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 
-import {GetDSKhenThuong} from '../apis/apiUser';
+import {PostBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
@@ -45,8 +46,48 @@ export default class TinNhanh extends React.Component {
       haveValue_Noidung: text,
     });
   }
+  _PostBaiDang = async () => {
+    const item = this.props.route.params;
+    const today = new Date();
+    const date =
+      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    const time = today.getHours() + ':' + today.getMinutes();
+    console.log('ngày1', date);
+    console.log('time', time);
+    let strBody = JSON.stringify({
+      id_loaibaidang: item,
+      TieuDe: this.state.haveValue_TieuDe,
+      NoiDung: this.state.haveValue_Noidung,
+      typepost: 'null',
+      CreatedDate: date + ':' + time,
+      CreatedBy: await Utils.ngetStorage(nkey.id_user),
+      UpdateDate: '0',
+      UpdateBy: 0,
+    });
+
+    console.log('strBody', strBody);
+    let res = await PostBaiDang(strBody);
+    if (res.status == 1) {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Đăng bài thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Đăng bài thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
+    }
+    console.log('res Bài đăng', res);
+  };
+
   render() {
-    // console.this
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -66,7 +107,10 @@ export default class TinNhanh extends React.Component {
             </View>
             <View style={{justifyContent: 'center'}}>
               {this.state.haveValue_TieuDe && this.state.haveValue_Noidung ? (
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    this._PostBaiDang();
+                  }}>
                   <Text style={styles.textDang}>Đăng</Text>
                 </TouchableOpacity>
               ) : (

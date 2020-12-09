@@ -13,15 +13,6 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-// import {
-//   Avatar,
-//   Title,
-//   Caption,
-//   Paragraph,
-//   Drawer,
-//   TouchableRipple,
-//   Switch,
-// } from 'react-native-paper';
 import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from './size';
 const avatar = require('../assets/images/avatar.png');
@@ -35,10 +26,10 @@ const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
   render() {
-    const {item = {}, onPress} = this.props;
-    // console.log('nthis của Bai dang component', this.props);
-    console.log('item', item);
-    console.log('ngày tạo', item.CreatedDate);
+    const {item = {}} = this.props;
+    console.log('nthis của Bai dang component', this.props);
+    console.log('item Bai dang component', item);
+    // console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let Solike = item.Like_BaiDang.length;
@@ -50,16 +41,17 @@ export default class BaiDangComponenet extends React.Component {
         <View>
           <View style={styles.header}>
             <TouchableOpacity style={{flexDirection: 'row'}}>
-              {/* <Avatar.Image
-                style={{margin: 5}}
-                source={user ? {uri: user.avatar} : avatar}
-                size={FontSize.reSize(40)}
-              /> */}
-
               <Avatar
                 size="small"
                 rounded
-                source={user ? {uri: user.avatar} : ''}
+                source={
+                  user.avatar
+                    ? {uri: user.avatar}
+                    : {
+                        uri:
+                          'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
+                      }
+                }
                 activeOpacity={0.7}
               />
               <View style={styles.khung_tenUser}>
@@ -68,13 +60,13 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.khung_daubacham}>
-              <Image style={styles.imageLike_Commnet} source={daubacham} />
+              <Image style={styles.daubacham} source={daubacham} />
             </TouchableOpacity>
           </View>
 
           {/* khung chứa nội dung bài đăng và cmt*/}
           <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
-            <Text>{item.NoiDung}</Text>
+            <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
           </TouchableOpacity>
           {/* khung chứa số like và cmt */}
           <View style={styles.khung_DemSoLike_Comt}>
@@ -94,26 +86,12 @@ export default class BaiDangComponenet extends React.Component {
         <View>
           <View style={styles.khungLike_Commnet}>
             <TouchableOpacity style={styles.khung_Thich}>
-              <Image
-                style={styles.imageLike_Commnet}
-                source={thich}
-                //   size={FontSize.reSize(20)}
-              />
-              <Text
-                style={{marginLeft: FontSize.reSize(5), textAlign: 'center'}}>
-                Thích
-              </Text>
+              <Image style={styles.imageLike_Commnet} source={thich} />
+              <Text style={styles.text_Like_cmt}>Thích</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.khung_BinhLuan}>
-              <Image
-                style={styles.imageLike_Commnet}
-                source={binhluan}
-                //   size={FontSize.reSize(20)}
-              />
-              <Text
-                style={{marginLeft: FontSize.reSize(5), textAlign: 'center'}}>
-                Bình luận
-              </Text>
+              <Image style={styles.imageLike_Commnet} source={binhluan} />
+              <Text style={styles.text_Like_cmt}>Bình luận</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,22 +103,18 @@ export default class BaiDangComponenet extends React.Component {
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 5,
-    borderColor: '#C0C0C0',
-    // backgroundColor: 'red',
+    borderColor: '#69696920',
+    backgroundColor: '#E9EBEE',
   },
   header: {
     flexDirection: 'row',
     padding: 5,
     justifyContent: 'space-between',
-    // backgroundColor: 'yellow',
   },
   khung_tenUser: {
-    // backgroundColor: 'blue',
-    // flex: 1,
     flexDirection: 'row',
   },
   khung_daubacham: {
-    // backgroundColor: 'red',
     padding: 5,
   },
   txt_TenUser: {
@@ -149,19 +123,15 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   footer: {
-    // flex: 1,
-    // backgroundColor: 'green',
     paddingHorizontal: 10,
   },
   icon_bacham: {
     height: FontSize.scale(15),
     width: FontSize.verticalScale(15),
-    // justifyContent: 'space-between',
   },
   khung_DemSoLike_Comt: {
     flexDirection: 'row',
     marginLeft: 5,
-    // borderWidth: 1,
   },
   khung_DemSoLike: {
     flexDirection: 'row',
@@ -177,15 +147,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageLike_Commnet: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
+    height: FontSize.scale(17),
+    width: FontSize.verticalScale(18),
+    marginRight: 2,
+  },
+  daubacham: {
+    height: FontSize.scale(17),
+    width: FontSize.verticalScale(18),
+    marginRight: 2,
+    tintColor: '#4F4F4F',
   },
   khungLike_Commnet: {
     borderTopWidth: 1,
-    borderColor: '#696969',
+    borderColor: '#69696930',
     flexDirection: 'row',
     padding: 5,
-    // backgroundColor: 'blue',
   },
   khung_Thich: {
     flexDirection: 'row',
@@ -194,14 +170,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    // backgroundColor: 'yellow',
   },
   khung_BinhLuan: {
     flexDirection: 'row',
     padding: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'green',
     flex: 1,
+  },
+  text_Like_cmt: {
+    marginLeft: FontSize.reSize(5),
+    textAlign: 'center',
+    color: '#4F4F4F',
   },
 });

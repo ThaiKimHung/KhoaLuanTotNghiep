@@ -13,7 +13,7 @@ import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
 // import {useTheme} from '@react-navigation/native';
 // const {colors} = useTheme();
 import ScreenAllBaiDang from './ScreenAllBaiDang';
-import FlashMessage from 'react-native-flash-message';
+
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +42,6 @@ export default class HomeScreen extends React.Component {
           title="Go to details screen"
           onPress={() => navigation.navigate('Details')}
         /> */}
-        <FlashMessage position="top" />
       </View>
     );
   }

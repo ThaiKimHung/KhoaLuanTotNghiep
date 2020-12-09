@@ -35,11 +35,12 @@ export default class ScreenLoaiBaiDang extends React.Component {
     this.setState({
       userID: await Utils.ngetStorage(nkey.id_user),
     });
+    // console.log('iduser bên get asyn', this.state.userID);
   };
 
   _GetDsLoaiBaiDang = async () => {
     let res = await GetLoaiBaiDang(this.state.userID);
-    console.log('res ds loại bài đăng screen all bài đăng', res);
+    console.log('res ds loại bài đăng', res);
     if (res.status === 1) {
       this.setState({
         DsLoaiBaiDang: res.data,
@@ -64,6 +65,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
   _chuyenTrang(item) {
     let id = item;
     console.log('id', id);
+    // alert(5);
     switch (id) {
       case 1:
         console.log('this', this);
@@ -81,7 +83,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
         alert(4);
         break;
       case 6:
-        return this.props.navigation.navigate('TinNhanh', item);
+        return this.props.navigation.navigate('TinNhanh');
       default:
         alert('defat');
     }
@@ -95,7 +97,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
   renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 0}]}
+        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 10}]}
         onPress={() => this._chuyenTrang(item.Id_LoaiDang)}>
         <View style={styles.khung_DS}>
           <SvgUri
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#4285F4',
+    backgroundColor: '#00AFF0',
     height: FontSize.scale(50),
     justifyContent: 'center',
     padding: 10,
@@ -171,10 +173,13 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: 'yellow',
+    // backgroundColor: 'yellow',
+    borderColor: '#4F4F4F',
+    borderWidth: 1,
     borderRadius: 10,
     height: FontSize.scale(heightScreen / 2.5),
     width: FontSize.verticalScale(widthScreen / 2.5),
+    // paddingHorizontal: 10,
   },
   container_khung: {
     width: FontSize.verticalScale(100),

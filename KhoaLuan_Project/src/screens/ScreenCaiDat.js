@@ -13,7 +13,7 @@ import {
   Button,
 } from 'react-native';
 import FontSize from '../components/size';
-import {Avatar} from 'react-native-paper';
+import {Avatar, Accessory} from 'react-native-elements';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 
 import {GetAllUser} from '../apis/apiUser';
@@ -23,6 +23,8 @@ import {Login, PostTinhTrang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
+
+const logout = require('../assets/images/logout.png');
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);
@@ -68,43 +70,57 @@ export default class ScreenCaiDat extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          {/* khung chứa avata và khung text input*/}
-          <View style={styles.khungchua}>
-            <Avatar.Image
-              style={{margin: 5}}
-              source={{uri: this.state.avatar}}
-              size={FontSize.reSize(50)}
-            />
-            <Text style={{fontSize: FontSize.reSize(20)}}>
-              {this.state.name}
-            </Text>
+          <View style={styles.khung_title}>
+            <Text style={styles.title}> Menu</Text>
           </View>
         </View>
+
         <View style={styles.footer}>
-          <TouchableOpacity
-            style={styles.st_button}
-            onPress={() =>
-              Alert.alert(
-                'Thông Báo',
-                'Bạn Muốn Đăng Xuất',
-                [
-                  {text: 'OK', onPress: () => this._logout()},
-                  {
-                    text: 'Cancel',
-                    style: 'cancel',
-                  },
-                ],
-                {cancelable: false},
-              )
-            }>
-            <Text style={{fontSize: FontSize.reSize(20), marginLeft: 15}}>
-              Logout
+          <View style={styles.khungchua}>
+            <Avatar
+              size="medium"
+              source={
+                this.state.avatar
+                  ? {uri: this.state.avatar}
+                  : {
+                      uri:
+                        'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
+                    }
+              }
+              activeOpacity={0.7}
+              rounded
+            />
+            <Text style={{fontSize: FontSize.reSize(25), marginLeft: 5}}>
+              {this.state.name ? this.state.name : 'Loading...'}
             </Text>
-          </TouchableOpacity>
+          </View>
+          <View style={styles.khung_CaiDat}>
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() =>
+                Alert.alert(
+                  'Thông Báo',
+                  'Bạn Muốn Đăng Xuất',
+                  [
+                    {text: 'Đồng ý', onPress: () => this._logout()},
+                    {
+                      text: 'Hủy',
+                      style: 'cancel',
+                    },
+                  ],
+                  {cancelable: false},
+                )
+              }>
+              <Image source={logout} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Logout
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -112,28 +128,49 @@ export default class ScreenCaiDat extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#009387',
   },
   header: {
     backgroundColor: '#3399FF',
-    justifyContent: 'flex-start',
+    height: FontSize.scale(50),
   },
   footer: {
     flex: 1,
-    padding: 10,
+    backgroundColor: '#E9EBEE',
   },
   khungchua: {
     flexDirection: 'row',
     padding: 5,
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#C0C0C0',
-    backgroundColor: '#C0C0C020',
+    backgroundColor: '#E9EBEE',
+    margin: 10,
+  },
+  khung_CaiDat: {
+    paddingHorizontal: 10,
   },
   st_button: {
-    backgroundColor: 'blue',
-    height: FontSize.scale(40),
-    width: '90%',
+    height: FontSize.scale(50),
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderTopColor: '#4F4F4F50',
+    borderBottomColor: '#4F4F4F50',
+    borderRadius: 10,
+  },
+  khung_title: {
     justifyContent: 'center',
+    // alignItems: 'center',
+    paddingVertical: 10,
+  },
+  title: {
+    fontSize: FontSize.reSize(35),
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+
+  sizeimage: {
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
   },
 });

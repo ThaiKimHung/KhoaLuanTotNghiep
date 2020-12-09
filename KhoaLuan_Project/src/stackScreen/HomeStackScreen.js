@@ -12,6 +12,7 @@ import ScreenCaiDat from '../screens/ScreenCaiDat';
 import BaiDangStackScreen from './BaiDangStackScreen';
 import ScreenDetailBaiDang from '../screens/ScreenDetailBaiDang';
 import SearchUser from '../screens/SearchUser';
+import HomeScreen from '../screens/HomeScreen';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 
@@ -25,6 +26,7 @@ const HomeStackScreen = () => (
   <HomeStack.Navigator headerMode="none" initialRouteName="MainTabScreen">
     <HomeStack.Screen name="MainTabScreen" component={MainTabScreen} />
     <HomeStack.Screen name="ScreenLoaiBaiDang" component={ScreenLoaiBaiDang} />
+    <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
     <HomeStack.Screen name="KhenThuong" component={KhenThuong} />
     <HomeStack.Screen name="SearchUser" component={SearchUser} />
     <HomeStack.Screen name="TinNhanh" component={TinNhanh} />

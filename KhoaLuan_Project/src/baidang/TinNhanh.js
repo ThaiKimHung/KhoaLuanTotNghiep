@@ -15,7 +15,6 @@ import {
 import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import SearchableDropdown from 'react-native-searchable-dropdown';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import Utils from '../apis/Utils';
@@ -52,11 +51,13 @@ export default class TinNhanh extends React.Component {
     const date =
       today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
     const time = today.getHours() + ':' + today.getMinutes();
+    console.log('item loại bài bài đăng', item);
     console.log('ngày1', date);
     console.log('time', time);
+    console.log('this tin nhanh', this.props);
     let strBody = JSON.stringify({
       id_loaibaidang: item,
-      TieuDe: this.state.haveValue_TieuDe,
+      title: this.state.haveValue_TieuDe,
       NoiDung: this.state.haveValue_Noidung,
       typepost: 'null',
       CreatedDate: date + ':' + time,
@@ -68,6 +69,10 @@ export default class TinNhanh extends React.Component {
     console.log('strBody', strBody);
     let res = await PostBaiDang(strBody);
     if (res.status == 1) {
+      let thanhcong = res.status;
+      this.props.navigation.navigate('HomeScreen', {
+        thanhcong,
+      });
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',

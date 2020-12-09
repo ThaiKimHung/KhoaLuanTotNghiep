@@ -16,7 +16,6 @@ import {
 import FontSize from '../components/size';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
 import {Avatar, Accessory} from 'react-native-elements';
 
 import Utils from '../apis/Utils';
@@ -78,7 +77,7 @@ export default class SplashScreen2 extends React.Component {
       description: 'Chào mừng bạn quay lại',
       type: 'success',
       duration: 1500,
-      backgroundColor: '#1A90D9',
+      backgroundColor: '#007DE3',
       icon: 'success',
     });
   }
@@ -125,16 +124,19 @@ export default class SplashScreen2 extends React.Component {
                 <TouchableOpacity
                   style={styles.khung_Chuaava}
                   onPress={() => this.chuyenTrang()}>
-                  {this.state.avatar ? (
-                    <Avatar
-                      size="medium"
-                      source={{uri: this.state.avatar}}
-                      activeOpacity={0.7}
-                      rounded
-                    />
-                  ) : (
-                    <ActivityIndicator size="small" color="#0078D7" />
-                  )}
+                  <Avatar
+                    size="medium"
+                    source={
+                      this.state.avatar
+                        ? {uri: this.state.avatar}
+                        : {
+                            uri:
+                              'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
+                          }
+                    }
+                    activeOpacity={0.7}
+                    rounded
+                  />
 
                   <View style={{justifyContent: 'center', margin: 10}}>
                     <Text style={styles.name}>{this.state.name}</Text>
@@ -148,9 +150,9 @@ export default class SplashScreen2 extends React.Component {
                       'Thông Báo',
                       'Bạn Muốn Đăng Xuất',
                       [
-                        {text: 'OK', onPress: () => this._logout()},
+                        {text: 'Đồng Ý', onPress: () => this._logout()},
                         {
-                          text: 'Cancel',
+                          text: 'Hủy',
                           //   onPress: () => console.log('Cancel Pressed'),
                           style: 'cancel',
                         },
@@ -222,8 +224,6 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    // backgroundColor: '#CCCCCC',
-    // paddingVertical: 80,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -240,12 +240,9 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    // marginBottom: 30,
     justifyContent: 'center',
   },
   button1: {
-    // alignItems: 'center',
-    // marginBottom: 30,
     justifyContent: 'center',
   },
   signIn: {
@@ -260,23 +257,19 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: FontSize.reSize(20),
-    // fontFamily: 'Zocail',
   },
   khung_ava: {
     backgroundColor: 'black',
   },
   khung_Chuaava: {
-    // backgroundColor: '#00CCCC',
     borderWidth: 1,
-    borderColor: '#69696980',
+    borderColor: '#69696950',
     flexDirection: 'row',
     padding: 5,
     marginBottom: 10,
     borderRadius: 20,
   },
   st_button: {
-    // borderWidth: 1,
-    // borderColor: '#69696980',
     alignItems: 'center',
     padding: 5,
     flexDirection: 'row',

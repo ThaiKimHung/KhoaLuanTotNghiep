@@ -15,7 +15,6 @@ import {
 import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import SearchableDropdown from 'react-native-searchable-dropdown';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import Utils from '../apis/Utils';

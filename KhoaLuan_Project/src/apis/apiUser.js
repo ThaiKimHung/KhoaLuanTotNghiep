@@ -43,11 +43,6 @@ async function GetDSBaiDang() {
   return res;
 }
 
-async function PostBaiDang(strbody) {
-  let res = await Utils.post_api(apiUser + `addBaiDang`, strbody);
-  return res;
-}
-
 export {
   Login,
   Logout,
@@ -56,5 +51,4 @@ export {
   PostTinhTrang,
   GetDSKhenThuong,
   GetDSBaiDang,
-  PostBaiDang,
 };

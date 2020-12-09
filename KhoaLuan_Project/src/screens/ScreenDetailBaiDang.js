@@ -96,7 +96,7 @@ export default class BaiDangComponenet extends React.Component {
   }
   render() {
     const {item = {}} = this.props.route.params;
-    console.log('item Detail', this.props.route.params);
+    // console.log('item Detail', this.props.route.params);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;

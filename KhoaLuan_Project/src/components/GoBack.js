@@ -27,8 +27,9 @@ export default class GoBack extends React.Component {
             <Image
               source={goback}
               style={{
-                height: FontSize.scale(13),
-                width: FontSize.verticalScale(18),
+                height: FontSize.scale(15),
+                width: FontSize.verticalScale(25),
+                tintColor: '#4F4F4F',
               }}></Image>
           </TouchableOpacity>
           <Text style={styles.title}>{name}</Text>
@@ -40,9 +41,8 @@ export default class GoBack extends React.Component {
 const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
-    backgroundColor: 'green',
     height: FontSize.scale(50),
-    backgroundColor: '#4F94CD',
+    backgroundColor: '#007DE3',
     alignItems: 'center',
     // justifyContent: 'center',
     marginBottom: 10,
@@ -51,5 +51,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.reSize(20),
     marginLeft: 10,
     // textAlign: 'center',
+    color: '#4F4F4F',
   },
 });

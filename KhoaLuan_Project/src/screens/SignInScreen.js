@@ -77,7 +77,8 @@ export default class SignInScreen extends React.Component {
     } else {
       showMessage({
         message: 'Thông báo',
-        description: 'Đăng nhập thất bại.Tài khoản hoặc Mật khẩu không đúng! ',
+        description:
+          'Đăng nhập thất bại.\nTài khoản hoặc Mật khẩu không đúng! ',
         type: 'danger',
         duration: 1500,
         icon: 'danger',
@@ -233,7 +234,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    // color: 'black',
     backgroundColor: '#B5B5B5',
     padding: 3,
     borderRadius: 10,
@@ -242,7 +242,6 @@ const styles = StyleSheet.create({
     height: FontSize.scale(20),
     width: FontSize.verticalScale(20),
     tintColor: '#4F4F4F',
-    // backgroundColor: '#0078D7',r
     marginLeft: 5,
   },
   image_icon_mk: {
@@ -261,7 +260,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    // color: 'black',
     backgroundColor: '#B5B5B5',
     padding: 3,
     borderRadius: 10,

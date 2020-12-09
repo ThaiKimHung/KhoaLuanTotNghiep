@@ -12,17 +12,42 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FontSize from '../components/size';
-import {Avatar, Accessory} from 'react-native-elements';
+import {Avatar, Accessory, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 
 const avatar = require('../assets/images/avatar.png');
 // const congratulation = require('../assets/images/congratulations.png');
+const Online = () => {
+  return (
+    <View
+      style={{
+        height: FontSize.scale(10),
+        width: FontSize.verticalScale(10),
+        backgroundColor: 'green',
+        borderRadius: 8,
+      }}></View>
+  );
+};
+
+const Offine = () => {
+  return (
+    <View
+      style={{
+        height: FontSize.scale(10),
+        width: FontSize.verticalScale(10),
+        backgroundColor: 'gray',
+        borderRadius: 8,
+      }}></View>
+  );
+};
 export default class ScreenAllUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       DsUser: [],
       refresh: true,
+      searchText: '',
+      filteredData: [],
     };
   }
   _GetAllUser = async () => {
@@ -38,27 +63,31 @@ export default class ScreenAllUser extends React.Component {
       alert('thất bại');
     }
   };
-
+  FoodterMessage = ({item}) => {
+    return (
+      <View onPress={() => getItem(item)}>
+        <ActivityIndicator size="small" color="#0078D7"></ActivityIndicator>
+      </View>
+    );
+  };
   _renderItem = ({item, index}) => {
     return (
       <TouchableOpacity style={[styles.khungchua]}>
-        {item.Avatar ? (
-          <Avatar
-            size="medium"
-            rounded
-            containerStyle={{margin: 5}}
-            source={{uri: item.Avatar}}
-            activeOpacity={0.7}
-          />
-        ) : (
-          <Avatar
-            size="medium"
-            rounded
-            containerStyle={{margin: 5}}
-            source={avatar}
-            activeOpacity={0.7}
-          />
-        )}
+        <Avatar
+          size="medium"
+          rounded
+          containerStyle={{margin: 5}}
+          source={
+            item.Avatar
+              ? {uri: item.Avatar}
+              : {
+                  uri:
+                    'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
+                }
+          }
+          activeOpacity={0.7}
+        />
+
         <View
           style={{
             justifyContent: 'space-between',
@@ -68,11 +97,7 @@ export default class ScreenAllUser extends React.Component {
             paddingRight: 10,
           }}>
           <Text>{item.Username}</Text>
-          {item.TinhTrang === true ? (
-            <this.online></this.online>
-          ) : (
-            <this._offine></this._offine>
-          )}
+          {item.TinhTrang === true ? <Online></Online> : <Offine></Offine>}
         </View>
       </TouchableOpacity>
     );
@@ -85,30 +110,14 @@ export default class ScreenAllUser extends React.Component {
       </Text>
     );
   };
+  search = (searchText) => {
+    this.setState({searchText: searchText});
+    let filteredData = this.state.DsUser.filter(function (item) {
+      return item.Username.includes(searchText);
+    });
+    this.setState({filteredData: filteredData});
+  };
 
-  online() {
-    return (
-      <View
-        style={{
-          height: FontSize.scale(10),
-          width: FontSize.verticalScale(10),
-          backgroundColor: 'green',
-          borderRadius: 8,
-        }}></View>
-    );
-  }
-
-  _offine() {
-    return (
-      <View
-        style={{
-          height: FontSize.scale(10),
-          width: FontSize.verticalScale(10),
-          backgroundColor: 'gray',
-          borderRadius: 8,
-        }}></View>
-    );
-  }
   componentDidMount() {
     this._GetAllUser();
   }
@@ -118,14 +127,31 @@ export default class ScreenAllUser extends React.Component {
 
     return (
       <View style={styles.container}>
+        <SearchBar
+          placeholder="Tìm thành viên..."
+          showCancel="true"
+          platform="android"
+          containerStyle={{
+            backgroundColor: '#DDDDDD80',
+            borderRadius: 20,
+            height: FontSize.scale(40),
+            justifyContent: 'center',
+          }}
+          onChangeText={this.search}
+          value={this.state.searchText}
+        />
         <View style={styles.header}>
           <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
-            Danh sách
+            Tất cả các thành viên
           </Text>
         </View>
         <View style={styles.footer}>
           <FlatList
-            data={this.state.DsUser}
+            data={
+              this.state.filteredData && this.state.filteredData.length > 0
+                ? this.state.filteredData
+                : this.state.DsUser
+            }
             renderItem={this._renderItem}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}
@@ -148,11 +174,12 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#4285F4',
-    height: '8%',
+    height: FontSize.scale(50),
     justifyContent: 'center',
     width: '100%',
     padding: 10,
     borderRadius: 10,
+    marginTop: 10,
   },
   footer: {
     // flex: 1,

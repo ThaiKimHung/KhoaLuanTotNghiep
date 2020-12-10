@@ -31,12 +31,15 @@ export default class ChonLoaiBaiDang extends React.Component {
       avatar: await Utils.ngetStorage(nkey.avatar),
     });
   };
-  componentDidMount() {
+  getAva() {
     if (this.state.avatar === '') {
       setInterval(this._getThongTin, 1000);
     } else {
       clearInterval(1000);
     }
+  }
+  componentDidMount() {
+    this.getAva();
   }
 
   render() {
@@ -45,7 +48,7 @@ export default class ChonLoaiBaiDang extends React.Component {
         {/* khung chứa avata và khung text input*/}
         <View style={styles.khungchua}>
           <Avatar
-            size="medium"
+            size="small"
             source={
               this.state.avatar
                 ? {uri: this.state.avatar}
@@ -79,6 +82,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#C0C0C0',
     backgroundColor: '#E9EBEE',
+    marginLeft: 5,
   },
   khung_textinput: {
     flex: 1,

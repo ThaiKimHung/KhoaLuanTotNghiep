@@ -38,8 +38,12 @@ async function GetDSKhenThuong() {
   return res;
 }
 
-async function GetDSBaiDang() {
-  let res = await Utils.get_api(apiUser + `getDSBaiDang`);
+async function GetDSBaiDang(user = '') {
+  let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
+  return res;
+}
+async function GetDSLike() {
+  let res = await Utils.get_api(apiUser + `getDSLike`);
   return res;
 }
 
@@ -51,4 +55,5 @@ export {
   PostTinhTrang,
   GetDSKhenThuong,
   GetDSBaiDang,
+  GetDSLike,
 };

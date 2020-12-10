@@ -51,9 +51,9 @@ export default class SplashScreen2 extends React.Component {
   }
   async _logout() {
     let flag = await Utils.ngetStorage(nkey.flag);
-    console.log('flag trc out', flag);
+    console.log('flag trc out Splashscreen', flag);
     let flag1 = await Utils.nsetStorage(nkey.flag, '0');
-    console.log('flag1 sau out', flag1);
+    console.log('flag1 sau out Splashscreen', flag1);
     AsyncStorage.clear();
     this.updateTinhTrangUser();
     this.props.navigation.navigate('SigninScreen');
@@ -65,9 +65,9 @@ export default class SplashScreen2 extends React.Component {
       TinhTrang: false,
     });
 
-    console.log('strBody', strBody);
+    console.log('strBody update tình trạng Splashscreen', strBody);
     let res = await PostTinhTrang(strBody);
-    console.log('res update tình trạng sau khi đăng xuất', res);
+    console.log('res update tình trạng sau khi đăng xuất Splashscreen', res);
   };
 
   chuyenTrang() {

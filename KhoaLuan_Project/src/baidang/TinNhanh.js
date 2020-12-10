@@ -66,7 +66,7 @@ export default class TinNhanh extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody', strBody);
+    console.log('strBody tin nhanh', strBody);
     let res = await PostBaiDang(strBody);
     if (res.status == 1) {
       let thanhcong = res.status;
@@ -89,7 +89,7 @@ export default class TinNhanh extends React.Component {
         icon: 'danger',
       });
     }
-    console.log('res Bài đăng', res);
+    // console.log('res Bài đăng', res);
   };
 
   render() {

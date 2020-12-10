@@ -139,14 +139,18 @@ export default class KhenThuong extends React.Component {
 
   render() {
     const user = this.props.route.params ? this.props.route.params : '';
-    console.log('user khen thưởng', user);
-    console.log('props', this.props);
+    // console.log('user khen thưởng', user);
+    // console.log('props', this.props);
     return (
       <View style={styles.container}>
         <View style={styles.back}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View
-              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+              style={{
+                flexDirection: 'row',
+                margin: 5,
+                alignItems: 'center',
+              }}>
               <TouchableOpacity onPress={this.props.navigation.goBack}>
                 <Image
                   source={goback}
@@ -188,7 +192,7 @@ export default class KhenThuong extends React.Component {
               this.setState({
                 userSelected: user ? user.ID_user : '',
               });
-              console.log('user select', this.state.userSelected);
+              // console.log('user select', this.state.userSelected);
             }}>
             <Image source={search} style={styles.icon}></Image>
             {user ? (
@@ -319,7 +323,7 @@ const styles = StyleSheet.create({
     height: FontSize.scale(50),
     backgroundColor: '#4F94CD',
     // alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     marginBottom: 10,
   },
   title: {

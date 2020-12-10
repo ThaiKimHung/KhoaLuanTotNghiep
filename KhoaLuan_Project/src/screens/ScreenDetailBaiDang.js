@@ -17,6 +17,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from '../components/size';
 import GoBack from '../components/GoBack';
+import DanhSachLike from '../components/DanhSachLike';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -32,6 +33,7 @@ export default class BaiDangComponenet extends React.Component {
     super(props);
     this.state = {
       refresh: true,
+      thich: false,
     };
   }
   GetData = () => {
@@ -39,7 +41,6 @@ export default class BaiDangComponenet extends React.Component {
       this.setState({
         refresh: !this.state.refresh,
       });
-      console.log('state refesh', this.state.refresh);
     } else {
       this.setState({refresh: !this.state.refresh});
     }
@@ -47,9 +48,12 @@ export default class BaiDangComponenet extends React.Component {
 
   EmptyListMessage = ({item}) => {
     return (
-      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
-        No Data Found
-      </Text>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+          Chưa có bình luận nào.
+        </Text>
+        <Text style={{color: '#696969'}}>Hãy là người đầu tiên bình luận.</Text>
+      </View>
     );
   };
 
@@ -60,16 +64,25 @@ export default class BaiDangComponenet extends React.Component {
         <TouchableOpacity>
           <Avatar
             size="small"
-            rounded
-            source={userCmt ? {uri: userCmt.avatar} : avatar}
+            source={
+              userCmt.avatar
+                ? {uri: userCmt.avatar}
+                : {
+                    uri:
+                      'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
+                  }
+            }
             activeOpacity={0.7}
+            rounded
           />
         </TouchableOpacity>
         <View style={{flex: 1}}>
           <View style={styles.khung_tenUser_Cmt}>
             {/* <Text style={styles.txt_TenUser}>{user.Username}</Text> */}
             <Text style={styles.txt_TenUser_Cmt}>{userCmt.Username}</Text>
-            <Text style={{marginHorizontal: 3}}>{item.NoiDung}</Text>
+            <Text style={{marginLeft: 5, marginBottom: 5}}>
+              {item.NoiDung_cmt}
+            </Text>
           </View>
           <View
             style={{
@@ -90,6 +103,11 @@ export default class BaiDangComponenet extends React.Component {
       </View>
     );
   };
+  TaoLike = () => {
+    this.setState({
+      thich: !this.state.thich,
+    });
+  };
 
   async componentDidMount() {
     await this.GetData();
@@ -104,7 +122,7 @@ export default class BaiDangComponenet extends React.Component {
       <View style={styles.container}>
         <GoBack nthis={this.props} name=""></GoBack>
         {/* khung chứa avata và khung text input*/}
-        <View style={{margin: 5}}>
+        <View>
           <View style={styles.header}>
             <TouchableOpacity
               style={{
@@ -114,11 +132,17 @@ export default class BaiDangComponenet extends React.Component {
               }}>
               <Avatar
                 size="small"
-                rounded
-                source={user ? {uri: user.avatar} : ''}
+                source={
+                  user.avatar
+                    ? {uri: user.avatar}
+                    : {
+                        uri:
+                          'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
+                      }
+                }
                 activeOpacity={0.7}
+                rounded
               />
-
               <View style={styles.khung_tenUser}>
                 <Text style={styles.txt_TenUser}>{user.Username}</Text>
                 {/* <Text style={styles.txt_TenUser}>Hùng</Text> */}
@@ -136,19 +160,53 @@ export default class BaiDangComponenet extends React.Component {
             <Text>{item.NoiDung}</Text>
           </View>
         </View>
-        <View style={{padding: 5, margin: 5}}>
+        <View style={{marginBottom: 5}}>
           <View style={styles.khungLike_Commnet}>
-            <TouchableOpacity style={styles.khung_Thich}>
-              <Image style={styles.imageLike_Commnet} source={thich} />
-              <Text
-                style={{marginLeft: FontSize.reSize(5), textAlign: 'center'}}>
-                Thích ({Solike})
-              </Text>
-            </TouchableOpacity>
+            {this.state.thich === false ? (
+              <TouchableOpacity
+                style={styles.khung_Thich}
+                onPress={() => {
+                  this.TaoLike();
+                }}>
+                <Image
+                  style={[styles.imageLike_Commnet, {tintColor: '#696969'}]}
+                  source={thich}
+                />
+                <Text
+                  style={{
+                    marginLeft: FontSize.reSize(5),
+                    textAlign: 'center',
+                    color: '#696969',
+                  }}>
+                  Thích ({Solike})
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.khung_Thich}
+                onPress={() => {
+                  this.TaoLike();
+                }}>
+                <Image style={styles.imageLike_Commnet1} source={thich} />
+                <Text
+                  style={{
+                    marginLeft: FontSize.reSize(5),
+                    textAlign: 'center',
+                    color: '#007DE3',
+                  }}>
+                  Thích ({Solike})
+                </Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={styles.khung_BinhLuan}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text
-                style={{marginLeft: FontSize.reSize(5), textAlign: 'center'}}>
+                style={{
+                  marginLeft: FontSize.reSize(5),
+                  textAlign: 'center',
+                  color: '#696969',
+                }}>
                 Bình luận ({SoComment})
               </Text>
             </TouchableOpacity>
@@ -258,13 +316,19 @@ const styles = StyleSheet.create({
   imageLike_Commnet: {
     height: FontSize.scale(15),
     width: FontSize.verticalScale(15),
+    tintColor: '#696969',
+  },
+  imageLike_Commnet1: {
+    height: FontSize.scale(15),
+    width: FontSize.verticalScale(15),
+    tintColor: '#007DE3',
   },
   khungLike_Commnet: {
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     flexDirection: 'row',
     padding: 5,
-    // backgroundColor: 'blue',
+    borderColor: '#69696930',
   },
   khung_Thich: {
     flexDirection: 'row',
@@ -292,5 +356,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     // borderBottomWidth: 0.2,
     borderRadius: 10,
+  },
+  emptyListStyle: {
+    textAlign: 'center',
+    color: '#696969',
   },
 });

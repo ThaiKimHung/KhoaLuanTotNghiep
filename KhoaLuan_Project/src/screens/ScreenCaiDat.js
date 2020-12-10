@@ -41,7 +41,7 @@ export default class ScreenCaiDat extends React.Component {
       name: await Utils.ngetStorage(nkey.Username),
       id: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('ava thoing tin', this.state.id);
+    // console.log('ava thoing tin', this.state.id);
   }
 
   async _logout() {
@@ -59,7 +59,7 @@ export default class ScreenCaiDat extends React.Component {
       TinhTrang: false,
     });
 
-    console.log('strBody', strBody);
+    console.log('strBody update tinh trang user', strBody);
     let res = await PostTinhTrang(strBody);
     console.log('res update tình trạng sau khi đăng xuất cai dat', res);
   };

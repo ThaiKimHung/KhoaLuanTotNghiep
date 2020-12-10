@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from './size';
+import DanhSachLike from './DanhSachLike';
+
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
@@ -25,16 +27,35 @@ const binhluan = require('../assets/images/binhluan.png');
 const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      thich: false,
+    };
+  }
+
+  TaoLike = () => {
+    this.setState({
+      thich: !this.state.thich,
+    });
+  };
+
   render() {
     const {item = {}} = this.props;
-    console.log('nthis của Bai dang component', this.props);
-    console.log('item Bai dang component', item);
+    // console.log('nthis của Bai dang component', this.props);
+    // console.log('item Bai dang component', item);
     // console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;
     // console.log('onpress', this.props.onPress);
+    let day = item.CreatedDate;
+    let catchuoi = day.substring(0, 10);
+    // let ngay = moment(catchuoi, 'MM-DD-YYYY');
+
+    console.log('cắt ngày:', day.substring(0, 10));
+    console.log('cắt thời gian:', day.substring(11, 16));
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -56,6 +77,15 @@ export default class BaiDangComponenet extends React.Component {
               />
               <View style={styles.khung_tenUser}>
                 <Text style={styles.txt_TenUser}>{user.Username}</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginHorizontal: 5,
+                    marginTop: -2,
+                  }}>
+                  <Text style={{marginRight: 2}}>{catchuoi}</Text>
+                  <Text>{day.substring(11, 16)}</Text>
+                </View>
               </View>
             </TouchableOpacity>
 
@@ -66,6 +96,7 @@ export default class BaiDangComponenet extends React.Component {
 
           {/* khung chứa nội dung bài đăng và cmt*/}
           <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
             <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
           </TouchableOpacity>
           {/* khung chứa số like và cmt */}
@@ -85,10 +116,32 @@ export default class BaiDangComponenet extends React.Component {
 
         <View>
           <View style={styles.khungLike_Commnet}>
-            <TouchableOpacity style={styles.khung_Thich}>
-              <Image style={styles.imageLike_Commnet} source={thich} />
-              <Text style={styles.text_Like_cmt}>Thích</Text>
-            </TouchableOpacity>
+            {this.state.thich === false ? (
+              <TouchableOpacity
+                style={styles.khung_Thich}
+                onPress={() => {
+                  this.TaoLike();
+                }}>
+                <Image
+                  style={[styles.imageLike_Commnet, {tintColor: '#696969'}]}
+                  source={thich}
+                />
+                <Text style={styles.text_Like_cmt}>Thích</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.khung_Thich}
+                onPress={() => {
+                  this.TaoLike();
+                }}>
+                <Image
+                  style={[styles.imageLike_Commnet, {tintColor: '#007DE3'}]}
+                  source={thich}
+                />
+                <Text style={styles.text_Like_cmt1}>Thích</Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={styles.khung_BinhLuan}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>
@@ -112,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   khung_tenUser: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
   },
   khung_daubacham: {
     padding: 5,
@@ -120,7 +173,7 @@ const styles = StyleSheet.create({
   txt_TenUser: {
     fontWeight: 'bold',
     fontSize: FontSize.reSize(20),
-    margin: 5,
+    marginHorizontal: 5,
   },
   footer: {
     paddingHorizontal: 10,
@@ -182,5 +235,10 @@ const styles = StyleSheet.create({
     marginLeft: FontSize.reSize(5),
     textAlign: 'center',
     color: '#4F4F4F',
+  },
+  text_Like_cmt1: {
+    marginLeft: FontSize.reSize(5),
+    textAlign: 'center',
+    color: '#007DE3',
   },
 });

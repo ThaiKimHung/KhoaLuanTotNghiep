@@ -11,9 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-// import {Avatar} from 'react-native-paper';
-// import {GetAllUser} from '../apis/apiUser';
-import flatListData from '../data/Dulieu';
+
 import BaiDangComponent from '../components/BaiDangComponent';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
@@ -38,14 +36,17 @@ export default class BaiDangComponentScreen extends React.Component {
   }
 
   _GetDSBaiDang = async () => {
-    let res = await GetDSBaiDang();
+    let id_user = await Utils.ngetStorage(nkey.id_user);
+    let res = await GetDSBaiDang(await Utils.ngetStorage(nkey.id_user));
     console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       this.setState({
         DSBaiDang: res.data,
         refresh: !this.state.refresh,
         length: this.state.DSBaiDang.length,
       });
+      console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
     } else {
       this.setState({refresh: !this.state.refresh});
       alert('thất bại');
@@ -94,19 +95,9 @@ export default class BaiDangComponentScreen extends React.Component {
 
   componentDidMount() {
     this._GetDSBaiDang();
-    // {
-    //   this.props.route.params
-    //     ? this.setState({
-    //         thanhcong: this.props.route.params,
-    //       })
-    //     : this.setState({
-    //         thanhcong: this.state.thanhcong,
-    //       });
-    // }
-    // setInterval(this._GetDSBaiDang, 20000);
   }
   _renderItem = ({item, index}) => {
-    console.log();
+    // console.log();
     return (
       <BaiDangComponent
         key={index}

@@ -27,6 +27,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
       userID: 0,
       refresh: true,
       ds: 0,
+      avatar: '',
     };
     // let id = '';
   }
@@ -68,7 +69,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
     // alert(5);
     switch (id) {
       case 1:
-        console.log('this', this);
+        // console.log('this', this);
         return this.props.navigation.navigate('KhenThuong');
       case 2:
         alert(2);
@@ -103,9 +104,6 @@ export default class ScreenLoaiBaiDang extends React.Component {
           <SvgUri
             width={FontSize.scale(100)}
             height={FontSize.verticalScale(100)}
-            // source={{
-            //   uri: item.Icon_BaiDang,
-            // }}
             source={{
               uri:
                 'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
@@ -167,7 +165,7 @@ const styles = StyleSheet.create({
   footer: {
     height: '100%',
     width: '100%',
-    padding: 10,
+    paddingTop: 10,
   },
   khung: {
     // flex: 1,
@@ -192,5 +190,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // margin: 2,
+  },
+  emptyListStyle: {
+    padding: 10,
+    fontSize: 18,
+    textAlign: 'center',
   },
 });

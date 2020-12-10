@@ -41,7 +41,7 @@ export default class GoBack extends React.Component {
 const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
-    height: FontSize.scale(50),
+    height: FontSize.scale(45),
     backgroundColor: '#007DE3',
     alignItems: 'center',
     // justifyContent: 'center',

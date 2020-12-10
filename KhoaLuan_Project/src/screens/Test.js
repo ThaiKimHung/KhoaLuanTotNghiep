@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import SearchableDropdown from 'react-native-searchable-dropdown';
 import {GetAllUser} from '../apis/apiUser';
 import {
   View,
@@ -15,6 +14,13 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+
+import Utils from '../apis/Utils';
+import FontSize from '../components/size';
+import SvgUri from 'react-native-svg-uri';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
+import {GetDSBaiDang} from '../apis/apiUser';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -24,28 +30,23 @@ export default class App extends React.Component {
       selectedItems: [],
     };
   }
-  _GetAllUser = async () => {
-    let res = await GetAllUser();
-    console.log('ress', res);
-    if (res.status == 1) {
-      this.setState({
-        DsUser: res.Data,
-        refresh: !this.state.refresh,
-      });
-    } else {
-      this.setState({refresh: !this.state.refresh});
-      alert('thất bại');
-    }
-    console.log('data', this.state.DsUser);
-    console.log(
-      'this',
-      this.state.DsUser.map((e) => {
-        return e.Username;
-      }),
-    );
+  _GetDSBaiDang = async () => {
+    let id_user = await Utils.ngetStorage(nkey.id_user);
+    let res = await GetDSBaiDang(await Utils.ngetStorage(nkey.id_user));
+    console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    // if (res.status == 1) {
+    //   this.setState({
+    //     DSBaiDang: res.data,
+    //     refresh: !this.state.refresh,
+    //     length: this.state.DSBaiDang.length,
+    //   });
+    // } else {
+    //   this.setState({refresh: !this.state.refresh});
+    //   alert('thất bại');
+    // }
   };
   componentDidMount() {
-    this._GetAllUser();
+    this._GetDSBaiDang();
     // console.log('this', this.state.DsUser);
   }
 
@@ -55,48 +56,6 @@ export default class App extends React.Component {
         <Text style={styles.headingText}>
           Searchable Dropdown from Dynamic Array from Server
         </Text>
-        <SearchableDropdown
-          onItemSelect={(item) => {
-            const items = this.state.selectedItems;
-            items.push(item);
-            this.setState({selectedItems: items});
-            alert(item);
-          }}
-          containerStyle={{padding: 5}}
-          onRemoveItem={(item, index) => {
-            const items = this.state.selectedItems.filter(
-              (sitem) => sitem.id !== item.id,
-            );
-            this.setState({selectedItems: items});
-          }}
-          itemStyle={{
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: '#ddd',
-            borderColor: '#bbb',
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
-          itemTextStyle={{color: '#222'}}
-          itemsContainerStyle={{maxHeight: 140}}
-          items={this.state.DsUser}
-          defaultIndex={2}
-          resetValue={false}
-          textInputProps={{
-            placeholder: 'placeholder',
-            underlineColorAndroid: 'transparent',
-            style: {
-              padding: 12,
-              borderWidth: 1,
-              borderColor: '#ccc',
-              borderRadius: 5,
-            },
-            onTextChange: (text) => alert(text),
-          }}
-          listProps={{
-            nestedScrollEnabled: true,
-          }}
-        />
       </SafeAreaView>
     );
   }

@@ -27,4 +27,4 @@ import TinNhanh from './src/baidang/TinNhanh';
 
 import DanhSachLike from './src/components/DanhSachLike';
 import Test from './src/screens/Test';
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => Test);

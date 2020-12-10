@@ -33,6 +33,10 @@ async function PostTinhTrang(strbody) {
   return res;
 }
 
+async function PostBaiDang(strbody) {
+  let res = await Utils.post_api(apiUser + `addBaiDang`, strbody);
+  return res;
+}
 async function GetDSKhenThuong() {
   let res = await Utils.get_api(apiUser + `GetDSKhenThuong`);
   return res;
@@ -46,7 +50,18 @@ async function GetDSLike() {
   let res = await Utils.get_api(apiUser + `getDSLike`);
   return res;
 }
-
+//192.168.3.43/api/KhoaLuan/Baidang_like?id=1&type=1&id_user=1
+async function AddLike(id = '', type = '', id_user = '') {
+  let res = await Utils.get_api(
+    apiUser + `Baidang_like?id=${id}&type=${type}&id_user=${id_user}`,
+  );
+  return res;
+}
+async function DeleteBaiDAng(user = '') {
+  let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
+  return res;
+}
+// KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,
   Logout,
@@ -56,4 +71,6 @@ export {
   GetDSKhenThuong,
   GetDSBaiDang,
   GetDSLike,
+  AddLike,
+  PostBaiDang,
 };

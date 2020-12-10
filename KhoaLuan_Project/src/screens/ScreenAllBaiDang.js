@@ -53,12 +53,12 @@ export default class BaiDangComponentScreen extends React.Component {
     }
   };
 
-  // Reload_baiDang() {
-  //   let tiepnhan = this.props.route.params;
-  //   if (tiepnhan === '1') {
-  //     this.GetDSBaiDang();
-  //   }
-  // }
+  Reload_baiDang() {
+    let tiepnhan = this.props.route.params;
+    if (tiepnhan === '1') {
+      this.GetDSBaiDang();
+    }
+  }
 
   buttonBaiDangMoi = () => {
     return (

@@ -113,6 +113,7 @@ export default class BaiDangComponenet extends React.Component {
     await this.GetData();
   }
   render() {
+    console.log('this detail', this);
     const {item = {}} = this.props.route.params;
     // console.log('item Detail', this.props.route.params);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};

@@ -25,6 +25,7 @@ const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
 
 const windowWidth = Dimensions.get('window').width;
+import moment from 'moment';
 
 export default class BaiDangComponenet extends React.Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class BaiDangComponenet extends React.Component {
 
   render() {
     const {item = {}} = this.props;
-    // console.log('nthis của Bai dang component', this.props);
+    console.log('this', this);
     // console.log('item Bai dang component', item);
     // console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
@@ -51,11 +52,10 @@ export default class BaiDangComponenet extends React.Component {
     let SoComment = item.Coment.length;
     // console.log('onpress', this.props.onPress);
     let day = item.CreatedDate;
-    let catchuoi = day.substring(0, 10);
-    // let ngay = moment(catchuoi, 'MM-DD-YYYY');
-
-    console.log('cắt ngày:', day.substring(0, 10));
-    console.log('cắt thời gian:', day.substring(11, 16));
+    let ngay = day.substring(0, 10);
+    let time = day.substring(11, 16);
+    // console.log('cắt ngày:', day.substring(0, 10));
+    // console.log('cắt thời gian:', day.substring(11, 16));
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -83,8 +83,10 @@ export default class BaiDangComponenet extends React.Component {
                     marginHorizontal: 5,
                     marginTop: -2,
                   }}>
-                  <Text style={{marginRight: 2}}>{catchuoi}</Text>
-                  <Text>{day.substring(11, 16)}</Text>
+                  <Text style={{marginRight: 2}}>
+                    {moment(ngay, 'YYYY-MM-DD').format('DD-MM-YYYY')}
+                  </Text>
+                  <Text>{time}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -131,6 +133,9 @@ export default class BaiDangComponenet extends React.Component {
             ) : (
               <TouchableOpacity
                 style={styles.khung_Thich}
+                onLongPress={() => {
+                  <DanhSachLike></DanhSachLike>;
+                }}
                 onPress={() => {
                   this.TaoLike();
                 }}>
@@ -142,7 +147,9 @@ export default class BaiDangComponenet extends React.Component {
               </TouchableOpacity>
             )}
 
-            <TouchableOpacity style={styles.khung_BinhLuan}>
+            <TouchableOpacity
+              style={styles.khung_BinhLuan}
+              onPress={this.props.onPress}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>
             </TouchableOpacity>

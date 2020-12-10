@@ -56,11 +56,11 @@ export default class TinNhanh extends React.Component {
     console.log('time', time);
     console.log('this tin nhanh', this.props);
     let strBody = JSON.stringify({
-      id_loaibaidang: item,
+      Id_LoaiBaiDang: item,
       title: this.state.haveValue_TieuDe,
       NoiDung: this.state.haveValue_Noidung,
       typepost: 'null',
-      CreatedDate: date + ':' + time,
+      CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '0',
       UpdateBy: 0,
@@ -89,7 +89,6 @@ export default class TinNhanh extends React.Component {
         icon: 'danger',
       });
     }
-    // console.log('res Bài đăng', res);
   };
 
   render() {
@@ -159,10 +158,10 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    height: '6%',
+    height: FontSize.scale(45),
     justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: '#4F94CD',
+    backgroundColor: '#007DE3',
   },
   footer: {
     flex: 1,

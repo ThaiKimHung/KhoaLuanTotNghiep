@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'green',
     height: FontSize.scale(50),
-    backgroundColor: '#4F94CD',
+    backgroundColor: '#007DE3',
     // alignItems: 'center',
     // justifyContent: 'space-between',
     marginBottom: 10,

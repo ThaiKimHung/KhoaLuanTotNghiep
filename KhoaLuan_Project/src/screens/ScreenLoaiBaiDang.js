@@ -47,7 +47,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
         DsLoaiBaiDang: res.data,
         refresh: !this.state.refresh,
       });
-      // console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
+      console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
     } else {
       this.setState({
         refresh: !this.state.refresh,
@@ -84,7 +84,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
         alert(4);
         break;
       case 6:
-        return this.props.navigation.navigate('TinNhanh');
+        return this.props.navigation.navigate('TinNhanh', item);
       default:
         alert('defat');
     }
@@ -104,10 +104,16 @@ export default class ScreenLoaiBaiDang extends React.Component {
           <SvgUri
             width={FontSize.scale(100)}
             height={FontSize.verticalScale(100)}
-            source={{
-              uri:
-                'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
-            }}
+            // Icon_app
+            // uri:// 'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
+            source={
+              item
+                ? {uri: item.Icon_app}
+                : {
+                    uri:
+                      'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
+                  }
+            }
           />
           <Text style={{margin: 5, textAlign: 'center'}}>
             {item.TenLoaiDang}

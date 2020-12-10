@@ -43,6 +43,7 @@ export default class ChonLoaiBaiDang extends React.Component {
   }
 
   render() {
+    // console.log('this chọn loại bài đăng', this);
     return (
       <View>
         {/* khung chứa avata và khung text input*/}

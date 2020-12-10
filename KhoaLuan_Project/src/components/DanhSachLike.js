@@ -51,6 +51,14 @@ export default class DanhSachLike extends React.Component {
             uri: item.link_icon_like,
           }}
         />
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      ></Modal>
       </TouchableOpacity>
     );
   };
@@ -81,6 +89,9 @@ const styles = StyleSheet.create({
     // padding: 5,
     marginTop: 5,
     marginLeft: 5,
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
   },
   imageSize: {
     height: FontSize.scale(18),

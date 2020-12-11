@@ -51,14 +51,14 @@ export default class DanhSachLike extends React.Component {
             uri: item.link_icon_like,
           }}
         />
-          <Modal
+        {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
         }}
-      ></Modal>
+      ></Modal> */}
       </TouchableOpacity>
     );
   };

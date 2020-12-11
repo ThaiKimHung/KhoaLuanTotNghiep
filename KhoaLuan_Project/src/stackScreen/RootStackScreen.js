@@ -6,6 +6,7 @@ import SplashScreen from '../screens/SplashScreen';
 import SigninScreen from '../screens/SignInScreen';
 import HomeStackScreen from '../stackScreen/HomeStackScreen';
 import KhenThuong from '../baidang/KhenThuong';
+import ModalStackScreen from './ModalStackScreen';
 const RootStack = createStackNavigator();
 
 const RootStackScreen = () => (
@@ -15,6 +16,7 @@ const RootStackScreen = () => (
       {/* <RootStack.Screen name="SplashScreen2" component={SplashScreen2} /> */}
       <RootStack.Screen name="SigninScreen" component={SigninScreen} />
       <RootStack.Screen name="HomeStackScreen" component={HomeStackScreen} />
+      <RootStack.Screen name="ModalStackScreen" component={ModalStackScreen} />
     </RootStack.Navigator>
   </NavigationContainer>
 );

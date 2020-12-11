@@ -16,6 +16,7 @@ import {
 import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from './size';
 import DanhSachLike from './DanhSachLike';
+import ModalComponent from '../components/ModalComponent';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -34,7 +35,6 @@ export default class BaiDangComponenet extends React.Component {
       thich: false,
     };
   }
-
   TaoLike = () => {
     this.setState({
       thich: !this.state.thich,
@@ -43,7 +43,7 @@ export default class BaiDangComponenet extends React.Component {
 
   render() {
     const {item = {}} = this.props;
-    console.log('this', this);
+    console.log('this.props bài đăng component', this.props);
     // console.log('item Bai dang component', item);
     // console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
@@ -91,7 +91,15 @@ export default class BaiDangComponenet extends React.Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.khung_daubacham}>
+            <TouchableOpacity
+              style={styles.khung_daubacham}
+              onPress={
+                () =>
+                  this.props.chuyentrang.props.navigation.navigate(
+                    'ModalComponent',
+                  )
+                // <ModalComponent></ModalComponent>
+              }>
               <Image style={styles.daubacham} source={daubacham} />
             </TouchableOpacity>
           </View>

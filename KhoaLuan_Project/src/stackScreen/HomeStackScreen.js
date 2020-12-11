@@ -9,7 +9,6 @@ import SplashScreen from '../screens/SplashScreen';
 import SigninScreen from '../screens/SignInScreen';
 import ScreenLoaiBaiDang from '../screens/ScreenLoaiBaiDang';
 import ScreenCaiDat from '../screens/ScreenCaiDat';
-import BaiDangStackScreen from './BaiDangStackScreen';
 import ScreenDetailBaiDang from '../screens/ScreenDetailBaiDang';
 import SearchUser from '../screens/SearchUser';
 import HomeScreen from '../screens/HomeScreen';
@@ -18,7 +17,9 @@ import BaiDangComponent from '../components/BaiDangComponent';
 
 import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
-
+import ModalStackScreen from '../stackScreen/ModalStackScreen';
+import ModalComponent from '../components/ModalComponent';
+// import ModalStackScreen from './ModalStackScreen';
 const HomeStack = createStackNavigator();
 
 const HomeStackScreen = () => (
@@ -35,6 +36,8 @@ const HomeStackScreen = () => (
       name="ScreenDetailBaiDang"
       component={ScreenDetailBaiDang}
     />
+    {/* <HomeStack.Screen name="ModalStackScreen" component={ModalStackScreen} /> */}
+    {/* <HomeStack.Screen name="ModalComponent" component={ModalComponent} /> */}
     {/* <HomeStack.Screen name="BaiDangComponent" component={BaiDangComponent} /> */}
   </HomeStack.Navigator>
   // </NavigationContainer>

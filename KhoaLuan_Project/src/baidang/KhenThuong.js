@@ -144,12 +144,19 @@ export default class KhenThuong extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.back}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+              backgroundColor: 'green',
+            }}>
             <View
               style={{
                 flexDirection: 'row',
                 margin: 5,
                 alignItems: 'center',
+                width: '100%',
               }}>
               <TouchableOpacity onPress={this.props.navigation.goBack}>
                 <Image
@@ -159,19 +166,25 @@ export default class KhenThuong extends React.Component {
                     width: FontSize.verticalScale(18),
                   }}></Image>
               </TouchableOpacity>
-              <Text style={styles.title}>Tạo tin khen thưởng</Text>
-            </View>
+              <View
+                style={{
+                  flex: 1,
 
-            <View style={{justifyContent: 'center'}}>
-              {this.state.userSelected &&
-              this.state.noidung &&
-              this.state.selectedItem ? (
-                <TouchableOpacity>
-                  <Text style={styles.textDang}>Đăng</Text>
-                </TouchableOpacity>
-              ) : (
-                <Text style={styles.textDang_invisibale}>Đăng</Text>
-              )}
+                  alignItems: 'center',
+                }}>
+                <Text style={styles.title}>Tạo tin khen thưởng</Text>
+              </View>
+              <View style={{justifyContent: 'center'}}>
+                {this.state.userSelected &&
+                this.state.noidung &&
+                this.state.selectedItem ? (
+                  <TouchableOpacity>
+                    <Text style={styles.textDang}>Đăng</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <Text style={styles.textDang_invisibale}>Đăng</Text>
+                )}
+              </View>
             </View>
           </View>
         </View>
@@ -321,7 +334,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'green',
     height: FontSize.scale(50),
-    backgroundColor: '#007DE3',
+    // backgroundColor: '#007DE3',
+    backgroundColor: 'red',
     // alignItems: 'center',
     // justifyContent: 'space-between',
     marginBottom: 10,
@@ -339,5 +353,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.reSize(20),
     marginRight: 10,
     color: '#696969',
+    textAlign: 'center',
   },
 });

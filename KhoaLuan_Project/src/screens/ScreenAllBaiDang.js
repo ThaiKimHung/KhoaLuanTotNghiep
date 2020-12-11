@@ -102,6 +102,7 @@ export default class BaiDangComponentScreen extends React.Component {
       <BaiDangComponent
         key={index}
         item={item}
+        chuyentrang={this.props.nthis}
         onPress={() =>
           this.props.nthis.props.navigation.navigate('ScreenDetailBaiDang', {
             item,

@@ -12,11 +12,12 @@ import {
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import SplashScreen from '../screens/SplashScreen';
-import SigninScreen from '../screens/SignInScreen';
+
 // import HomeStackScreen from '../stackScreen/HomeStackScreen';
 import MainTabScreen from '../stackScreen/MainTabScreen';
 
+import SplashScreen from '../screens/SplashScreen';
+import SigninScreen from '../screens/SignInScreen';
 import ScreenLoaiBaiDang from '../screens/ScreenLoaiBaiDang';
 import ScreenCaiDat from '../screens/ScreenCaiDat';
 import ScreenDetailBaiDang from '../screens/ScreenDetailBaiDang';
@@ -25,8 +26,11 @@ import HomeScreen from '../screens/HomeScreen';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 import ModalComponent from '../components/ModalComponent';
+import PopUpModal_XoaSua from '../components/PopUpModal_XoaSua';
+
 import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
+
 import Test from '../screens/Test';
 // import
 
@@ -114,6 +118,7 @@ const AppStack = () => {
       mode="modal">
       <Stack.Screen name="RootModalStack" component={RootModalStack} />
       <Stack.Screen name="ModalComponent" component={ModalComponent} />
+      <Stack.Screen name="PopUpModal_XoaSua" component={PopUpModal_XoaSua} />
     </Stack.Navigator>
   );
 };

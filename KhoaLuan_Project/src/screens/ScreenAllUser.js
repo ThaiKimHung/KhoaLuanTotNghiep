@@ -14,7 +14,7 @@ import {
 import FontSize from '../components/size';
 import {Avatar, Accessory, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
-
+import Utils from '../apis/Utils';
 const avatar = require('../assets/images/avatar.png');
 // const congratulation = require('../assets/images/congratulations.png');
 const Online = () => {
@@ -112,9 +112,14 @@ export default class ScreenAllUser extends React.Component {
   };
   search = (searchText) => {
     this.setState({searchText: searchText});
-    let filteredData = this.state.DsUser.filter(function (item) {
-      return item.Username.includes(searchText);
-    });
+    // let filteredData = this.state.DsUser.filter(function (item) {
+    //   return item.Username.includes(searchText);
+    // });
+    let filteredData = this.state.DsUser.filter((item) =>
+      Utils.removeAccents(item['Username'])
+        .toUpperCase()
+        .includes(Utils.removeAccents(searchText.toUpperCase())),
+    );
     this.setState({filteredData: filteredData});
   };
 

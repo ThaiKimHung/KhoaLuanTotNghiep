@@ -88,9 +88,11 @@ export default class SearchUser extends React.Component {
 
   search = (searchText) => {
     this.setState({searchText: searchText});
-    let filteredData = this.state.DsUser.filter(function (item) {
-      return item.Username.includes(searchText);
-    });
+    let filteredData = this.state.DsUser.filter((item) =>
+      Utils.removeAccents(item['Username'])
+        .toUpperCase()
+        .includes(Utils.removeAccents(searchText.toUpperCase())),
+    );
     this.setState({filteredData: filteredData});
   };
 

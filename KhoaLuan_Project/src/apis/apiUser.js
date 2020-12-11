@@ -57,8 +57,35 @@ async function AddLike(id = '', type = '', id_user = '') {
   );
   return res;
 }
-async function DeleteBaiDAng(user = '') {
-  let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
+async function DeleteLikeTrongBaiDang(idbaidang = '') {
+  let res = await Utils.post_api(
+    apiUser + `deleteBaiDang_like?id_baidang=${idbaidang}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+async function DeleteCommentTrongBaiDang(idbaidang = '') {
+  let res = await Utils.post_api(
+    apiUser + `deleteComment_inBaiDang?id_baidang=${idbaidang}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
+async function DeleteBaiDang(idbaidang = '') {
+  let res = await Utils.post_api(
+    apiUser + `deleteBaiDang?id_baidang=${idbaidang}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
   return res;
 }
 // KhoaLuan/deleteBaiDang?id_baidang=1
@@ -73,4 +100,7 @@ export {
   GetDSLike,
   AddLike,
   PostBaiDang,
+  DeleteLikeTrongBaiDang,
+  DeleteCommentTrongBaiDang,
+  DeleteBaiDang,
 };

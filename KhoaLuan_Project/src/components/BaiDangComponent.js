@@ -12,11 +12,19 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  TouchableWithoutFeedback,
+  FlatList,
 } from 'react-native';
 import {Avatar, Accessory} from 'react-native-elements';
-import FontSize from './size';
-import DanhSachLike from './DanhSachLike';
-import ModalComponent from '../components/ModalComponent';
+// import DanhSachLike from './DanhSachLike';
+// import ModalComponent from '../components/ModalComponent';
+import Tooltip from 'react-native-walkthrough-tooltip';
+import FontSize from '../components/size';
+import SvgUri from 'react-native-svg-uri';
+
+import {GetDSLike} from '../apis/apiUser';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -33,6 +41,8 @@ export default class BaiDangComponenet extends React.Component {
     super(props);
     this.state = {
       thich: false,
+      toolTipVisible: true,
+      DSLike: [],
     };
   }
   TaoLike = () => {
@@ -40,10 +50,40 @@ export default class BaiDangComponenet extends React.Component {
       thich: !this.state.thich,
     });
   };
+  _GetDSLike = async () => {
+    let res = await GetDSLike();
+    console.log('ress ds like', res);
+    if (res.status == 1) {
+      this.setState({
+        DSLike: res.Data,
+        // refresh: !this.state.refresh,
+      });
+      // alert(5);
+    } else {
+      this.setState({DSLike: []});
+      //   alert('thất bại');
+    }
+  };
+  _renderItem = ({item, index}) => {
+    return (
+      <TouchableOpacity style={{paddingHorizontal: 5}}>
+        <SvgUri
+          width={FontSize.scale(25)}
+          height={FontSize.verticalScale(25)}
+          source={{
+            uri: item.link_icon_like,
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  componentDidMount() {
+    // this._GetDSLike();
+  }
 
   render() {
     const {item = {}} = this.props;
-    console.log('this.props bài đăng component', this.props);
     // console.log('item Bai dang component', item);
     // console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
@@ -54,8 +94,30 @@ export default class BaiDangComponenet extends React.Component {
     let day = item.CreatedDate;
     let ngay = day.substring(0, 10);
     let time = day.substring(11, 16);
-    // console.log('cắt ngày:', day.substring(0, 10));
-    // console.log('cắt thời gian:', day.substring(11, 16));
+
+    const _OnLongPress = () => (
+      <View>
+        {this.state.toolTipVisible ? (
+          <Tooltip
+            isVisible={this.state.toolTipVisible}
+            // content={<DanhSachLike></DanhSachLike>}
+            content={
+              <View style={{flex: 1, backgroundColor: 'blue'}}>
+                <FlatList
+                  data={this.state.DSLike}
+                  renderItem={this._renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal={true}
+                />
+              </View>
+            }
+            arrowSize={{width: 200, height: 200}}
+            placement="top"
+            onClose={() => this.setState({toolTipVisible: false})}
+          />
+        ) : null}
+      </View>
+    );
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -96,7 +158,10 @@ export default class BaiDangComponenet extends React.Component {
               onPress={
                 () =>
                   this.props.chuyentrang.props.navigation.navigate(
-                    'ModalComponent',
+                    'PopUpModal_XoaSua',
+                    {
+                      item,
+                    },
                   )
                 // <ModalComponent></ModalComponent>
               }>
@@ -126,34 +191,30 @@ export default class BaiDangComponenet extends React.Component {
 
         <View>
           <View style={styles.khungLike_Commnet}>
-            {this.state.thich === false ? (
-              <TouchableOpacity
-                style={styles.khung_Thich}
-                onPress={() => {
-                  this.TaoLike();
-                }}>
-                <Image
-                  style={[styles.imageLike_Commnet, {tintColor: '#696969'}]}
-                  source={thich}
-                />
-                <Text style={styles.text_Like_cmt}>Thích</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.khung_Thich}
-                onLongPress={() => {
-                  <DanhSachLike></DanhSachLike>;
-                }}
-                onPress={() => {
-                  this.TaoLike();
-                }}>
-                <Image
-                  style={[styles.imageLike_Commnet, {tintColor: '#007DE3'}]}
-                  source={thich}
-                />
-                <Text style={styles.text_Like_cmt1}>Thích</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              style={styles.khung_Thich}
+              // onLongPress={() => <_OnLongPress></_OnLongPress>}
+              onPress={() => {
+                this.TaoLike();
+              }}>
+              {this.state.thich ? (
+                <View style={{flexDirection: 'row'}}>
+                  <Image
+                    style={[styles.imageLike_Commnet, {tintColor: '#007DE3'}]}
+                    source={thich}
+                  />
+                  <Text style={styles.text_Like_cmt1}>Thích</Text>
+                </View>
+              ) : (
+                <View style={{flexDirection: 'row'}}>
+                  <Image
+                    style={[styles.imageLike_Commnet, {tintColor: '#696969'}]}
+                    source={thich}
+                  />
+                  <Text style={styles.text_Like_cmt}>Thích</Text>
+                </View>
+              )}
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.khung_BinhLuan}

@@ -35,6 +35,19 @@ export default class BaiDangComponentScreen extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    this._GetDSBaiDang();
+  };
+
+  componentDidUpdate = () => {
+    this.props &&
+    this.props.route &&
+    this.props.route.params &&
+    this.props.route.params.thanhcong == 1
+      ? this._GetDSBaiDang()
+      : null;
+  };
+
   _GetDSBaiDang = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSBaiDang(await Utils.ngetStorage(nkey.id_user));
@@ -54,11 +67,26 @@ export default class BaiDangComponentScreen extends React.Component {
   };
 
   Reload_baiDang() {
-    let tiepnhan = this.props.route.params;
-    if (tiepnhan === '1') {
-      this.GetDSBaiDang();
+    let tiepnhan = this.props.route.params.thanhcong
+      ? this.props.route.params.thanhcong
+      : 0;
+    if (tiepnhan === 1) {
+      this._GetDSBaiDang();
     }
   }
+
+  Reload_baiDang_SauKhiXoa = () => {
+    // let oki = this.props.nthis ? this.props.nthis : 0;
+    // let hi = oki ? oki.props.route.params : oki;
+    // console.log('this.props.route.params.dêtte', delele_ok);
+    // if (hi.delete_thanhcong === 1) {
+    //   alert(5);
+    //   this._GetDSBaiDang();
+    // }
+    this.setState({
+      refresh: false,
+    });
+  };
 
   buttonBaiDangMoi = () => {
     return (
@@ -93,9 +121,6 @@ export default class BaiDangComponentScreen extends React.Component {
   //   );
   // };
 
-  componentDidMount() {
-    this._GetDSBaiDang();
-  }
   _renderItem = ({item, index}) => {
     // console.log();
     return (
@@ -111,6 +136,15 @@ export default class BaiDangComponentScreen extends React.Component {
     );
   };
   render() {
+    // let delele_ok = this.props.nthis.props.route.params
+    //   ? this.props.nthis.route.params
+    //   : 0;
+
+    // let oki = this.props.nthis ? this.props.nthis : 0;
+    // console.log('this.props.route.params.dêtte', oki);
+    // console.log('this của scren all bài đăng', this.props.nthis);
+    // let hi = oki ? oki.props.route.params : oki;
+    // console.log('this.props.route.', hi);
     return (
       <View>
         <FlatList
@@ -119,11 +153,7 @@ export default class BaiDangComponentScreen extends React.Component {
           keyExtractor={(item, index) => index.toString()}
           refreshing={this.state.refresh}
           onRefresh={() => {
-            this.setState(
-              {refresh: true},
-              this._GetDSBaiDang,
-              // this.Reload_baiDang,
-            );
+            this.setState({refresh: true});
           }}
           ListEmptyComponent={this.EmptyListMessage}
           ListFooterComponent={this.FoodterMessage}

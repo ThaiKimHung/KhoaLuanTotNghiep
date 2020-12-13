@@ -27,9 +27,11 @@ import HomeScreen from '../screens/HomeScreen';
 import BaiDangComponent from '../components/BaiDangComponent';
 import ModalComponent from '../components/ModalComponent';
 import PopUpModal_XoaSua from '../components/PopUpModal_XoaSua';
+// import  from '../components/SearchUser_Component';
 
 import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
+import ChaoMungTV from '../baidang/ChaoMungTV';
 
 import Test from '../screens/Test';
 // import
@@ -59,6 +61,8 @@ const HomeStackScreen = () => (
       name="ScreenDetailBaiDang"
       component={ScreenDetailBaiDang}
     />
+    <HomeStack.Screen name="ChaoMungTV" component={ChaoMungTV} />
+    {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );
 

@@ -62,15 +62,22 @@ export default class ScreenLoaiBaiDang extends React.Component {
       </Text>
     );
   };
+  callBack = (item) => {
+    let hi = item;
+    // console.log('hi', hi);
+  };
 
   _chuyenTrang(item) {
-    let id = item;
-    console.log('id', id);
+    let id_loaibaidang = item;
+    console.log('id_loaibaidang', id_loaibaidang);
     // alert(5);
-    switch (id) {
+    switch (id_loaibaidang) {
       case 1:
         // console.log('this', this);
-        return this.props.navigation.navigate('KhenThuong');
+        return this.props.navigation.navigate(
+          'KhenThuong',
+          this.callBack(item),
+        );
       case 2:
         alert(2);
         break;
@@ -78,7 +85,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
         alert(3);
         break;
       case 4:
-        alert(4);
+        return this.props.navigation.navigate('ChaoMungTV', item);
         break;
       case 5:
         alert(4);

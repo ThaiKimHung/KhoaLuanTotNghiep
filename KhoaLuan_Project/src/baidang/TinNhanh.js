@@ -31,7 +31,7 @@ export default class TinNhanh extends React.Component {
     super(props);
     this.state = {
       haveValue_TieuDe: '',
-      haveValue_Noidung: '',
+      // haveValue_Noidung: '',
     };
   }
   handleTieude(text) {
@@ -40,11 +40,11 @@ export default class TinNhanh extends React.Component {
     });
     // alert(text);
   }
-  handleNoidung(text) {
-    this.setState({
-      haveValue_Noidung: text,
-    });
-  }
+  // handleNoidung(text) {
+  //   this.setState({
+  //     haveValue_Noidung: text,
+  //   });
+  // }
   _PostBaiDang = async () => {
     const item = this.props.route.params;
     const today = new Date();
@@ -58,8 +58,8 @@ export default class TinNhanh extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: item,
       title: this.state.haveValue_TieuDe,
-      NoiDung: this.state.haveValue_Noidung,
-      typepost: 'null',
+      NoiDung: '',
+      typepost: '',
       CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '0',
@@ -110,7 +110,7 @@ export default class TinNhanh extends React.Component {
               <Text style={styles.title}>Tạo tin nhanh</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
-              {this.state.haveValue_TieuDe && this.state.haveValue_Noidung ? (
+              {this.state.haveValue_TieuDe ? (
                 <TouchableOpacity
                   onPress={() => {
                     this._PostBaiDang();
@@ -135,14 +135,14 @@ export default class TinNhanh extends React.Component {
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
             </View>
 
-            <Text style={{marginTop: 10}}>Nội dung</Text>
+            {/* <Text style={{marginTop: 10}}>Nội dung</Text>
             <View style={styles.khung_noidung}>
               <TextInput
                 placeholder="Nội dung"
                 multiline={true}
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleNoidung(text)}></TextInput>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
       </View>

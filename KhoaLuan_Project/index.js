@@ -28,5 +28,6 @@ import TinNhanh from './src/baidang/TinNhanh';
 import DanhSachLike from './src/components/DanhSachLike';
 import Test from './src/screens/Test';
 import ModalComponent from './src/components/ModalComponent';
+import EditKhenThuong from './src/baidang/EditKhenThuong';
 
 AppRegistry.registerComponent(appName, () => App);

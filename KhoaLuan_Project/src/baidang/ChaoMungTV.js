@@ -28,7 +28,7 @@ import {nkey} from '../apis/keyStore';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
-export default class KhenThuong extends React.Component {
+export default class ChaoMungTV extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,31 +39,8 @@ export default class KhenThuong extends React.Component {
       noidung: '',
     };
   }
-  EmptyListMessage = ({item}) => {
-    return (
-      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
-        No Data Found
-      </Text>
-    );
-  };
-  _GetDsKhenThuong = async () => {
-    let res = await GetDSKhenThuong();
-    // console.log('res ds khen thưởng', res);
-    if (res.status === 1) {
-      this.setState({
-        DsKhenThuong: res.Data,
-        refresh: !this.state.refresh,
-      });
-    } else {
-      this.setState({
-        refresh: !this.state.refresh,
-      });
-    }
-  };
 
-  componentDidMount() {
-    this._GetDsKhenThuong();
-  }
+  componentDidMount() {}
   updateSearch = (search) => {
     this.setState({search});
   };
@@ -72,75 +49,11 @@ export default class KhenThuong extends React.Component {
       noidung: text,
     });
   }
-  renderItem = ({item, index}) => {
-    return (
-      <View>
-        {this.state.selectedItem == item.ID_khenthuong ? (
-          <TouchableOpacity
-            onPress={() => {
-              if (this.state.selectedItem == item.ID_khenthuong) {
-                this.setState({
-                  selectedItem: '0',
-                });
-              } else {
-                this.setState({
-                  selectedItem: item.ID_khenthuong,
-                });
-              }
-            }}
-            style={[
-              styles.khung,
-              {
-                marginLeft: index % 2 != 0 ? 10 : 0,
-                backgroundColor: '#87CEFF',
-              },
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                selectedItem: item.ID_khenthuong,
-              });
-            }}
-            style={[
-              styles.khung,
-              {marginLeft: index % 2 != 0 ? 10 : 0, backgroundColor: 'yellow'},
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
-  };
 
   render() {
     const user = this.props.route.params ? this.props.route.params : '';
     // console.log('user khen thưởng', user);
-    console.log('props khen thưởng', this.props);
+    // console.log('props', this.props);
     return (
       <View style={styles.container}>
         <View style={styles.back}>
@@ -172,12 +85,12 @@ export default class KhenThuong extends React.Component {
 
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Tạo tin khen thưởng</Text>
+                <Text style={styles.title}>
+                  Tạo tin chào mừng thành viên mới
+                </Text>
               </View>
               <View style={{justifyContent: 'center'}}>
-                {this.state.userSelected &&
-                this.state.noidung &&
-                this.state.selectedItem ? (
+                {this.state.userSelected && this.state.noidung ? (
                   <TouchableOpacity>
                     <Text style={styles.textDang}>Đăng</Text>
                   </TouchableOpacity>
@@ -202,9 +115,9 @@ export default class KhenThuong extends React.Component {
             style={styles.thanh_search}
             onPress={() => {
               this.props.navigation.navigate('SearchUser');
-              this.setState({
-                userSelected: user ? user.ID_user : '',
-              });
+              //   this.setState({
+              //     userSelected: user ? user.ID_user : '',
+              //   });
               // console.log('user select', this.state.userSelected);
             }}>
             <Image source={search} style={styles.icon}></Image>
@@ -248,7 +161,7 @@ export default class KhenThuong extends React.Component {
             onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
         </View>
         <View style={styles.footer}>
-          {this.state.DsKhenThuong.length != 0 ? (
+          {/* {this.state.DsKhenThuong.length != 0 ? (
             <FlatList
               data={this.state.DsKhenThuong}
               renderItem={this.renderItem}
@@ -263,7 +176,7 @@ export default class KhenThuong extends React.Component {
             />
           ) : (
             <ActivityIndicator size="large" color="#0000ff" />
-          )}
+          )} */}
         </View>
       </View>
     );

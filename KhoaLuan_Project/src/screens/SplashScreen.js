@@ -71,7 +71,8 @@ export default class SplashScreen2 extends React.Component {
   };
 
   chuyenTrang() {
-    this.props.navigation.navigate('HomeStackScreen');
+    Utils.goscreen(this, 'HomeStackScreen');
+    // this.props.navigation.navigate('HomeStackScreen');
     showMessage({
       message: 'Thông báo',
       description: 'Chào mừng bạn quay lại',
@@ -109,7 +110,8 @@ export default class SplashScreen2 extends React.Component {
                 <TouchableOpacity
                   style={styles.khung_buttonSignin}
                   onPress={() =>
-                    this.props.navigation.navigate('SigninScreen')
+                    // this.props.navigation.navigate('SigninScreen')
+                    Utils.goscreen(this, 'SigninScreen')
                   }>
                   <Text style={styles.textSign}>Sign In</Text>
                 </TouchableOpacity>

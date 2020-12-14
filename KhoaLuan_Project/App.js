@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, Button} from 'react-native';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
-import RootStackScreen from './src/stackScreen/RootStackScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import AppStack from './src/stackScreen/AppStack';

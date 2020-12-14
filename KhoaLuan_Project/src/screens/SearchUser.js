@@ -14,6 +14,7 @@ import {
 import FontSize from '../components/size';
 import {Avatar, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
+import Utils from '../apis/Utils';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const avatar = require('../assets/images/avatar.png');
@@ -47,6 +48,7 @@ export default class SearchUser extends React.Component {
       <TouchableOpacity
         style={[styles.khungchua]}
         onPress={() => {
+          Utils.goscreen(this, 'KhenThuong', item);
           this.props.navigation.navigate('KhenThuong', item);
         }}>
         {item.Avatar ? (
@@ -106,7 +108,7 @@ export default class SearchUser extends React.Component {
         <View style={styles.back}>
           <View style={{justifyContent: 'center', flexDirection: 'row'}}>
             <TouchableOpacity
-              onPress={this.props.navigation.goBack}
+              onPress={() => Utils.goback(this, '')}
               style={{justifyContent: 'center', marginLeft: 5}}>
               <Image
                 source={goback}

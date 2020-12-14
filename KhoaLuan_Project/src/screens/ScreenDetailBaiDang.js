@@ -18,6 +18,7 @@ import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from '../components/size';
 import GoBack from '../components/GoBack';
 import DanhSachLike from '../components/DanhSachLike';
+import Utils from '../apis/Utils';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -113,15 +114,24 @@ export default class BaiDangComponenet extends React.Component {
     await this.GetData();
   }
   render() {
-    console.log('this detail', this);
-    const {item = {}} = this.props.route.params;
+    // console.log('this detail', this);
+    // const {item = {}} = Utils.ngetParam(this, 'ChiTietBaiDang', '');
+    const {ChiTietBaiDang = {}} = this.props.route.params;
+    // console.log('this Detail', this);
     // console.log('item Detail', this.props.route.params);
-    let user = item.User_DangBai ? item.User_DangBai[0] : {};
-    let Solike = item.Like_BaiDang.length;
-    let SoComment = item.Coment.length;
+    console.log('this ChiTietBaiDang screen Detail bài đăng', ChiTietBaiDang);
+    let user = ChiTietBaiDang.User_DangBai
+      ? ChiTietBaiDang.User_DangBai[0]
+      : {};
+    let Solike = ChiTietBaiDang.Like_BaiDang.length;
+    let SoComment = ChiTietBaiDang.Coment.length;
     return (
       <View style={styles.container}>
-        <GoBack nthis={this.props} name=""></GoBack>
+        <GoBack
+          name=""
+          onPress={() => {
+            Utils.goback(this, '');
+          }}></GoBack>
         {/* khung chứa avata và khung text input*/}
         <View>
           <View style={styles.header}>
@@ -146,7 +156,6 @@ export default class BaiDangComponenet extends React.Component {
               />
               <View style={styles.khung_tenUser}>
                 <Text style={styles.txt_TenUser}>{user.Username}</Text>
-                {/* <Text style={styles.txt_TenUser}>Hùng</Text> */}
               </View>
             </TouchableOpacity>
 
@@ -155,10 +164,9 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
           </View>
 
-          {/* khung chứa nội dung bài đăng và cmt*/}
           <View style={styles.footer}>
-            {/* <Text>{item.NoiDung}</Text> */}
-            <Text>{item.NoiDung}</Text>
+            <Text>{ChiTietBaiDang.title}</Text>
+            <Text>{ChiTietBaiDang.NoiDung}</Text>
           </View>
         </View>
         <View style={{marginBottom: 5}}>
@@ -215,12 +223,12 @@ export default class BaiDangComponenet extends React.Component {
         </View>
         <View style={styles.khung_CmtTong}>
           <FlatList
-            data={item.Coment}
+            data={ChiTietBaiDang.Coment}
             renderItem={this._renderItem}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}
             onRefresh={() => {
-              this.setState({refresh: true}, item.Coment);
+              this.setState({refresh: true}, ChiTietBaiDang.Coment);
             }}
             ListEmptyComponent={this.EmptyListMessage}
           />

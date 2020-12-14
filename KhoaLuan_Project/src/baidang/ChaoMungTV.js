@@ -71,7 +71,9 @@ export default class ChaoMungTV extends React.Component {
                 alignItems: 'center',
                 width: '100%',
               }}>
-              <TouchableOpacity onPress={this.props.navigation.goBack}>
+              <TouchableOpacity
+                // onPress={this.props.navigation.goBack}
+                onPress={() => Utils.goback(this, '')}>
                 <Image
                   source={goback}
                   style={{
@@ -114,7 +116,8 @@ export default class ChaoMungTV extends React.Component {
           <TouchableOpacity
             style={styles.thanh_search}
             onPress={() => {
-              this.props.navigation.navigate('SearchUser');
+              Utils.goscreen(this, 'SearchUser');
+              // this.props.navigation.navigate('SearchUser');
               //   this.setState({
               //     userSelected: user ? user.ID_user : '',
               //   });

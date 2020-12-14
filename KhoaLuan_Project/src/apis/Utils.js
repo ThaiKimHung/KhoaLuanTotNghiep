@@ -10,8 +10,8 @@ import {
 
 // const domain = 'http://192.168.3.49/';
 // const domain = 'http://192.168.43.236/';
-// const domain = 'http://192.168.3.43/';
-const domain = 'http://192.168.100.5/';
+const domain = 'http://192.168.3.43/';
+// const domain = 'http://192.168.100.5/';
 //localhost:44340/
 // const domain = 'http://127.0.0.1/';
 async function post_api(
@@ -70,7 +70,8 @@ async function get_api(strUrl, showMsg = false, chktoken = true) {
 
 // -- custom AynsStore
 function ngetParam(nthis, keys, defaultValue) {
-  let param = nthis.props.navigation.getParam(keys, defaultValue);
+  // let param = nthis.props.navigation.getParam(keys, defaultValue);
+  let param = nthis.props.route.params(keys, defaultValue);
   return param;
 }
 //--Thông số cấu hình mặc
@@ -99,6 +100,16 @@ function goscreen(nthis, routeName, param = null) {
   if (param == null)
     nthis.props.navigation.navigate(routeName, {lang: nthis.lang});
   else nthis.props.navigation.navigate(routeName, {...param, lang: nthis.lang});
+}
+
+function goscreenReplace(nthis, routeName, param = null) {
+  if (param == null)
+    nthis.props.navigation.replace(routeName, {lang: nthis.lang});
+  else
+    nthis.props.navigation.replace(routeName, {
+      ...param,
+      lang: nthis.lang,
+    });
 }
 
 function goscreenPush(nthis, routeName, param = null) {
@@ -207,4 +218,5 @@ export default {
   getRootGlobal,
   setGlobal,
   removeAccents,
+  goscreenReplace,
 };

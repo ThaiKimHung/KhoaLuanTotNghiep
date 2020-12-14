@@ -25,8 +25,9 @@ import SearchUser from '../screens/SearchUser';
 import HomeScreen from '../screens/HomeScreen';
 
 import BaiDangComponent from '../components/BaiDangComponent';
-import ModalComponent from '../components/ModalComponent';
-import PopUpModal_XoaSua from '../components/PopUpModal_XoaSua';
+import ModalComponent from '../modal/ModalComponent';
+import PopUpModal_XoaSua from '../modal/PopUpModal_XoaSua';
+import ModalLike from '../modal/ModalLike';
 // import  from '../components/SearchUser_Component';
 
 import KhenThuong from '../baidang/KhenThuong';
@@ -53,7 +54,7 @@ const HomeStackScreen = () => (
   <HomeStack.Navigator headerMode="none" initialRouteName="MainTabScreen">
     <HomeStack.Screen name="MainTabScreen" component={MainTabScreen} />
     <HomeStack.Screen name="ScreenLoaiBaiDang" component={ScreenLoaiBaiDang} />
-    <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+    {/* <HomeStack.Screen name="HomeScreen" component={HomeScreen} /> */}
     <HomeStack.Screen name="KhenThuong" component={KhenThuong} />
     <HomeStack.Screen name="SearchUser" component={SearchUser} />
     <HomeStack.Screen name="TinNhanh" component={TinNhanh} />
@@ -123,6 +124,7 @@ const AppStack = () => {
       <Stack.Screen name="RootModalStack" component={RootModalStack} />
       <Stack.Screen name="ModalComponent" component={ModalComponent} />
       <Stack.Screen name="PopUpModal_XoaSua" component={PopUpModal_XoaSua} />
+      <Stack.Screen name="ModalLike" component={ModalLike} />
     </Stack.Navigator>
   );
 };

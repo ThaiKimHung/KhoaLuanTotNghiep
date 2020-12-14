@@ -68,30 +68,30 @@ export default class ScreenLoaiBaiDang extends React.Component {
   };
 
   _chuyenTrang(item) {
-    let id_loaibaidang = item;
-    console.log('id_loaibaidang', id_loaibaidang);
+    // let id_loaibaidang = item;
+    // console.log('id_loaibaidang', id_loaibaidang);
     // alert(5);
-    switch (id_loaibaidang) {
+    switch (item) {
       case 1:
         // console.log('this', this);
-        return this.props.navigation.navigate(
-          'KhenThuong',
-          this.callBack(item),
-        );
+        return Utils.goscreen(this, 'KhenThuong');
       case 2:
-        alert(2);
-        break;
+        //  return this.props.navigation.navigate(
+        //    'KhenThuong',
+        //    this.callBack(item),
+        //  );
+        return Utils.goscreen(this, 'KhenThuong');
       case 3:
         alert(3);
         break;
       case 4:
-        return this.props.navigation.navigate('ChaoMungTV', item);
-        break;
+        // return this.props.navigation.navigate('ChaoMungTV', item);
+        return Utils.goscreen(this, 'ChaoMungTV', item);
       case 5:
         alert(4);
         break;
       case 6:
-        return this.props.navigation.navigate('TinNhanh', item);
+        return Utils.goscreen(this, 'TinNhanh', {id_loaibaidang: item});
       default:
         alert('defat');
     }
@@ -133,7 +133,12 @@ export default class ScreenLoaiBaiDang extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <GoBack nthis={this.props} name="Chọn loại bài đăng"></GoBack>
+        <GoBack
+          // nthis={this}
+          name="Chọn loại bài đăng"
+          onPress={() => {
+            Utils.goback(this, '');
+          }}></GoBack>
         <View style={styles.header}>
           <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
             Bạn muốn đăng bài gì?

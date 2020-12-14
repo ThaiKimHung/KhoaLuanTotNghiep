@@ -7,7 +7,7 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
-
+import Utils from '../apis/Utils';
 import Header from '../components/Header';
 import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
 // import {useTheme} from '@react-navigation/native';
@@ -31,7 +31,8 @@ export default class HomeScreen extends React.Component {
 
         <ChonLoaiBaiDang
           onPress={() => {
-            this.props.navigation.navigate('ScreenLoaiBaiDang');
+            // this.props.navigation.navigate('ScreenLoaiBaiDang');
+            Utils.goscreen(this, 'ScreenLoaiBaiDang');
           }}></ChonLoaiBaiDang>
 
         <View style={{flex: 1}}>

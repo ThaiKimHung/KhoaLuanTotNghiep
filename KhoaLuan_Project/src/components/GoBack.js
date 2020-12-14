@@ -13,16 +13,18 @@ import {
   ScrollView,
 } from 'react-native';
 import FontSize from '../components/size';
+import Utils from '../apis/Utils';
 const goback = require('../assets/images/go-back-left-arrow.png');
 
 export default class GoBack extends React.Component {
   render() {
+    console.log('this goBack', this);
     const {name} = this.props;
     return (
       <View style={styles.back}>
         <View style={{justifyContent: 'center', flexDirection: 'row'}}>
           <TouchableOpacity
-            onPress={this.props.nthis.navigation.goBack}
+            onPress={this.props.onPress}
             style={{justifyContent: 'center', marginLeft: 5}}>
             <Image
               source={goback}

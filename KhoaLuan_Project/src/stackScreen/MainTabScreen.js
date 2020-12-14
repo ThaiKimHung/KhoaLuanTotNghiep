@@ -74,7 +74,7 @@ const MainTabScreen = () => (
     />
     <Tab.Screen
       name="DanhBa"
-      component={ScreenAllUser}
+      component={UserStackScreen}
       options={{
         tabBarLabel: 'Danh bạ',
         tabBarColor: '#1f65ff',

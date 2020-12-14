@@ -46,17 +46,17 @@ export default class TinNhanh extends React.Component {
   //   });
   // }
   _PostBaiDang = async () => {
-    const item = this.props.route.params;
+    const id_loaibaidang = this.props.route.params.id_loaibaidang;
     const today = new Date();
     const date =
       today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
     const time = today.getHours() + ':' + today.getMinutes();
-    console.log('item loại bài bài đăng', item);
-    console.log('ngày1', date);
-    console.log('time', time);
-    console.log('this tin nhanh', this.props);
+    // console.log('item loại bài bài đăng', id_loaibaidang);
+    // console.log('ngày1', date);
+    // console.log('time', time);
+    // console.log('this tin nhanh', this.props);
     let strBody = JSON.stringify({
-      Id_LoaiBaiDang: item,
+      Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
       NoiDung: '',
       typepost: '',
@@ -70,9 +70,8 @@ export default class TinNhanh extends React.Component {
     let res = await PostBaiDang(strBody);
     if (res.status == 1) {
       let thanhcong = res.status;
-      this.props.navigation.navigate('HomeScreen', {
-        thanhcong,
-      });
+      // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home', {PostThanhCong: thanhcong});
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',
@@ -98,7 +97,10 @@ export default class TinNhanh extends React.Component {
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View
               style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
-              <TouchableOpacity onPress={this.props.navigation.goBack}>
+              <TouchableOpacity
+                onPress={() => {
+                  Utils.goback(this, '');
+                }}>
                 <Image
                   source={goback}
                   style={{

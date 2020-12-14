@@ -9,7 +9,6 @@ import SplashScreen from './src/screens/SplashScreen';
 import SignInScreen from './src/screens/SignInScreen';
 
 import Main from './src/screens/Main';
-import RootStackScreen from './src/stackScreen/RootStackScreen';
 
 import HomeScreen from './src/screens/HomeScreen';
 import PhanChonLoaiBaiDang from './src/components/ChonLoaiBaiDang';
@@ -18,7 +17,6 @@ import ScreenCaiDat from './src/screens/ScreenCaiDat';
 import ScreenDetailBaiDang from './src/screens/ScreenDetailBaiDang';
 import SearchUser from './src/screens/SearchUser';
 
-import HomeStackScreen from './src/stackScreen/HomeStackScreen';
 import ScreenAllUser from './src/screens/ScreenAllUser';
 import ScreenAllBaiDang from './src/screens/ScreenAllBaiDang';
 
@@ -27,7 +25,7 @@ import TinNhanh from './src/baidang/TinNhanh';
 
 import DanhSachLike from './src/components/DanhSachLike';
 import Test from './src/screens/Test';
-import ModalComponent from './src/components/ModalComponent';
+import ModalLike from './src/modal/ModalLike';
 import EditKhenThuong from './src/baidang/EditKhenThuong';
 
 AppRegistry.registerComponent(appName, () => App);

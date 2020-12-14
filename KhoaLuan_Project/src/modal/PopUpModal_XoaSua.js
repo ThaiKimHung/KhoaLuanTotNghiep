@@ -11,7 +11,7 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-import FontSize from './size';
+import FontSize from '../components/size';
 
 import {
   DeleteBaiDang,
@@ -33,9 +33,9 @@ export default class PopUpModal_XoaSua extends Component {
     super(props);
     this.state = {
       display: true,
-      id_user: '0',
-      idBaiDang: '0',
-      id_NguoiDang: '0',
+      id_user: '',
+      idBaiDang: '',
+      id_NguoiDang: '',
       xoathanhcong: true,
     };
   }
@@ -48,7 +48,8 @@ export default class PopUpModal_XoaSua extends Component {
     this.setState({
       display: !this.state.display,
     });
-    this.props.navigation.goBack();
+    // this.props.navigation.goBack();
+    Utils.goback(this, '');
   }
 
   XoaBaiDang = async () => {
@@ -90,12 +91,13 @@ export default class PopUpModal_XoaSua extends Component {
   };
 
   NhanThongTin = async () => {
-    const {item = {}} = this.props.route.params;
-    let user = item ? item.User_DangBai[0] : {};
+    const {id_nguoidang = {}} = this.props.route.params;
+    console.log('item modal', id_nguoidang);
+    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({
-      idBaiDang: item ? item.Id_BaiDang : '0',
-      id_NguoiDang: user ? user.ID_user : '0',
+      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
+      id_NguoiDang: user ? user.ID_user : null,
     });
   };
 
@@ -103,10 +105,11 @@ export default class PopUpModal_XoaSua extends Component {
     let delete_thanhcong = 1;
     this.setState({
       display: !this.state.display,
-    }),
-      this.props.navigation.navigate('HomeScreen', {
-        delete_thanhcong,
-      });
+    });
+    // this.props.navigation.navigate('HomeScreen', {
+    //   delete_thanhcong,
+    // });
+    Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
   };
 
   componentDidMount() {
@@ -118,6 +121,10 @@ export default class PopUpModal_XoaSua extends Component {
     // let idbaidang = item.Id_BaiDang;
 
     const {display} = this.state;
+    // const {id_nguoidang = {}} = this.props.route.params;
+
+    // console.log('this modal popup', this);
+    // console.log('item modal', id_nguoidang);
     return (
       <View>
         <Modal
@@ -148,10 +155,11 @@ export default class PopUpModal_XoaSua extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        this.change(),
-                          this.props.navigation.navigate('SearchUser');
-                      }}>
+                      // onPress={() => {
+                      //   // this.change(),
+                      //   // this.props.navigation.navigate('SearchUser');
+                      // }}
+                    >
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
                     </TouchableOpacity>
@@ -177,10 +185,11 @@ export default class PopUpModal_XoaSua extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        this.change(),
-                          this.props.navigation.navigate('SearchUser');
-                      }}>
+                      // onPress={() => {
+                      //   this.change(),
+                      //     this.props.navigation.navigate('SearchUser');
+                      // }}
+                    >
                       <Image source={edite} style={styles.image_st1}></Image>
                       <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
                     </View>

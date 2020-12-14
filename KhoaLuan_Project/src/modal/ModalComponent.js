@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 // import ModalComponent from '../components/ModalComponent';
+import Utils from '../apis/Utils';
 const logo = require('../assets/images/Jeelogo.png');
 export default class ModalComponent extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export default class ModalComponent extends Component {
     this.setState({
       display: !this.state.display,
     });
-    this.props.navigation.goBack();
+    // this.props.navigation.goBack();
+    Utils.goback(this, '');
   }
 
   render() {

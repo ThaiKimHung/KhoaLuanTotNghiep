@@ -11,48 +11,46 @@ import {
   FlatList,
 } from 'react-native';
 // import ModalComponent from '../components/ModalComponent';
-const logo = require('../assets/images/Jeelogo.png');
-import Tooltip from 'react-native-walkthrough-tooltip';
-import DanhSachLike from '../components/DanhSachLike';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
-
-import {GetDSLike} from '../apis/apiUser';
+import Utils from '../apis/Utils';
+import {GetDSLike, AddLike} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
-
-const thich = require('../assets/images/thich.png');
-export default class Test extends Component {
+export default class ModalLike extends Component {
   constructor(props) {
     super(props);
     this.state = {
       display: true,
-      toolTipVisible: true,
-      DSLike: [],
+      //   DSLike: [],
     };
+    this.DSLike = [];
   }
   change() {
     this.setState({
-      toolTipVisible: !this.state.toolTipVisible,
+      display: !this.state.display,
     });
+    // this.props.navigation.goBack();
+    Utils.goback(this, '');
   }
   _GetDSLike = async () => {
     let res = await GetDSLike();
     console.log('ress ds like', res);
     if (res.status == 1) {
-      this.setState({
-        DSLike: res.Data,
-        // refresh: !this.state.refresh,
-      });
-      // alert(5);
-    } else {
-      this.setState({DSLike: []});
-      //   alert('thất bại');
+      //   this.setState({
+      //     DSLike: res.Data,
+      //     // refresh: !this.state.refresh,
+      //   });
+      await Utils.setGlobal(nGlobalKeys.DanhSachLike, res.Data);
+      this.DSLike = await Utils.getGlobal(nGlobalKeys.DanhSachLike);
+      console.log('ds like', this.DSLike);
     }
   };
+
   _renderItem = ({item, index}) => {
+    console.log('item liekt', item);
     return (
-      <TouchableOpacity style={{paddingHorizontal: 5}}>
+      <TouchableOpacity style={{paddingHorizontal: 5, paddingVertical: 5}}>
         <SvgUri
           width={FontSize.scale(25)}
           height={FontSize.verticalScale(25)}
@@ -63,35 +61,41 @@ export default class Test extends Component {
       </TouchableOpacity>
     );
   };
+
   componentDidMount() {
     this._GetDSLike();
   }
+
   render() {
     const {display} = this.state;
+    console.log('this ds like', this.DSLike);
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.touchable}
-          onPress={() => this.change()}>
-          <Text>Press me</Text>
-        </TouchableOpacity>
-        <Tooltip
-          isVisible={this.state.toolTipVisible}
-          // content={<DanhSachLike></DanhSachLike>}
-          content={
-            <View style={{flex: 1, backgroundColor: 'blue'}}>
-              <FlatList
-                data={this.state.DSLike}
-                renderItem={this._renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                horizontal={true}
-              />
-              {/* <DanhSachLike></DanhSachLike> */}
-            </View>
-          }
-          arrowSize={{width: 200, height: 200}}
-          placement="top"
-          onClose={() => this.setState({toolTipVisible: false})}></Tooltip>
+        <Modal animationType="slide" visible={display} transparent={true}>
+          <TouchableOpacity
+            onPress={() => this.change()}
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableWithoutFeedback>
+              <View
+                style={{
+                  height: FontSize.scale(38),
+                  //   width: '50%',
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                }}>
+                <View
+                  style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>
+                  <FlatList
+                    data={this.DSLike}
+                    renderItem={this._renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal={true}
+                  />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </TouchableOpacity>
+        </Modal>
       </View>
     );
   }
@@ -99,8 +103,8 @@ export default class Test extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // backgroundColor: 'gray',
+    // flex: 1,
+    // backgroundColor: '#C0C0C020',
   },
 });
 // const styles = StyleSheet.create({

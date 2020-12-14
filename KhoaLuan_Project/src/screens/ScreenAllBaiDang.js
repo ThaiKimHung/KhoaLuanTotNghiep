@@ -40,16 +40,15 @@ export default class BaiDangComponentScreen extends React.Component {
   };
 
   componentDidUpdate = () => {
-    this.props &&
-    this.props.route &&
-    this.props.route.params &&
-    this.props.route.params.thanhcong == 1
-      ? this._GetDSBaiDang()
-      : null;
+    // this.props &&
+    // this.props.route &&
+    // this.props.route.params &&
+    // this.props.route.params.thanhcong == 1
+    //   ? this._GetDSBaiDang()
+    //   : null;
   };
 
   _GetDSBaiDang = async () => {
-    let id_user = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSBaiDang(await Utils.ngetStorage(nkey.id_user));
     console.log('Danh sách bài đăng Screen all bài đăng:', res);
     // console.log('Danh sách bài đăng Screen all bài đăng:', res);
@@ -59,10 +58,10 @@ export default class BaiDangComponentScreen extends React.Component {
         refresh: !this.state.refresh,
         length: this.state.DSBaiDang.length,
       });
-      console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
+      // console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
     } else {
       this.setState({refresh: !this.state.refresh});
-      alert('thất bại');
+      // alert('thất bại');
     }
   };
 
@@ -122,29 +121,19 @@ export default class BaiDangComponentScreen extends React.Component {
   // };
 
   _renderItem = ({item, index}) => {
-    // console.log();
     return (
       <BaiDangComponent
         key={index}
         item={item}
-        chuyentrang={this.props.nthis}
+        nthis={this}
         onPress={() =>
-          this.props.nthis.props.navigation.navigate('ScreenDetailBaiDang', {
-            item,
+          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
+            ChiTietBaiDang: item,
           })
         }></BaiDangComponent>
     );
   };
   render() {
-    // let delele_ok = this.props.nthis.props.route.params
-    //   ? this.props.nthis.route.params
-    //   : 0;
-
-    // let oki = this.props.nthis ? this.props.nthis : 0;
-    // console.log('this.props.route.params.dêtte', oki);
-    // console.log('this của scren all bài đăng', this.props.nthis);
-    // let hi = oki ? oki.props.route.params : oki;
-    // console.log('this.props.route.', hi);
     return (
       <View>
         <FlatList
@@ -154,6 +143,7 @@ export default class BaiDangComponentScreen extends React.Component {
           refreshing={this.state.refresh}
           onRefresh={() => {
             this.setState({refresh: true});
+            this._GetDSBaiDang();
           }}
           ListEmptyComponent={this.EmptyListMessage}
           ListFooterComponent={this.FoodterMessage}

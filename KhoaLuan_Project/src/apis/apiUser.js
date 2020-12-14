@@ -88,6 +88,17 @@ async function DeleteBaiDang(idbaidang = '') {
   );
   return res;
 }
+// async function TaoLike_BaiDang(id = '', type = '', id_user = '') {
+//   let res = await Utils.post_api(
+//     apiUser + `Baidang_like?id=${id}&type=${type}&id_user=${id_user}`,
+//     null,
+//     false,
+//     true,
+
+//   );
+//   return res;
+// }
+
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,

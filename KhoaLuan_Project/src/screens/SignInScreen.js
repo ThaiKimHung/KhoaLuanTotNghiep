@@ -90,7 +90,8 @@ export default class SignInScreen extends React.Component {
   };
 
   chuyenTrang = () => {
-    this.props.navigation.navigate('HomeStackScreen');
+    // this.props.navigation.replace('HomeStackScreen');
+    Utils.goscreenReplace(this, 'HomeStackScreen');
   };
 
   onPressShowPassword = () => {
@@ -179,8 +180,6 @@ export default class SignInScreen extends React.Component {
             </View>
           </View>
           {/* tài khoản */}
-
-          {/* </View> */}
         </Animatable.View>
       </SafeAreaView>
     );

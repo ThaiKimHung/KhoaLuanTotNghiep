@@ -32,6 +32,7 @@ const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
 const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
+const welcome = require('../assets/images/welcome.png');
 
 const windowWidth = Dimensions.get('window').width;
 import moment from 'moment';
@@ -46,7 +47,6 @@ export default class BaiDangComponenet extends React.Component {
       DaLike: [],
     };
     this.id_like = 1;
-    // this.idbaidang = '';
     this.id_user = '';
     this.item = {};
   }
@@ -112,6 +112,7 @@ export default class BaiDangComponenet extends React.Component {
     let time = day.substring(11, 16);
     // this.idbaidang = item.Id_BaiDang;
     let dslike = item.Like ? item.Like : null;
+    let loaibaidang = item.Id_LoaiBaiDang;
     // console.log('this bài đăng component', this.props);
 
     return (
@@ -169,10 +170,53 @@ export default class BaiDangComponenet extends React.Component {
           </View>
 
           {/* khung chứa nội dung bài đăng và cmt*/}
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
-            <Text>{item.title}</Text>
-            <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
-          </TouchableOpacity>
+
+          {loaibaidang === 4 ? (
+            <View
+              style={{
+                backgroundColor: '#1C86EE',
+                margin: 5,
+              }}>
+              <ImageBackground source={welcome} style={styles.image}>
+                <TouchableOpacity
+                  style={styles.footer1}
+                  onPress={this.props.onPress}>
+                  <View
+                    style={{
+                      marginLeft: 5,
+                      borderRadius: 30,
+                      height: FontSize.scale(40),
+                      width: FontSize.verticalScale(40),
+                    }}>
+                    <Image
+                      style={{
+                        height: FontSize.scale(40),
+                        width: FontSize.verticalScale(40),
+                        borderRadius: 30,
+                      }}
+                      resizeMode="cover"
+                      source={
+                        user.avatar ? {uri: user.avatar} : avatar
+                      }></Image>
+                  </View>
+                  <Text>{item.title}</Text>
+                  <Text style={{fontSize: FontSize.reSize(20)}}>
+                    {item.NoiDung}
+                  </Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.footer}
+              onPress={this.props.onPress}>
+              <Text>{item.title}</Text>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.NoiDung}
+              </Text>
+            </TouchableOpacity>
+          )}
+
           {/* khung chứa số like và cmt */}
           <View style={styles.khung_DemSoLike_Comt}>
             <TouchableOpacity style={styles.khung_DemSoLike}>
@@ -308,6 +352,11 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 10,
   },
+  footer1: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   icon_bacham: {
     height: FontSize.scale(15),
     width: FontSize.verticalScale(15),
@@ -370,5 +419,14 @@ const styles = StyleSheet.create({
     marginLeft: FontSize.reSize(5),
     textAlign: 'center',
     color: '#007DE3',
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    resizeMode: 'contain',
+    height: FontSize.scale(250),
+    // padding: 5,
+    // tintColor: 'yellow',
+    // marginBottom: -50,
   },
 });

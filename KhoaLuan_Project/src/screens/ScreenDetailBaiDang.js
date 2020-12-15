@@ -32,6 +32,7 @@ const daubacham = require('../assets/images/daubacham.png');
 const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
 const send = require('../assets/images/send.png');
+const welcome = require('../assets/images/welcome.png');
 const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
@@ -77,18 +78,6 @@ export default class BaiDangComponenet extends React.Component {
     let res = await AddComment(strBody);
     console.log('res cmt', res);
     console.log('strBody cmt', strBody);
-    // if (this.NoiDung_Cmt != '') {
-
-    // } else {
-    //   showMessage({
-    //     message: 'Thông báo',
-    //     description: '',
-    //     type: 'success',
-    //     duration: 1500,
-    //     backgroundColor: '#007DE3',
-    //     icon: 'success',
-    //   });
-    // }
 
     if (res.status == 1) {
       this.setState({
@@ -130,7 +119,7 @@ export default class BaiDangComponenet extends React.Component {
               source={userCmt.avatar ? {uri: userCmt.avatar} : avatar}></Image>
           </View>
         </TouchableOpacity>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, ac}}>
           <TouchableOpacity
             style={styles.khung_tenUser_Cmt}
             onLongPress={() => {
@@ -143,18 +132,19 @@ export default class BaiDangComponenet extends React.Component {
               {item.NoiDung_cmt}
             </Text>
           </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginHorizontal: 30,
-            }}>
-            <TouchableOpacity>
-              <Text style={{marginLeft: 10}}>Thích</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={{marginLeft: 10}}>Trả lời</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: 30,
+            // backgroundColor: 'blue',
+          }}>
+          <TouchableOpacity>
+            <Text style={{marginLeft: 10}}>Thích</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={{marginLeft: 10}}>Trả lời</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -181,6 +171,7 @@ export default class BaiDangComponenet extends React.Component {
     let SoComment = ChiTietBaiDang.Coment.length;
     this.idBaiDang = ChiTietBaiDang.Id_BaiDang;
     let dslike = ChiTietBaiDang.Like ? ChiTietBaiDang.Like : null;
+    let idbaidang = ChiTietBaiDang.Id_LoaiBaiDang;
     return (
       <View style={styles.container}>
         <GoBack
@@ -230,10 +221,35 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.footer}>
-            <Text>{ChiTietBaiDang.title}</Text>
-            <Text>{ChiTietBaiDang.NoiDung}</Text>
-          </View>
+          {idbaidang === 4 ? (
+            <View style={styles.footer1}>
+              <ImageBackground source={welcome} style={styles.image}>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderRadius: 30,
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                  }}>
+                  <Image
+                    style={{
+                      height: FontSize.scale(40),
+                      width: FontSize.verticalScale(40),
+                      borderRadius: 30,
+                    }}
+                    resizeMode="cover"
+                    source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+                </View>
+                <Text>{ChiTietBaiDang.title}</Text>
+                <Text>{ChiTietBaiDang.NoiDung}</Text>
+              </ImageBackground>
+            </View>
+          ) : (
+            <View style={styles.footer}>
+              <Text>{ChiTietBaiDang.title}</Text>
+              <Text>{ChiTietBaiDang.NoiDung}</Text>
+            </View>
+          )}
         </View>
         <View style={{marginBottom: 5}}>
           <View style={styles.khungLike_Commnet}>
@@ -418,10 +434,13 @@ const styles = StyleSheet.create({
     // textAlign: 'center',
   },
   footer: {
-    // flex: 1,
-    // backgroundColor: 'green',
     margin: 5,
     paddingHorizontal: 10,
+  },
+  footer1: {
+    margin: 5,
+    paddingHorizontal: 10,
+    backgroundColor: '#1C86EE',
   },
   icon_bacham: {
     height: FontSize.scale(15),
@@ -493,5 +512,16 @@ const styles = StyleSheet.create({
   emptyListStyle: {
     textAlign: 'center',
     color: '#696969',
+  },
+  image: {
+    // flex: 1,
+    justifyContent: 'center',
+    resizeMode: 'contain',
+    height: FontSize.scale(250),
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 5,
+    // tintColor: 'yellow',
+    // marginBottom: -50,
   },
 });

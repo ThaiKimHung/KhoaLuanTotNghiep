@@ -23,6 +23,7 @@ import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Login, PostTinhTrang} from '../apis/apiUser';
 
+const avatar = require('../assets/images/avatar.png');
 const logo = require('../assets/images/Jeelogo.png');
 const bg = require('../assets/images/bg.png');
 const add = require('../assets/images/add.png');
@@ -126,20 +127,26 @@ export default class SplashScreen2 extends React.Component {
                 <TouchableOpacity
                   style={styles.khung_Chuaava}
                   onPress={() => this.chuyenTrang()}>
-                  <Avatar
-                    size="medium"
-                    source={
-                      this.state.avatar
-                        ? {uri: this.state.avatar}
-                        : {
-                            uri:
-                              'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                          }
-                    }
-                    activeOpacity={0.7}
-                    rounded
-                  />
-
+                  <View
+                    style={{
+                      marginLeft: 5,
+                      borderRadius: 30,
+                      height: FontSize.scale(40),
+                      width: FontSize.verticalScale(40),
+                      // justifyContent: 'center',
+                      // alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{
+                        height: FontSize.scale(40),
+                        width: FontSize.verticalScale(40),
+                        borderRadius: 30,
+                      }}
+                      resizeMode="cover"
+                      source={
+                        this.state.avatar ? {uri: this.state.avatar} : avatar
+                      }></Image>
+                  </View>
                   <View style={{justifyContent: 'center', margin: 10}}>
                     <Text style={styles.name}>{this.state.name}</Text>
                   </View>
@@ -270,6 +277,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginBottom: 10,
     borderRadius: 20,
+    alignItems: 'center',
   },
   st_button: {
     alignItems: 'center',

@@ -18,7 +18,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 
 export default class GoBack extends React.Component {
   render() {
-    console.log('this goBack', this);
+    // console.log('this goBack', this);
     const {name} = this.props;
     return (
       <View style={styles.back}>

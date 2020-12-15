@@ -16,8 +16,8 @@ import {Avatar, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 
-const goback = require('../assets/images/go-back-left-arrow.png');
 const avatar = require('../assets/images/avatar.png');
+const goback = require('../assets/images/go-back-left-arrow.png');
 // const congratulation = require('../assets/images/congratulations.png');
 export default class SearchUser extends React.Component {
   constructor(props) {
@@ -51,23 +51,23 @@ export default class SearchUser extends React.Component {
           Utils.goscreen(this, 'KhenThuong', item);
           this.props.navigation.navigate('KhenThuong', item);
         }}>
-        {item.Avatar ? (
-          <Avatar
-            size="medium"
-            rounded
-            containerStyle={{margin: 5}}
-            source={{uri: item.Avatar}}
-            activeOpacity={0.7}
-          />
-        ) : (
-          <Avatar
-            size="medium"
-            rounded
-            containerStyle={{margin: 5}}
-            source={avatar}
-            activeOpacity={0.7}
-          />
-        )}
+        <View
+          style={{
+            marginLeft: 5,
+            borderRadius: 30,
+            height: FontSize.scale(30),
+            width: FontSize.verticalScale(30),
+            margin: 10,
+          }}>
+          <Image
+            style={{
+              height: FontSize.scale(30),
+              width: FontSize.verticalScale(30),
+              borderRadius: 30,
+            }}
+            resizeMode="cover"
+            source={item.avatar ? {uri: item.avatar} : avatar}></Image>
+        </View>
         <View
           style={{
             flexDirection: 'row',

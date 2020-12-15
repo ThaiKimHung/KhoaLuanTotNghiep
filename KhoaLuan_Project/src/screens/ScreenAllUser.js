@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FontSize from '../components/size';
-import {Avatar, Accessory, SearchBar} from 'react-native-elements';
+import {SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 const avatar = require('../assets/images/avatar.png');
@@ -73,20 +73,23 @@ export default class ScreenAllUser extends React.Component {
   _renderItem = ({item, index}) => {
     return (
       <TouchableOpacity style={[styles.khungchua]}>
-        <Avatar
-          size="medium"
-          rounded
-          containerStyle={{margin: 5}}
-          source={
-            item.Avatar
-              ? {uri: item.Avatar}
-              : {
-                  uri:
-                    'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                }
-          }
-          activeOpacity={0.7}
-        />
+        <View
+          style={{
+            marginLeft: 5,
+            borderRadius: 30,
+            height: FontSize.scale(30),
+            width: FontSize.verticalScale(30),
+            margin: 10,
+          }}>
+          <Image
+            style={{
+              height: FontSize.scale(30),
+              width: FontSize.verticalScale(30),
+              borderRadius: 30,
+            }}
+            resizeMode="cover"
+            source={item.Avatar ? {uri: item.Avatar} : avatar}></Image>
+        </View>
 
         <View
           style={{

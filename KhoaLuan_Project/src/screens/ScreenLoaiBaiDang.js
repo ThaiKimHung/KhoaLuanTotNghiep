@@ -18,7 +18,7 @@ import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
-
+const avatar = require('../assets/images/avatar.png');
 export default class ScreenLoaiBaiDang extends React.Component {
   constructor(props) {
     super(props);

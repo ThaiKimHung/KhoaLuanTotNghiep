@@ -13,7 +13,6 @@ import {
   Button,
 } from 'react-native';
 import FontSize from '../components/size';
-import {Avatar, Accessory} from 'react-native-elements';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 
 import {GetAllUser} from '../apis/apiUser';
@@ -24,6 +23,7 @@ import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
 
+const avatar = require('../assets/images/avatar.png');
 const logout = require('../assets/images/logout.png');
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
@@ -53,6 +53,7 @@ export default class ScreenCaiDat extends React.Component {
     this.updateTinhTrangUser();
     // Utils.goscreen(this, 'SigninScreen');
     this.props.navigation.navigate('HomeStackScreen', {screen: 'SigninScreen'});
+    // this.props.navigation.navigate('HomeStackScreen', {screen: 'SigninScreen'});
   }
   updateTinhTrangUser = async () => {
     let strBody = JSON.stringify({
@@ -80,19 +81,25 @@ export default class ScreenCaiDat extends React.Component {
 
         <View style={styles.footer}>
           <View style={styles.khungchua}>
-            <Avatar
-              size="medium"
-              source={
-                this.state.avatar
-                  ? {uri: this.state.avatar}
-                  : {
-                      uri:
-                        'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                    }
-              }
-              activeOpacity={0.7}
-              rounded
-            />
+            <View
+              style={{
+                marginLeft: 5,
+                borderRadius: 30,
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(30),
+                // padding: 10,
+              }}>
+              <Image
+                style={{
+                  height: FontSize.scale(30),
+                  width: FontSize.verticalScale(30),
+                  borderRadius: 30,
+                }}
+                resizeMode="cover"
+                source={
+                  this.state.avatar ? {uri: this.state.avatar} : avatar
+                }></Image>
+            </View>
             <Text style={{fontSize: FontSize.reSize(25), marginLeft: 5}}>
               {this.state.name ? this.state.name : 'Loading...'}
             </Text>

@@ -13,7 +13,6 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from './size';
 const avatar = require('../assets/images/avatar.png');
 import {nGlobalKeys} from '../apis/globalKey';
@@ -48,20 +47,24 @@ export default class ChonLoaiBaiDang extends React.Component {
       <View>
         {/* khung chứa avata và khung text input*/}
         <View style={styles.khungchua}>
-          <Avatar
-            size="small"
-            source={
-              this.state.avatar
-                ? {uri: this.state.avatar}
-                : {
-                    uri:
-                      'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                  }
-            }
-            activeOpacity={0.7}
-            rounded
-          />
-
+          <View
+            style={{
+              marginLeft: 5,
+              borderRadius: 30,
+              height: FontSize.scale(30),
+              width: FontSize.verticalScale(30),
+            }}>
+            <Image
+              style={{
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(30),
+                borderRadius: 20,
+              }}
+              resizeMode="cover"
+              source={
+                this.state.avatar ? {uri: this.state.avatar} : avatar
+              }></Image>
+          </View>
           <TouchableOpacity
             style={styles.khung_textinput}
             onPress={this.props.onPress}>

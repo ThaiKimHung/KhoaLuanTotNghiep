@@ -99,6 +99,10 @@ async function DeleteBaiDang_Like(idbaidang = '') {
   return res;
 }
 
+async function AddComment(strbody) {
+  let res = await Utils.post_api(apiUser + `addComment`, strbody);
+  return res;
+}
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,
@@ -115,4 +119,5 @@ export {
   DeleteCommentTrongBaiDang,
   DeleteBaiDang,
   DeleteBaiDang_Like,
+  AddComment,
 };

@@ -15,7 +15,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from 'react-native';
-import {Avatar, Accessory} from 'react-native-elements';
+
 // import DanhSachLike from './DanhSachLike';
 // import ModalComponent from '../components/ModalComponent';
 import Tooltip from 'react-native-walkthrough-tooltip';
@@ -111,7 +111,7 @@ export default class BaiDangComponenet extends React.Component {
   render() {
     const {item = {}} = this.props;
 
-    console.log('item Bai dang component', item);
+    // console.log('item Bai dang component', item);
     // console.log('ngày tạo', item.CreatedDate);
     // console.log('onpress', onPress);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
@@ -131,19 +131,23 @@ export default class BaiDangComponenet extends React.Component {
         <View>
           <View style={styles.header}>
             <TouchableOpacity style={{flexDirection: 'row'}}>
-              <Avatar
-                size="small"
-                rounded
-                source={
-                  user.avatar
-                    ? {uri: user.avatar}
-                    : {
-                        uri:
-                          'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                      }
-                }
-                activeOpacity={0.7}
-              />
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(30),
+                  width: FontSize.verticalScale(30),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    borderRadius: 20,
+                  }}
+                  resizeMode="cover"
+                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+              </View>
+
               <View style={styles.khung_tenUser}>
                 <Text style={styles.txt_TenUser}>{user.Username}</Text>
                 <View

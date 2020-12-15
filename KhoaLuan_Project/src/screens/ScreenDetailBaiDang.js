@@ -14,11 +14,12 @@ import {
   ImageBackground,
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {Avatar, Accessory} from 'react-native-elements';
 import FontSize from '../components/size';
 import GoBack from '../components/GoBack';
 import DanhSachLike from '../components/DanhSachLike';
 import Utils from '../apis/Utils';
+
+import {AddComment} from '../apis/apiUser';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -26,7 +27,7 @@ const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
 const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
-
+const send = require('../assets/images/send.png');
 const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
@@ -47,6 +48,28 @@ export default class BaiDangComponenet extends React.Component {
     }
   };
 
+  DangCmt = () => {
+    // const id_loaibaidang = this.props.route.params.id_loaibaidang;
+    const today = new Date();
+    const date =
+      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    const time = today.getHours() + ':' + today.getMinutes();
+    let strBody = JSON.stringify({
+      ID_BaiDang: 0,
+      NoiDung_cm: '',
+      id_cmt_parent: 0,
+      typepost: string,
+      CreatedDate: '2020-12-15T03:49:15.422Z',
+      CreatedBy: 0,
+      UpdatedDate: '',
+      UpdatedBy: 0,
+    });
+
+    // console.log('strBody tin nhanh', strBody);
+    // let res = await PostBaiDang(strBody);
+    // if (res.status == 1) {
+  };
+
   EmptyListMessage = ({item}) => {
     return (
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -63,19 +86,22 @@ export default class BaiDangComponenet extends React.Component {
     return (
       <View style={styles.khung_TungCmt}>
         <TouchableOpacity>
-          <Avatar
-            size="small"
-            source={
-              userCmt.avatar
-                ? {uri: userCmt.avatar}
-                : {
-                    uri:
-                      'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                  }
-            }
-            activeOpacity={0.7}
-            rounded
-          />
+          <View
+            style={{
+              marginLeft: 5,
+              borderRadius: 30,
+              height: FontSize.scale(30),
+              width: FontSize.verticalScale(30),
+            }}>
+            <Image
+              style={{
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(30),
+                borderRadius: 20,
+              }}
+              resizeMode="cover"
+              source={userCmt.avatar ? {uri: userCmt.avatar} : avatar}></Image>
+          </View>
         </TouchableOpacity>
         <View style={{flex: 1}}>
           <View style={styles.khung_tenUser_Cmt}>
@@ -113,8 +139,11 @@ export default class BaiDangComponenet extends React.Component {
   async componentDidMount() {
     await this.GetData();
   }
+  // async componentDidMount() {
+  //   await this.GetData();
+  // };
   render() {
-    // console.log('this detail', this);
+    console.log('this detail', this);
     // const {item = {}} = Utils.ngetParam(this, 'ChiTietBaiDang', '');
     const {ChiTietBaiDang = {}} = this.props.route.params;
     // console.log('this Detail', this);
@@ -141,19 +170,23 @@ export default class BaiDangComponenet extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Avatar
-                size="small"
-                source={
-                  user.avatar
-                    ? {uri: user.avatar}
-                    : {
-                        uri:
-                          'https://png.pngtree.com/png-clipart/20190904/original/pngtree-black-round-pattern-user-cartoon-avatar-png-image_4492904.jpg',
-                      }
-                }
-                activeOpacity={0.7}
-                rounded
-              />
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(30),
+                  width: FontSize.verticalScale(30),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    borderRadius: 20,
+                  }}
+                  resizeMode="cover"
+                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+              </View>
+
               <View style={styles.khung_tenUser}>
                 <Text style={styles.txt_TenUser}>{user.Username}</Text>
               </View>
@@ -234,7 +267,13 @@ export default class BaiDangComponenet extends React.Component {
           />
         </View>
 
-        <View style={{justifyContent: 'flex-end'}}>
+        <View
+          style={{
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 5,
+          }}>
           <TextInput
             placeholder="Nhập nội dung cmt"
             autoFocus={true}
@@ -244,7 +283,18 @@ export default class BaiDangComponenet extends React.Component {
               borderRadius: 20,
               padding: 5,
               paddingLeft: 10,
+              // marginLeft: 5,
+              flex: 1,
             }}></TextInput>
+          <TouchableOpacity style={{padding: 10}}>
+            <Image
+              source={send}
+              style={{
+                height: FontSize.scale(20),
+                width: FontSize.verticalScale(20),
+                // padding: 10,
+              }}></Image>
+          </TouchableOpacity>
         </View>
       </View>
     );

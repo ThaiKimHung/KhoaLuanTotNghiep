@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FontSize from './size';
-import {Avatar, SearchBar} from 'react-native-elements';
+import {SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
@@ -53,21 +53,40 @@ export default class SearchUser extends React.Component {
           this.props.onPress()
         }>
         {item.Avatar ? (
-          <Avatar
-            size="medium"
-            rounded
-            containerStyle={{margin: 5}}
-            source={{uri: item.Avatar}}
-            activeOpacity={0.7}
-          />
+          <View
+            style={{
+              marginLeft: 5,
+              borderRadius: 30,
+              height: FontSize.scale(30),
+              width: FontSize.verticalScale(30),
+            }}>
+            <Image
+              style={{
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(30),
+                borderRadius: 20,
+              }}
+              resizeMode="cover"
+              source={{uri: item.Avatar}}></Image>
+          </View>
         ) : (
-          <Avatar
-            size="medium"
-            rounded
-            containerStyle={{margin: 5}}
-            source={avatar}
-            activeOpacity={0.7}
-          />
+          <View
+            style={{
+              marginLeft: 5,
+              borderRadius: 30,
+              height: FontSize.scale(30),
+              width: FontSize.verticalScale(30),
+            }}>
+            <Image
+              style={{
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(30),
+                borderRadius: 20,
+              }}
+              resizeMode="cover"
+              containerStyle={{margin: 5}}
+              source={avatar}></Image>
+          </View>
         )}
         <View
           style={{

@@ -24,6 +24,7 @@ import SvgUri from 'react-native-svg-uri';
 import {GetDSBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
+const avatar = require('../assets/images/avatar.png');
 export default class BaiDangComponentScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -50,12 +51,19 @@ export default class BaiDangComponentScreen extends React.Component {
   };
 
   _GetDSBaiDang = async () => {
+    let res = '';
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    // console.log('id bài đăng', this.state.id_user);
-    if (this.state.id_user) {
-      let res = await GetDSBaiDang(this.state.id_user);
+    console.log('id bài đăng', this.state.id_user);
+
+    if (this.state.id_user == null) {
+      this.setState({
+        id_user: await Utils.ngetStorage(nkey.id_user),
+      });
+    }
+    {
+      res = await GetDSBaiDang(this.state.id_user);
       console.log('Danh sách bài đăng Screen all bài đăng:', res);
       // console.log('Danh sách bài đăng Screen all bài đăng:', res);
       if (res.status == 1) {

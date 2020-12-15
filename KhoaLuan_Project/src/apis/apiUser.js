@@ -42,7 +42,7 @@ async function GetDSKhenThuong() {
   return res;
 }
 
-async function GetDSBaiDang(user = '') {
+async function GetDSBaiDang(user) {
   let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
   return res;
 }
@@ -88,16 +88,16 @@ async function DeleteBaiDang(idbaidang = '') {
   );
   return res;
 }
-// async function TaoLike_BaiDang(id = '', type = '', id_user = '') {
-//   let res = await Utils.post_api(
-//     apiUser + `Baidang_like?id=${id}&type=${type}&id_user=${id_user}`,
-//     null,
-//     false,
-//     true,
-
-//   );
-//   return res;
-// }
+async function DeleteBaiDang_Like(idbaidang = '') {
+  let res = await Utils.post_api(
+    apiUser + `deleteBaiDang_like?id_baidang=${idbaidang}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
 
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
@@ -114,4 +114,5 @@ export {
   DeleteLikeTrongBaiDang,
   DeleteCommentTrongBaiDang,
   DeleteBaiDang,
+  DeleteBaiDang_Like,
 };

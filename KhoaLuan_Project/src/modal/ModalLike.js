@@ -22,9 +22,9 @@ export default class ModalLike extends Component {
     super(props);
     this.state = {
       display: true,
-      //   DSLike: [],
+      DSLike: [],
     };
-    this.DSLike = [];
+    // this.DSLike = [];
   }
   change() {
     this.setState({
@@ -37,20 +37,31 @@ export default class ModalLike extends Component {
     let res = await GetDSLike();
     console.log('ress ds like', res);
     if (res.status == 1) {
-      //   this.setState({
-      //     DSLike: res.Data,
-      //     // refresh: !this.state.refresh,
-      //   });
-      await Utils.setGlobal(nGlobalKeys.DanhSachLike, res.Data);
+      this.setState({
+        DSLike: res.Data,
+        // refresh: !this.state.refresh,
+      });
+      //   await Utils.setGlobal(nGlobalKeys.DanhSachLike, res.Data);
+      //   this.DSLike = await Utils.getGlobal(nGlobalKeys.DanhSachLike);
+      //   console.log('ds like', this.DSLike);
+    }
+  };
+
+  GanDSLike = async () => {
+    if (await Utils.getGlobal(nGlobalKeys.DanhSachLike)) {
       this.DSLike = await Utils.getGlobal(nGlobalKeys.DanhSachLike);
-      console.log('ds like', this.DSLike);
     }
   };
 
   _renderItem = ({item, index}) => {
-    console.log('item liekt', item);
+    // console.log('item liekt', item);
     return (
-      <TouchableOpacity style={{paddingHorizontal: 5, paddingVertical: 5}}>
+      <TouchableOpacity
+        style={{paddingHorizontal: 5, paddingVertical: 5}}
+        onPress={() => {
+          this.props.route.params.layve();
+          //   Utils.goscreen(this, 'Home', {DuLieuLike: item});
+        }}>
         <SvgUri
           width={FontSize.scale(25)}
           height={FontSize.verticalScale(25)}
@@ -62,13 +73,14 @@ export default class ModalLike extends Component {
     );
   };
 
-  componentDidMount() {
-    this._GetDSLike();
+  async componentDidMount() {
+    await this._GetDSLike();
+    await this.GanDSLike();
   }
 
   render() {
     const {display} = this.state;
-    console.log('this ds like', this.DSLike);
+    console.log('this ds like', this.props);
     return (
       <View style={styles.container}>
         <Modal animationType="slide" visible={display} transparent={true}>
@@ -86,7 +98,8 @@ export default class ModalLike extends Component {
                 <View
                   style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>
                   <FlatList
-                    data={this.DSLike}
+                    // data={this.DSLike ? this.DSLike : this.GanDSLike()}
+                    data={this.state.DSLike}
                     renderItem={this._renderItem}
                     keyExtractor={(item, index) => index.toString()}
                     horizontal={true}
@@ -107,43 +120,3 @@ const styles = StyleSheet.create({
     // backgroundColor: '#C0C0C020',
   },
 });
-// const styles = StyleSheet.create({
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginTop: 22,
-//   },
-//   modalView: {
-//     margin: 20,
-//     backgroundColor: 'white',
-//     borderRadius: 20,
-//     padding: 35,
-//     alignItems: 'center',
-//     shadowColor: '#000',
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 3.84,
-//     elevation: 5,
-//   },
-//   openButton: {
-//     backgroundColor: '#F194FF',
-//     borderRadius: 20,
-//     padding: 10,
-//     elevation: 2,
-//   },
-//   textStyle: {
-//     color: 'white',
-//     fontWeight: 'bold',
-//     textAlign: 'center',
-//   },
-//   modalText: {
-//     marginBottom: 15,
-//     textAlign: 'center',
-//   },
-// });
-
-// export default App;

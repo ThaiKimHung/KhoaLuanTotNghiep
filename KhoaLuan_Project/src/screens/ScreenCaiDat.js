@@ -51,7 +51,8 @@ export default class ScreenCaiDat extends React.Component {
     console.log('flag1 sau out', flag1);
     AsyncStorage.clear();
     this.updateTinhTrangUser();
-    this.props.navigation.navigate('SigninScreen');
+    Utils.goscreen(this, 'SigninScreen');
+    // this.props.navigation.navigate('SigninScreen');
   }
   updateTinhTrangUser = async () => {
     let strBody = JSON.stringify({

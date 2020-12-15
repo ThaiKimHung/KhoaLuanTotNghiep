@@ -10,8 +10,8 @@ import {
 
 // const domain = 'http://192.168.3.49/';
 // const domain = 'http://192.168.43.236/';
-// const domain = 'http://192.168.3.43/';
-const domain = 'http://192.168.100.5/';
+const domain = 'http://192.168.3.43/';
+// const domain = 'http://192.168.100.5/';
 //localhost:44340/
 // const domain = 'http://127.0.0.1/';
 async function post_api(

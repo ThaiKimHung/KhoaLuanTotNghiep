@@ -32,6 +32,7 @@ export default class BaiDangComponentScreen extends React.Component {
       refresh: true,
       length: '',
       thanhcong: '',
+      id_user: '',
     };
   }
 
@@ -49,19 +50,25 @@ export default class BaiDangComponentScreen extends React.Component {
   };
 
   _GetDSBaiDang = async () => {
-    let res = await GetDSBaiDang(await Utils.ngetStorage(nkey.id_user));
-    console.log('Danh sách bài đăng Screen all bài đăng:', res);
-    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
-    if (res.status == 1) {
-      this.setState({
-        DSBaiDang: res.data,
-        refresh: !this.state.refresh,
-        length: this.state.DSBaiDang.length,
-      });
-      // console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
-    } else {
-      this.setState({refresh: !this.state.refresh});
-      // alert('thất bại');
+    this.setState({
+      id_user: await Utils.ngetStorage(nkey.id_user),
+    });
+    // console.log('id bài đăng', this.state.id_user);
+    if (this.state.id_user) {
+      let res = await GetDSBaiDang(this.state.id_user);
+      console.log('Danh sách bài đăng Screen all bài đăng:', res);
+      // console.log('Danh sách bài đăng Screen all bài đăng:', res);
+      if (res.status == 1) {
+        this.setState({
+          DSBaiDang: res.data,
+          refresh: !this.state.refresh,
+          length: this.state.DSBaiDang.length,
+        });
+        // console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
+      } else {
+        this.setState({refresh: !this.state.refresh});
+        // alert('thất bại');
+      }
     }
   };
 

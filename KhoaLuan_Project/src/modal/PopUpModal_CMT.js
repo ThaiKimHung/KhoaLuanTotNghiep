@@ -13,11 +13,7 @@ import {
 } from 'react-native';
 import FontSize from '../components/size';
 
-import {
-  DeleteBaiDang,
-  DeleteCommentTrongBaiDang,
-  DeleteLikeTrongBaiDang,
-} from '../apis/apiUser';
+import {DeleteComment, DeleteComment_Like} from '../apis/apiUser';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -28,15 +24,16 @@ import {useRoute} from '@react-navigation/native';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
-export default class PopUpModal_XoaSua extends Component {
+const answer = require('../assets/images/chat.png');
+export default class PopUpModal_CMT extends Component {
   constructor(props) {
     super(props);
     this.state = {
       display: true,
       id_user: '',
-      idBaiDang: '',
       id_NguoiDang: '',
       xoathanhcong: true,
+      Idcmt: '',
     };
   }
   async _getThongTin() {
@@ -52,65 +49,39 @@ export default class PopUpModal_XoaSua extends Component {
     Utils.goback(this, '');
   }
 
-  XoaBaiDang = async () => {
-    //xóa like
-    let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
-    // console.log('res like', res_like);
-    let res_cmt = await DeleteCommentTrongBaiDang(this.state.idBaiDang);
-    // console.log('res cmt', res_cmt);
-
-    //xóa bài đăng
-    let res = await DeleteBaiDang(this.state.idBaiDang);
-    // console.log('id bài đăng fun xóa bài đăng', this.state.idBaiDang);
-    // console.log('ress delete bài đăng', res);
-    if (res_like.status == 1 && res_cmt.status == 1 && res.status == 1) {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Xóa bài thành công',
-        type: 'success',
-        duration: 1500,
-        icon: 'success',
-      });
-      this.setState({
-        thanhcong: true,
-      });
-      this.xoathanhcong();
-    } else {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Xóa bài thất bại',
-        type: 'danger',
-        duration: 1500,
-        icon: 'danger',
-      });
-      this.setState({
-        thanhcong: false,
-      });
-      this.change();
+  Xoa_Cmt = async () => {
+    let res_like = await DeleteComment_Like(this.state.Idcmt);
+    // console.log('res like cmt', res_like);
+    let res = await DeleteComment(this.state.Idcmt);
+    // console.log('res delete cmt', res);
+    if (res_like.status == 1 && res.status == 1) {
+      //   Utils.goscreen(this, 'ScreenDetailBaiDang');
+      Utils.goback(this);
     }
   };
 
   NhanThongTin = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    console.log('item modal', id_nguoidang);
-    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
+    const {Detail_Cmt = {}} = this.props.route.params;
+    console.log('Detail_Cmt modal', Detail_Cmt);
+    let user = Detail_Cmt ? Detail_Cmt.User_comment[0] : {};
 
     await this.setState({
-      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
+      //   idBaiDang: Detail_Cmt ? Detail_Cmt.Id_BaiDang : null,
       id_NguoiDang: user ? user.ID_user : null,
+      Idcmt: Detail_Cmt.id_cmt,
     });
   };
 
-  xoathanhcong = () => {
-    let delete_thanhcong = 1;
-    this.setState({
-      display: !this.state.display,
-    });
-    // this.props.navigation.navigate('HomeScreen', {
-    //   delete_thanhcong,
-    // });
-    Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
-  };
+  //   xoathanhcong_cmt = () => {
+  //     let delete_thanhcong = 1;
+  //     this.setState({
+  //       display: !this.state.display,
+  //     });
+  //     // this.props.navigation.navigate('HomeScreen', {
+  //     //   delete_thanhcong,
+  //     // });
+  //     Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
+  //   };
 
   componentDidMount() {
     this._getThongTin();
@@ -119,6 +90,7 @@ export default class PopUpModal_XoaSua extends Component {
 
   render() {
     const {display} = this.state;
+    // console.log('this modal popup cmt', this);
     return (
       <View>
         <Modal
@@ -142,7 +114,17 @@ export default class PopUpModal_XoaSua extends Component {
                   maxHeight: deviceHeight * 0.4,
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
-                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
+                  <View style={{marginTop: 5, height: FontSize.scale(150)}}>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}>
+                      <Image source={answer} style={styles.image_st}></Image>
+                      <Text style={{fontSize: 20}}>Trả lời</Text>
+                    </TouchableOpacity>
+
                     <TouchableOpacity
                       style={{
                         flexDirection: 'row',
@@ -160,34 +142,23 @@ export default class PopUpModal_XoaSua extends Component {
                         padding: 5,
                       }}
                       onPress={() => {
-                        this.XoaBaiDang();
+                        this.Xoa_Cmt();
                       }}>
                       <Image source={delet} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Xóa</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
-                    <View
+                  <View style={{marginTop: 5, height: FontSize.scale(150)}}>
+                    <TouchableOpacity
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
                       }}>
-                      <Image source={edite} style={styles.image_st1}></Image>
-                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
-                    </View>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: 5,
-                      }}
-                      onPress={() => this.change()}>
-                      <Image source={delet} style={styles.image_st1}></Image>
-                      <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
-                    </View>
+                      <Image source={answer} style={styles.image_st}></Image>
+                      <Text style={{fontSize: 20}}>Trả lời</Text>
+                    </TouchableOpacity>
                   </View>
                 )}
               </View>

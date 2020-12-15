@@ -28,4 +28,6 @@ import Test from './src/screens/Test';
 import ModalLike from './src/modal/ModalLike';
 import EditKhenThuong from './src/baidang/EditKhenThuong';
 
+import PopUpModal_CMT from './src/modal/PopUpModal_CMT';
+
 AppRegistry.registerComponent(appName, () => App);

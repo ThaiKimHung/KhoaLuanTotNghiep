@@ -103,6 +103,28 @@ async function AddComment(strbody) {
   let res = await Utils.post_api(apiUser + `addComment`, strbody);
   return res;
 }
+async function DeleteComment_Like(id_cmt = '') {
+  let res = await Utils.post_api(
+    apiUser + `deleteComment_like?id_cmt=${id_cmt}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
+async function DeleteComment(id_cmt = '') {
+  let res = await Utils.post_api(
+    apiUser + `deleteComment?id_cmt=${id_cmt}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,
@@ -120,4 +142,6 @@ export {
   DeleteBaiDang,
   DeleteBaiDang_Like,
   AddComment,
+  DeleteComment_Like,
+  DeleteComment,
 };

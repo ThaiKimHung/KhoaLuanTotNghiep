@@ -28,7 +28,7 @@ import {useRoute} from '@react-navigation/native';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
-export default class PopUpModal_XoaSua extends Component {
+export default class PopUpModal_XoaSua_Detail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,17 +52,14 @@ export default class PopUpModal_XoaSua extends Component {
     Utils.goback(this, '');
   }
 
-  XoaBaiDang = async () => {
+  XoaCmt = async () => {
     //xóa like
     let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
-    // console.log('res like', res_like);
+    // xóa cmt
     let res_cmt = await DeleteCommentTrongBaiDang(this.state.idBaiDang);
-    // console.log('res cmt', res_cmt);
 
     //xóa bài đăng
     let res = await DeleteBaiDang(this.state.idBaiDang);
-    // console.log('id bài đăng fun xóa bài đăng', this.state.idBaiDang);
-    // console.log('ress delete bài đăng', res);
     if (res_like.status == 1 && res_cmt.status == 1 && res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -91,12 +88,12 @@ export default class PopUpModal_XoaSua extends Component {
   };
 
   NhanThongTin = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    console.log('item modal', id_nguoidang);
-    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
+    const {DetailBaiDang = {}} = this.props.route.params;
+    console.log('DetailBaiDang modal', DetailBaiDang);
+    let user = DetailBaiDang ? DetailBaiDang.User_DangBai[0] : {};
 
     await this.setState({
-      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
+      idBaiDang: DetailBaiDang ? DetailBaiDang.Id_BaiDang : null,
       id_NguoiDang: user ? user.ID_user : null,
     });
   };
@@ -119,6 +116,7 @@ export default class PopUpModal_XoaSua extends Component {
 
   render() {
     const {display} = this.state;
+    console.log('this modal popup detail', this);
     return (
       <View>
         <Modal
@@ -142,7 +140,7 @@ export default class PopUpModal_XoaSua extends Component {
                   maxHeight: deviceHeight * 0.4,
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
-                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
+                  <View style={{marginTop: 5}}>
                     <TouchableOpacity
                       style={{
                         flexDirection: 'row',
@@ -167,13 +165,18 @@ export default class PopUpModal_XoaSua extends Component {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
+                  <View style={{marginTop: 5}}>
                     <View
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
-                      }}>
+                      }}
+                      // onPress={() => {
+                      //   this.change(),
+                      //     this.props.navigation.navigate('SearchUser');
+                      // }}
+                    >
                       <Image source={edite} style={styles.image_st1}></Image>
                       <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
                     </View>

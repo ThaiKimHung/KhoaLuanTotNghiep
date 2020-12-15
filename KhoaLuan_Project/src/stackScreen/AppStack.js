@@ -28,7 +28,8 @@ import BaiDangComponent from '../components/BaiDangComponent';
 import ModalComponent from '../modal/ModalComponent';
 import PopUpModal_XoaSua from '../modal/PopUpModal_XoaSua';
 import ModalLike from '../modal/ModalLike';
-// import  from '../components/SearchUser_Component';
+import PopUpModal_XoaSua_Detail from '../modal/PopUpModal_XoaSua_Detail';
+import PopUpModal_CMT from '../modal/PopUpModal_CMT';
 
 import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
@@ -125,6 +126,11 @@ const AppStack = () => {
       <Stack.Screen name="ModalComponent" component={ModalComponent} />
       <Stack.Screen name="PopUpModal_XoaSua" component={PopUpModal_XoaSua} />
       <Stack.Screen name="ModalLike" component={ModalLike} />
+      <Stack.Screen
+        name="PopUpModal_XoaSua_Detail"
+        component={PopUpModal_XoaSua_Detail}
+      />
+      <Stack.Screen name="PopUpModal_CMT" component={PopUpModal_CMT} />
     </Stack.Navigator>
   );
 };

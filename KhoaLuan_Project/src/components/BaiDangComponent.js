@@ -22,7 +22,7 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 
-import {GetDSLike, AddLike} from '../apis/apiUser';
+import {GetDSLike, AddLike, DeleteBaiDang_Like} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
@@ -46,10 +46,11 @@ export default class BaiDangComponenet extends React.Component {
       DaLike: [],
     };
     this.id_like = 1;
-    this.idbaidang = '';
+    // this.idbaidang = '';
     this.id_user = '';
     this.item = {};
   }
+
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
     console.log('ress add like', res);
@@ -58,19 +59,10 @@ export default class BaiDangComponenet extends React.Component {
     // });
   };
 
-  // _GetDSLike = async () => {
-  //   let res = await GetDSLike();
-  //   console.log('ress ds like', res);
-  //   if (res.status == 1) {
-  //     this.setState({
-  //       DSLike: res.Data,
-  //       // refresh: !this.state.refresh,
-  //     });
-  //     // alert(5);
-  //   } else {
-  //     this.setState({DSLike: []});
-  //   }
-  // };
+  DeleteLike = async (idbaidang) => {
+    let res = await DeleteBaiDang_Like(idbaidang);
+    console.log('ress xóa like', res);
+  };
 
   _renderItem = ({item, index}) => {
     return (
@@ -111,9 +103,6 @@ export default class BaiDangComponenet extends React.Component {
   render() {
     const {item = {}} = this.props;
 
-    // console.log('item Bai dang component', item);
-    // console.log('ngày tạo', item.CreatedDate);
-    // console.log('onpress', onPress);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;
@@ -121,7 +110,7 @@ export default class BaiDangComponenet extends React.Component {
     let day = item.CreatedDate;
     let ngay = day.substring(0, 10);
     let time = day.substring(11, 16);
-    this.idbaidang = item.Id_BaiDang;
+    // this.idbaidang = item.Id_BaiDang;
     let dslike = item.Like ? item.Like : null;
     // console.log('this bài đăng component', this.props);
 
@@ -206,11 +195,7 @@ export default class BaiDangComponenet extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onPress={() => {
-                  //delete like ngay đây
-                  // this.TaoLike();
-                  // this.setState({
-                  //   toolTipVisible: true,
-                  // });
+                  this.DeleteLike(item.Id_BaiDang);
                 }}>
                 <View style={{flexDirection: 'row'}}>
                   <SvgUri
@@ -220,7 +205,6 @@ export default class BaiDangComponenet extends React.Component {
                       uri: dslike.icon,
                     }}
                   />
-                  {/* {console.log('icon', dslike.icon)} */}
                   <Text style={styles.text_Like_cmt1}>{dslike.title}</Text>
                 </View>
               </TouchableOpacity>

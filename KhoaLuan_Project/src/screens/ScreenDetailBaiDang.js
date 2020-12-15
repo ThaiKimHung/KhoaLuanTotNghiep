@@ -12,14 +12,18 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  FlatList,
 } from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+
 import FontSize from '../components/size';
 import GoBack from '../components/GoBack';
 import DanhSachLike from '../components/DanhSachLike';
 import Utils from '../apis/Utils';
-
+import {nkey} from '../apis/keyStore';
+import SvgUri from 'react-native-svg-uri';
 import {AddComment} from '../apis/apiUser';
+
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -36,7 +40,10 @@ export default class BaiDangComponenet extends React.Component {
     this.state = {
       refresh: true,
       thich: false,
+      text_Cmt: '',
     };
+    this.idBaiDang = '';
+    // this.NoiDung_Cmt = '';
   }
   GetData = () => {
     if (this.props.route.params != null) {
@@ -48,26 +55,46 @@ export default class BaiDangComponenet extends React.Component {
     }
   };
 
-  DangCmt = () => {
+  DangCmt = async () => {
     // const id_loaibaidang = this.props.route.params.id_loaibaidang;
     const today = new Date();
     const date =
       today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
     const time = today.getHours() + ':' + today.getMinutes();
+
+    let id_user = await Utils.ngetStorage(nkey.id_user);
+
     let strBody = JSON.stringify({
-      ID_BaiDang: 0,
-      NoiDung_cm: '',
-      id_cmt_parent: 0,
-      typepost: string,
-      CreatedDate: '2020-12-15T03:49:15.422Z',
-      CreatedBy: 0,
-      UpdatedDate: '',
+      ID_BaiDang: this.idBaiDang,
+      NoiDung_cmt: this.state.text_Cmt,
+      typepost: '',
+      CreatedDate: date + 'T' + time,
+      CreatedBy: id_user,
+      UpdatedDate: '0',
       UpdatedBy: 0,
     });
 
-    // console.log('strBody tin nhanh', strBody);
-    // let res = await PostBaiDang(strBody);
-    // if (res.status == 1) {
+    let res = await AddComment(strBody);
+    console.log('res cmt', res);
+    console.log('strBody cmt', strBody);
+    // if (this.NoiDung_Cmt != '') {
+
+    // } else {
+    //   showMessage({
+    //     message: 'Thông báo',
+    //     description: '',
+    //     type: 'success',
+    //     duration: 1500,
+    //     backgroundColor: '#007DE3',
+    //     icon: 'success',
+    //   });
+    // }
+
+    if (res.status == 1) {
+      this.setState({
+        text_Cmt: '',
+      });
+    }
   };
 
   EmptyListMessage = ({item}) => {
@@ -104,20 +131,22 @@ export default class BaiDangComponenet extends React.Component {
           </View>
         </TouchableOpacity>
         <View style={{flex: 1}}>
-          <View style={styles.khung_tenUser_Cmt}>
-            {/* <Text style={styles.txt_TenUser}>{user.Username}</Text> */}
+          <TouchableOpacity
+            style={styles.khung_tenUser_Cmt}
+            onLongPress={() => {
+              Utils.goscreen(this, 'PopUpModal_CMT', {
+                Detail_Cmt: item,
+              });
+            }}>
             <Text style={styles.txt_TenUser_Cmt}>{userCmt.Username}</Text>
-            <Text style={{marginLeft: 5, marginBottom: 5}}>
+            <Text style={{marginLeft: 15, marginBottom: 5}}>
               {item.NoiDung_cmt}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
-              //   backgroundColor: 'yellow',
-              //   padding: 2,
               marginHorizontal: 30,
-              marginTop: -5,
             }}>
             <TouchableOpacity>
               <Text style={{marginLeft: 10}}>Thích</Text>
@@ -130,6 +159,7 @@ export default class BaiDangComponenet extends React.Component {
       </View>
     );
   };
+
   TaoLike = () => {
     this.setState({
       thich: !this.state.thich,
@@ -139,21 +169,18 @@ export default class BaiDangComponenet extends React.Component {
   async componentDidMount() {
     await this.GetData();
   }
-  // async componentDidMount() {
-  //   await this.GetData();
-  // };
+
   render() {
     console.log('this detail', this);
-    // const {item = {}} = Utils.ngetParam(this, 'ChiTietBaiDang', '');
     const {ChiTietBaiDang = {}} = this.props.route.params;
-    // console.log('this Detail', this);
-    // console.log('item Detail', this.props.route.params);
     console.log('this ChiTietBaiDang screen Detail bài đăng', ChiTietBaiDang);
     let user = ChiTietBaiDang.User_DangBai
       ? ChiTietBaiDang.User_DangBai[0]
       : {};
     let Solike = ChiTietBaiDang.Like_BaiDang.length;
     let SoComment = ChiTietBaiDang.Coment.length;
+    this.idBaiDang = ChiTietBaiDang.Id_BaiDang;
+    let dslike = ChiTietBaiDang.Like ? ChiTietBaiDang.Like : null;
     return (
       <View style={styles.container}>
         <GoBack
@@ -192,7 +219,13 @@ export default class BaiDangComponenet extends React.Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.khung_daubacham}>
+            <TouchableOpacity
+              style={styles.khung_daubacham}
+              onPress={() => {
+                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail', {
+                  DetailBaiDang: ChiTietBaiDang,
+                });
+              }}>
               <Image style={styles.imageLike_Commnet} source={daubacham} />
             </TouchableOpacity>
           </View>
@@ -204,23 +237,26 @@ export default class BaiDangComponenet extends React.Component {
         </View>
         <View style={{marginBottom: 5}}>
           <View style={styles.khungLike_Commnet}>
-            {this.state.thich === false ? (
+            {dslike ? (
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onPress={() => {
                   this.TaoLike();
                 }}>
-                <Image
-                  style={[styles.imageLike_Commnet, {tintColor: '#696969'}]}
-                  source={thich}
+                <SvgUri
+                  width={FontSize.scale(20)}
+                  height={FontSize.verticalScale(20)}
+                  source={{
+                    uri: dslike.icon,
+                  }}
                 />
                 <Text
                   style={{
                     marginLeft: FontSize.reSize(5),
                     textAlign: 'center',
-                    color: '#696969',
+                    color: '#007DE3',
                   }}>
-                  Thích ({Solike})
+                  {dslike.title} ({Solike})
                 </Text>
               </TouchableOpacity>
             ) : (
@@ -240,6 +276,23 @@ export default class BaiDangComponenet extends React.Component {
                 </Text>
               </TouchableOpacity>
             )}
+
+            {/* <TouchableOpacity
+                style={styles.khung_Thich}
+                onPress={() => {
+                  this.TaoLike();
+                }}>
+                <Image style={styles.imageLike_Commnet1} source={thich} />
+                <Text
+                  style={{
+                    marginLeft: FontSize.reSize(5),
+                    textAlign: 'center',
+                    color: '#007DE3',
+                  }}>
+                  Thích ({Solike})
+                </Text>
+              </TouchableOpacity>
+             */}
 
             <TouchableOpacity style={styles.khung_BinhLuan}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
@@ -285,16 +338,37 @@ export default class BaiDangComponenet extends React.Component {
               paddingLeft: 10,
               // marginLeft: 5,
               flex: 1,
-            }}></TextInput>
-          <TouchableOpacity style={{padding: 10}}>
-            <Image
-              source={send}
-              style={{
-                height: FontSize.scale(20),
-                width: FontSize.verticalScale(20),
-                // padding: 10,
-              }}></Image>
-          </TouchableOpacity>
+            }}
+            value={this.state.text_Cmt}
+            onChangeText={(text) =>
+              this.setState({
+                text_Cmt: text,
+              })
+            }></TextInput>
+          {this.state.text_Cmt ? (
+            <TouchableOpacity
+              style={{marginRight: 5}}
+              onPress={() => this.DangCmt()}>
+              <Image
+                source={send}
+                style={{
+                  height: FontSize.scale(20),
+                  width: FontSize.verticalScale(20),
+                  // padding: 10,
+                }}></Image>
+            </TouchableOpacity>
+          ) : (
+            <View style={{marginRight: 5}}>
+              <Image
+                source={send}
+                style={{
+                  height: FontSize.scale(20),
+                  width: FontSize.verticalScale(20),
+                  // padding: 10,
+                  tintColor: '#696969',
+                }}></Image>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -322,8 +396,8 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // alignItems: 'center',
     // marginLeft: 10,
-    padding: 3,
-    margin: 5,
+    padding: 5,
+    marginLeft: 5,
     borderRadius: 15,
   },
   khung_daubacham: {
@@ -340,7 +414,7 @@ const styles = StyleSheet.create({
   txt_TenUser_Cmt: {
     fontWeight: 'bold',
     fontSize: FontSize.reSize(20),
-    marginLeft: 3,
+    marginLeft: 10,
     // textAlign: 'center',
   },
   footer: {

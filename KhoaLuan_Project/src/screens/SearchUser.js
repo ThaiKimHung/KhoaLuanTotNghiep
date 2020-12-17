@@ -48,8 +48,8 @@ export default class SearchUser extends React.Component {
       <TouchableOpacity
         style={[styles.khungchua]}
         onPress={() => {
-          Utils.goscreen(this, 'KhenThuong', item);
-          this.props.navigation.navigate('KhenThuong', item);
+          Utils.goscreen(this, 'KhenThuong', {iduser: item});
+          // this.props.navigation.navigate('KhenThuong', item);
         }}>
         <View
           style={{
@@ -66,7 +66,7 @@ export default class SearchUser extends React.Component {
               borderRadius: 30,
             }}
             resizeMode="cover"
-            source={item.avatar ? {uri: item.avatar} : avatar}></Image>
+            source={item.Avatar ? {uri: item.Avatar} : avatar}></Image>
         </View>
         <View
           style={{
@@ -98,8 +98,8 @@ export default class SearchUser extends React.Component {
     this.setState({filteredData: filteredData});
   };
 
-  componentDidMount() {
-    this._GetAllUser();
+  async componentDidMount() {
+    await this._GetAllUser();
   }
 
   render() {

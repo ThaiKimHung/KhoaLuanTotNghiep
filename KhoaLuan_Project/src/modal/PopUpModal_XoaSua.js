@@ -92,7 +92,8 @@ export default class PopUpModal_XoaSua extends Component {
 
   NhanThongTin = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('item modal', id_nguoidang);
+    console.log('this modal xóa sửa', this.props);
+    console.log('id_nguoidang modal xóa sửa', id_nguoidang);
     let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({
@@ -112,9 +113,9 @@ export default class PopUpModal_XoaSua extends Component {
     Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
   };
 
-  componentDidMount() {
-    this._getThongTin();
-    this.NhanThongTin();
+  async componentDidMount() {
+    await this._getThongTin();
+    await this.NhanThongTin();
   }
 
   render() {
@@ -148,6 +149,11 @@ export default class PopUpModal_XoaSua extends Component {
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
+                      }}
+                      onPress={() => {
+                        Utils.goscreen(this, 'Screen_EditBaiDang', {
+                          id_nguoidang: this.props.route.params,
+                        });
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
@@ -159,9 +165,24 @@ export default class PopUpModal_XoaSua extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        this.XoaBaiDang();
-                      }}>
+                      onPress={() =>
+                        Alert.alert(
+                          'Thông Báo',
+                          'Bạn Muốn Xóa Bài Đăng?',
+                          [
+                            {text: 'Đồng ý', onPress: () => this.XoaBaiDang()},
+                            {
+                              text: 'Hủy',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        )
+                      }
+                      // onPress={() => {
+                      //   this.XoaBaiDang();
+                      // }}
+                    >
                       <Image source={delet} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Xóa</Text>
                     </TouchableOpacity>
@@ -184,7 +205,8 @@ export default class PopUpModal_XoaSua extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => this.change()}>
+                      // onPress={() => this.change()}
+                    >
                       <Image source={delet} style={styles.image_st1}></Image>
                       <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
                     </View>

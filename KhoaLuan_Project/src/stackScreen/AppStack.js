@@ -35,6 +35,8 @@ import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
 import ChaoMungTV from '../baidang/ChaoMungTV';
 
+import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
+
 import Test from '../screens/Test';
 // import
 
@@ -64,6 +66,10 @@ const HomeStackScreen = () => (
       component={ScreenDetailBaiDang}
     />
     <HomeStack.Screen name="ChaoMungTV" component={ChaoMungTV} />
+    <HomeStack.Screen
+      name="Screen_EditBaiDang"
+      component={Screen_EditBaiDang}
+    />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

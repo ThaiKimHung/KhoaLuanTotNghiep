@@ -88,12 +88,13 @@ export default class PopUpModal_XoaSua_Detail extends Component {
   };
 
   NhanThongTin = async () => {
-    const {DetailBaiDang = {}} = this.props.route.params;
-    console.log('DetailBaiDang modal', DetailBaiDang);
-    let user = DetailBaiDang ? DetailBaiDang.User_DangBai[0] : {};
+    const {id_nguoidang = {}} = this.props.route.params;
+    console.log('this detail modal', this.props);
+    console.log('DetailBaiDang modal', id_nguoidang);
+    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({
-      idBaiDang: DetailBaiDang ? DetailBaiDang.Id_BaiDang : null,
+      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
       id_NguoiDang: user ? user.ID_user : null,
     });
   };
@@ -109,14 +110,14 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
   };
 
-  componentDidMount() {
-    this._getThongTin();
-    this.NhanThongTin();
+  async componentDidMount() {
+    await this._getThongTin();
+    await this.NhanThongTin();
   }
 
   render() {
     const {display} = this.state;
-    console.log('this modal popup detail', this);
+    // console.log('this modal popup detail', this);
     return (
       <View>
         <Modal
@@ -146,6 +147,11 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
+                      }}
+                      onPress={() => {
+                        Utils.goscreen(this, 'Screen_EditBaiDang', {
+                          id_nguoidang: this.props.route.params,
+                        });
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>

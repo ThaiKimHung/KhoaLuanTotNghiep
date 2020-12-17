@@ -143,7 +143,7 @@ export default class BaiDangComponentScreen extends React.Component {
         nthis={this}
         onPress={() =>
           Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
-            ChiTietBaiDang: item,
+            id_nguoidang: item,
           })
         }></BaiDangComponent>
     );

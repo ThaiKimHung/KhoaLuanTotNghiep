@@ -46,6 +46,12 @@ async function GetDSBaiDang(user) {
   let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
   return res;
 }
+
+async function Update_BaiDang(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateBaiDang`, strbody);
+  return res;
+}
+
 async function GetDSLike() {
   let res = await Utils.get_api(apiUser + `getDSLike`);
   return res;
@@ -137,6 +143,7 @@ export {
   GetDSLike,
   AddLike,
   PostBaiDang,
+  Update_BaiDang,
   DeleteLikeTrongBaiDang,
   DeleteCommentTrongBaiDang,
   DeleteBaiDang,

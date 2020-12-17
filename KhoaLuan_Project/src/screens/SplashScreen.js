@@ -57,7 +57,8 @@ export default class SplashScreen2 extends React.Component {
     console.log('flag1 sau out Splashscreen', flag1);
     AsyncStorage.clear();
     this.updateTinhTrangUser();
-    this.props.navigation.navigate('SigninScreen');
+    Utils.goscreen(this, 'SigninScreen');
+    // this.props.navigation.navigate('SigninScreen');
   }
 
   updateTinhTrangUser = async () => {

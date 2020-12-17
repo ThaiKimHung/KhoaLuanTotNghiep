@@ -100,44 +100,47 @@ export default class BaiDangComponenet extends React.Component {
   _renderItem = ({item, index}) => {
     let userCmt = item.User_comment ? item.User_comment[0] : '';
     return (
-      <View style={styles.khung_TungCmt}>
-        <TouchableOpacity>
-          <View
-            style={{
-              marginLeft: 5,
-              borderRadius: 30,
-              height: FontSize.scale(30),
-              width: FontSize.verticalScale(30),
-            }}>
-            <Image
+      <View>
+        <View style={styles.khung_TungCmt}>
+          <TouchableOpacity>
+            <View
               style={{
+                marginLeft: 5,
+                borderRadius: 30,
                 height: FontSize.scale(30),
                 width: FontSize.verticalScale(30),
-                borderRadius: 20,
-              }}
-              resizeMode="cover"
-              source={userCmt.avatar ? {uri: userCmt.avatar} : avatar}></Image>
-          </View>
-        </TouchableOpacity>
-        <View style={{flex: 1, ac}}>
-          <TouchableOpacity
-            style={styles.khung_tenUser_Cmt}
-            onLongPress={() => {
-              Utils.goscreen(this, 'PopUpModal_CMT', {
-                Detail_Cmt: item,
-              });
-            }}>
-            <Text style={styles.txt_TenUser_Cmt}>{userCmt.Username}</Text>
-            <Text style={{marginLeft: 15, marginBottom: 5}}>
-              {item.NoiDung_cmt}
-            </Text>
+              }}>
+              <Image
+                style={{
+                  height: FontSize.scale(30),
+                  width: FontSize.verticalScale(30),
+                  borderRadius: 20,
+                }}
+                resizeMode="cover"
+                source={
+                  userCmt.avatar ? {uri: userCmt.avatar} : avatar
+                }></Image>
+            </View>
           </TouchableOpacity>
+          <View style={{flex: 1}}>
+            <TouchableOpacity
+              style={styles.khung_tenUser_Cmt}
+              onLongPress={() => {
+                Utils.goscreen(this, 'PopUpModal_CMT', {
+                  Detail_Cmt: item,
+                });
+              }}>
+              <Text style={styles.txt_TenUser_Cmt}>{userCmt.Username}</Text>
+              <Text style={{marginLeft: 15, marginBottom: 5}}>
+                {item.NoiDung_cmt}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <View
           style={{
             flexDirection: 'row',
-            marginHorizontal: 30,
-            // backgroundColor: 'blue',
+            marginHorizontal: 70,
           }}>
           <TouchableOpacity>
             <Text style={{marginLeft: 10}}>Thích</Text>
@@ -162,16 +165,14 @@ export default class BaiDangComponenet extends React.Component {
 
   render() {
     console.log('this detail', this);
-    const {ChiTietBaiDang = {}} = this.props.route.params;
-    console.log('this ChiTietBaiDang screen Detail bài đăng', ChiTietBaiDang);
-    let user = ChiTietBaiDang.User_DangBai
-      ? ChiTietBaiDang.User_DangBai[0]
-      : {};
-    let Solike = ChiTietBaiDang.Like_BaiDang.length;
-    let SoComment = ChiTietBaiDang.Coment.length;
-    this.idBaiDang = ChiTietBaiDang.Id_BaiDang;
-    let dslike = ChiTietBaiDang.Like ? ChiTietBaiDang.Like : null;
-    let idbaidang = ChiTietBaiDang.Id_LoaiBaiDang;
+    const {id_nguoidang = {}} = this.props.route.params;
+    // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
+    let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
+    let Solike = id_nguoidang.Like_BaiDang.length;
+    let SoComment = id_nguoidang.Coment.length;
+    this.idBaiDang = id_nguoidang.Id_BaiDang;
+    let dslike = id_nguoidang.Like ? id_nguoidang.Like : null;
+    let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     return (
       <View style={styles.container}>
         <GoBack
@@ -213,8 +214,8 @@ export default class BaiDangComponenet extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() => {
-                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail', {
-                  DetailBaiDang: ChiTietBaiDang,
+                Utils.goscreen(this, 'PopUpModal_XoaSua', {
+                  id_nguoidang: id_nguoidang,
                 });
               }}>
               <Image style={styles.imageLike_Commnet} source={daubacham} />
@@ -240,14 +241,14 @@ export default class BaiDangComponenet extends React.Component {
                     resizeMode="cover"
                     source={user.avatar ? {uri: user.avatar} : avatar}></Image>
                 </View>
-                <Text>{ChiTietBaiDang.title}</Text>
-                <Text>{ChiTietBaiDang.NoiDung}</Text>
+                <Text>{id_nguoidang.title}</Text>
+                <Text>{id_nguoidang.NoiDung}</Text>
               </ImageBackground>
             </View>
           ) : (
             <View style={styles.footer}>
-              <Text>{ChiTietBaiDang.title}</Text>
-              <Text>{ChiTietBaiDang.NoiDung}</Text>
+              <Text>{id_nguoidang.title}</Text>
+              <Text>{id_nguoidang.NoiDung}</Text>
             </View>
           )}
         </View>
@@ -325,12 +326,12 @@ export default class BaiDangComponenet extends React.Component {
         </View>
         <View style={styles.khung_CmtTong}>
           <FlatList
-            data={ChiTietBaiDang.Coment}
+            data={id_nguoidang.Coment}
             renderItem={this._renderItem}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}
             onRefresh={() => {
-              this.setState({refresh: true}, ChiTietBaiDang.Coment);
+              this.setState({refresh: true}, id_nguoidang.Coment);
             }}
             ListEmptyComponent={this.EmptyListMessage}
           />

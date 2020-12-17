@@ -34,9 +34,10 @@ export default class KhenThuong extends React.Component {
     this.state = {
       DsKhenThuong: [],
       refresh: true,
-      selectedItem: '0',
-      userSelected: '0',
+      selectedItem: 0,
+      userSelected: 0,
       noidung: '',
+      user: {},
     };
   }
   EmptyListMessage = ({item}) => {
@@ -61,17 +62,23 @@ export default class KhenThuong extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this._GetDsKhenThuong();
-  }
-  updateSearch = (search) => {
-    this.setState({search});
-  };
+  // updateSearch = (search) => {
+  //   this.setState({search});
+  // };
   handleNoiDung(text) {
     this.setState({
       noidung: text,
     });
   }
+
+  Nhandata = () => {
+    this.setState({
+      user: this.props.route.params,
+      userSelected: this.state.user ? this.state.user.ID_user : null,
+    });
+
+    console.log('hi ', this.state.user, this.state.userSelected);
+  };
   renderItem = ({item, index}) => {
     return (
       <View>
@@ -80,7 +87,7 @@ export default class KhenThuong extends React.Component {
             onPress={() => {
               if (this.state.selectedItem == item.ID_khenthuong) {
                 this.setState({
-                  selectedItem: '0',
+                  selectedItem: '',
                 });
               } else {
                 this.setState({
@@ -91,7 +98,7 @@ export default class KhenThuong extends React.Component {
             style={[
               styles.khung,
               {
-                marginLeft: index % 2 != 0 ? 10 : 0,
+                marginLeft: index % 2 != 0 ? 5 : 0,
                 backgroundColor: '#87CEFF',
               },
             ]}>
@@ -117,7 +124,7 @@ export default class KhenThuong extends React.Component {
             }}
             style={[
               styles.khung,
-              {marginLeft: index % 2 != 0 ? 10 : 0, backgroundColor: 'yellow'},
+              {marginLeft: index % 2 != 0 ? 5 : 0, backgroundColor: 'yellow'},
             ]}>
             <View style={styles.khung_DS}>
               <SvgUri
@@ -137,10 +144,13 @@ export default class KhenThuong extends React.Component {
     );
   };
 
+  componentDidMount = async () => {
+    await this._GetDsKhenThuong();
+    // await this.Nhandata();
+  };
   render() {
-    const user = this.props.route.params ? this.props.route.params : '';
-    // console.log('user khen thưởng', user);
-    console.log('props khen thưởng', this.props);
+    // console.log('user truyền về', this.user);
+    console.log('user về ', this.state.user);
     return (
       <View style={styles.container}>
         <View style={styles.back}>
@@ -160,7 +170,9 @@ export default class KhenThuong extends React.Component {
               }}>
               <TouchableOpacity
                 // onPress={this.props.navigation.goBack}
-                onPress={Utils.goback(this, '')}>
+                onPress={() => {
+                  Utils.goback(this, '');
+                }}>
                 <Image
                   source={goback}
                   style={{
@@ -185,6 +197,12 @@ export default class KhenThuong extends React.Component {
                 ) : (
                   <Text style={styles.textDang_invisibale}>Đăng</Text>
                 )}
+                {/* {console.log(
+                  'user select, noi dung, selecteditem',
+                  this.state.userSelected,
+                  this.state.noidung,
+                  this.state.selectedItem,
+                )} */}
               </View>
             </View>
           </View>
@@ -201,16 +219,25 @@ export default class KhenThuong extends React.Component {
           </Text>
           <TouchableOpacity
             style={styles.thanh_search}
-            onPress={() => {
+            onPress={async () => {
               Utils.goscreen(this, 'SearchUser');
               // this.props.navigation.navigate('SearchUser');
-              this.setState({
-                userSelected: user ? user.ID_user : '',
+
+              await this.setState({
+                user: this.props.route.params,
+                // userSelected: this.state.user ? this.state.user.ID_user : null,
               });
-              // console.log('user select', this.state.userSelected);
+              console.log('user về ', this.state.user);
+              await this.setState({
+                // user: this.props.route.params,
+                userSelected: this.state.user
+                  ? this.state.user.ID_user
+                  : 'null',
+              });
+              console.log('gán user ', this.state.userSelected);
             }}>
             <Image source={search} style={styles.icon}></Image>
-            {user ? (
+            {/* {user ? (
               <Text
                 style={{
                   fontSize: FontSize.reSize(20),
@@ -220,17 +247,17 @@ export default class KhenThuong extends React.Component {
                 }}>
                 {user.Username}
               </Text>
-            ) : (
-              <Text
-                style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#69696980',
-                  flex: 1,
-                }}>
-                Mời bạn chọn nhân viên
-              </Text>
-            )}
+            ) : ( */}
+            <Text
+              style={{
+                fontSize: FontSize.reSize(20),
+                marginLeft: 10,
+                color: '#69696980',
+                flex: 1,
+              }}>
+              Mời bạn chọn nhân viên
+            </Text>
+            {/* )} */}
           </TouchableOpacity>
 
           <Text

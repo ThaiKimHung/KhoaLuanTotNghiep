@@ -73,27 +73,19 @@ export default class ScreenLoaiBaiDang extends React.Component {
     // alert(5);
     switch (item) {
       case 1:
-        // console.log('this', this);
-        return Utils.goscreen(this, 'KhenThuong');
+        return alert('loại bài đăng' + item);
       case 2:
-        //  return this.props.navigation.navigate(
-        //    'KhenThuong',
-        //    this.callBack(item),
-        //  );
         return Utils.goscreen(this, 'KhenThuong');
       case 3:
-        alert(3);
-        break;
+        return alert('loại bài đăng' + item);
       case 4:
-        // return this.props.navigation.navigate('ChaoMungTV', item);
-        return Utils.goscreen(this, 'ChaoMungTV', item);
+        return Utils.goscreen(this, 'ChaoMungTV', {id_loaibaidang: item});
       case 5:
-        alert(4);
-        break;
+        return alert('loại bài đăng' + item);
       case 6:
         return Utils.goscreen(this, 'TinNhanh', {id_loaibaidang: item});
-      default:
-        alert('defat');
+      case 7:
+        return alert('loại bài đăng' + item);
     }
   }
 

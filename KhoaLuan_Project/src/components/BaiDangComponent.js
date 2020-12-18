@@ -35,6 +35,7 @@ const binhluan = require('../assets/images/binhluan.png');
 const welcome = require('../assets/images/welcome.png');
 
 const windowWidth = Dimensions.get('window').width;
+const arrow = require('../assets/images/right-arrow-black-triangle.png');
 import moment from 'moment';
 import Utils from '../apis/Utils';
 
@@ -113,7 +114,8 @@ export default class BaiDangComponenet extends React.Component {
     // this.idbaidang = item.Id_BaiDang;
     let dslike = item.Like ? item.Like : null;
     let loaibaidang = item.Id_LoaiBaiDang;
-    // console.log('this bài đăng component', this.props);
+    let group = item.Group ? item.Group[0] : {};
+    console.log('this bài đăng component', group);
 
     return (
       <View style={styles.container}>
@@ -137,22 +139,45 @@ export default class BaiDangComponenet extends React.Component {
                   resizeMode="cover"
                   source={user.avatar ? {uri: user.avatar} : avatar}></Image>
               </View>
-
-              <View style={styles.khung_tenUser}>
-                <Text style={styles.txt_TenUser}>{user.Username}</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginHorizontal: 5,
-                    marginTop: -2,
-                  }}>
-                  <Text style={{marginRight: 2}}>
-                    {moment(ngay, 'YYYY-MM-DD').format('DD-MM-YYYY')}
-                  </Text>
-                  <Text>{time}</Text>
-                </View>
-              </View>
             </TouchableOpacity>
+            <View style={styles.khung_tenUser}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.txt_TenUser}>{user.Username}</Text>
+                {group ? (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      // justifyContent: 'center',
+                      alignItems: 'center',
+                      marginLeft: 5,
+                    }}>
+                    <Image
+                      source={arrow}
+                      style={{
+                        height: FontSize.scale(10),
+                        width: FontSize.verticalScale(10),
+                      }}></Image>
+                    <TouchableOpacity style={{marginLeft: 5}}>
+                      <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                        {group.ten_group}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginHorizontal: 5,
+                  marginTop: -2,
+                }}>
+                <Text style={{marginRight: 2}}>
+                  {moment(ngay, 'YYYY-MM-DD').format('DD-MM-YYYY')}
+                </Text>
+                <Text>{time}</Text>
+              </View>
+            </View>
 
             <TouchableOpacity
               style={styles.khung_daubacham}
@@ -336,10 +361,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     padding: 5,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   khung_tenUser: {
     // flexDirection: 'row',
+    flex: 1,
   },
   khung_daubacham: {
     padding: 5,

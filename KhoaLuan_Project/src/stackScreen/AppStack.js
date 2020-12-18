@@ -25,11 +25,13 @@ import SearchUser from '../screens/SearchUser';
 import HomeScreen from '../screens/HomeScreen';
 
 import BaiDangComponent from '../components/BaiDangComponent';
+
 import ModalComponent from '../modal/ModalComponent';
 import PopUpModal_XoaSua from '../modal/PopUpModal_XoaSua';
 import ModalLike from '../modal/ModalLike';
 import PopUpModal_XoaSua_Detail from '../modal/PopUpModal_XoaSua_Detail';
 import PopUpModal_CMT from '../modal/PopUpModal_CMT';
+import Modal_Nhom from '../modal/Modal_Nhom';
 
 import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
@@ -137,6 +139,7 @@ const AppStack = () => {
         component={PopUpModal_XoaSua_Detail}
       />
       <Stack.Screen name="PopUpModal_CMT" component={PopUpModal_CMT} />
+      <Stack.Screen name="Modal_Nhom" component={Modal_Nhom} />
     </Stack.Navigator>
   );
 };

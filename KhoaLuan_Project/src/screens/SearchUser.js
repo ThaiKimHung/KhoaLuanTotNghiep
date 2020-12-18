@@ -48,8 +48,9 @@ export default class SearchUser extends React.Component {
       <TouchableOpacity
         style={[styles.khungchua]}
         onPress={() => {
-          Utils.goscreen(this, 'KhenThuong', {iduser: item});
+          // Utils.goscreen(this, 'KhenThuong', {iduser: item});
           // this.props.navigation.navigate('KhenThuong', item);
+          this.props.route.params.chuyenData(item);
         }}>
         <View
           style={{
@@ -103,6 +104,7 @@ export default class SearchUser extends React.Component {
   }
 
   render() {
+    console.log('this search', this);
     return (
       <View style={styles.container}>
         <View style={styles.back}>

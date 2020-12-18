@@ -29,6 +29,7 @@ import ModalLike from './src/modal/ModalLike';
 import EditKhenThuong from './src/edit/EditKhenThuong';
 
 import PopUpModal_CMT from './src/modal/PopUpModal_CMT';
+import Modal_Nhom from './src/modal/Modal_Nhom';
 import Screen_EditBaiDang from './src/edit/Screen_EditBaiDang';
 
 AppRegistry.registerComponent(appName, () => App);

@@ -131,6 +131,11 @@ async function DeleteComment(id_cmt = '') {
   return res;
 }
 
+async function GetDSGroup(iduser) {
+  let res = await Utils.get_api(apiUser + `getDSGroup?id_user=${iduser}`);
+  return res;
+}
+
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,
@@ -151,4 +156,5 @@ export {
   AddComment,
   DeleteComment_Like,
   DeleteComment,
+  GetDSGroup,
 };

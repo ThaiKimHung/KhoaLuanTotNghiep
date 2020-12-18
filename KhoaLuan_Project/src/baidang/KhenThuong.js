@@ -25,9 +25,12 @@ import GoBack from '../components/GoBack';
 import {GetDSKhenThuong} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
+import {GetDSGroup} from '../apis/apiUser';
+import DropDownPicker from 'react-native-custom-dropdown';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
+const group = require('../assets/images/group_people.png');
 export default class KhenThuong extends React.Component {
   constructor(props) {
     super(props);
@@ -38,6 +41,11 @@ export default class KhenThuong extends React.Component {
       userSelected: 0,
       noidung: '',
       user: {},
+      DataChuyenVe: {},
+      DataNhom: {},
+      value: null,
+      dsNhom: [],
+      mangtam: [],
     };
   }
   EmptyListMessage = ({item}) => {
@@ -71,14 +79,51 @@ export default class KhenThuong extends React.Component {
     });
   }
 
-  Nhandata = () => {
+  ChuyenData = async (item) => {
+    Utils.goscreen(this, 'KhenThuong');
     this.setState({
-      user: this.props.route.params,
-      userSelected: this.state.user ? this.state.user.ID_user : null,
+      DataChuyenVe: item,
     });
-
-    console.log('hi ', this.state.user, this.state.userSelected);
   };
+
+  ChuyenDataNhom = async (item) => {
+    Utils.goscreen(this, 'KhenThuong');
+    // Utils.goscreen(this, 'Modal_Nhom');
+    this.setState({
+      DataNhoms: item,
+    });
+    console.log('item nhóm truyền về', item);
+  };
+  GanDataSauKhiChuyenVe = () => {
+    this.state.DataChuyenVe
+      ? this.setState({
+          userSelected: this.state.DataChuyenVe.ID_user,
+        })
+      : null;
+    // console.log('user selected', this.state.userSelected);
+  };
+
+  _GetDSGroup = async () => {
+    // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
+    let res = await GetDSGroup(2);
+    console.log('res', res);
+    if (res.status == 1) {
+      this.setState({
+        dsNhom: res.Data,
+      });
+      console.log('state', this.state.dsNhom);
+    }
+  };
+  LaymangTam = async () => {
+    let temp = this.state.dsNhom.map((e) => {
+      var ritem = {};
+      ritem['value'] = e.ID_group + '';
+      ritem['label'] = e.Ten_Group;
+      return ritem;
+    });
+    await this.setState({mangtam: temp});
+  };
+
   renderItem = ({item, index}) => {
     return (
       <View>
@@ -88,10 +133,6 @@ export default class KhenThuong extends React.Component {
               if (this.state.selectedItem == item.ID_khenthuong) {
                 this.setState({
                   selectedItem: '',
-                });
-              } else {
-                this.setState({
-                  selectedItem: item.ID_khenthuong,
                 });
               }
             }}
@@ -146,11 +187,11 @@ export default class KhenThuong extends React.Component {
 
   componentDidMount = async () => {
     await this._GetDsKhenThuong();
-    // await this.Nhandata();
+    await this.GanDataSauKhiChuyenVe();
+    await this._GetDSGroup();
+    await this.LaymangTam();
   };
   render() {
-    // console.log('user truyền về', this.user);
-    console.log('user về ', this.state.user);
     return (
       <View style={styles.container}>
         <View style={styles.back}>
@@ -169,7 +210,6 @@ export default class KhenThuong extends React.Component {
                 width: '100%',
               }}>
               <TouchableOpacity
-                // onPress={this.props.navigation.goBack}
                 onPress={() => {
                   Utils.goback(this, '');
                 }}>
@@ -188,21 +228,15 @@ export default class KhenThuong extends React.Component {
                 <Text style={styles.title}>Tạo tin khen thưởng</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
-                {this.state.userSelected &&
-                this.state.noidung &&
-                this.state.selectedItem ? (
+                {this.state.userSelected != 0 &&
+                this.state.noidung != '' &&
+                this.state.selectedItem != 0 ? (
                   <TouchableOpacity>
                     <Text style={styles.textDang}>Đăng</Text>
                   </TouchableOpacity>
                 ) : (
                   <Text style={styles.textDang_invisibale}>Đăng</Text>
                 )}
-                {/* {console.log(
-                  'user select, noi dung, selecteditem',
-                  this.state.userSelected,
-                  this.state.noidung,
-                  this.state.selectedItem,
-                )} */}
               </View>
             </View>
           </View>
@@ -220,24 +254,10 @@ export default class KhenThuong extends React.Component {
           <TouchableOpacity
             style={styles.thanh_search}
             onPress={async () => {
-              Utils.goscreen(this, 'SearchUser');
-              // this.props.navigation.navigate('SearchUser');
-
-              await this.setState({
-                user: this.props.route.params,
-                // userSelected: this.state.user ? this.state.user.ID_user : null,
-              });
-              console.log('user về ', this.state.user);
-              await this.setState({
-                // user: this.props.route.params,
-                userSelected: this.state.user
-                  ? this.state.user.ID_user
-                  : 'null',
-              });
-              console.log('gán user ', this.state.userSelected);
+              Utils.goscreen(this, 'SearchUser', {chuyenData: this.ChuyenData});
             }}>
             <Image source={search} style={styles.icon}></Image>
-            {/* {user ? (
+            {this.state.DataChuyenVe ? (
               <Text
                 style={{
                   fontSize: FontSize.reSize(20),
@@ -245,19 +265,19 @@ export default class KhenThuong extends React.Component {
                   color: '#000000',
                   flex: 1,
                 }}>
-                {user.Username}
+                {this.state.DataChuyenVe.Username}
               </Text>
-            ) : ( */}
-            <Text
-              style={{
-                fontSize: FontSize.reSize(20),
-                marginLeft: 10,
-                color: '#69696980',
-                flex: 1,
-              }}>
-              Mời bạn chọn nhân viên
-            </Text>
-            {/* )} */}
+            ) : (
+              <Text
+                style={{
+                  fontSize: FontSize.reSize(20),
+                  marginLeft: 10,
+                  color: '#69696980',
+                  flex: 1,
+                }}>
+                Mời bạn chọn nhân viên
+              </Text>
+            )}
           </TouchableOpacity>
 
           <Text
@@ -275,6 +295,69 @@ export default class KhenThuong extends React.Component {
             multiline={true}
             style={styles.textinput}
             onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
+
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: FontSize.reSize(20),
+              marginBottom: 5,
+            }}>
+            Chọn Nhóm:
+          </Text>
+          <TouchableOpacity
+            style={styles.thanh_search}
+            onPress={async () => {
+              Utils.goscreen(this, 'Modal_Nhom', {
+                DataNhomVe: this.ChuyenDataNhom,
+              });
+            }}>
+            <Image source={group} style={styles.icon}></Image>
+
+            {this.state.DataNhom ? (
+              <Text
+                style={{
+                  fontSize: FontSize.reSize(20),
+                  marginLeft: 10,
+                  color: '#000000',
+                  flex: 1,
+                }}>
+                {this.state.DataNhom.Ten_Group}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: FontSize.reSize(20),
+                  marginLeft: 10,
+                  color: '#69696980',
+                  flex: 1,
+                }}>
+                Mời bạn chọn nhóm
+              </Text>
+            )}
+          </TouchableOpacity>
+          <DropDownPicker
+            // onOpen={() => {
+            //   this.setState({
+            //     pdiing: true,
+            //     isOpen: true,
+            //   });
+            // }}
+            items={this.state.mangtam}
+            // defaultValue={}
+            style={{backgroundColor: 'red', minHeight: 50}}
+            itemStyle={{
+              justifyContent: 'flex-start',
+            }}
+            // onClose={() => {
+            //   this.setState({isOpen: false});
+            // }}
+            dropDownStyle={{backgroundColor: 'red', position: 'absolute'}}
+            // onChangeItem={(item) =>
+            //   this.setState({
+            //     country: item.value,
+            //   })
+            // }
+          ></DropDownPicker>
         </View>
         <View style={styles.footer}>
           {this.state.DsKhenThuong.length != 0 ? (

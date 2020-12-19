@@ -37,6 +37,10 @@ async function PostBaiDang(strbody) {
   let res = await Utils.post_api(apiUser + `addBaiDang`, strbody);
   return res;
 }
+async function PostBaiDang_Nhom(strbody) {
+  let res = await Utils.post_api(apiUser + `addBaiDang_Group`, strbody);
+  return res;
+}
 async function GetDSKhenThuong() {
   let res = await Utils.get_api(apiUser + `GetDSKhenThuong`);
   return res;
@@ -136,6 +140,15 @@ async function GetDSGroup(iduser) {
   return res;
 }
 
+async function AddBaiDang_KhenThuong(strbody) {
+  let res = await Utils.post_api(apiUser + `addBaiDang_KT`, strbody);
+  return res;
+}
+
+async function AddBaiDang_KhenThuong_Nhom(strbody) {
+  let res = await Utils.post_api(apiUser + `addBaiDang_KT_Group`, strbody);
+  return res;
+}
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,
@@ -148,6 +161,7 @@ export {
   GetDSLike,
   AddLike,
   PostBaiDang,
+  PostBaiDang_Nhom,
   Update_BaiDang,
   DeleteLikeTrongBaiDang,
   DeleteCommentTrongBaiDang,
@@ -157,4 +171,6 @@ export {
   DeleteComment_Like,
   DeleteComment,
   GetDSGroup,
+  AddBaiDang_KhenThuong,
+  AddBaiDang_KhenThuong_Nhom,
 };

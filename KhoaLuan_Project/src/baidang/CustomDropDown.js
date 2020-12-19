@@ -8,25 +8,15 @@ import {
   Image,
 } from 'react-native';
 
-import {SearchBar} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Feather';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-
-import Utils from '../apis/Utils';
-import FontSize from '../components/size';
-import SvgUri from 'react-native-svg-uri';
-import GoBack from '../components/GoBack';
-import {
-  GetDSKhenThuong,
-  AddBaiDang_KhenThuong,
-  AddBaiDang_KhenThuong_Nhom,
-  GetDSGroup,
-} from '../apis/apiUser';
-import {nGlobalKeys} from '../apis/globalKey';
-import {nkey} from '../apis/keyStore';
-
+// import HeaderCom from '../../components/HeaderCom'
+// import ItemDrop from './ItemDrop'
+// import { nstyles, Height, Width } from '../../styles/styles'
+// import InputCus from '../../components/ComponentApps/InputCus'
+// import { reText } from '../../styles/size'
+// import { colors } from '../../styles'
+// import { Images } from '../../images'
 const search = require('../assets/images/search.png');
-
+import Utils from '../apis/Utils';
 const lstPH = [
   {
     id: 0,
@@ -50,22 +40,10 @@ export class ThemPhanHoi extends Component {
     super(props);
     this.state = {
       isActive: false,
-      selectLyDo: '',
+      selectLyDo: lstPH[0],
       dsNhom: [],
     };
   }
-  _GetDSGroup = async () => {
-    // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
-    let res = await GetDSGroup(1);
-    console.log('res', res);
-    if (res.status == 1) {
-      this.setState({
-        dsNhom: res.Data,
-      });
-      console.log('state', this.state.dsNhom);
-    }
-  };
-
   _renderActive = () => {
     this.setState({isActive: !this.state.isActive});
   };
@@ -77,9 +55,14 @@ export class ThemPhanHoi extends Component {
       },
       () => this._renderActive(),
     );
+    // Utils.nlog('Buoc xu ly', item);
   };
-
-  _keyExtrac = (item, index) => `${item.ID_group}`;
+  // _DropDown = () => {
+  //     this.setState({
+  //         lstPH[this.state.selectLyDo.id]: this.state.selectLyDo
+  //     }, () => this._callBack())
+  // }
+  _keyExtrac = (item, index) => `${item.id}`;
   _renderPH = ({item, index}) => {
     return (
       <View
@@ -90,7 +73,7 @@ export class ThemPhanHoi extends Component {
         <TouchableOpacity
           onPress={() => this._callBack(item)}
           style={{paddingHorizontal: 15, paddingVertical: 16}}>
-          <Text>{item.Ten_Group}</Text>
+          <Text>{item.name}</Text>
         </TouchableOpacity>
         <View
           style={{
@@ -100,10 +83,6 @@ export class ThemPhanHoi extends Component {
           }}></View>
       </View>
     );
-  };
-
-  componentDidMount = () => {
-    this._GetDSGroup();
   };
   render() {
     const {isActive, selectLyDo} = this.state;
@@ -141,7 +120,7 @@ export class ThemPhanHoi extends Component {
               },
             ]}>
             <Text numberOfLines={1} style={[{fontSize: 14, flex: 1}]}>
-              {selectLyDo.Ten_Group ? selectLyDo.Ten_Group : ''}
+              {selectLyDo.name ? selectLyDo.name : ''}
             </Text>
             <Image
               source={search}
@@ -161,7 +140,7 @@ export class ThemPhanHoi extends Component {
                   borderColor: 'gray',
                   borderBottomColor: 'white',
                 }}
-                data={this.state.dsNhom}
+                data={lstPH}
                 renderItem={this._renderPH}
                 // keyExtractor={(item, index) => index.toString()}
                 keyExtractor={this._keyExtrac}
@@ -169,6 +148,28 @@ export class ThemPhanHoi extends Component {
             ) : null
             // <View style={{ backgroundColor: 'red', height: 30, }}></View> : null
           }
+          <View style={{flex: 1, marginTop: 18}}>
+            <Text style={{color: 'gray', fontSize: 12, marginBottom: 7}}>
+              Nội dung phản hồi
+            </Text>
+            <TextInput
+              placeholder="Nội dung phản hồi"
+              placeholderTextColor="gray"
+              //underlineColorAndroid={'transparent'}
+              style={{
+                borderWidth: 1,
+                borderColor: 'gray',
+                height: 200,
+                borderRadius: 10,
+                opacity: 0.6,
+                maxHeight: '40%',
+                paddingLeft: 10,
+              }}
+              textAlignVertical="top"
+              multiline={true}
+              numberOfLines={3}
+            />
+          </View>
         </View>
       </View>
     );

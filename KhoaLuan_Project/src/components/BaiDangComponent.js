@@ -21,6 +21,7 @@ import {
 import Tooltip from 'react-native-walkthrough-tooltip';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
+import * as Animatable from 'react-native-animatable';
 
 import {GetDSLike, AddLike, DeleteBaiDang_Like} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -95,10 +96,124 @@ export default class BaiDangComponenet extends React.Component {
     // console.log('người tạo like , loại like', idcreatelike, loailike);
   };
 
+  loadNoiDung = () => {
+    const {item = {}} = this.props;
+
+    let user = item.User_DangBai ? item.User_DangBai[0] : {};
+    let loaibaidang = item.Id_LoaiBaiDang;
+    let khenthuong = item.KhenThuong ? item.KhenThuong[0] : {};
+    switch (loaibaidang) {
+      case 2:
+        return (
+          <View
+            style={{
+              // backgroundColor: '#1C86EE',
+              margin: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Animatable.View
+              animation="wobble"
+              iterationCount={10}
+              direction="alternate-reverse"
+              // easing="ease-out"s
+              duration={20000}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#007DE3',
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                marginBottom: 5,
+                borderRadius: 15,
+              }}>
+              <SvgUri
+                width={FontSize.scale(45)}
+                height={FontSize.verticalScale(45)}
+                source={{
+                  uri: khenthuong.icon,
+                }}
+              />
+              <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
+                {khenthuong.tieude_kt}
+              </Text>
+            </Animatable.View>
+
+            <TouchableOpacity
+              style={styles.footer1}
+              onPress={this.props.onPress}>
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                    borderRadius: 30,
+                  }}
+                  resizeMode="cover"
+                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+              </View>
+              <Text>{item.title}</Text>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.NoiDung}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        );
+      case 4:
+        return (
+          <View
+            style={{
+              backgroundColor: '#1C86EE',
+              margin: 5,
+            }}>
+            <ImageBackground source={welcome} style={styles.image}>
+              <TouchableOpacity
+                style={styles.footer1}
+                onPress={this.props.onPress}>
+                {/* <View
+                  style={{
+                    marginLeft: 5,
+                    borderRadius: 30,
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                  }}>
+                  <Image
+                    style={{
+                      height: FontSize.scale(40),
+                      width: FontSize.verticalScale(40),
+                      borderRadius: 30,
+                    }}
+                    resizeMode="cover"
+                    source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+                </View> */}
+                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(20)}}>
+                  {item.NoiDung}
+                </Text>
+              </TouchableOpacity>
+            </ImageBackground>
+          </View>
+        );
+      default:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
+            <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
+          </TouchableOpacity>
+        );
+    }
+  };
+
   componentDidMount() {
     // this._GetDSLike();
     // console.log('this bài đăng component did mount', this);
-    this.CheckLike();
+    // this.CheckLike();
   }
 
   render() {
@@ -115,7 +230,7 @@ export default class BaiDangComponenet extends React.Component {
     let dslike = item.Like ? item.Like : null;
     let loaibaidang = item.Id_LoaiBaiDang;
     let group = item.Group ? item.Group[0] : {};
-    console.log('this bài đăng component', group);
+    // console.log('this bài đăng component', group);
 
     return (
       <View style={styles.container}>
@@ -196,51 +311,7 @@ export default class BaiDangComponenet extends React.Component {
 
           {/* khung chứa nội dung bài đăng và cmt*/}
 
-          {loaibaidang === 4 ? (
-            <View
-              style={{
-                backgroundColor: '#1C86EE',
-                margin: 5,
-              }}>
-              <ImageBackground source={welcome} style={styles.image}>
-                <TouchableOpacity
-                  style={styles.footer1}
-                  onPress={this.props.onPress}>
-                  <View
-                    style={{
-                      marginLeft: 5,
-                      borderRadius: 30,
-                      height: FontSize.scale(40),
-                      width: FontSize.verticalScale(40),
-                    }}>
-                    <Image
-                      style={{
-                        height: FontSize.scale(40),
-                        width: FontSize.verticalScale(40),
-                        borderRadius: 30,
-                      }}
-                      resizeMode="cover"
-                      source={
-                        user.avatar ? {uri: user.avatar} : avatar
-                      }></Image>
-                  </View>
-                  <Text>{item.title}</Text>
-                  <Text style={{fontSize: FontSize.reSize(20)}}>
-                    {item.NoiDung}
-                  </Text>
-                </TouchableOpacity>
-              </ImageBackground>
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={styles.footer}
-              onPress={this.props.onPress}>
-              <Text>{item.title}</Text>
-              <Text style={{fontSize: FontSize.reSize(20)}}>
-                {item.NoiDung}
-              </Text>
-            </TouchableOpacity>
-          )}
+          <this.loadNoiDung></this.loadNoiDung>
 
           {/* khung chứa số like và cmt */}
           <View style={styles.khung_DemSoLike_Comt}>

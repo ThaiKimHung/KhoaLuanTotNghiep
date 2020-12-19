@@ -14,7 +14,7 @@ import {
   ImageBackground,
   FlatList,
 } from 'react-native';
-
+import * as Animatable from 'react-native-animatable';
 import FontSize from '../components/size';
 import GoBack from '../components/GoBack';
 import DanhSachLike from '../components/DanhSachLike';
@@ -159,6 +159,117 @@ export default class BaiDangComponenet extends React.Component {
     });
   };
 
+  loadNoiDung = () => {
+    console.log('this detail', this);
+    const {id_nguoidang = {}} = this.props.route.params;
+    // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
+    let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
+    this.idBaiDang = id_nguoidang.Id_BaiDang;
+    let idbaidang = id_nguoidang.Id_LoaiBaiDang;
+    let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
+    switch (idbaidang) {
+      case 2:
+        return (
+          <View
+            style={{
+              // backgroundColor: '#1C86EE',
+              margin: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Animatable.View
+              animation="wobble"
+              iterationCount={10}
+              direction="alternate-reverse"
+              // easing="ease-out"s
+              duration={20000}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#007DE3',
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                marginBottom: 5,
+                borderRadius: 15,
+              }}>
+              <SvgUri
+                width={FontSize.scale(45)}
+                height={FontSize.verticalScale(45)}
+                source={{
+                  uri: khenthuong.icon,
+                }}
+              />
+              <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
+                {khenthuong.tieude_kt}
+              </Text>
+            </Animatable.View>
+
+            <TouchableOpacity
+              style={{
+                // margin: 5,
+                // paddingHorizontal: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={this.props.onPress}>
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                    borderRadius: 30,
+                  }}
+                  resizeMode="cover"
+                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+              </View>
+              <Text>{id_nguoidang.title}</Text>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {id_nguoidang.NoiDung}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        );
+      case 4:
+        return (
+          <View style={styles.footer1}>
+            <ImageBackground source={welcome} style={styles.image}>
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                    borderRadius: 30,
+                  }}
+                  resizeMode="cover"
+                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+              </View>
+              <Text>{id_nguoidang.title}</Text>
+              <Text>{id_nguoidang.NoiDung}</Text>
+            </ImageBackground>
+          </View>
+        );
+      default:
+        return (
+          <View style={styles.footer}>
+            <Text>{id_nguoidang.title}</Text>
+            <Text>{id_nguoidang.NoiDung}</Text>
+          </View>
+        );
+    }
+  };
+
   async componentDidMount() {
     await this.GetData();
   }
@@ -222,35 +333,7 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
           </View>
 
-          {idbaidang === 4 ? (
-            <View style={styles.footer1}>
-              <ImageBackground source={welcome} style={styles.image}>
-                <View
-                  style={{
-                    marginLeft: 5,
-                    borderRadius: 30,
-                    height: FontSize.scale(40),
-                    width: FontSize.verticalScale(40),
-                  }}>
-                  <Image
-                    style={{
-                      height: FontSize.scale(40),
-                      width: FontSize.verticalScale(40),
-                      borderRadius: 30,
-                    }}
-                    resizeMode="cover"
-                    source={user.avatar ? {uri: user.avatar} : avatar}></Image>
-                </View>
-                <Text>{id_nguoidang.title}</Text>
-                <Text>{id_nguoidang.NoiDung}</Text>
-              </ImageBackground>
-            </View>
-          ) : (
-            <View style={styles.footer}>
-              <Text>{id_nguoidang.title}</Text>
-              <Text>{id_nguoidang.NoiDung}</Text>
-            </View>
-          )}
+          <this.loadNoiDung></this.loadNoiDung>
         </View>
         <View style={{marginBottom: 5}}>
           <View style={styles.khungLike_Commnet}>

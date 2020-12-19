@@ -75,7 +75,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
       case 1:
         return alert('loại bài đăng' + item);
       case 2:
-        return Utils.goscreen(this, 'KhenThuong');
+        return Utils.goscreen(this, 'KhenThuong', {id_loaibaidang: item});
       case 3:
         return alert('loại bài đăng' + item);
       case 4:

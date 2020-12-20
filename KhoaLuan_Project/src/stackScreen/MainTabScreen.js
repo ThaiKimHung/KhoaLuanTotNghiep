@@ -14,7 +14,7 @@ import FontSize from '../components/size';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
-import DetailsScreen from '../screens/DetailScreen';
+import NhomScreen from '../screens/NhomScreen';
 import ScreenAllUser from '../screens/ScreenAllUser';
 import ScreenCaiDat from '../screens/ScreenCaiDat';
 // import ExploreScreen from './ExploreScreen';
@@ -121,10 +121,10 @@ const HomeStackScreen = ({navigation}) => {
 
 const DetailsStackScreen = ({navigation}) => {
   return (
-    <DetailStack.Navigator>
+    <DetailStack.Navigator headerMode="none">
       <DetailStack.Screen
-        name="Details"
-        component={DetailsScreen}></DetailStack.Screen>
+        name="NhomScreen"
+        component={NhomScreen}></DetailStack.Screen>
     </DetailStack.Navigator>
   );
 };

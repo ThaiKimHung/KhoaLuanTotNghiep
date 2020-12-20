@@ -140,6 +140,13 @@ async function GetDSGroup(iduser) {
   return res;
 }
 
+async function GetDS_BaiDangGroup(iduser, idgroup) {
+  let res = await Utils.get_api(
+    apiUser + `getDSBaiDang_In_Group?id_user=${iduser}&id_group=${idgroup}`,
+  );
+  return res;
+}
+
 async function AddBaiDang_KhenThuong(strbody) {
   let res = await Utils.post_api(apiUser + `addBaiDang_KT`, strbody);
   return res;
@@ -171,6 +178,7 @@ export {
   DeleteComment_Like,
   DeleteComment,
   GetDSGroup,
+  GetDS_BaiDangGroup,
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,
 };

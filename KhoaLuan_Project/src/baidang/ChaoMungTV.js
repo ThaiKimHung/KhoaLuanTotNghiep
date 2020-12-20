@@ -16,7 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import DropDownPicker from 'react-native-custom-dropdown';
+// import DropDownPicker from 'react-native-custom-dropdown';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -28,6 +28,7 @@ import {nkey} from '../apis/keyStore';
 
 const search = require('../assets/images/search.png');
 const goback = require('../assets/images/go-back-left-arrow.png');
+const dropdown = require('../assets/images/caret-down.png');
 export default class ChaoMungTV extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +41,8 @@ export default class ChaoMungTV extends React.Component {
       mangtam: [],
       isOpen: false,
       nhomSelected: '',
+      isActive: false,
+      selectLyDo: '',
     };
   }
   handleNoiDung(text) {
@@ -80,7 +83,7 @@ export default class ChaoMungTV extends React.Component {
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
       NoiDung: this.state.haveValue_NoiDung,
-      Id_Group: this.state.nhomSelected ? this.state.nhomSelected : 0,
+      Id_Group: 0,
       id_khenthuong: 0,
       typepost: '',
       CreatedDate: date + 'T' + time,
@@ -112,7 +115,49 @@ export default class ChaoMungTV extends React.Component {
       });
     }
   };
+  _PostBaiDang_Nhom = async () => {
+    const id_loaibaidang = this.props.route.params.id_loaibaidang;
+    const today = new Date();
+    const date =
+      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    const time = today.getHours() + ':' + today.getMinutes();
+    let strBody = JSON.stringify({
+      Id_LoaiBaiDang: id_loaibaidang,
+      title: this.state.DataChuyenVe.Username,
+      NoiDung: this.state.haveValue_NoiDung,
+      Id_Group: this.state.selectLyDo.ID_group,
+      id_khenthuong: 0,
+      typepost: '',
+      CreatedDate: date + 'T' + time,
+      CreatedBy: await Utils.ngetStorage(nkey.id_user),
+      UpdateDate: '0',
+      UpdateBy: 0,
+    });
 
+    console.log('strBody tin nhanh nhóm', strBody);
+    let res = await PostBaiDang_Nhom(strBody);
+    console.log('res tin nhanh nhóm', res);
+    if (res.status == 1) {
+      let thanhcong = res.status;
+      // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home', {PostThanhCong: thanhcong});
+      showMessage({
+        message: 'Thông báo',
+        description: 'Đăng bài thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Đăng bài thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
+    }
+  };
   _GetDSGroup = async () => {
     let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     // let res = await GetDSGroup(1);
@@ -135,12 +180,89 @@ export default class ChaoMungTV extends React.Component {
     await this.setState({mangtam: temp});
   };
 
+  _renderActive = () => {
+    this.setState({isActive: !this.state.isActive});
+  };
+  // _keyExtractor = ({ item, index }) => index.toString();
+  _callBack = (item) => {
+    this.setState(
+      {
+        selectLyDo: item,
+      },
+      () => {
+        this._renderActive();
+        this._render_Dang();
+      },
+    );
+  };
+
+  _keyExtrac = (item, index) => `${item.ID_group}`;
+  _renderPH = ({item, index}) => {
+    return (
+      <View
+        key={index}
+        style={{
+          backgroundColor: 'white',
+        }}>
+        <TouchableOpacity
+          onPress={() => this._callBack(item)}
+          style={{paddingHorizontal: 15, paddingVertical: 16}}>
+          <Text>{item.Ten_Group}</Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: 2,
+            width: '100%',
+            // backgroundColor: colors.black_20,
+          }}></View>
+      </View>
+    );
+  };
+
+  _render_Dang = () => {
+    let {selectLyDo, DataChuyenVe, haveValue_NoiDung} = this.state;
+    if (DataChuyenVe != {} && selectLyDo == '' && haveValue_NoiDung != '') {
+      return (
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              this._PostBaiDang();
+            }}>
+            <Text style={styles.textDang}>Đăng</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (
+      DataChuyenVe != {} &&
+      selectLyDo != '' &&
+      haveValue_NoiDung != ''
+    ) {
+      return (
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              this._PostBaiDang_Nhom();
+            }}>
+            <Text style={styles.textDang}>Đăng</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Text style={styles.textDang_invisibale}>Đăng</Text>
+        </View>
+      );
+    }
+  };
+
   componentDidMount = async () => {
     await this._GetDSGroup();
     await this.LaymangTam();
   };
 
   render() {
+    const {isActive, selectLyDo} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -162,7 +284,7 @@ export default class ChaoMungTV extends React.Component {
               <Text style={styles.title}>Tạo tin chào mừng thành viên mới</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
-              {this.state.haveValue_NoiDung ? (
+              {/* {this.state.haveValue_NoiDung ? (
                 <View>
                   <TouchableOpacity
                     onPress={() => {
@@ -173,7 +295,8 @@ export default class ChaoMungTV extends React.Component {
                 </View>
               ) : (
                 <Text style={styles.textDang_invisibale}>Đăng</Text>
-              )}
+              )} */}
+              {this._render_Dang()}
             </View>
           </View>
         </View>
@@ -228,48 +351,52 @@ export default class ChaoMungTV extends React.Component {
             </View>
 
             <Text>Chọn nhóm</Text>
-            <View
-              style={{
-                minHeight: this.state.isOpen
-                  ? 60 * this.state.mangtam.length
-                  : 0,
-                marginTop: 5,
-              }}>
-              <DropDownPicker
-                onOpen={() => {
-                  this.setState({
-                    isOpen: true,
-                  });
-                }}
-                // defaultValue="Chọn nhóm"
-                items={this.state.mangtam}
-                // defaultValue={}
-                style={{backgroundColor: '#DDDDDD80', minHeight: 50}}
-                itemStyle={{
-                  justifyContent: 'flex-start',
-                }}
-                onClose={() => {
-                  this.setState({isOpen: false});
-                }}
-                dropDownStyle={{
+            <View style={{marginTop: 5}}>
+              <View
+                style={{
+                  borderWidth: 1,
+                  padding: 15,
+                  borderRadius: 20,
+                  borderColor: '#DDDDDD80',
                   backgroundColor: '#DDDDDD80',
-                  position: 'absolute',
-                }}
-                selectedtLabelStyle={{
-                  color: 'blue',
-                }}
-                // containerStyle={{height: 70}}
-                min={0}
-                onChangeItem={(item) =>
-                  this.setState({
-                    nhomSelected: item.value,
-                  })
-                }
-                searchable={true}
-                searchablePlaceholder="Search for an item"
-                searchablePlaceholderTextColor="gray"
-                seachableStyle={{}}
-                searchableError={() => <Text>Not Found</Text>}></DropDownPicker>
+                }}>
+                <TouchableOpacity
+                  onPress={this._renderActive}
+                  style={[
+                    {
+                      fontSize: 14,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
+                    {selectLyDo.Ten_Group ? selectLyDo.Ten_Group : ''}
+                  </Text>
+                  <Image
+                    source={dropdown}
+                    style={[{tintColor: '#4F4F4F80', width: 20, height: 18}]}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+              {isActive == true ? (
+                <FlatList
+                  style={{
+                    marginTop: 1,
+                    backgroundColor: 'white',
+                    height: 'auto',
+                    borderRadius: 10,
+                    borderWidth: 2,
+                    borderColor: 'gray',
+                    borderBottomColor: 'white',
+                  }}
+                  data={this.state.dsNhom}
+                  renderItem={this._renderPH}
+                  keyExtractor={this._keyExtrac}
+                />
+              ) : null}
             </View>
           </View>
         </View>

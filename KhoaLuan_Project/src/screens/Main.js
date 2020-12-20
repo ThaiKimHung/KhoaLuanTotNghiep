@@ -9,7 +9,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './HomeScreen';
-import DetailsScreen from './DetailScreen';
+// import DetailsScreen from './DetailScreen';
 import MainTabScreen from '../stackScreen/MainTabScreen';
 
 const Stack = createStackNavigator();

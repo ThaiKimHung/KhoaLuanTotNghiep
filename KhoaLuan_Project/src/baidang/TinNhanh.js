@@ -25,7 +25,7 @@ import SvgUri from 'react-native-svg-uri';
 import {PostBaiDang, PostBaiDang_Nhom, GetDSGroup} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const dropdown = require('../assets/images/caret-down.png');
@@ -93,6 +93,7 @@ export default class TinNhanh extends React.Component {
         duration: 1500,
         icon: 'success',
       });
+      ROOTGlobal.GetDS();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -357,8 +358,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    // backgroundColor: '#FFCC99',
-    // backgroundColor: 'yelslow',
   },
   title: {
     fontSize: FontSize.reSize(20),

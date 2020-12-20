@@ -14,7 +14,7 @@ import {
 
 import BaiDangComponent from '../components/BaiDangComponent';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 import * as Animatable from 'react-native-animatable';
 
 import Utils from '../apis/Utils';
@@ -35,20 +35,21 @@ export default class BaiDangComponentScreen extends React.Component {
       thanhcong: '',
       id_user: '',
     };
+    ROOTGlobal.GetDS = this._GetDSBaiDang;
   }
 
   componentDidMount = () => {
     this._GetDSBaiDang();
   };
 
-  componentDidUpdate = () => {
-    // this.props &&
-    // this.props.route &&
-    // this.props.route.params &&
-    // this.props.route.params.thanhcong == 1
-    //   ? this._GetDSBaiDang()
-    //   : null;
-  };
+  // componentDidUpdate = () => {
+  //   // this.props &&
+  //   // this.props.route &&
+  //   // this.props.route.params &&
+  //   // this.props.route.params.thanhcong == 1
+  //   //   ? this._GetDSBaiDang()
+  //   //   : null;
+  // };
 
   _GetDSBaiDang = async () => {
     let res = '';
@@ -69,48 +70,51 @@ export default class BaiDangComponentScreen extends React.Component {
       if (res.status == 1) {
         this.setState({
           DSBaiDang: res.data,
-          refresh: !this.state.refresh,
+          refresh: false,
           length: this.state.DSBaiDang.length,
+          // refresh: true,
         });
         // console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
       } else {
-        this.setState({refresh: !this.state.refresh});
+        this.setState({
+          refresh: false,
+        });
         // alert('thất bại');
       }
     }
   };
 
-  Reload_baiDang() {
-    let tiepnhan = this.props.route.params.thanhcong
-      ? this.props.route.params.thanhcong
-      : 0;
-    if (tiepnhan === 1) {
-      this._GetDSBaiDang();
-    }
-  }
+  // Reload_baiDang() {
+  //   let tiepnhan = this.props.route.params.thanhcong
+  //     ? this.props.route.params.thanhcong
+  //     : 0;
+  //   if (tiepnhan === 1) {
+  //     this._GetDSBaiDang();
+  //   }
+  // }
 
-  Reload_baiDang_SauKhiXoa = () => {
-    // let oki = this.props.nthis ? this.props.nthis : 0;
-    // let hi = oki ? oki.props.route.params : oki;
-    // console.log('this.props.route.params.dêtte', delele_ok);
-    // if (hi.delete_thanhcong === 1) {
-    //   alert(5);
-    //   this._GetDSBaiDang();
-    // }
-    this.setState({
-      refresh: false,
-    });
-  };
+  // Reload_baiDang_SauKhiXoa = () => {
+  //   // let oki = this.props.nthis ? this.props.nthis : 0;
+  //   // let hi = oki ? oki.props.route.params : oki;
+  //   // console.log('this.props.route.params.dêtte', delele_ok);
+  //   // if (hi.delete_thanhcong === 1) {
+  //   //   alert(5);
+  //   //   this._GetDSBaiDang();
+  //   // }
+  //   this.setState({
+  //     refresh: false,
+  //   });
+  // };
 
-  buttonBaiDangMoi = () => {
-    return (
-      <View style={{position: 'absolute', top: '0'}}>
-        <TouchableOpacity onPress={() => this._GetDSBaiDang()}>
-          <Text>Có bài đăng mới</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  // buttonBaiDangMoi = () => {
+  //   return (
+  //     <View style={{position: 'absolute', top: '0'}}>
+  //       <TouchableOpacity onPress={() => this._GetDSBaiDang()}>
+  //         <Text>Có bài đăng mới</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
 
   EmptyListMessage = ({item}) => {
     return (
@@ -148,6 +152,15 @@ export default class BaiDangComponentScreen extends React.Component {
         }></BaiDangComponent>
     );
   };
+
+  // componentDidMount = () => {
+  //   ROOTGlobal.GetDS = this._GetDSBaiDang;
+  // };
+
+  _onRefresh = () => {
+    this.setState({refresh: true});
+    this._GetDSBaiDang();
+  };
   render() {
     return (
       <View>
@@ -156,10 +169,7 @@ export default class BaiDangComponentScreen extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={(item, index) => index.toString()}
           refreshing={this.state.refresh}
-          onRefresh={() => {
-            this.setState({refresh: true});
-            this._GetDSBaiDang();
-          }}
+          onRefresh={() => this._onRefresh}
           ListEmptyComponent={this.EmptyListMessage}
           ListFooterComponent={this.FoodterMessage}
           // ListHeaderComponent={this.HeaderMessage}

@@ -12,6 +12,8 @@ const ROOTGlobal = {
   country: {name: '', id_Country: 0},
   datafacility: {HOT: [], ROO: []},
   GetDsAllBaiDang: () => {},
+  GetChiTietBaiDang: () => {},
+  GanDataChitiet: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

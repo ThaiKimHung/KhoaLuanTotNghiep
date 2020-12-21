@@ -31,6 +31,7 @@ import {
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import DropDownPicker from 'react-native-custom-dropdown';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
@@ -161,6 +162,7 @@ export default class KhenThuong extends React.Component {
         userSelected: '',
         DataChuyenVe: {},
       });
+      ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -208,6 +210,7 @@ export default class KhenThuong extends React.Component {
         userSelected: '',
         DataChuyenVe: {},
       });
+      ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',

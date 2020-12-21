@@ -21,7 +21,8 @@ import {Avatar, Accessory} from 'react-native-elements';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Login, PostTinhTrang} from '../apis/apiUser';
+import {Login, PostTinhTrang, GetDSLike} from '../apis/apiUser';
+import {nGlobalKeys} from '../apis/globalKey';
 
 const avatar = require('../assets/images/avatar.png');
 const logo = require('../assets/images/Jeelogo.png');
@@ -38,6 +39,7 @@ export default class SplashScreen2 extends React.Component {
       name: '',
       id: '',
       loading: true,
+      DSLike: [],
     };
   }
 
@@ -93,10 +95,21 @@ export default class SplashScreen2 extends React.Component {
         }),
       2000,
     );
+  _GetDSLike = async () => {
+    let res = await GetDSLike();
+    console.log('ress ds like', res);
+    if (res.status == 1) {
+      this.setState({
+        DSLike: res.Data,
+      });
+      await Utils.setGlobal(nGlobalKeys.DanhSachLike, this.state.DSLike);
+    }
+  };
 
   componentDidMount() {
     this._getThongTin();
     this.closeActivityIndicator();
+    this._GetDSLike();
   }
 
   render() {

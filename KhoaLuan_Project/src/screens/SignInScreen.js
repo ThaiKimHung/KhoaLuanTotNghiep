@@ -20,7 +20,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 
-import {Login, PostTinhTrang} from '../apis/apiUser';
+import {Login, PostTinhTrang, GetDSLike} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
@@ -38,6 +38,7 @@ export default class SignInScreen extends React.Component {
     this.state = {
       ShowPassword: true,
       DsThongTinUser: [],
+      DSLike: [],
     };
     this.Username = 'hung@gmail.com';
     this.Password = '111111';
@@ -112,7 +113,19 @@ export default class SignInScreen extends React.Component {
     let res = await PostTinhTrang(strBody);
     console.log('res update tình trạng sau khi đăng nhập', res);
   };
-
+  _GetDSLike = async () => {
+    let res = await GetDSLike();
+    console.log('ress ds like', res);
+    if (res.status == 1) {
+      this.setState({
+        DSLike: res.Data,
+      });
+      await Utils.setGlobal(nGlobalKeys.DanhSachLike, this.state.DSLike);
+    }
+  };
+  componentDidMount = () => {
+    this._GetDSLike();
+  };
   render() {
     var {ShowPassword} = this.state;
     return (

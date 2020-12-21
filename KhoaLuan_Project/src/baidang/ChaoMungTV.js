@@ -21,6 +21,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 import {PostBaiDang, PostBaiDang_Nhom, GetDSGroup} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -105,6 +106,7 @@ export default class ChaoMungTV extends React.Component {
         duration: 1500,
         icon: 'success',
       });
+      ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',

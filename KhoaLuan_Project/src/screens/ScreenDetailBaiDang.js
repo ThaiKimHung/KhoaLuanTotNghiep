@@ -19,10 +19,17 @@ import FontSize from '../components/size';
 import GoBack from '../components/GoBack';
 import DanhSachLike from '../components/DanhSachLike';
 import Utils from '../apis/Utils';
-import {nkey} from '../apis/keyStore';
-import SvgUri from 'react-native-svg-uri';
-import {AddComment, GetChiTietBaiDang} from '../apis/apiUser';
 
+import SvgUri from 'react-native-svg-uri';
+import {
+  AddComment,
+  GetChiTietBaiDang,
+  AddLike,
+  DeleteBaiDang_Like,
+} from '../apis/apiUser';
+import {ROOTGlobal} from '../apis/dataGlobal';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const avatar_mau = require('../assets/images/avatar.png');
@@ -50,7 +57,14 @@ export default class BaiDangComponenet extends React.Component {
       dslike: {},
       username: '',
       dsCmt: [],
+      title: '',
+      noidung: '',
     };
+    this.idBaiDang = '';
+    this.id_user = '';
+    this.id_like = 1;
+    ROOTGlobal.GetChiTietBaiDang = this._GetChiTietBaiDang;
+    ROOTGlobal.GanDataChitiet = this.GanData;
   }
 
   _GetChiTietBaiDang = async () => {
@@ -60,8 +74,8 @@ export default class BaiDangComponenet extends React.Component {
       this.setState({
         ChiTietBD: res.data,
       });
-      await console.log('chi tiết bd', this.state.ChiTietBD);
-      await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
+      // await console.log('chi tiết bd', this.state.ChiTietBD);
+      // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
     }
   };
   GetData = () => {
@@ -101,6 +115,8 @@ export default class BaiDangComponenet extends React.Component {
       this.setState({
         text_Cmt: '',
       });
+      await this._GetChiTietBaiDang();
+      await this.GanData();
     }
   };
 
@@ -171,14 +187,52 @@ export default class BaiDangComponenet extends React.Component {
     );
   };
 
-  TaoLike = () => {
+  // TaoLike = () => {
+  //   this.setState({
+  //     thich: !this.state.thich,
+  //   });
+  // };
+
+  TaoLike = async (idbaidang, idlike, iduser) => {
+    let res = await AddLike(idbaidang, idlike, iduser);
+    console.log('ress add like', res);
+    if (res.status == 1) {
+      await this._GetChiTietBaiDang();
+      await this.GanData();
+      // await ROOTGlobal.GetDsAllBaiDang();
+    }
+  };
+
+  DeleteLike = async (idbaidang) => {
+    let res = await DeleteBaiDang_Like(idbaidang);
+    console.log('ress xóa like', res);
+    if (res.status == 1) {
+      await this._GetChiTietBaiDang();
+      await this.GanData();
+      // await ROOTGlobal.GetDsAllBaiDang();
+    }
+  };
+
+  GanData = async () => {
     this.setState({
-      thich: !this.state.thich,
+      user: await this.state.ChiTietBD[0].User_DangBai[0].ID_user,
+      avatar_user: await this.state.ChiTietBD[0].User_DangBai[0].avatar,
+      username: await this.state.ChiTietBD[0].User_DangBai[0].Username,
+      solike: await this.state.ChiTietBD[0].Like_BaiDang.length,
+      socmt: await this.state.ChiTietBD[0].Coment.length,
+      dslike: await this.state.ChiTietBD[0].Like,
+      dsCmt: await this.state.ChiTietBD[0].Coment,
+      title: await this.state.ChiTietBD[0].title,
+      noidung: await this.state.ChiTietBD[0].NoiDung,
     });
+    // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
+    // await console.log('user gandata', this.state.user);
+    // await console.log('title', this.state.title);
+    // await console.log('noi udng', this.state.noidung);
   };
 
   loadNoiDung = () => {
-    console.log('this detail', this);
+    // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
@@ -245,11 +299,17 @@ export default class BaiDangComponenet extends React.Component {
                     borderRadius: 30,
                   }}
                   resizeMode="cover"
-                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+                  source={
+                    this.state.avatar_user
+                      ? {
+                          uri: this.state.avatar_user,
+                        }
+                      : avatar_mau
+                  }></Image>
               </View>
-              <Text>{id_nguoidang.title}</Text>
+              <Text>{this.state.title}</Text>
               <Text style={{fontSize: FontSize.reSize(20)}}>
-                {id_nguoidang.NoiDung}
+                {this.state.noidung}
               </Text>
             </TouchableOpacity>
           </View>
@@ -272,37 +332,27 @@ export default class BaiDangComponenet extends React.Component {
                     borderRadius: 30,
                   }}
                   resizeMode="cover"
-                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+                  source={
+                    this.state.avatar_user
+                      ? {
+                          uri: this.state.avatar_user,
+                        }
+                      : avatar_mau
+                  }></Image>
               </View>
-              <Text>{id_nguoidang.title}</Text>
-              <Text>{id_nguoidang.NoiDung}</Text>
+              <Text>{this.state.title}</Text>
+              <Text>{this.state.noidung}</Text>
             </ImageBackground>
           </View>
         );
       default:
         return (
           <View style={styles.footer}>
-            <Text>{id_nguoidang.title}</Text>
-            <Text>{id_nguoidang.NoiDung}</Text>
+            <Text>{this.state.title}</Text>
+            <Text>{this.state.noidung}</Text>
           </View>
         );
     }
-  };
-
-  GanData = async () => {
-    this.setState({
-      user: this.state.ChiTietBD ? this.state.ChiTietBD[0].User_DangBai : [],
-      avatar_user: await this.state.ChiTietBD[0].User_DangBai[0].avatar,
-      username: await this.state.ChiTietBD[0].User_DangBai[0].Username,
-      solike: await this.state.ChiTietBD[0].Like_BaiDang.length,
-      socmt: await this.state.ChiTietBD[0].Coment.length,
-      dslike: await this.state.ChiTietBD[0].Like,
-      dsCmt: await this.state.ChiTietBD[0].Coment,
-    });
-    // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
-    // await console.log('user gandata', this.state.user);
-    // await console.log('số like', this.state.solike);
-    // await console.log('số ava', this.state.avatar_user);
   };
 
   async componentDidMount() {
@@ -312,7 +362,7 @@ export default class BaiDangComponenet extends React.Component {
   }
 
   render() {
-    console.log('this detail', this);
+    // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
     return (
@@ -321,6 +371,7 @@ export default class BaiDangComponenet extends React.Component {
           name=""
           onPress={() => {
             Utils.goback(this, '');
+            ROOTGlobal.GetDsAllBaiDang();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
         <View>
@@ -362,23 +413,24 @@ export default class BaiDangComponenet extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() => {
-                Utils.goscreen(this, 'PopUpModal_XoaSua', {
-                  id_nguoidang: id_nguoidang,
+                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail', {
+                  id_nguoidang: this.state.ChiTietBD,
                 });
               }}>
               <Image style={styles.imageLike_Commnet} source={daubacham} />
             </TouchableOpacity>
           </View>
 
-          <this.loadNoiDung></this.loadNoiDung>
+          {this.loadNoiDung()}
         </View>
+
         <View style={{marginBottom: 5}}>
           <View style={styles.khungLike_Commnet}>
             {this.state.dslike ? (
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onPress={() => {
-                  this.TaoLike();
+                  this.DeleteLike(this.idBaiDang);
                 }}>
                 <SvgUri
                   width={FontSize.scale(20)}
@@ -399,15 +451,24 @@ export default class BaiDangComponenet extends React.Component {
             ) : (
               <TouchableOpacity
                 style={styles.khung_Thich}
-                onPress={() => {
-                  this.TaoLike();
+                onLongPress={async () => {
+                  Utils.goscreen(this, 'ModalLike_Detail', {
+                    id_nguoidang: this.props,
+                  });
+                }}
+                onPress={async () => {
+                  this.TaoLike(
+                    this.idBaiDang,
+                    this.id_like,
+                    await Utils.ngetStorage(nkey.id_user),
+                  );
                 }}>
                 <Image style={styles.imageLike_Commnet1} source={thich} />
                 <Text
                   style={{
                     marginLeft: FontSize.reSize(5),
                     textAlign: 'center',
-                    color: '#007DE3',
+                    color: '#696969',
                   }}>
                   Like ({this.state.solike})
                 </Text>
@@ -427,6 +488,7 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+
         <View style={styles.khung_CmtTong}>
           <FlatList
             data={this.state.dsCmt}
@@ -466,6 +528,7 @@ export default class BaiDangComponenet extends React.Component {
                 text_Cmt: text,
               })
             }></TextInput>
+
           {this.state.text_Cmt ? (
             <TouchableOpacity
               style={{marginRight: 5}}
@@ -476,6 +539,7 @@ export default class BaiDangComponenet extends React.Component {
                   height: FontSize.scale(20),
                   width: FontSize.verticalScale(20),
                   // padding: 10,
+                  tintColor: '#007DE3',
                 }}></Image>
             </TouchableOpacity>
           ) : (
@@ -570,7 +634,7 @@ const styles = StyleSheet.create({
   imageLike_Commnet1: {
     height: FontSize.scale(15),
     width: FontSize.verticalScale(15),
-    tintColor: '#007DE3',
+    // tintColor: '#007DE3',
   },
   khungLike_Commnet: {
     borderTopWidth: 1,

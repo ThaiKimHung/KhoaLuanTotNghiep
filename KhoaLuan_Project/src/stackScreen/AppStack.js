@@ -29,6 +29,7 @@ import BaiDangComponent from '../components/BaiDangComponent';
 import ModalComponent from '../modal/ModalComponent';
 import PopUpModal_XoaSua from '../modal/PopUpModal_XoaSua';
 import ModalLike from '../modal/ModalLike';
+import ModalLike_Detail from '../modal/ModalLike_Detail';
 import PopUpModal_XoaSua_Detail from '../modal/PopUpModal_XoaSua_Detail';
 import PopUpModal_CMT from '../modal/PopUpModal_CMT';
 import Modal_Nhom from '../modal/Modal_Nhom';
@@ -38,6 +39,8 @@ import TinNhanh from '../baidang/TinNhanh';
 import ChaoMungTV from '../baidang/ChaoMungTV';
 
 import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
+import Screen_EditBaiDang_Detail from '../edit/Screen_EditBaiDang_Detail';
+import EditKhenThuong from '../edit/EditKhenThuong';
 
 import Test from '../screens/Test';
 // import
@@ -72,6 +75,11 @@ const HomeStackScreen = () => (
       name="Screen_EditBaiDang"
       component={Screen_EditBaiDang}
     />
+    <HomeStack.Screen
+      name="Screen_EditBaiDang_Detail"
+      component={Screen_EditBaiDang_Detail}
+    />
+    <HomeStack.Screen name="EditKhenThuong" component={EditKhenThuong} />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );
@@ -134,6 +142,7 @@ const AppStack = () => {
       <Stack.Screen name="ModalComponent" component={ModalComponent} />
       <Stack.Screen name="PopUpModal_XoaSua" component={PopUpModal_XoaSua} />
       <Stack.Screen name="ModalLike" component={ModalLike} />
+      <Stack.Screen name="ModalLike_Detail" component={ModalLike_Detail} />
       <Stack.Screen
         name="PopUpModal_XoaSua_Detail"
         component={PopUpModal_XoaSua_Detail}

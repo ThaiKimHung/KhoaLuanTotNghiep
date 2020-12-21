@@ -43,6 +43,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
+    // await console.log('lưu iduser', this.state.id_user);
   }
   change() {
     this.setState({
@@ -91,12 +92,14 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     const {id_nguoidang = {}} = this.props.route.params;
     console.log('this detail modal', this.props);
     console.log('DetailBaiDang modal', id_nguoidang);
-    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
-
+    let user = id_nguoidang[0].User_DangBai[0].ID_user;
+    let idbaidang = id_nguoidang[0].Id_BaiDang;
+    // await console.log('user', idbaidang);
     await this.setState({
-      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
-      id_NguoiDang: user ? user.ID_user : null,
+      idBaiDang: idbaidang ? idbaidang : null,
+      id_NguoiDang: user ? user : null,
     });
+    // await console.log('this , truyền vào', this.state.id_NguoiDang);
   };
 
   xoathanhcong = () => {
@@ -104,11 +107,10 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     this.setState({
       display: !this.state.display,
     });
-    // this.props.navigation.navigate('HomeScreen', {
-    //   delete_thanhcong,
-    // });
     Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
   };
+
+  loadNoiDungChinhSua = () => {};
 
   async componentDidMount() {
     await this._getThongTin();
@@ -149,7 +151,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                         padding: 5,
                       }}
                       onPress={() => {
-                        Utils.goscreen(this, 'Screen_EditBaiDang', {
+                        Utils.goscreen(this, 'Screen_EditBaiDang_Detail', {
                           id_nguoidang: this.props.route.params,
                         });
                       }}>

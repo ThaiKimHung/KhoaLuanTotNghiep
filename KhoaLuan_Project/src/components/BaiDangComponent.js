@@ -18,11 +18,12 @@ import {
 
 // import DanhSachLike from './DanhSachLike';
 // import ModalComponent from '../components/ModalComponent';
-import Tooltip from 'react-native-walkthrough-tooltip';
+
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import * as Animatable from 'react-native-animatable';
 
+import {ROOTGlobal} from '../apis/dataGlobal';
 import {GetDSLike, AddLike, DeleteBaiDang_Like} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -47,6 +48,8 @@ export default class BaiDangComponenet extends React.Component {
       thich: false,
       toolTipVisible: false,
       DaLike: [],
+      DataChuyenVe: [],
+      likeSelected: {},
     };
     this.id_like = 1;
     this.id_user = '';
@@ -59,11 +62,13 @@ export default class BaiDangComponenet extends React.Component {
     // this.setState({
     //   thich: !this.state.thich,
     // });
+    await ROOTGlobal.GetDsAllBaiDang();
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
     console.log('ress xóa like', res);
+    await ROOTGlobal.GetDsAllBaiDang();
   };
 
   _renderItem = ({item, index}) => {
@@ -80,20 +85,31 @@ export default class BaiDangComponenet extends React.Component {
     );
   };
 
-  async call(item) {
-    await Utils.goscreen(this.props.nthis.props.nthis, 'Home', {
-      Dulieu: item,
-    });
-    // console.log('item truyền về', item);
-  }
+  // HienDsLike = async (item) => {
+  //   await Utils.goscreen(this.props.nthis.props.nthis, 'Home', {
+  //     Dulieu: item,
+  //   });
+  //   // console.log('item truyền về', item);
+  // };
 
-  CheckLike = async () => {
-    // let a = this.item.Like;
-    // let iduser = await Utils.ngetStorage(nkey.id_user);
-    // let idcreatelike = a ? a.CreateBy : a;
-    // let loailike = '' ;
-    // console.log('a', a);
-    // console.log('người tạo like , loại like', idcreatelike, loailike);
+  ChuyenData = async (item) => {
+    // const {ds = {}} = item;
+    console.log('item', item);
+    // console.log('ds', ds);
+    Utils.goscreen(this.props.nthis.props.nthis, 'Home');
+    await this.setState({
+      DataChuyenVe: item,
+    });
+    this.GanDataSauKhiChuyenVe();
+    await console.log('data liek chuyeern veef', this.state.DataChuyenVe);
+  };
+
+  GanDataSauKhiChuyenVe = async () => {
+    await this.setState({
+      likeSelected: this.state.DataChuyenVe.ID_like,
+    });
+
+    await console.log('data liek ', this.state.likeSelected);
   };
 
   loadNoiDung = () => {
@@ -194,11 +210,29 @@ export default class BaiDangComponenet extends React.Component {
     }
   };
 
-  componentDidMount() {
+  TaoLike_Like = async () => {
+    Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+      chuyenData: this.ChuyenData,
+    });
+
+    await this.TaoLike(
+      this.item.Id_BaiDang,
+      this.state.likeSelected,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+
+    // switch(this.state.likeSelected){
+    //   case 1:
+
+    // }
+  };
+
+  componentDidMount = async () => {
     // this._GetDSLike();
     // console.log('this bài đăng component did mount', this);
     // this.CheckLike();
-  }
+    // await this.GanDataSauKhiChuyenVe();
+  };
 
   render() {
     const {item = {}} = this.props;
@@ -215,7 +249,7 @@ export default class BaiDangComponenet extends React.Component {
     let loaibaidang = item.Id_LoaiBaiDang;
     let group = item.Group ? item.Group[0] : {};
     // console.log('this bài đăng component', group);
-
+    this.item = item.Id_BaiDang;
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -334,63 +368,25 @@ export default class BaiDangComponenet extends React.Component {
               </TouchableOpacity>
             ) : (
               // đây là tạo like
+
               <TouchableOpacity
                 style={styles.khung_Thich}
-                onLongPress={(e) =>
+                onLongPress={async () => {
                   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
-                    layve: () => {
-                      // alert('vo');
-                      this.call(this.props);
-                      // console.log('item về', this);
-                    },
-                  })
-                }
+                    id_nguoidang: this.props,
+                  });
+                }}
                 onPress={async () => {
                   this.TaoLike(
                     item.Id_BaiDang,
                     this.id_like,
                     await Utils.ngetStorage(nkey.id_user),
                   );
-                  // this.setState({
-                  //   toolTipVisible: true,
-                  // });
                 }}>
-                {this.state.thich ? (
-                  <View style={{flexDirection: 'row'}}>
-                    <Image
-                      style={[styles.imageLike_Commnet, {tintColor: '#007DE3'}]}
-                      source={thich}
-                    />
-                    <Text style={styles.text_Like_cmt1}>Like</Text>
-                  </View>
-                ) : (
-                  <View style={{flexDirection: 'row'}}>
-                    <Image
-                      style={[styles.imageLike_Commnet, {tintColor: '#696969'}]}
-                      source={thich}
-                    />
-                    <Text style={styles.text_Like_cmt}>Like</Text>
-                  </View>
-                )}
-                {/* {this.state.toolTipVisible ? (
-                <Tooltip
-                  isVisible={this.state.toolTipVisible}
-                  // content={<DanhSachLike></DanhSachLike>}
-                  content={
-                    <View style={{flex: 1, backgroundColor: 'blue'}}>
-                      <FlatList
-                        data={this.state.DSLike}
-                        renderItem={this._renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal={true}
-                      />
-                    </View>
-                  }
-                  arrowSize={{width: 200, height: 200}}
-                  placement="top"
-                  onClose={() => this.setState({toolTipVisible: false})}
-                />
-              ) : null} */}
+                <View style={{flexDirection: 'row'}}>
+                  <Image style={styles.imageLike_Commnet} source={thich} />
+                  <Text style={styles.text_Like_cmt}>Like</Text>
+                </View>
               </TouchableOpacity>
             )}
 

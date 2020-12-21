@@ -15,7 +15,7 @@ import {
 import FontSize from '../components/size';
 import Utils from '../apis/Utils';
 const goback = require('../assets/images/go-back-left-arrow.png');
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 export default class GoBack extends React.Component {
   render() {
     // console.log('this goBack', this);

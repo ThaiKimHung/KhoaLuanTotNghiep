@@ -35,21 +35,12 @@ export default class BaiDangComponentScreen extends React.Component {
       thanhcong: '',
       id_user: '',
     };
-    ROOTGlobal.GetDS = this._GetDSBaiDang;
+    ROOTGlobal.GetDsAllBaiDang = this._GetDSBaiDang;
   }
 
   componentDidMount = () => {
     this._GetDSBaiDang();
   };
-
-  // componentDidUpdate = () => {
-  //   // this.props &&
-  //   // this.props.route &&
-  //   // this.props.route.params &&
-  //   // this.props.route.params.thanhcong == 1
-  //   //   ? this._GetDSBaiDang()
-  //   //   : null;
-  // };
 
   _GetDSBaiDang = async () => {
     let res = '';
@@ -72,49 +63,14 @@ export default class BaiDangComponentScreen extends React.Component {
           DSBaiDang: res.data,
           refresh: false,
           length: this.state.DSBaiDang.length,
-          // refresh: true,
         });
-        // console.log('ds bài đăng screen all bài đăng:', this.state.DSBaiDang);
       } else {
         this.setState({
           refresh: false,
         });
-        // alert('thất bại');
       }
     }
   };
-
-  // Reload_baiDang() {
-  //   let tiepnhan = this.props.route.params.thanhcong
-  //     ? this.props.route.params.thanhcong
-  //     : 0;
-  //   if (tiepnhan === 1) {
-  //     this._GetDSBaiDang();
-  //   }
-  // }
-
-  // Reload_baiDang_SauKhiXoa = () => {
-  //   // let oki = this.props.nthis ? this.props.nthis : 0;
-  //   // let hi = oki ? oki.props.route.params : oki;
-  //   // console.log('this.props.route.params.dêtte', delele_ok);
-  //   // if (hi.delete_thanhcong === 1) {
-  //   //   alert(5);
-  //   //   this._GetDSBaiDang();
-  //   // }
-  //   this.setState({
-  //     refresh: false,
-  //   });
-  // };
-
-  // buttonBaiDangMoi = () => {
-  //   return (
-  //     <View style={{position: 'absolute', top: '0'}}>
-  //       <TouchableOpacity onPress={() => this._GetDSBaiDang()}>
-  //         <Text>Có bài đăng mới</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
 
   EmptyListMessage = ({item}) => {
     return (
@@ -131,14 +87,6 @@ export default class BaiDangComponentScreen extends React.Component {
     );
   };
 
-  // HeaderMessage = ({item}) => {
-  //   return (
-  //     <View onPress={() => getItem(item)}>
-  //       {this.state.thanhcong ? this.buttonBaiDangMoi() : <View></View>}
-  //     </View>
-  //   );
-  // };
-
   _renderItem = ({item, index}) => {
     return (
       <BaiDangComponent
@@ -153,13 +101,8 @@ export default class BaiDangComponentScreen extends React.Component {
     );
   };
 
-  // componentDidMount = () => {
-  //   ROOTGlobal.GetDS = this._GetDSBaiDang;
-  // };
-
   _onRefresh = () => {
-    this.setState({refresh: true});
-    this._GetDSBaiDang();
+    this.setState({refresh: true}, () => this._GetDSBaiDang());
   };
   render() {
     return (
@@ -169,9 +112,10 @@ export default class BaiDangComponentScreen extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={(item, index) => index.toString()}
           refreshing={this.state.refresh}
-          onRefresh={() => this._onRefresh}
+          onRefresh={this._onRefresh}
           ListEmptyComponent={this.EmptyListMessage}
           ListFooterComponent={this.FoodterMessage}
+          initialNumToRender={10}
           // ListHeaderComponent={this.HeaderMessage}
         />
       </View>

@@ -154,18 +154,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   footer: {
-    // flex: 1,
-    // backgroundColor: 'green',
-    // flexDirection: 'row',
     height: '92%',
     width: '100%',
     paddingTop: 5,
   },
   khungchua: {
     flexDirection: 'row',
-    // padding: 10,
     marginTop: 5,
-    // justifyContent: 'flex-start',
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#C0C0C0',

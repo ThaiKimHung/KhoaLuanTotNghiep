@@ -24,7 +24,7 @@ import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useRoute} from '@react-navigation/native';
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
@@ -61,8 +61,6 @@ export default class PopUpModal_XoaSua extends Component {
 
     //xóa bài đăng
     let res = await DeleteBaiDang(this.state.idBaiDang);
-    // console.log('id bài đăng fun xóa bài đăng', this.state.idBaiDang);
-    // console.log('ress delete bài đăng', res);
     if (res_like.status == 1 && res_cmt.status == 1 && res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -75,6 +73,7 @@ export default class PopUpModal_XoaSua extends Component {
         thanhcong: true,
       });
       this.xoathanhcong();
+      ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',

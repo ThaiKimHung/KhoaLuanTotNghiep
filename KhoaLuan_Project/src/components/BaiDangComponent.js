@@ -176,22 +176,6 @@ export default class BaiDangComponenet extends React.Component {
               <TouchableOpacity
                 style={styles.footer1}
                 onPress={this.props.onPress}>
-                {/* <View
-                  style={{
-                    marginLeft: 5,
-                    borderRadius: 30,
-                    height: FontSize.scale(40),
-                    width: FontSize.verticalScale(40),
-                  }}>
-                  <Image
-                    style={{
-                      height: FontSize.scale(40),
-                      width: FontSize.verticalScale(40),
-                      borderRadius: 30,
-                    }}
-                    resizeMode="cover"
-                    source={user.avatar ? {uri: user.avatar} : avatar}></Image>
-                </View> */}
                 <Text>{item.title}</Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}

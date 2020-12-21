@@ -51,6 +51,13 @@ async function GetDSBaiDang(user) {
   return res;
 }
 
+async function GetChiTietBaiDang(user, idbaidang) {
+  let res = await Utils.get_api(
+    apiUser + `getDSBaiDangViewDetail?id_user=${user}&id_baidang=${idbaidang}`,
+  );
+  return res;
+}
+
 async function Update_BaiDang(strbody) {
   let res = await Utils.post_api(apiUser + `UpdateBaiDang`, strbody);
   return res;
@@ -165,6 +172,7 @@ export {
   PostTinhTrang,
   GetDSKhenThuong,
   GetDSBaiDang,
+  GetChiTietBaiDang,
   GetDSLike,
   AddLike,
   PostBaiDang,

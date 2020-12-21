@@ -21,11 +21,11 @@ import DanhSachLike from '../components/DanhSachLike';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import SvgUri from 'react-native-svg-uri';
-import {AddComment} from '../apis/apiUser';
+import {AddComment, GetChiTietBaiDang} from '../apis/apiUser';
 
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar_mau = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -42,10 +42,28 @@ export default class BaiDangComponenet extends React.Component {
       refresh: true,
       thich: false,
       text_Cmt: '',
+      ChiTietBD: [],
+      user: [],
+      avatar_user: '',
+      solike: 0,
+      socmt: 0,
+      dslike: {},
+      username: '',
+      dsCmt: [],
     };
-    this.idBaiDang = '';
-    // this.NoiDung_Cmt = '';
   }
+
+  _GetChiTietBaiDang = async () => {
+    let res = await GetChiTietBaiDang(this.id_user, this.idBaiDang);
+    console.log('res chi tiết bài đăng', res);
+    if (res.status == 1) {
+      this.setState({
+        ChiTietBD: res.data,
+      });
+      await console.log('chi tiết bd', this.state.ChiTietBD);
+      await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
+    }
+  };
   GetData = () => {
     if (this.props.route.params != null) {
       this.setState({
@@ -165,6 +183,7 @@ export default class BaiDangComponenet extends React.Component {
     // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
     this.idBaiDang = id_nguoidang.Id_BaiDang;
+    this.id_user = user.ID_user;
     let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     switch (idbaidang) {
@@ -270,20 +289,32 @@ export default class BaiDangComponenet extends React.Component {
     }
   };
 
+  GanData = async () => {
+    this.setState({
+      user: this.state.ChiTietBD ? this.state.ChiTietBD[0].User_DangBai : [],
+      avatar_user: await this.state.ChiTietBD[0].User_DangBai[0].avatar,
+      username: await this.state.ChiTietBD[0].User_DangBai[0].Username,
+      solike: await this.state.ChiTietBD[0].Like_BaiDang.length,
+      socmt: await this.state.ChiTietBD[0].Coment.length,
+      dslike: await this.state.ChiTietBD[0].Like,
+      dsCmt: await this.state.ChiTietBD[0].Coment,
+    });
+    // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
+    // await console.log('user gandata', this.state.user);
+    // await console.log('số like', this.state.solike);
+    // await console.log('số ava', this.state.avatar_user);
+  };
+
   async componentDidMount() {
     await this.GetData();
+    await this._GetChiTietBaiDang();
+    await this.GanData();
   }
 
   render() {
     console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
-    // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
-    let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
-    let Solike = id_nguoidang.Like_BaiDang.length;
-    let SoComment = id_nguoidang.Coment.length;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
-    let dslike = id_nguoidang.Like ? id_nguoidang.Like : null;
-    let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     return (
       <View style={styles.container}>
         <GoBack
@@ -314,11 +345,17 @@ export default class BaiDangComponenet extends React.Component {
                     borderRadius: 20,
                   }}
                   resizeMode="cover"
-                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
+                  soure={
+                    this.state.avatar_user
+                      ? {
+                          uri: this.state.avatar_user,
+                        }
+                      : avatar_mau
+                  }></Image>
               </View>
 
               <View style={styles.khung_tenUser}>
-                <Text style={styles.txt_TenUser}>{user.Username}</Text>
+                <Text style={styles.txt_TenUser}>{this.state.username}</Text>
               </View>
             </TouchableOpacity>
 
@@ -337,7 +374,7 @@ export default class BaiDangComponenet extends React.Component {
         </View>
         <View style={{marginBottom: 5}}>
           <View style={styles.khungLike_Commnet}>
-            {dslike ? (
+            {this.state.dslike ? (
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onPress={() => {
@@ -347,7 +384,7 @@ export default class BaiDangComponenet extends React.Component {
                   width={FontSize.scale(20)}
                   height={FontSize.verticalScale(20)}
                   source={{
-                    uri: dslike.icon,
+                    uri: this.state.dslike.icon,
                   }}
                 />
                 <Text
@@ -356,7 +393,7 @@ export default class BaiDangComponenet extends React.Component {
                     textAlign: 'center',
                     color: '#007DE3',
                   }}>
-                  {dslike.title} ({Solike})
+                  {this.state.dslike.title} ({this.state.solike})
                 </Text>
               </TouchableOpacity>
             ) : (
@@ -372,27 +409,10 @@ export default class BaiDangComponenet extends React.Component {
                     textAlign: 'center',
                     color: '#007DE3',
                   }}>
-                  Thích ({Solike})
+                  Like ({this.state.solike})
                 </Text>
               </TouchableOpacity>
             )}
-
-            {/* <TouchableOpacity
-                style={styles.khung_Thich}
-                onPress={() => {
-                  this.TaoLike();
-                }}>
-                <Image style={styles.imageLike_Commnet1} source={thich} />
-                <Text
-                  style={{
-                    marginLeft: FontSize.reSize(5),
-                    textAlign: 'center',
-                    color: '#007DE3',
-                  }}>
-                  Thích ({Solike})
-                </Text>
-              </TouchableOpacity>
-             */}
 
             <TouchableOpacity style={styles.khung_BinhLuan}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
@@ -402,19 +422,19 @@ export default class BaiDangComponenet extends React.Component {
                   textAlign: 'center',
                   color: '#696969',
                 }}>
-                Bình luận ({SoComment})
+                Bình luận ({this.state.socmt})
               </Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.khung_CmtTong}>
           <FlatList
-            data={id_nguoidang.Coment}
+            data={this.state.dsCmt}
             renderItem={this._renderItem}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}
             onRefresh={() => {
-              this.setState({refresh: true}, id_nguoidang.Coment);
+              this.setState({refresh: true}, this._GetChiTietBaiDang);
             }}
             ListEmptyComponent={this.EmptyListMessage}
           />
@@ -436,9 +456,10 @@ export default class BaiDangComponenet extends React.Component {
               borderRadius: 20,
               padding: 5,
               paddingLeft: 10,
-              // marginLeft: 5,
               flex: 1,
+              maxHeight: 150,
             }}
+            multiline={true}
             value={this.state.text_Cmt}
             onChangeText={(text) =>
               this.setState({
@@ -482,28 +503,20 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     padding: 5,
-    // backgroundColor: 'yellow',
     justifyContent: 'space-between',
   },
   khung_tenUser: {
-    // backgroundColor: 'blue',
-    // flex: 1,
     flexDirection: 'row',
   },
   khung_tenUser_Cmt: {
     backgroundColor: '#C0C0C080',
     flex: 1,
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // marginLeft: 10,
     padding: 5,
     marginLeft: 5,
     borderRadius: 15,
   },
   khung_daubacham: {
-    // backgroundColor: 'red',
     padding: 5,
-    // justifyContent: 'space-between',
   },
   txt_TenUser: {
     fontWeight: 'bold',

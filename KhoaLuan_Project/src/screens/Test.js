@@ -21,89 +21,43 @@ import {
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,
   GetDSGroup,
+  GetChiTietBaiDang,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
 const search = require('../assets/images/search.png');
 
-const lstPH = [
-  {
-    id: 0,
-    name: 'Cơ sở vật chất',
-  },
-  {
-    id: 1,
-    name: 'Chi phí dịch vụ',
-  },
-  {
-    id: 2,
-    name: 'Quyền lợi',
-  },
-  {
-    id: 3,
-    name: 'Khác',
-  },
-];
 export class ThemPhanHoi extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isActive: false,
       selectLyDo: '',
-      dsNhom: [],
+      ChiTietBD: [],
     };
   }
-  _GetDSGroup = async () => {
-    // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
-    let res = await GetDSGroup(1);
-    console.log('res', res);
+  _GetChiTietBaiDang = async () => {
+    let res = await GetChiTietBaiDang(2, 2326);
+    console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
-        dsNhom: res.Data,
+        ChiTietBD: res.data,
       });
-      console.log('state', this.state.dsNhom);
+      this.setState({
+        user: this.state.ChiTietBD ? this.state.ChiTietBD[0].User_DangBai : [],
+      });
+      await console.log('chi tiết bd', this.state.ChiTietBD);
+      await console.log(
+        'chi user',
+        this.state.ChiTietBD[0].User_DangBai[0].Username,
+      );
+      await console.log('chi user 2', this.state.user[0].Username);
     }
   };
 
-  _renderActive = () => {
-    this.setState({isActive: !this.state.isActive});
-  };
-  // _keyExtractor = ({ item, index }) => index.toString();
-  _callBack = (item) => {
-    this.setState(
-      {
-        selectLyDo: item,
-      },
-      () => this._renderActive(),
-    );
-  };
-
-  _keyExtrac = (item, index) => `${item.ID_group}`;
-  _renderPH = ({item, index}) => {
-    return (
-      <View
-        key={index}
-        style={{
-          backgroundColor: 'white',
-        }}>
-        <TouchableOpacity
-          onPress={() => this._callBack(item)}
-          style={{paddingHorizontal: 15, paddingVertical: 16}}>
-          <Text>{item.Ten_Group}</Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: 2,
-            width: '100%',
-            // backgroundColor: colors.black_20,
-          }}></View>
-      </View>
-    );
-  };
-
   componentDidMount = () => {
-    this._GetDSGroup();
+    this._GetChiTietBaiDang();
   };
   render() {
     const {isActive, selectLyDo} = this.state;
@@ -114,62 +68,7 @@ export class ThemPhanHoi extends Component {
           iconRight={Images.icSave}
           onPressRight={() => Utils.nlog('Luu du lieu')}
         /> */}
-        <View style={{marginHorizontal: 15, marginTop: 20}}>
-          <Text
-            style={[
-              {
-                fontSize: 12,
-                color: 'gray',
-                paddingLeft: 5,
-              },
-            ]}>
-            Lý do phản hồi
-          </Text>
-          <TouchableOpacity
-            onPress={this._renderActive}
-            style={[
-              {
-                fontSize: 14,
-                paddingLeft: 5,
-                borderBottomWidth: 1.5,
-                borderRadius: 2,
-                borderBottomColor: 'gray',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: 5,
-              },
-            ]}>
-            <Text numberOfLines={1} style={[{fontSize: 14, flex: 1}]}>
-              {selectLyDo.Ten_Group ? selectLyDo.Ten_Group : ''}
-            </Text>
-            <Image
-              source={search}
-              style={[{tintColor: 'gray', width: 14, height: 14}]}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          {
-            isActive == true ? (
-              <FlatList
-                style={{
-                  marginTop: 1,
-                  backgroundColor: 'white',
-                  height: 'auto',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: 'gray',
-                  borderBottomColor: 'white',
-                }}
-                data={this.state.dsNhom}
-                renderItem={this._renderPH}
-                // keyExtractor={(item, index) => index.toString()}
-                keyExtractor={this._keyExtrac}
-              />
-            ) : null
-            // <View style={{ backgroundColor: 'red', height: 30, }}></View> : null
-          }
-        </View>
+        <Text>hi</Text>
       </View>
     );
   }

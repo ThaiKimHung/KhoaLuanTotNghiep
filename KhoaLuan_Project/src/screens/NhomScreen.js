@@ -32,8 +32,8 @@ export default class NhomScreen extends React.Component {
   }
 
   _GetDSGroup = async () => {
-    // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
-    let res = await GetDSGroup(1);
+    let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
+    // let res = await GetDSGroup(1);
     console.log('res', res);
     if (res.status == 1) {
       this.setState({

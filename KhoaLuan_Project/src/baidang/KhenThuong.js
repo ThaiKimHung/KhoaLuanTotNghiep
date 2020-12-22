@@ -128,10 +128,10 @@ export default class KhenThuong extends React.Component {
 
   DangBaiDang_KhenThuong = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
 
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
@@ -140,7 +140,7 @@ export default class KhenThuong extends React.Component {
       Id_Group: 0,
       id_khenthuong: this.state.selectedItem,
       typepost: 'string',
-      CreatedDate: date + 'T' + time,
+      // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '',
       UpdateBy: 0,
@@ -176,10 +176,10 @@ export default class KhenThuong extends React.Component {
 
   DangBaiDang_KhenThuong_Group = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
 
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
@@ -188,7 +188,7 @@ export default class KhenThuong extends React.Component {
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: this.state.selectedItem,
       typepost: 'string',
-      CreatedDate: date + 'T' + time,
+      // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '',
       UpdateBy: 0,

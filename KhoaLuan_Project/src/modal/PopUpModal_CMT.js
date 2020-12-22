@@ -13,13 +13,14 @@ import {
 } from 'react-native';
 import FontSize from '../components/size';
 
-import {DeleteComment, DeleteComment_Like} from '../apis/apiUser';
+import {DeleteComment, DeleteComment_Like, Update_CMT} from '../apis/apiUser';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useRoute} from '@react-navigation/native';
+// import {useRoute} from '@react-navigation/native';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
@@ -41,22 +42,64 @@ export default class PopUpModal_CMT extends Component {
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
   }
-  change() {
+  change = async () => {
     this.setState({
       display: !this.state.display,
     });
     // this.props.navigation.goBack();
     Utils.goback(this, '');
-  }
+    await ROOTGlobal.GetChiTietBaiDang();
+    await ROOTGlobal.GanDataChitiet();
+  };
+
+  // XoaBaiDang = async () => {
+  //   //xóa like
+  //   let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
+  //   // console.log('res like', res_like);
+  //   let res_cmt = await DeleteCommentTrongBaiDang(this.state.idBaiDang);
+  //   // console.log('res cmt', res_cmt);
+
+  //   //xóa bài đăng
+  //   let res = await DeleteBaiDang(this.state.idBaiDang);
+  //   if (res_like.status == 1 && res_cmt.status == 1 && res.status == 1) {
+  //     showMessage({
+  //       message: 'Thông báo',
+  //       description: 'Xóa bài thành công',
+  //       type: 'success',
+  //       duration: 1500,
+  //       icon: 'success',
+  //     });
+  //     this.setState({
+  //       thanhcong: true,
+  //     });
+  //     this.xoathanhcong();
+  //     await ROOTGlobal.GetDsAllBaiDang();
+  //   } else {
+  //     showMessage({
+  //       message: 'Thông báo',
+  //       description: 'Xóa bài thất bại',
+  //       type: 'danger',
+  //       duration: 1500,
+  //       icon: 'danger',
+  //     });
+  //     this.setState({
+  //       thanhcong: false,
+  //     });
+  //     this.change();
+  //   }
+  // };
 
   Xoa_Cmt = async () => {
     let res_like = await DeleteComment_Like(this.state.Idcmt);
-    // console.log('res like cmt', res_like);
+    console.log('res detele like cmt', res_like);
     let res = await DeleteComment(this.state.Idcmt);
-    // console.log('res delete cmt', res);
+    console.log('res delete cmt', res);
     if (res_like.status == 1 && res.status == 1) {
       //   Utils.goscreen(this, 'ScreenDetailBaiDang');
-      Utils.goback(this);
+      // Utils.goback(this);
+      // await ROOTGlobal.GetChiTietBaiDang();
+      // await ROOTGlobal.GanDataChitiet();
+      this.change();
     }
   };
 
@@ -72,17 +115,6 @@ export default class PopUpModal_CMT extends Component {
     });
   };
 
-  //   xoathanhcong_cmt = () => {
-  //     let delete_thanhcong = 1;
-  //     this.setState({
-  //       display: !this.state.display,
-  //     });
-  //     // this.props.navigation.navigate('HomeScreen', {
-  //     //   delete_thanhcong,
-  //     // });
-  //     Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
-  //   };
-
   componentDidMount() {
     this._getThongTin();
     this.NhanThongTin();
@@ -90,7 +122,7 @@ export default class PopUpModal_CMT extends Component {
 
   render() {
     const {display} = this.state;
-    // console.log('this modal popup cmt', this);
+    const {Detail_Cmt = {}} = this.props.route.params;
     return (
       <View>
         <Modal
@@ -130,6 +162,14 @@ export default class PopUpModal_CMT extends Component {
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
+                      }}
+                      onPress={() => {
+                        Utils.goscreen(this, 'PopUpModal_SuaCMT', {
+                          id_nguoidang: Detail_Cmt,
+                        });
+                        this.setState({
+                          display: !this.state.display,
+                        });
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>

@@ -23,7 +23,7 @@ import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useRoute} from '@react-navigation/native';
+// import {useRoute} from '@react-navigation/native';
 import {ROOTGlobal} from '../apis/dataGlobal';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
@@ -73,7 +73,7 @@ export default class PopUpModal_XoaSua extends Component {
         thanhcong: true,
       });
       this.xoathanhcong();
-      ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -102,14 +102,13 @@ export default class PopUpModal_XoaSua extends Component {
   };
 
   xoathanhcong = () => {
-    let delete_thanhcong = 1;
     this.setState({
       display: !this.state.display,
     });
     // this.props.navigation.navigate('HomeScreen', {
     //   delete_thanhcong,
     // });
-    Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
+    Utils.goscreen(this, 'Home');
   };
 
   async componentDidMount() {
@@ -140,6 +139,7 @@ export default class PopUpModal_XoaSua extends Component {
                   width: '100%',
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
+                  // height: '50%',
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5, height: FontSize.Height(50)}}>

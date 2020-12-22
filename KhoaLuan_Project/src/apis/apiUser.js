@@ -125,6 +125,15 @@ async function AddComment(strbody) {
   let res = await Utils.post_api(apiUser + `addComment`, strbody);
   return res;
 }
+async function AddComment_Child(strbody) {
+  let res = await Utils.post_api(apiUser + `addComment_chill`, strbody);
+  return res;
+}
+
+async function Update_CMT(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateComment`, strbody);
+  return res;
+}
 async function DeleteComment_Like(id_cmt = '') {
   let res = await Utils.post_api(
     apiUser + `deleteComment_like?id_cmt=${id_cmt}`,
@@ -189,6 +198,8 @@ export {
   DeleteBaiDang,
   DeleteBaiDang_Like,
   AddComment,
+  AddComment_Child,
+  Update_CMT,
   DeleteComment_Like,
   DeleteComment,
   GetDSGroup,

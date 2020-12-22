@@ -24,7 +24,7 @@ import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useRoute} from '@react-navigation/native';
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
@@ -53,7 +53,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     Utils.goback(this, '');
   }
 
-  XoaCmt = async () => {
+  XoaBaiDang = async () => {
     //xóa like
     let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
     // xóa cmt
@@ -73,6 +73,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
         thanhcong: true,
       });
       this.xoathanhcong();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -103,11 +104,10 @@ export default class PopUpModal_XoaSua_Detail extends Component {
   };
 
   xoathanhcong = () => {
-    let delete_thanhcong = 1;
     this.setState({
       display: !this.state.display,
     });
-    Utils.goscreen(this, 'Home', {Xoabaidang: delete_thanhcong});
+    Utils.goscreen(this, 'Home');
   };
 
   loadNoiDungChinhSua = () => {};

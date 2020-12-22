@@ -22,7 +22,7 @@ import Utils from '../apis/Utils';
 
 import SvgUri from 'react-native-svg-uri';
 import {
-  AddComment,
+  AddComment_Child,
   GetChiTietBaiDang,
   AddLike,
   DeleteBaiDang_Like,
@@ -31,6 +31,7 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import moment from 'moment';
 
 const avatar_mau = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -40,6 +41,7 @@ const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
 const send = require('../assets/images/send.png');
 const welcome = require('../assets/images/welcome.png');
+const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
@@ -90,10 +92,10 @@ export default class BaiDangComponenet extends React.Component {
 
   DangCmt = async () => {
     // const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
 
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
@@ -101,7 +103,7 @@ export default class BaiDangComponenet extends React.Component {
       ID_BaiDang: this.idBaiDang,
       NoiDung_cmt: this.state.text_Cmt,
       typepost: '',
-      CreatedDate: date + 'T' + time,
+      // CreatedDate: date + 'T' + time,
       CreatedBy: id_user,
       UpdatedDate: '0',
       UpdatedBy: 0,
@@ -114,6 +116,16 @@ export default class BaiDangComponenet extends React.Component {
     if (res.status == 1) {
       this.setState({
         text_Cmt: '',
+      });
+      await this._GetChiTietBaiDang();
+      await this.GanData();
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Bình luận thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
       });
       await this._GetChiTietBaiDang();
       await this.GanData();
@@ -133,6 +145,7 @@ export default class BaiDangComponenet extends React.Component {
 
   _renderItem = ({item, index}) => {
     let userCmt = item.User_comment ? item.User_comment[0] : '';
+    // console.log('length', item.Comment_child.length);
     return (
       <View>
         <View style={styles.khung_TungCmt}>
@@ -152,7 +165,7 @@ export default class BaiDangComponenet extends React.Component {
                 }}
                 resizeMode="cover"
                 source={
-                  userCmt.avatar ? {uri: userCmt.avatar} : avatar
+                  userCmt.avatar ? {uri: userCmt.avatar} : avatar_mau
                 }></Image>
             </View>
           </TouchableOpacity>
@@ -179,19 +192,20 @@ export default class BaiDangComponenet extends React.Component {
           <TouchableOpacity>
             <Text style={{marginLeft: 10}}>Thích</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={{marginLeft: 10}}>Trả lời</Text>
+          <TouchableOpacity
+            onPress={() =>
+              Utils.goscreen(this, 'ScreenCMT_Child', {
+                id_nguoidang: item,
+              })
+            }>
+            <Text style={{marginLeft: 10}}>
+              Trả lời ({item.Comment_child.length})
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
     );
   };
-
-  // TaoLike = () => {
-  //   this.setState({
-  //     thich: !this.state.thich,
-  //   });
-  // };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
@@ -200,6 +214,16 @@ export default class BaiDangComponenet extends React.Component {
       await this._GetChiTietBaiDang();
       await this.GanData();
       // await ROOTGlobal.GetDsAllBaiDang();
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Tương tác thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
+      await this._GetChiTietBaiDang();
+      await this.GanData();
     }
   };
 
@@ -210,6 +234,16 @@ export default class BaiDangComponenet extends React.Component {
       await this._GetChiTietBaiDang();
       await this.GanData();
       // await ROOTGlobal.GetDsAllBaiDang();
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Hủy tương tác thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
+      await this._GetChiTietBaiDang();
+      await this.GanData();
     }
   };
 
@@ -226,7 +260,7 @@ export default class BaiDangComponenet extends React.Component {
       noidung: await this.state.ChiTietBD[0].NoiDung,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
-    // await console.log('user gandata', this.state.user);
+    // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
     // await console.log('title', this.state.title);
     // await console.log('noi udng', this.state.noidung);
   };
@@ -359,12 +393,17 @@ export default class BaiDangComponenet extends React.Component {
     await this.GetData();
     await this._GetChiTietBaiDang();
     await this.GanData();
+    // console.log()
   }
 
   render() {
     // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
+    let day = id_nguoidang.CreatedDate;
+    let ngay = day.substring(0, 10);
+    let time = day.substring(11, 16);
+    let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
     return (
       <View style={styles.container}>
         <GoBack
@@ -406,7 +445,42 @@ export default class BaiDangComponenet extends React.Component {
               </View>
 
               <View style={styles.khung_tenUser}>
-                <Text style={styles.txt_TenUser}>{this.state.username}</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styles.txt_TenUser}>{this.state.username}</Text>
+                  {group ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 5,
+                      }}>
+                      <Image
+                        source={arrow}
+                        style={{
+                          height: FontSize.scale(10),
+                          width: FontSize.verticalScale(10),
+                        }}></Image>
+                      <TouchableOpacity style={{marginLeft: 5}}>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                          {group.ten_group}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : null}
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginHorizontal: 5,
+                    marginTop: -2,
+                  }}>
+                  <Text style={{marginRight: 2}}>
+                    {moment(ngay, 'YYYY-MM-DD').format('DD-MM-YYYY')}
+                  </Text>
+                  <Text>{time}</Text>
+                </View>
               </View>
             </TouchableOpacity>
 
@@ -569,8 +643,12 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'space-between',
   },
+  footer: {
+    margin: 5,
+    paddingHorizontal: 10,
+  },
   khung_tenUser: {
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   khung_tenUser_Cmt: {
     backgroundColor: '#C0C0C080',
@@ -594,10 +672,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     // textAlign: 'center',
   },
-  footer: {
-    margin: 5,
-    paddingHorizontal: 10,
-  },
+
   footer1: {
     margin: 5,
     paddingHorizontal: 10,

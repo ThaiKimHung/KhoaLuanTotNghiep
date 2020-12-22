@@ -178,10 +178,10 @@ export default class Edit_KhenThuong extends React.Component {
   };
 
   EditBaiDang = async () => {
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
@@ -192,7 +192,7 @@ export default class Edit_KhenThuong extends React.Component {
       Id_Group: this.state.group ? this.state.group.id_group : 0,
       id_khenthuong: await this.state.selectedItem,
       typepost: '',
-      UpdateDate: date + 'T' + time,
+      // UpdateDate: date + 'T' + time,
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 

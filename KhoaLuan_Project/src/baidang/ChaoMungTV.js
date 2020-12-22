@@ -76,10 +76,10 @@ export default class ChaoMungTV extends React.Component {
 
   _PostBaiDang = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
@@ -87,7 +87,7 @@ export default class ChaoMungTV extends React.Component {
       Id_Group: 0,
       id_khenthuong: 0,
       typepost: '',
-      CreatedDate: date + 'T' + time,
+      // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '0',
       UpdateBy: 0,
@@ -119,10 +119,10 @@ export default class ChaoMungTV extends React.Component {
   };
   _PostBaiDang_Nhom = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
@@ -130,7 +130,7 @@ export default class ChaoMungTV extends React.Component {
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: 0,
       typepost: '',
-      CreatedDate: date + 'T' + time,
+      // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '0',
       UpdateBy: 0,

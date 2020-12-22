@@ -44,17 +44,16 @@ export default class ScreenCaiDat extends React.Component {
     // console.log('ava thoing tin', this.state.id);
   }
 
-  async _logout() {
+  _logout = async () => {
     let flag = await Utils.ngetStorage(nkey.flag);
     console.log('flag trc out', flag);
     let flag1 = await Utils.nsetStorage(nkey.flag, '0');
     console.log('flag1 sau out', flag1);
     AsyncStorage.clear();
     this.updateTinhTrangUser();
-    // Utils.goscreen(this, 'SigninScreen');
-    this.props.navigation.navigate('HomeStackScreen', {screen: 'SigninScreen'});
-    // this.props.navigation.navigate('HomeStackScreen', {screen: 'SigninScreen'});
-  }
+
+    this.props.navigation.navigate('AuthStack', {screen: 'SigninScreen'});
+  };
   updateTinhTrangUser = async () => {
     let strBody = JSON.stringify({
       ID_User: this.state.id,

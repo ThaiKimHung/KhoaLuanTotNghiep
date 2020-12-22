@@ -59,10 +59,10 @@ export default class Screen_EditBaiDang extends React.Component {
   EditBaiDang = async () => {
     let idbaidang = this.id_nguoidang.Id_BaiDang;
     let id_loaibaidang = this.id_nguoidang.Id_LoaiBaiDang;
-    const today = new Date();
-    const date =
-      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       ID_BaiDang: idbaidang,
       Id_LoaiBaiDang: id_loaibaidang,
@@ -70,7 +70,7 @@ export default class Screen_EditBaiDang extends React.Component {
       NoiDung: this.state.noidung,
       id_khenthuong: 0,
       typepost: '',
-      UpdateDate: date + 'T' + time,
+      // UpdateDate: date + 'T' + time,
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 

@@ -49,7 +49,7 @@ export default class Screen_EditBaiDang extends React.Component {
 
   nhanData = () => {
     this.id_nguoidang = this.props.route.params.id_nguoidang.id_nguoidang;
-    console.log('this id người đăng ', this.id_nguoidang);
+    // console.log('this id người đăng ', this.id_nguoidang);
     this.setState({
       tieude: this.id_nguoidang.title,
       noidung: this.id_nguoidang.NoiDung,
@@ -74,9 +74,9 @@ export default class Screen_EditBaiDang extends React.Component {
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody tin nhanh', strBody);
+    // console.log('strBody tin nhanh', strBody);
     let res = await Update_BaiDang(strBody);
-    console.log('res update bài đăng', res);
+    console.log('res update bài đăng screen edit bai dang', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -100,106 +100,87 @@ export default class Screen_EditBaiDang extends React.Component {
       });
     }
   };
-  componentDidMount() {
-    this.nhanData();
-  }
 
-  render() {
-    // const user = this.props.route.params ? this.props.route.params : '';
-    // console.log('user khen thưởng', user);
-    console.log('props edit bài đăng', this.props);
-    return (
-      <View style={styles.container}>
-        <View style={styles.back}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'space-between',
-              // backgroundColor: '#007DE3',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                margin: 5,
-                alignItems: 'center',
-                width: '100%',
-              }}>
-              <TouchableOpacity
-                // onPress={this.props.navigation.goBack}
-                // onPress={() => Utils.goback(this, '')}
-                onPress={() =>
-                  Alert.alert(
-                    'Thông Báo',
-                    'Bạn Không Muốn Lưu Thay Đổi?',
-                    [
-                      {text: 'Đồng ý', onPress: () => Utils.goback(this, '')},
-                      {
-                        text: 'Hủy',
-                        style: 'cancel',
-                      },
-                    ],
-                    {cancelable: false},
-                  )
-                }>
-                <Image
-                  source={goback}
-                  style={{
-                    height: FontSize.scale(13),
-                    width: FontSize.verticalScale(18),
-                  }}></Image>
-              </TouchableOpacity>
+  loadNoidungChiTiet = () => {
+    // console.log('this detail', this);
+    const {id_nguoidang = {}} = this.props.route.params.id_nguoidang;
+    // console.log('this screen Detail bài đăng', id_nguoidang);
+    let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
+    // console.log('this screen Detail user', user);
+    this.idBaiDang = id_nguoidang.Id_BaiDang;
+    this.id_user = user.ID_user;
+    let idloaibaidang = id_nguoidang.Id_LoaiBaiDang;
+    // console.log('ids loai bd', idloaibaidang);
+    let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
+    switch (idloaibaidang) {
+      case 2:
+        return Utils.goscreen(this, 'Edit_KhenThuong', {
+          id_nguoidang: this.props.route.params,
+        });
+      case 4:
+        return Utils.goscreen(this, 'Edit_ChaoMungTV', {
+          id_nguoidang: this.props.route.params,
+        });
+      default:
+        return (
+          <View style={{flex: 1}}>
+            <View style={styles.back}>
               <View
                 style={{
-                  flex: 1,
-                  alignItems: 'center',
-                }}></View>
-              {this.id_nguoidang.Id_LoaiBaiDang === 6 ? (
-                <View style={{justifyContent: 'center'}}>
-                  {this.state.tieude ? (
-                    <TouchableOpacity onPress={() => this.EditBaiDang()}>
-                      <Text style={styles.textDang}>Sửa</Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <Text style={styles.textDang_invisibale}>Sửa</Text>
-                  )}
-                </View>
-              ) : (
-                <View style={{justifyContent: 'center'}}>
-                  {this.state.noidung && this.state.tieude ? (
-                    <TouchableOpacity onPress={() => this.EditBaiDang()}>
-                      <Text style={styles.textDang}>Sửa</Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <Text style={styles.textDang_invisibale}>Sửa</Text>
-                  )}
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  // backgroundColor: '#007DE3',
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    margin: 5,
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                  <TouchableOpacity
+                    // onPress={this.props.navigation.goBack}
+                    // onPress={() => Utils.goback(this, '')}
+                    onPress={() =>
+                      Alert.alert(
+                        'Thông Báo',
+                        'Bạn Không Muốn Lưu Thay Đổi?',
+                        [
+                          {
+                            text: 'Đồng ý',
+                            onPress: () => Utils.goback(this, ''),
+                          },
+                          {
+                            text: 'Hủy',
+                            style: 'cancel',
+                          },
+                        ],
+                        {cancelable: false},
+                      )
+                    }>
+                    <Image
+                      source={goback}
+                      style={{
+                        height: FontSize.scale(13),
+                        width: FontSize.verticalScale(18),
+                      }}></Image>
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                    }}></View>
 
-        {this.id_nguoidang.Id_LoaiBaiDang === 6 ? (
-          <View style={styles.header}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: FontSize.reSize(20),
-                marginBottom: 5,
-              }}>
-              Tiêu đề:
-            </Text>
-            <TextInput
-              autoCapitalize="none"
-              placeholderTextColor="#69696980"
-              placeholder="Nội dung bài đăng"
-              multiline={true}
-              style={styles.textinput}
-              onChangeText={(text) => this.handleTieuDe(text)}
-              value={this.state.tieude}></TextInput>
-          </View>
-        ) : (
-          <View>
+                  <View style={{justifyContent: 'center'}}>
+                    <TouchableOpacity onPress={() => this.EditBaiDang()}>
+                      <Text style={styles.textDang}>Sửa</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+
             <View style={styles.header}>
               <Text
                 style={{
@@ -237,9 +218,19 @@ export default class Screen_EditBaiDang extends React.Component {
                 value={this.state.noidung}></TextInput>
             </View>
           </View>
-        )}
-      </View>
-    );
+        );
+    }
+  };
+  componentDidMount() {
+    this.nhanData();
+    this.loadNoidungChiTiet();
+  }
+
+  render() {
+    // const user = this.props.route.params ? this.props.route.params : '';
+    // console.log('user khen thưởng', user);
+    // console.log('props edit bài đăng', this.props);
+    return <View style={styles.container}>{this.loadNoidungChiTiet()}</View>;
   }
 }
 const widthScreen = Dimensions.get('screen').width;

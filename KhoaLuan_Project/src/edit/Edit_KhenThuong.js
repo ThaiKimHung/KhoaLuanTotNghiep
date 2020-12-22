@@ -22,21 +22,43 @@ import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
 
-import {GetDSKhenThuong} from '../apis/apiUser';
+import {
+  GetDSKhenThuong,
+  AddBaiDang_KhenThuong,
+  AddBaiDang_KhenThuong_Nhom,
+  Update_BaiDang_KhenThuong,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
+import DropDownPicker from 'react-native-custom-dropdown';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
-export default class KhenThuong extends React.Component {
+const group = require('../assets/images/group_people.png');
+const dropdown = require('../assets/images/caret-down.png');
+export default class Edit_KhenThuong extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       DsKhenThuong: [],
       refresh: true,
-      selectedItem: '0',
-      userSelected: '0',
+      selectedItem: 0,
+      userSelected: 0,
       noidung: '',
+      user: {},
+      DataChuyenVe: '',
+      // DataNhom: {},
+      value: null,
+      dsNhom: [],
+      mangtam: [],
+      isOpen: false,
+      nhomSelected: '',
+      title: '',
+      noidung: '',
+      itemSelec_chuyenve: 0,
+      idbaidang: '',
+      idloaibaidang: '',
     };
   }
   EmptyListMessage = ({item}) => {
@@ -61,17 +83,19 @@ export default class KhenThuong extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this._GetDsKhenThuong();
-  }
-  updateSearch = (search) => {
-    this.setState({search});
-  };
   handleNoiDung(text) {
     this.setState({
       noidung: text,
     });
   }
+
+  ChuyenData = async (item) => {
+    Utils.goscreen(this, 'Edit_KhenThuong');
+    this.setState({
+      DataChuyenVe: item,
+    });
+  };
+
   renderItem = ({item, index}) => {
     return (
       <View>
@@ -80,18 +104,14 @@ export default class KhenThuong extends React.Component {
             onPress={() => {
               if (this.state.selectedItem == item.ID_khenthuong) {
                 this.setState({
-                  selectedItem: '0',
-                });
-              } else {
-                this.setState({
-                  selectedItem: item.ID_khenthuong,
+                  selectedItem: '',
                 });
               }
             }}
             style={[
               styles.khung,
               {
-                marginLeft: index % 2 != 0 ? 10 : 0,
+                marginLeft: index % 2 != 0 ? 5 : 0,
                 backgroundColor: '#87CEFF',
               },
             ]}>
@@ -117,7 +137,7 @@ export default class KhenThuong extends React.Component {
             }}
             style={[
               styles.khung,
-              {marginLeft: index % 2 != 0 ? 10 : 0, backgroundColor: 'yellow'},
+              {marginLeft: index % 2 != 0 ? 5 : 0, backgroundColor: 'yellow'},
             ]}>
             <View style={styles.khung_DS}>
               <SvgUri
@@ -137,12 +157,83 @@ export default class KhenThuong extends React.Component {
     );
   };
 
+  GanData = async () => {
+    const {
+      id_nguoidang = {},
+    } = this.props.route.params.id_nguoidang.id_nguoidang;
+    // console.log('id', id_nguoidang);
+    let tit = id_nguoidang.title;
+    let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : '';
+    this.setState({
+      title: id_nguoidang.title,
+      noidung: id_nguoidang.NoiDung,
+      selectedItem: khenthuong.id_khenthuong,
+      idbaidang: id_nguoidang.Id_BaiDang,
+      idloaibaidang: id_nguoidang.Id_LoaiBaiDang,
+    });
+    // await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
+    // await console.log('title', this.state.title);
+    // await console.log('noi dung', this.state.noidung);
+    // await console.log('item', this.state.selectedItem);
+  };
+
+  EditBaiDang = async () => {
+    const today = new Date();
+    const date =
+      today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    const time = today.getHours() + ':' + today.getMinutes();
+    let strBody = JSON.stringify({
+      ID_BaiDang: await this.state.idbaidang,
+      Id_LoaiBaiDang: await this.state.idloaibaidang,
+      title: this.state.DataChuyenVe
+        ? this.state.DataChuyenVe.Username
+        : this.state.title,
+      NoiDung: this.state.noidung,
+      Id_Group: this.state.group ? this.state.group.id_group : 0,
+      id_khenthuong: await this.state.selectedItem,
+      typepost: '',
+      UpdateDate: date + 'T' + time,
+      UpdateBy: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody edit khen thưởng', strBody);
+    let res = await Update_BaiDang_KhenThuong(strBody);
+    console.log('res update edit khen thưởng', res);
+    if (res.status == 1) {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Sửa thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+      // Utils.goscreen(this, 'Home');
+      Utils.goscreen(this, 'Home');
+      // await ROOTGlobal.GetDsAllBaiDang();
+      // await ROOTGlobal.GetChiTietBaiDang();
+      await ROOTGlobal.GetDsAllBaiDang();
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Sửa thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
+    }
+  };
+  componentDidMount = async () => {
+    await this._GetDsKhenThuong();
+    await this.GanData();
+  };
   render() {
-    // const user = this.props.route.params ? this.props.route.params : '';
-    // console.log('user khen thưởng', user);
-    // console.log('props', this.props);
+    const {isActive, selectLyDo} = this.state;
+    const {
+      id_nguoidang = {},
+    } = this.props.route.params.id_nguoidang.id_nguoidang;
+
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.back}>
           <View
             style={{
@@ -159,8 +250,12 @@ export default class KhenThuong extends React.Component {
                 width: '100%',
               }}>
               <TouchableOpacity
-                // onPress={this.props.navigation.goBack}
-                onPress={() => Utils.goback(this, '')}>
+                onPress={() => {
+                  Utils.goscreen(this, 'Home');
+                  // this.setState({
+                  //   DataChuyenVe: {},
+                  // });
+                }}>
                 <Image
                   source={goback}
                   style={{
@@ -171,85 +266,82 @@ export default class KhenThuong extends React.Component {
               <View
                 style={{
                   flex: 1,
-
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Tạo tin khen thưởng</Text>
+                <Text style={styles.title}>Sửa khen thưởng</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
-                {/* {this.state.userSelected &&
-                this.state.noidung &&
-                this.state.selectedItem ? (
-                  <TouchableOpacity>
-                    <Text style={styles.textDang}>Đăng</Text>
-                  </TouchableOpacity>
-                ) : ( */}
-                <Text style={styles.textDang_invisibale}>Đăng</Text>
-                {/* )} */}
+                <TouchableOpacity onPress={() => this.EditBaiDang()}>
+                  <Text style={styles.textDang}>Sửa</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         </View>
 
         <View style={styles.header}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: FontSize.reSize(20),
-              marginBottom: 5,
-            }}>
-            Chọn thành viên:
-          </Text>
-          <TouchableOpacity
-            style={styles.thanh_search}
-            onPress={() => {
-              Utils.goscreen(this, 'SearchUser');
-              // this.props.navigation.navigate('SearchUser');
-              // this.setState({
-              //   userSelected: user ? user.ID_user : '',
-              // });
-              // console.log('user select', this.state.userSelected);
-            }}>
-            <Image source={search} style={styles.icon}></Image>
-            {/* {user ? (
-              <Text
-                style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#000000',
-                  flex: 1,
-                }}>
-                {user.Username}
-              </Text>
-            ) : ( */}
+          <View style={styles.khung_Nhap}>
             <Text
               style={{
+                fontWeight: 'bold',
                 fontSize: FontSize.reSize(20),
-                marginLeft: 10,
-                color: '#69696980',
-                flex: 1,
+                marginBottom: 5,
               }}>
-              Mời bạn chọn nhân viên
+              Chọn thành viên:
             </Text>
-            {/* )} */}
-          </TouchableOpacity>
-
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: FontSize.reSize(20),
-              marginBottom: 5,
-            }}>
-            Nhập nội dung:
-          </Text>
-          <TextInput
-            autoCapitalize="none"
-            placeholderTextColor="#69696980"
-            placeholder="Nội dung bài đăng"
-            multiline={true}
-            style={styles.textinput}
-            onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
+            <TouchableOpacity
+              style={styles.thanh_search}
+              onPress={() => {
+                Utils.goscreen(this, 'SearchUser', {
+                  chuyenData: this.ChuyenData,
+                });
+              }}>
+              <Image source={search} style={styles.icon}></Image>
+              {this.state.DataChuyenVe ? (
+                <Text
+                  style={{
+                    fontSize: FontSize.reSize(20),
+                    marginLeft: 10,
+                    color: '#000000',
+                    flex: 1,
+                  }}>
+                  {this.state.DataChuyenVe.Username}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    fontSize: FontSize.reSize(20),
+                    marginLeft: 10,
+                    color: '#000000',
+                    flex: 1,
+                  }}>
+                  {this.state.title}
+                </Text>
+              )}
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: FontSize.reSize(20),
+                marginBottom: 5,
+              }}>
+              Nhập nội dung
+            </Text>
+            <View style={styles.khung_tieude}>
+              <TextInput
+                multiline={true}
+                placeholder="Mời bạn nhập nội dung"
+                style={{fontSize: FontSize.reSize(20)}}
+                onChangeText={(text) => this.handleNoiDung(text)}
+                value={
+                  this.state.noidung
+                  // ? this.setState({})
+                  // : this.state.haveValue_NoiDung
+                }></TextInput>
+            </View>
+          </View>
         </View>
+
         <View style={styles.footer}>
           {this.state.DsKhenThuong.length != 0 ? (
             <FlatList
@@ -268,7 +360,7 @@ export default class KhenThuong extends React.Component {
             <ActivityIndicator size="large" color="#0000ff" />
           )}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -280,16 +372,19 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#9C9C9C',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    // flex: 1,
+    height: 'auto',
     padding: 10,
     borderRadius: 10,
     marginHorizontal: 10,
     // marginVertical: 10,
   },
   footer: {
-    height: '100%',
-    width: '100%',
+    height: 'auto',
+    // width: '100%',
     padding: 10,
+    // position: 'absolute',
   },
   khung: {
     // flex: 1,
@@ -357,5 +452,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: '#696969',
     textAlign: 'center',
+  },
+  khung_tieude: {
+    // height: FontSize.scale(40),
+    backgroundColor: '#DDDDDD80',
+    borderRadius: 20,
+    marginBottom: 5,
+    marginTop: 10,
+    padding: 5,
   },
 });

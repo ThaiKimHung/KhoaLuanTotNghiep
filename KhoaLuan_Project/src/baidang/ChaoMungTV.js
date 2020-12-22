@@ -106,7 +106,7 @@ export default class ChaoMungTV extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -150,6 +150,7 @@ export default class ChaoMungTV extends React.Component {
         duration: 1500,
         icon: 'success',
       });
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',

@@ -63,6 +63,11 @@ async function Update_BaiDang(strbody) {
   return res;
 }
 
+async function Update_BaiDang_KhenThuong(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateBaiDang_KT`, strbody);
+  return res;
+}
+
 async function GetDSLike() {
   let res = await Utils.get_api(apiUser + `getDSLike`);
   return res;
@@ -178,6 +183,7 @@ export {
   PostBaiDang,
   PostBaiDang_Nhom,
   Update_BaiDang,
+  Update_BaiDang_KhenThuong,
   DeleteLikeTrongBaiDang,
   DeleteCommentTrongBaiDang,
   DeleteBaiDang,

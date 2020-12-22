@@ -40,7 +40,10 @@ import ChaoMungTV from '../baidang/ChaoMungTV';
 
 import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
 import Screen_EditBaiDang_Detail from '../edit/Screen_EditBaiDang_Detail';
-import EditKhenThuong from '../edit/EditKhenThuong';
+import Edit_KhenThuong from '../edit/Edit_KhenThuong';
+import Edit_ChaoMungTV from '../edit/Edit_ChaoMungTV';
+import Edit_KhenThuong_Detail from '../edit/Edit_KhenThuong_Detail';
+import Edit_ChaoMungTV_Detail from '../edit/Edit_ChaoMungTV_Detail';
 
 import Test from '../screens/Test';
 // import
@@ -79,7 +82,16 @@ const HomeStackScreen = () => (
       name="Screen_EditBaiDang_Detail"
       component={Screen_EditBaiDang_Detail}
     />
-    <HomeStack.Screen name="EditKhenThuong" component={EditKhenThuong} />
+    <HomeStack.Screen name="Edit_KhenThuong" component={Edit_KhenThuong} />
+    <HomeStack.Screen name="Edit_ChaoMungTV" component={Edit_ChaoMungTV} />
+    <HomeStack.Screen
+      name="Edit_KhenThuong_Detail"
+      component={Edit_KhenThuong_Detail}
+    />
+    <HomeStack.Screen
+      name="Edit_ChaoMungTV_Detail"
+      component={Edit_ChaoMungTV_Detail}
+    />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

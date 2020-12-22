@@ -117,11 +117,11 @@ export default class Screen_EditBaiDang extends React.Component {
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     switch (idloaibaidang) {
       case 2:
-        return Utils.goscreen(this, 'EditKhenThuong', {
+        return Utils.goscreen(this, 'Edit_KhenThuong_Detail', {
           id_nguoidang: this.props.route.params,
         });
       case 4:
-        return Utils.goscreen(this, 'ChaoMungTV', {
+        return Utils.goscreen(this, 'Edit_ChaoMungTV_Detail', {
           id_nguoidang: this.props.route.params,
         });
       default:

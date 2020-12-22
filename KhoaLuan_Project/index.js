@@ -26,7 +26,7 @@ import TinNhanh from './src/baidang/TinNhanh';
 import DanhSachLike from './src/components/DanhSachLike';
 import Test from './src/screens/Test';
 import ModalLike from './src/modal/ModalLike';
-import EditKhenThuong from './src/edit/EditKhenThuong';
+// import EditKhenThuong from './src/edit/EditKhenThuong';
 
 import PopUpModal_CMT from './src/modal/PopUpModal_CMT';
 import Modal_Nhom from './src/modal/Modal_Nhom';

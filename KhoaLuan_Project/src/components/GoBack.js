@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007DE3',
     alignItems: 'center',
     // justifyContent: 'center',
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   title: {
     fontSize: FontSize.reSize(20),

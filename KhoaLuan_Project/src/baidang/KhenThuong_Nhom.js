@@ -44,18 +44,10 @@ export default class KhenThuong extends React.Component {
       DsKhenThuong: [],
       refresh: true,
       selectedItem: 0,
-      userSelected: 0,
       noidung: '',
-      user: {},
-      DataChuyenVe: {},
-      // DataNhom: {},
-      value: null,
-      dsNhom: [],
-      mangtam: [],
-      isOpen: false,
-      nhomSelected: '',
-      isActive: false,
-      selectLyDo: '',
+      DataChuyenVe: '',
+      idgroup: '',
+      tengroup: '',
     };
   }
   EmptyListMessage = ({item}) => {
@@ -90,98 +82,20 @@ export default class KhenThuong extends React.Component {
   }
 
   ChuyenData = async (item) => {
-    Utils.goscreen(this, 'KhenThuong');
+    Utils.goscreen(this, 'KhenThuong_Nhom');
     this.setState({
       DataChuyenVe: item,
     });
   };
 
-  GanDataSauKhiChuyenVe = () => {
-    this.state.DataChuyenVe
-      ? this.setState({
-          userSelected: this.state.DataChuyenVe.ID_user,
-        })
-      : null;
-    // console.log('user selected', this.state.userSelected);
-  };
-
-  _GetDSGroup = async () => {
-    let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
-    // let res = await GetDSGroup(1);
-    console.log('res', res);
-    if (res.status == 1) {
-      this.setState({
-        dsNhom: res.Data,
-      });
-      console.log('state', this.state.dsNhom);
-    }
-  };
-  LaymangTam = async () => {
-    let temp = this.state.dsNhom.map((e) => {
-      var ritem = {};
-      ritem['value'] = e.ID_group + '';
-      ritem['label'] = e.Ten_Group;
-      return ritem;
-    });
-    await this.setState({mangtam: temp});
-  };
-
-  DangBaiDang_KhenThuong = async () => {
-    const id_loaibaidang = this.props.route.params.id_loaibaidang;
-
-    let strBody = JSON.stringify({
-      Id_LoaiBaiDang: id_loaibaidang,
-      title: this.state.DataChuyenVe.Username,
-      NoiDung: this.state.noidung,
-      Id_Group: 0,
-      id_khenthuong: this.state.selectedItem,
-      typepost: 'string',
-      // CreatedDate: date + 'T' + time,
-      CreatedBy: await Utils.ngetStorage(nkey.id_user),
-      UpdateDate: '',
-      UpdateBy: 0,
-    });
-
-    console.log('strBody khen thưởng k nhóm', strBody);
-    let res = await AddBaiDang_KhenThuong(strBody);
-    console.log('res khen thưởng k nhóm', res);
-    if (res.status == 1) {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Đăng bài thành công',
-        type: 'success',
-        duration: 1500,
-        icon: 'success',
-      });
-      Utils.goscreen(this, 'Home');
-      this.setState({
-        userSelected: '',
-        DataChuyenVe: {},
-      });
-      ROOTGlobal.GetDsAllBaiDang();
-    } else {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Đăng bài thất bại',
-        type: 'danger',
-        duration: 1500,
-        icon: 'danger',
-      });
-    }
-  };
-
   DangBaiDang_KhenThuong_Group = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
 
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
       NoiDung: this.state.noidung,
-      Id_Group: this.state.selectLyDo.ID_group,
+      Id_Group: this.state.idgroup,
       id_khenthuong: this.state.selectedItem,
       typepost: 'string',
       // CreatedDate: date + 'T' + time,
@@ -201,10 +115,9 @@ export default class KhenThuong extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      Utils.goscreen(this, 'Home');
+      Utils.goscreen(this, 'ScreenBaiDangNhom');
       this.setState({
-        userSelected: '',
-        DataChuyenVe: {},
+        DataChuyenVe: '',
       });
       ROOTGlobal.GetDsAllBaiDang();
     } else {
@@ -279,69 +192,9 @@ export default class KhenThuong extends React.Component {
     );
   };
 
-  _renderActive = () => {
-    this.setState({isActive: !this.state.isActive});
-  };
-  // _keyExtractor = ({ item, index }) => index.toString();
-  _callBack = (item) => {
-    this.setState(
-      {
-        selectLyDo: item,
-      },
-      () => {
-        this._renderActive();
-        this._render_Dang();
-      },
-    );
-  };
-
-  _keyExtrac = (item, index) => `${item.ID_group}`;
-  _renderPH = ({item, index}) => {
-    return (
-      <View
-        key={index}
-        style={{
-          backgroundColor: 'white',
-        }}>
-        <TouchableOpacity
-          onPress={() => this._callBack(item)}
-          style={{paddingHorizontal: 15, paddingVertical: 16}}>
-          <Text>{item.Ten_Group}</Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: 2,
-            width: '100%',
-            // backgroundColor: colors.black_20,
-          }}></View>
-      </View>
-    );
-  };
-
   _render_Dang = () => {
-    let {userSelected, selectLyDo, noidung, selectedItem} = this.state;
-    if (
-      userSelected != 0 &&
-      noidung != '' &&
-      selectLyDo == '' &&
-      selectedItem != 0
-    ) {
-      return (
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this.DangBaiDang_KhenThuong();
-            }}>
-            <Text style={styles.textDang}>Đăng</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else if (
-      userSelected != 0 &&
-      noidung != '' &&
-      selectLyDo != '' &&
-      selectedItem != 0
-    ) {
+    const {DataChuyenVe, idgroup, tengroup, noidung, selectedItem} = this.state;
+    if (DataChuyenVe && noidung && tengroup && selectedItem && idgroup) {
       return (
         <View>
           <TouchableOpacity
@@ -361,14 +214,29 @@ export default class KhenThuong extends React.Component {
     }
   };
 
+  GanData = async () => {
+    {
+      this.props &&
+      this.props.route.params &&
+      this.props.route.params.screennhom &&
+      this.props.route.params.tennhom
+        ? this.setState({
+            idgroup: this.props.route.params.screennhom,
+            tengroup: this.props.route.params.tennhom,
+          })
+        : null;
+      await console.log(
+        'this.state.idgroup và tên group =====',
+        this.state.idgroup,
+        this.state.tengroup,
+      );
+    }
+  };
   componentDidMount = async () => {
     await this._GetDsKhenThuong();
-    await this.GanDataSauKhiChuyenVe();
-    await this._GetDSGroup();
-    await this.LaymangTam();
+    await this.GanData();
   };
   render() {
-    const {isActive, selectLyDo} = this.state;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.back}>
@@ -405,7 +273,7 @@ export default class KhenThuong extends React.Component {
                   flex: 1,
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Tạo tin khen thưởng</Text>
+                <Text style={styles.title}>Tạo tin khen thưởng nhóm</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
                 {this._render_Dang()}
@@ -467,7 +335,6 @@ export default class KhenThuong extends React.Component {
             multiline={true}
             style={styles.textinput}
             onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
-
           <Text
             style={{
               fontWeight: 'bold',
@@ -497,31 +364,10 @@ export default class KhenThuong extends React.Component {
                   },
                 ]}>
                 <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
-                  {selectLyDo.Ten_Group ? selectLyDo.Ten_Group : ''}
+                  {this.state.tengroup}
                 </Text>
-                <Image
-                  source={dropdown}
-                  style={[{tintColor: '#4F4F4F80', width: 20, height: 18}]}
-                  resizeMode="contain"
-                />
               </TouchableOpacity>
             </View>
-            {isActive == true ? (
-              <FlatList
-                style={{
-                  marginTop: 1,
-                  backgroundColor: 'white',
-                  height: 'auto',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: 'gray',
-                  borderBottomColor: 'white',
-                }}
-                data={this.state.dsNhom}
-                renderItem={this._renderPH}
-                keyExtractor={this._keyExtrac}
-              />
-            ) : null}
           </View>
         </View>
 

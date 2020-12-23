@@ -56,8 +56,17 @@ export default class NhomScreen extends React.Component {
     );
   };
   _renderItem = ({item, index}) => {
+    // console.log('iten nhom screen', item.Ten_Group);
     return (
-      <TouchableOpacity style={[styles.khungchua]}>
+      <TouchableOpacity
+        style={[styles.khungchua]}
+        onPress={() => {
+          Utils.goscreen(this, 'ScreenBaiDangNhom', {
+            id_nguoidang: item,
+            screennhom: item.ID_group,
+            tennhom: item.Ten_Group,
+          });
+        }}>
         <View
           style={{
             justifyContent: 'center',

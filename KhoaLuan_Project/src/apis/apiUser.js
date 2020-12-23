@@ -177,6 +177,11 @@ async function AddBaiDang_KhenThuong_Nhom(strbody) {
   let res = await Utils.post_api(apiUser + `addBaiDang_KT_Group`, strbody);
   return res;
 }
+async function GetDSBaiDang_Nhom(user) {
+  let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
+  return res;
+}
+
 // KhoaLuan/deleteBaiDang?id_baidang=1
 export {
   Login,

@@ -24,6 +24,7 @@ import ScreenDetailBaiDang from '../screens/ScreenDetailBaiDang';
 import SearchUser from '../screens/SearchUser';
 import HomeScreen from '../screens/HomeScreen';
 import ScreenCMT_Child from '../screens/ScreenCMT_Child';
+import ScreenBaiDangNhom from '../screens/ScreenBaiDangNhom';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 
@@ -39,6 +40,9 @@ import Modal_Nhom from '../modal/Modal_Nhom';
 import KhenThuong from '../baidang/KhenThuong';
 import TinNhanh from '../baidang/TinNhanh';
 import ChaoMungTV from '../baidang/ChaoMungTV';
+import TinNhanh_Nhom from '../baidang/TinNhanh_Nhom';
+import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
+import ChaoMungTV_Nhom from '../baidang/ChaoMungTV_Nhom';
 
 import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
 import Screen_EditBaiDang_Detail from '../edit/Screen_EditBaiDang_Detail';
@@ -69,14 +73,17 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="ScreenLoaiBaiDang" component={ScreenLoaiBaiDang} />
     {/* <HomeStack.Screen name="HomeScreen" component={HomeScreen} /> */}
     <HomeStack.Screen name="KhenThuong" component={KhenThuong} />
+    <HomeStack.Screen name="KhenThuong_Nhom" component={KhenThuong_Nhom} />
     <HomeStack.Screen name="SearchUser" component={SearchUser} />
     <HomeStack.Screen name="TinNhanh" component={TinNhanh} />
+    <HomeStack.Screen name="TinNhanh_Nhom" component={TinNhanh_Nhom} />
     <HomeStack.Screen
       name="ScreenDetailBaiDang"
       component={ScreenDetailBaiDang}
     />
     <HomeStack.Screen name="ScreenCMT_Child" component={ScreenCMT_Child} />
     <HomeStack.Screen name="ChaoMungTV" component={ChaoMungTV} />
+    <HomeStack.Screen name="ChaoMungTV_Nhom" component={ChaoMungTV_Nhom} />
     <HomeStack.Screen
       name="Screen_EditBaiDang"
       component={Screen_EditBaiDang}
@@ -95,6 +102,7 @@ const HomeStackScreen = () => (
       name="Edit_ChaoMungTV_Detail"
       component={Edit_ChaoMungTV_Detail}
     />
+    <HomeStack.Screen name="ScreenBaiDangNhom" component={ScreenBaiDangNhom} />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

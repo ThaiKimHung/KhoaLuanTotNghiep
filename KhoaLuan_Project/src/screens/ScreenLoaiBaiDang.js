@@ -75,15 +75,55 @@ export default class ScreenLoaiBaiDang extends React.Component {
       case 1:
         return alert('loại bài đăng' + item);
       case 2:
-        return Utils.goscreen(this, 'KhenThuong', {id_loaibaidang: item});
+        {
+          if (this.props.route.params && this.props.route.params.screennhom) {
+            Utils.goscreen(this, 'KhenThuong_Nhom', {
+              id_loaibaidang: item,
+              screennhom: this.props.route.params.screennhom,
+              tennhom: this.props.route.params.tennhom,
+            });
+          } else {
+            Utils.goscreen(this, 'KhenThuong', {
+              id_loaibaidang: item,
+            });
+          }
+        }
+        break;
       case 3:
         return alert('loại bài đăng' + item);
       case 4:
-        return Utils.goscreen(this, 'ChaoMungTV', {id_loaibaidang: item});
+        {
+          if (this.props.route.params && this.props.route.params.screennhom) {
+            Utils.goscreen(this, 'ChaoMungTV_Nhom', {
+              id_loaibaidang: item,
+              screennhom: this.props.route.params.screennhom,
+              tennhom: this.props.route.params.tennhom,
+            });
+          } else {
+            Utils.goscreen(this, 'ChaoMungTV', {
+              id_loaibaidang: item,
+            });
+          }
+        }
+        break;
       case 5:
         return alert('loại bài đăng' + item);
       case 6:
-        return Utils.goscreen(this, 'TinNhanh', {id_loaibaidang: item});
+        {
+          if (this.props.route.params && this.props.route.params.screennhom) {
+            Utils.goscreen(this, 'TinNhanh_Nhom', {
+              id_loaibaidang: item,
+              screennhom: this.props.route.params.screennhom,
+              tennhom: this.props.route.params.tennhom,
+            });
+          } else {
+            Utils.goscreen(this, 'TinNhanh', {
+              id_loaibaidang: item,
+            });
+          }
+        }
+        break;
+
       case 7:
         return alert('loại bài đăng' + item);
     }
@@ -123,6 +163,9 @@ export default class ScreenLoaiBaiDang extends React.Component {
   };
 
   render() {
+    console.log('this loai bai dang', this.props.route.params);
+    // let hi = this.props.route.params.screennhom;
+    // console.log('hi', hi);
     return (
       <View style={styles.container}>
         <GoBack

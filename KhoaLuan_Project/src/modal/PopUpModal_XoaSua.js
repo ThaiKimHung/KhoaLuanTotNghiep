@@ -73,7 +73,7 @@ export default class PopUpModal_XoaSua extends Component {
         thanhcong: true,
       });
       this.xoathanhcong();
-      await ROOTGlobal.GetDsAllBaiDang();
+      ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',

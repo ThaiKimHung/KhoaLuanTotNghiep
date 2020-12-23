@@ -76,10 +76,7 @@ export default class ChaoMungTV extends React.Component {
 
   _PostBaiDang = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
+
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
@@ -98,7 +95,7 @@ export default class ChaoMungTV extends React.Component {
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
-      Utils.goscreen(this, 'Home', {PostThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',
@@ -119,10 +116,6 @@ export default class ChaoMungTV extends React.Component {
   };
   _PostBaiDang_Nhom = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
@@ -142,7 +135,7 @@ export default class ChaoMungTV extends React.Component {
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
-      Utils.goscreen(this, 'Home', {PostThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',

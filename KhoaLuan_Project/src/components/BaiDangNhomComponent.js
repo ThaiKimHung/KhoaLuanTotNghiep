@@ -54,6 +54,7 @@ export default class BaiDangNhomComponent extends React.Component {
     this.id_like = 1;
     this.id_user = '';
     this.item = {};
+    // ROOTGlobal.GetDsAllBaiDang_Nhom = this.GetDsAllBaiDang_Nhom;
   }
 
   TaoLike = async (idbaidang, idlike, iduser) => {
@@ -62,13 +63,15 @@ export default class BaiDangNhomComponent extends React.Component {
     // this.setState({
     //   thich: !this.state.thich,
     // });
-    await ROOTGlobal.GetDsAllBaiDang();
+    await ROOTGlobal.GetDsAllBaiDang_Nhom();
+    // await this.GetDsAllBaiDang_Nhom;
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
     console.log('ress xóa like', res);
-    await ROOTGlobal.GetDsAllBaiDang();
+    await ROOTGlobal.GetDsAllBaiDang_Nhom();
+    // await this.GetDsAllBaiDang_Nhom;
   };
 
   _renderItem = ({item, index}) => {
@@ -96,7 +99,7 @@ export default class BaiDangNhomComponent extends React.Component {
     // const {ds = {}} = item;
     console.log('item', item);
     // console.log('ds', ds);
-    Utils.goscreen(this.props.nthis.props.nthis, 'Home');
+    Utils.goscreen(this.props.nthis.props.nthis, 'ScreenBaiDangNhom');
     await this.setState({
       DataChuyenVe: item,
     });
@@ -276,27 +279,6 @@ export default class BaiDangNhomComponent extends React.Component {
             <View style={styles.khung_tenUser}>
               <View style={{flexDirection: 'row'}}>
                 <Text style={styles.txt_TenUser}>{user.Username}</Text>
-                {group ? (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      // justifyContent: 'center',
-                      alignItems: 'center',
-                      marginLeft: 5,
-                    }}>
-                    <Image
-                      source={arrow}
-                      style={{
-                        height: FontSize.scale(10),
-                        width: FontSize.verticalScale(10),
-                      }}></Image>
-                    <TouchableOpacity style={{marginLeft: 5}}>
-                      <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                        {group.ten_group}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
               </View>
 
               <View
@@ -317,7 +299,7 @@ export default class BaiDangNhomComponent extends React.Component {
               onPress={() =>
                 Utils.goscreen(
                   this.props.nthis.props.nthis,
-                  'PopUpModal_XoaSua',
+                  'PopUpModal_XoaSua_Nhom',
                   {
                     id_nguoidang: item,
                   },
@@ -372,9 +354,13 @@ export default class BaiDangNhomComponent extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onLongPress={async () => {
-                  Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
-                    id_nguoidang: this.props,
-                  });
+                  Utils.goscreen(
+                    this.props.nthis.props.nthis,
+                    'ModalLike_Nhom',
+                    {
+                      id_nguoidang: this.props,
+                    },
+                  );
                 }}
                 onPress={async () => {
                   this.TaoLike(

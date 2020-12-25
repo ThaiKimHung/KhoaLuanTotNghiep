@@ -31,7 +31,6 @@ import ModalLike from './src/modal/ModalLike';
 import PopUpModal_CMT from './src/modal/PopUpModal_CMT';
 import Modal_Nhom from './src/modal/Modal_Nhom';
 import Screen_EditBaiDang from './src/edit/Screen_EditBaiDang';
-
-// import CustomDropDown from './src/baidang/CustomDropDown';
+import ScreenAddThanhVienNhom from './src/screens/ScreenAddThanhVienNhom';
 
 AppRegistry.registerComponent(appName, () => App);

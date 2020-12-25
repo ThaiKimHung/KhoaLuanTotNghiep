@@ -12,14 +12,37 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FontSize from '../components/size';
-import {Avatar, SearchBar} from 'react-native-elements';
+import {SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
+import GoBack from '../components/GoBack';
 
 const avatar = require('../assets/images/avatar.png');
-const goback = require('../assets/images/go-back-left-arrow.png');
 // const congratulation = require('../assets/images/congratulations.png');
-export default class SearchUser extends React.Component {
+const Online = () => {
+  return (
+    <View
+      style={{
+        height: FontSize.scale(10),
+        width: FontSize.verticalScale(10),
+        backgroundColor: 'green',
+        borderRadius: 8,
+      }}></View>
+  );
+};
+
+const Offine = () => {
+  return (
+    <View
+      style={{
+        height: FontSize.scale(10),
+        width: FontSize.verticalScale(10),
+        backgroundColor: 'gray',
+        borderRadius: 8,
+      }}></View>
+  );
+};
+export default class ScreenAddThanhVienNhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +54,7 @@ export default class SearchUser extends React.Component {
   }
   _GetAllUser = async () => {
     let res = await GetAllUser();
-    console.log('ress all user bên search user', res);
+    console.log('ress all user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
@@ -42,16 +65,16 @@ export default class SearchUser extends React.Component {
       alert('thất bại');
     }
   };
-
+  FoodterMessage = ({item}) => {
+    return (
+      <View onPress={() => getItem(item)}>
+        <ActivityIndicator size="small" color="#0078D7"></ActivityIndicator>
+      </View>
+    );
+  };
   _renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity
-        style={[styles.khungchua]}
-        onPress={() => {
-          // Utils.goscreen(this, 'KhenThuong', {iduser: item});
-          // this.props.navigation.navigate('KhenThuong', item);
-          this.props.route.params.chuyenData(item);
-        }}>
+      <TouchableOpacity style={[styles.khungchua]}>
         <View
           style={{
             marginLeft: 5,
@@ -69,8 +92,10 @@ export default class SearchUser extends React.Component {
             resizeMode="cover"
             source={item.Avatar ? {uri: item.Avatar} : avatar}></Image>
         </View>
+
         <View
           style={{
+            justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center',
             flex: 1,
@@ -83,14 +108,17 @@ export default class SearchUser extends React.Component {
   };
   EmptyListMessage = ({item}) => {
     return (
+      // Flat List Item
       <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
         No Data Found
       </Text>
     );
   };
-
   search = (searchText) => {
     this.setState({searchText: searchText});
+    // let filteredData = this.state.DsUser.filter(function (item) {
+    //   return item.Username.includes(searchText);
+    // });
     let filteredData = this.state.DsUser.filter((item) =>
       Utils.removeAccents(item['Username'])
         .toUpperCase()
@@ -99,43 +127,41 @@ export default class SearchUser extends React.Component {
     this.setState({filteredData: filteredData});
   };
 
-  async componentDidMount() {
-    await this._GetAllUser();
+  componentDidMount() {
+    this._GetAllUser();
   }
 
   render() {
-    console.log('this search', this);
+    // console.log(' ds user dưới body', this.state.DsUser);
+
     return (
       <View style={styles.container}>
-        <View style={styles.back}>
-          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-            <TouchableOpacity
-              onPress={() => Utils.goback(this, '')}
-              style={{justifyContent: 'center', marginLeft: 5}}>
-              <Image
-                source={goback}
-                style={{
-                  height: FontSize.scale(13),
-                  width: FontSize.verticalScale(18),
-                }}></Image>
-            </TouchableOpacity>
-            <Text style={styles.title}>Tìm kiếm nhân viên</Text>
-          </View>
-        </View>
+        <GoBack
+          name="Thêm thành viên nhóm"
+          onPress={() => {
+            // Utils.goscreen(this, 'ScreenDetailBaiDang');
+            // ROOTGlobal.GetDsAllBaiDang();
+            Utils.goback(this);
+          }}></GoBack>
+        <SearchBar
+          placeholder="Tìm thành viên..."
+          showCancel="true"
+          platform="android"
+          containerStyle={{
+            backgroundColor: '#DDDDDD80',
+            borderRadius: 20,
+            height: FontSize.scale(40),
+            justifyContent: 'center',
+            padding: 10,
+            margin: 10,
+          }}
+          onChangeText={this.search}
+          value={this.state.searchText}
+        />
         <View style={styles.header}>
-          <SearchBar
-            placeholder="Tìm thành viên..."
-            showCancel="true"
-            platform="android"
-            containerStyle={{
-              backgroundColor: '#DDDDDD80',
-              borderRadius: 20,
-              height: FontSize.scale(40),
-              justifyContent: 'center',
-            }}
-            onChangeText={this.search}
-            value={this.state.searchText}
-          />
+          <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
+            Tất cả các thành viên
+          </Text>
         </View>
         <View style={styles.footer}>
           <FlatList
@@ -165,12 +191,14 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    // backgroundColor: '#4285F4',
-    height: '8%',
+    backgroundColor: '#4285F4',
+    height: FontSize.scale(50),
     justifyContent: 'center',
-    width: '100%',
+    // width: '100%',
     padding: 10,
     borderRadius: 10,
+    // marginTop: 10,
+    marginHorizontal: 10,
   },
   footer: {
     // flex: 1,
@@ -178,8 +206,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     height: '92%',
     width: '100%',
-    // paddingTop: 5,
-    // padding: 10,
+    paddingTop: 5,
   },
   khungchua: {
     flexDirection: 'row',
@@ -195,18 +222,5 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     textAlign: 'center',
-  },
-  back: {
-    flexDirection: 'row',
-    height: FontSize.scale(45),
-    backgroundColor: '#007DE3',
-    alignItems: 'center',
-    // justifyContent: 'center',
-    // marginBottom: 10,
-  },
-  title: {
-    fontSize: FontSize.reSize(20),
-    marginLeft: 10,
-    // textAlign: 'center',
   },
 });

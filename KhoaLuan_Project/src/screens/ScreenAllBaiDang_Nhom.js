@@ -21,7 +21,7 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 
-import {GetDSBaiDang} from '../apis/apiUser';
+import {GetDSBaiDang_Nhom} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 const avatar = require('../assets/images/avatar.png');
@@ -34,40 +34,31 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
       length: '',
       thanhcong: '',
       id_user: '',
+      // idgroup: '',
     };
-    ROOTGlobal.GetDsAllBaiDang = this._GetDSBaiDang;
+    ROOTGlobal.GetDsAllBaiDang_Nhom = this._GetDSBaiDang_Nhom;
   }
 
-  componentDidMount = () => {
-    this._GetDSBaiDang();
-  };
+  _GetDSBaiDang_Nhom = async () => {
+    const idgroup = this.props.nthis.props.route.params.screennhom;
 
-  _GetDSBaiDang = async () => {
     let res = '';
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('id bài đăng', this.state.id_user);
+    console.log('id bài đăng', this.state.id_user, idgroup);
 
-    if (this.state.id_user == null) {
+    res = await GetDSBaiDang_Nhom(this.state.id_user, idgroup);
+    console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    if (res.status == 1) {
       this.setState({
-        id_user: await Utils.ngetStorage(nkey.id_user),
+        DSBaiDangNhom: res.data,
+        refresh: false,
       });
-    }
-    {
-      res = await GetDSBaiDang(this.state.id_user);
-      console.log('Danh sách bài đăng Screen all bài đăng:', res);
-      // console.log('Danh sách bài đăng Screen all bài đăng:', res);
-      if (res.status == 1) {
-        this.setState({
-          DSBaiDangNhom: res.data,
-          refresh: false,
-        });
-      } else {
-        this.setState({
-          refresh: false,
-        });
-      }
+    } else {
+      this.setState({
+        refresh: false,
+      });
     }
   };
 
@@ -78,12 +69,21 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
       </Text>
     );
   };
+
   FoodterMessage = ({item}) => {
     return (
       <View onPress={() => getItem(item)}>
         <ActivityIndicator size="small" color="#0078D7"></ActivityIndicator>
       </View>
     );
+  };
+
+  NhanData = async () => {
+    console.log('id group', this.props.nthis.props.route.params.screennhom);
+    this.setState({
+      idgroup: this.props.nthis.props.route.params.screennhom,
+    });
+    await console.log('state id group', this.state.idgroup);
   };
 
   _renderItem = ({item, index}) => {
@@ -93,7 +93,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
         item={item}
         nthis={this}
         onPress={() =>
-          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
+          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang_Nhom', {
             id_nguoidang: item,
           })
         }></BaiDangNhomComponent>
@@ -101,10 +101,15 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
   };
 
   _onRefresh = () => {
-    this.setState({refresh: true}, () => this._GetDSBaiDang());
+    this.setState({refresh: true}, () => this._GetDSBaiDang_Nhom);
+  };
+
+  componentDidMount = async () => {
+    await this._GetDSBaiDang_Nhom();
+    await this.NhanData();
   };
   render() {
-    console.log('this screel all bai dang nhom', this);
+    // console.log('this screel all bai dang nhom', this.props);
     return (
       <View>
         <FlatList

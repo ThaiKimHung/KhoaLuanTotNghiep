@@ -37,7 +37,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class Edit_KhenThuong extends React.Component {
+export default class Edit_KhenThuong_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,7 +90,7 @@ export default class Edit_KhenThuong extends React.Component {
   }
 
   ChuyenData = async (item) => {
-    Utils.goscreen(this, 'Edit_KhenThuong');
+    Utils.goscreen(this, 'Edit_KhenThuong_Nhom');
     this.setState({
       DataChuyenVe: item,
     });
@@ -171,17 +171,9 @@ export default class Edit_KhenThuong extends React.Component {
       idbaidang: id_nguoidang.Id_BaiDang,
       idloaibaidang: id_nguoidang.Id_LoaiBaiDang,
     });
-    // await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
-    // await console.log('title', this.state.title);
-    // await console.log('noi dung', this.state.noidung);
-    // await console.log('item', this.state.selectedItem);
   };
 
   EditBaiDang = async () => {
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
@@ -208,10 +200,10 @@ export default class Edit_KhenThuong extends React.Component {
         icon: 'success',
       });
       // Utils.goscreen(this, 'Home');
-      Utils.goscreen(this, 'Home');
+      Utils.goscreen(this, 'ScreenBaiDangNhom');
       // await ROOTGlobal.GetDsAllBaiDang();
       // await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',

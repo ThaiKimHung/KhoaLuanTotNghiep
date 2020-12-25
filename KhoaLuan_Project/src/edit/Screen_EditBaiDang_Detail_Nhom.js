@@ -27,7 +27,7 @@ import {nkey} from '../apis/keyStore';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
-export default class Screen_EditBaiDang extends React.Component {
+export default class Screen_EditBaiDang_Detail_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,18 +47,21 @@ export default class Screen_EditBaiDang extends React.Component {
     });
   }
 
-  nhanData = () => {
+  nhanData = async () => {
     this.id_nguoidang = this.props.route.params.id_nguoidang.id_nguoidang;
-    // console.log('this id người đăng ', this.id_nguoidang);
+    console.log('this id người đăng ', this.id_nguoidang);
     this.setState({
-      tieude: this.id_nguoidang.title,
-      noidung: this.id_nguoidang.NoiDung,
+      tieude: this.id_nguoidang[0].title,
+      noidung: this.id_nguoidang[0].NoiDung,
     });
+    // const {id_nguoidang = {}} = this.props.route.params;
+    // await console.log('tieu de', id_nguoidang);
+    // await console.log('noi dung', this.state.noidung);
   };
 
   EditBaiDang = async () => {
-    let idbaidang = this.id_nguoidang.Id_BaiDang;
-    let id_loaibaidang = this.id_nguoidang.Id_LoaiBaiDang;
+    let idbaidang = this.id_nguoidang[0].Id_BaiDang;
+    let id_loaibaidang = this.id_nguoidang[0].Id_LoaiBaiDang;
     // const today = new Date();
     // const date =
     //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
@@ -74,9 +77,9 @@ export default class Screen_EditBaiDang extends React.Component {
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody tin nhanh', strBody);
+    console.log('strBody tin nhanh', strBody);
     let res = await Update_BaiDang(strBody);
-    console.log('res update bài đăng screen edit bai dang', res);
+    console.log('res update bài đăng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -85,11 +88,12 @@ export default class Screen_EditBaiDang extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      // Utils.goscreen(this, 'Home');
-      Utils.goback(this);
+      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+      //   Utils.gobac;
       // await ROOTGlobal.GetDsAllBaiDang();
-      ROOTGlobal.GetChiTietBaiDang();
-      ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.GetChiTietBaiDang();
+      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -102,123 +106,24 @@ export default class Screen_EditBaiDang extends React.Component {
   };
 
   loadNoidungChiTiet = () => {
-    // console.log('this detail', this);
+    console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params.id_nguoidang;
-    // console.log('this screen Detail bài đăng', id_nguoidang);
+    // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
-    // console.log('this screen Detail user', user);
     this.idBaiDang = id_nguoidang.Id_BaiDang;
     this.id_user = user.ID_user;
-    let idloaibaidang = id_nguoidang.Id_LoaiBaiDang;
-    // console.log('ids loai bd', idloaibaidang);
+    let idloaibaidang = id_nguoidang[0].Id_LoaiBaiDang;
+    console.log('id loai bd', idloaibaidang);
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     switch (idloaibaidang) {
       case 2:
-        return Utils.goscreen(this, 'Edit_KhenThuong', {
+        return Utils.goscreen(this, 'Edit_KhenThuong_Detail_Nhom', {
           id_nguoidang: this.props.route.params,
         });
       case 4:
-        return Utils.goscreen(this, 'Edit_ChaoMungTV', {
+        return Utils.goscreen(this, 'Edit_ChaoMungTV_Detail_Nhom', {
           id_nguoidang: this.props.route.params,
         });
-      case 6:
-        return (
-          <View style={{flex: 1}}>
-            <View style={styles.back}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  // backgroundColor: '#007DE3',
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    margin: 5,
-                    alignItems: 'center',
-                    width: '100%',
-                  }}>
-                  <TouchableOpacity
-                    // onPress={this.props.navigation.goBack}
-                    // onPress={() => Utils.goback(this, '')}
-                    onPress={() =>
-                      Alert.alert(
-                        'Thông Báo',
-                        'Bạn Không Muốn Lưu Thay Đổi?',
-                        [
-                          {
-                            text: 'Đồng ý',
-                            onPress: () => Utils.goback(this, ''),
-                          },
-                          {
-                            text: 'Hủy',
-                            style: 'cancel',
-                          },
-                        ],
-                        {cancelable: false},
-                      )
-                    }>
-                    <Image
-                      source={goback}
-                      style={{
-                        height: FontSize.scale(13),
-                        width: FontSize.verticalScale(18),
-                      }}></Image>
-                  </TouchableOpacity>
-                  <View
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                    }}></View>
-
-                  <View style={{justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={() => this.EditBaiDang()}>
-                      <Text style={styles.textDang}>Sửa</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.header}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: FontSize.reSize(20),
-                  marginBottom: 5,
-                }}>
-                Tiêu đề:
-              </Text>
-              <TextInput
-                autoCapitalize="none"
-                placeholderTextColor="#69696980"
-                placeholder="Nội dung bài đăng"
-                multiline={true}
-                style={styles.textinput}
-                onChangeText={(text) => this.handleTieuDe(text)}
-                value={this.state.tieude}></TextInput>
-            </View>
-            {/* <View style={styles.footer}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: FontSize.reSize(20),
-                  marginBottom: 5,
-                }}>
-                Nội dung:
-              </Text>
-              <TextInput
-                autoCapitalize="none"
-                placeholderTextColor="#69696980"
-                placeholder="Nội dung bài đăng"
-                multiline={true}
-                style={styles.textinput}
-                onChangeText={(text) => this.handleNoiDung(text)}
-                value={this.state.noidung}></TextInput>
-            </View> */}
-          </View>
-        );
       default:
         return (
           <View style={{flex: 1}}>
@@ -319,15 +224,15 @@ export default class Screen_EditBaiDang extends React.Component {
         );
     }
   };
+
   componentDidMount() {
     this.nhanData();
-    this.loadNoidungChiTiet();
   }
 
   render() {
     // const user = this.props.route.params ? this.props.route.params : '';
-    // console.log('user khen thưởng', user);
-    // console.log('props edit bài đăng', this.props);
+    // console.log('this .props edit detail', user);
+    console.log('props edit bài đăng chi tiết', this.props);
     return <View style={styles.container}>{this.loadNoidungChiTiet()}</View>;
   }
 }
@@ -350,6 +255,7 @@ const styles = StyleSheet.create({
     // height: '10%',
     // width: '100%',
     padding: 10,
+    // backgroundColor: 'green',
   },
 
   textinput: {
@@ -359,7 +265,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.reSize(20),
     maxHeight: 150,
   },
-
   back: {
     flexDirection: 'row',
     height: FontSize.scale(45),

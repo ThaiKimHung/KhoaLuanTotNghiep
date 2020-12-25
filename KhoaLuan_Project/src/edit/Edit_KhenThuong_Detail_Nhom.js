@@ -37,7 +37,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class Edit_KhenThuong extends React.Component {
+export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,7 +90,7 @@ export default class Edit_KhenThuong extends React.Component {
   }
 
   ChuyenData = async (item) => {
-    Utils.goscreen(this, 'Edit_KhenThuong');
+    Utils.goscreen(this, 'Edit_KhenThuong_Detail');
     this.setState({
       DataChuyenVe: item,
     });
@@ -161,27 +161,25 @@ export default class Edit_KhenThuong extends React.Component {
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
-    // console.log('id', id_nguoidang);
+    console.log('id', id_nguoidang);
     let tit = id_nguoidang.title;
-    let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : '';
+    let khenthuong = id_nguoidang[0].KhenThuong
+      ? id_nguoidang[0].KhenThuong[0]
+      : '';
     this.setState({
-      title: id_nguoidang.title,
-      noidung: id_nguoidang.NoiDung,
+      title: id_nguoidang[0].title,
+      noidung: id_nguoidang[0].NoiDung,
       selectedItem: khenthuong.id_khenthuong,
-      idbaidang: id_nguoidang.Id_BaiDang,
-      idloaibaidang: id_nguoidang.Id_LoaiBaiDang,
+      idbaidang: id_nguoidang[0].Id_BaiDang,
+      idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
     });
-    // await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
-    // await console.log('title', this.state.title);
-    // await console.log('noi dung', this.state.noidung);
-    // await console.log('item', this.state.selectedItem);
+    await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
+    await console.log('title', this.state.title);
+    await console.log('noi dung', this.state.noidung);
+    await console.log('item', this.state.selectedItem);
   };
 
   EditBaiDang = async () => {
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
@@ -208,10 +206,11 @@ export default class Edit_KhenThuong extends React.Component {
         icon: 'success',
       });
       // Utils.goscreen(this, 'Home');
-      Utils.goscreen(this, 'Home');
-      // await ROOTGlobal.GetDsAllBaiDang();
+      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+      await ROOTGlobal.GetDsAllBaiDang_Nhom();
+      await ROOTGlobal.GetChiTietBaiDang();
+      await ROOTGlobal.GanDataChitiet();
       // await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -251,10 +250,11 @@ export default class Edit_KhenThuong extends React.Component {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  Utils.goscreen(this, 'Home');
+                  // Utils.goscreen(this, 'Home');
                   // this.setState({
                   //   DataChuyenVe: {},
                   // });
+                  Utils.goback(this);
                 }}>
                 <Image
                   source={goback}
@@ -268,7 +268,7 @@ export default class Edit_KhenThuong extends React.Component {
                   flex: 1,
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Sửa khen thưởng</Text>
+                <Text style={styles.title}>Sửa khen thưởng CT nhóm</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
                 <TouchableOpacity onPress={() => this.EditBaiDang()}>

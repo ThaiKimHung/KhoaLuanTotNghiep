@@ -22,128 +22,161 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import {ROOTGlobal} from '../apis/dataGlobal';
-
-import {PostBaiDang, PostBaiDang_Nhom, GetDSGroup} from '../apis/apiUser';
+import {
+  PostBaiDang,
+  PostBaiDang_Nhom,
+  GetDSGroup,
+  Update_BaiDang,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
 const search = require('../assets/images/search.png');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class ChaoMungTV extends React.Component {
+export default class Edit_ChaoMungTV_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      haveValue_NoiDung: '',
-
-      idgroup: '',
-      tengroup: '',
+      DsKhenThuong: [],
+      refresh: true,
+      selectedItem: 0,
+      userSelected: 0,
+      noidung: '',
+      user: {},
       DataChuyenVe: '',
+      // DataNhom: {},
+      value: null,
+      dsNhom: [],
+      mangtam: [],
+      isOpen: false,
+      nhomSelected: '',
+      idbaidang: '',
+      idloaibaidang: '',
+      title: '',
+      noidung: '',
+      itemSelec_chuyenve: 0,
     };
   }
   handleNoiDung(text) {
     this.setState({
-      haveValue_NoiDung: text,
+      noidung: text,
     });
+    // alert(text);
   }
+  // handleNoidung(text) {
+  //   this.setState({
+  //     haveValue_Noidung: text,
+  //   });
+  // }
 
   ChuyenData = async (item) => {
-    Utils.goscreen(this, 'ChaoMungTV_Nhom');
+    Utils.goscreen(this, 'Edit_ChaoMungTV_Nhom');
     this.setState({
       DataChuyenVe: item,
     });
   };
 
-  _PostBaiDang_Nhom = async () => {
-    const id_loaibaidang = this.props.route.params.id_loaibaidang;
+  GanDataSauKhiChuyenVe = () => {
+    this.state.DataChuyenVe
+      ? this.setState({
+          userSelected: this.state.DataChuyenVe.ID_user,
+        })
+      : null;
+    // console.log('user selected', this.state.userSelected);
+  };
+
+  EditBaiDang = async () => {
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
-      Id_LoaiBaiDang: id_loaibaidang,
-      title: this.state.DataChuyenVe.Username,
-      NoiDung: this.state.haveValue_NoiDung,
-      Id_Group: this.state.idgroup,
+      ID_BaiDang: await this.state.idbaidang,
+      Id_LoaiBaiDang: await this.state.idloaibaidang,
+      title: this.state.DataChuyenVe
+        ? this.state.DataChuyenVe.Username
+        : this.state.title,
+      NoiDung: this.state.noidung,
+      Id_Group: this.state.group ? this.state.group.id_group : 0,
       id_khenthuong: 0,
       typepost: '',
-      // CreatedDate: date + 'T' + time,
-      CreatedBy: await Utils.ngetStorage(nkey.id_user),
-      UpdateDate: '0',
-      UpdateBy: 0,
+      // UpdateDate: date + 'T' + time,
+      UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
-    let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    console.log('strBody edit CMTVM', strBody);
+    let res = await Update_BaiDang(strBody);
+    console.log('res update edit CMTVM', res);
     if (res.status == 1) {
-      let thanhcong = res.status;
-      // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
-      Utils.goscreen(this, 'ScreenBaiDangNhom');
       showMessage({
         message: 'Thông báo',
-        description: 'Đăng bài thành công',
+        description: 'Sửa thành công',
         type: 'success',
         duration: 1500,
         icon: 'success',
       });
+      Utils.goscreen(this, 'ScreenBaiDangNhom');
+      // await ROOTGlobal.GetDsAllBaiDang();
+      // await ROOTGlobal.GetChiTietBaiDang();
       await ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',
-        description: 'Đăng bài thất bại',
+        description: 'Sửa thất bại',
         type: 'danger',
         duration: 1500,
         icon: 'danger',
       });
     }
   };
-  _render_Dang = () => {
-    const {idgroup, tengroup, DataChuyenVe, haveValue_NoiDung} = this.state;
-    if (
-      DataChuyenVe != '' &&
-      idgroup != '' &&
-      tengroup != '' &&
-      haveValue_NoiDung != ''
-    ) {
-      return (
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this._PostBaiDang_Nhom();
-            }}>
-            <Text style={styles.textDang}>Đăng</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <Text style={styles.textDang_invisibale}>Đăng</Text>
-        </View>
-      );
+
+  _GetDSGroup = async () => {
+    let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
+    // let res = await GetDSGroup(1);
+    console.log('res ds group', res);
+    if (res.status == 1) {
+      this.setState({
+        dsNhom: res.Data,
+      });
+      // console.log('state', this.state.dsNhom);
     }
   };
-  GanData = async () => {
-    {
-      this.props &&
-      this.props.route.params &&
-      this.props.route.params.screennhom &&
-      this.props.route.params.tennhom
-        ? this.setState({
-            idgroup: this.props.route.params.screennhom,
-            tengroup: this.props.route.params.tennhom,
-          })
-        : null;
-      await console.log(
-        'this.state.idgroup và tên group =====',
-        this.state.idgroup,
-        this.state.tengroup,
-      );
-    }
+
+  ganData = async () => {
+    const {
+      id_nguoidang = {},
+    } = this.props.route.params.id_nguoidang.id_nguoidang;
+    // console.log('id người đằng', id_nguoidang);
+    this.setState({
+      title: id_nguoidang.title,
+      noidung: id_nguoidang.NoiDung,
+      group: id_nguoidang ? id_nguoidang.Group[0] : '',
+      idbaidang: id_nguoidang.Id_BaiDang,
+      idloaibaidang: id_nguoidang.Id_LoaiBaiDang,
+    });
+    // await console.log('data mang ve', this.state.DataChuyenVe);
+    // await console.log('ten', this.state.title);
+    // await console.log('id bai dang', this.state.idbaidang);
+
+    // console.log('noi dung', this.noidung);
   };
+
   componentDidMount = async () => {
-    await this.GanData();
+    await this._GetDSGroup();
+    // await this.LaymangTam();
+    await this.ganData();
   };
 
   render() {
     const {isActive, selectLyDo} = this.state;
+    const {
+      id_nguoidang = {},
+    } = this.props.route.params.id_nguoidang.id_nguoidang;
+    // let group = id_nguoidang.Group[0].ten_group;
+    // console.log('check group', group);
+    // console.log('id nguoi dang', id_nguoidang);
+    // console.log('this detail props chào mừng', this.props);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -152,7 +185,8 @@ export default class ChaoMungTV extends React.Component {
               style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() => {
-                  Utils.goback(this, '');
+                  Utils.goscreen(this, 'Home');
+                  // Utils.goback(this/);
                 }}>
                 <Image
                   source={goback}
@@ -162,13 +196,15 @@ export default class ChaoMungTV extends React.Component {
                   }}></Image>
               </TouchableOpacity>
 
-              <Text style={styles.title}>
-                Tạo tin chào mừng thành viên mới nhóm
-              </Text>
+              <Text style={styles.title}>Sửa bài đăng CMTVM</Text>
             </View>
-            <View style={{justifyContent: 'center'}}>
-              {this._render_Dang()}
-            </View>
+            <TouchableOpacity
+              onPress={() => this.EditBaiDang()}
+              style={{justifyContent: 'center'}}>
+              <Text style={styles.textDang}>Sửa</Text>
+
+              {/* {this._render_Dang()} */}
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -190,63 +226,34 @@ export default class ChaoMungTV extends React.Component {
                 });
               }}>
               <Image source={search} style={styles.icon}></Image>
-              {this.state.DataChuyenVe ? (
-                <Text
-                  style={{
-                    fontSize: FontSize.reSize(20),
-                    marginLeft: 10,
-                    color: '#000000',
-                    flex: 1,
-                  }}>
-                  {this.state.DataChuyenVe.Username}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    fontSize: FontSize.reSize(20),
-                    marginLeft: 10,
-                    color: '#69696980',
-                    flex: 1,
-                  }}>
-                  Mời bạn chọn nhân viên
-                </Text>
-              )}
+
+              <Text
+                style={{
+                  fontSize: FontSize.reSize(20),
+                  marginLeft: 10,
+                  color: '#000000',
+                  flex: 1,
+                }}>
+                {this.state.DataChuyenVe
+                  ? this.state.DataChuyenVe.Username
+                  : this.state.title}
+              </Text>
             </TouchableOpacity>
-            <Text>Nhập nội dung</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: FontSize.reSize(20),
+                marginBottom: 5,
+              }}>
+              Nhập nội dung
+            </Text>
             <View style={styles.khung_tieude}>
               <TextInput
                 multiline={true}
-                placeholder="Mời bạn nhập tiêu đề"
+                placeholder="Mời bạn nhập nội dung"
                 style={{fontSize: FontSize.reSize(20)}}
-                onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
-            </View>
-
-            <Text>Chọn nhóm</Text>
-            <View style={{marginTop: 5}}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  padding: 15,
-                  borderRadius: 20,
-                  borderColor: '#DDDDDD80',
-                  backgroundColor: '#DDDDDD80',
-                }}>
-                <TouchableOpacity
-                  onPress={this._renderActive}
-                  style={[
-                    {
-                      fontSize: 14,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 5,
-                    },
-                  ]}>
-                  <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
-                    {this.state.tengroup}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                onChangeText={(text) => this.handleNoiDung(text)}
+                value={this.state.noidung}></TextInput>
             </View>
           </View>
         </View>

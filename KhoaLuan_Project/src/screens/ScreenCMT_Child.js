@@ -21,7 +21,7 @@ import DanhSachLike from '../components/DanhSachLike';
 import Utils from '../apis/Utils';
 
 import SvgUri from 'react-native-svg-uri';
-import {Update_CMT, AddComment_Child} from '../apis/apiUser';
+import {Update_CMT, AddComment_Child, GetDSCommnet} from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -51,6 +51,8 @@ export default class ScreenCMT_Child extends React.Component {
       username_cmtlon: '',
       noidung_cmtlon: '',
       text_Cmt: '',
+      dsCmt_Child: '',
+      hi: [],
     };
   }
 
@@ -74,21 +76,47 @@ export default class ScreenCMT_Child extends React.Component {
       id_baidang: id_nguoidang.Id_BaiDang,
       id_cmtlon: id_nguoidang.id_cmt,
     });
-    // await console.log('idngoi dnag', id_nguoidang);
+    await console.log('id ngupoi dnag', id_nguoidang);
     // await console.log('dscmt', this.state.dsCmt.Comment_child);
     // await console.log('ava', this.state.avatar_cmtlong);
     // await console.log('name', this.state.username_cmtlon);
     // await console.log('noi dung', this.state.noidung_cmtlon);
-    // await console.log('id bai dang', this.state.id_baidang);
+    await console.log('id bai dang', this.state.id_baidang);
   };
 
   DSCMT_Child = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    this.setState({
-      dsCmt: id_nguoidang.Comment_child,
-      refresh: false,
-    });
-    await console.log('dscmt', this.state.dsCmt);
+    // const {id_nguoidang = {}} = this.props.route.params;
+    // this.setState({
+    //   dsCmt: id_nguoidang.Comment_child,
+    //   refresh: false,
+    // });
+    // await console.log('dscmt', this.state.dsCmt);
+  };
+
+  _GetDsCmt = async () => {
+    let id_user = await Utils.ngetStorage(nkey.id_user);
+    let res = await GetDSCommnet(id_user, this.state.id_baidang);
+    console.log('res ds cmt', res);
+    // console.log('ds cmt 1', res.data);
+    if (res.status == 1) {
+      this.setState({
+        dsCmt: res.data,
+        refresh: false,
+      });
+      await this.setState({
+        dsCmt_Child: this.state.dsCmt.map((e) => e.Comment_child),
+      });
+      await console.log('ds cmt child', this.state.dsCmt_Child);
+      await this.setState({
+        hi: this.state.dsCmt_Child.map((e) => e),
+      });
+      await console.log('ds cmt hi=========', this.state.hi);
+    } else {
+      this.setState({
+        refresh: false,
+      });
+    }
+    await console.log('ds cmt', this.state.dsCmt);
   };
 
   DangCmt_Child = async () => {
@@ -118,7 +146,7 @@ export default class ScreenCMT_Child extends React.Component {
       });
       await ROOTGlobal.GetChiTietBaiDang();
       await ROOTGlobal.GanDataChitiet();
-      await this.DSCMT_Child();
+      await this._GetDsCmt();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -132,54 +160,63 @@ export default class ScreenCMT_Child extends React.Component {
     }
   };
 
-  _renderItem = ({item, index}) => {
+  _onRefresh = () => {
+    this.setState({refresh: true}, () => this._GetDsCmt());
+  };
+
+  _renderItem2 = ({item, index}) => {
+    console.log('item', item);
+
     return (
-      <View style={{marginLeft: 10}}>
-        <View style={styles.khung_TungCmt}>
-          <TouchableOpacity>
-            <View
-              style={{
-                marginLeft: 5,
-                borderRadius: 30,
-                height: FontSize.scale(30),
-                width: FontSize.verticalScale(30),
-              }}>
-              <Image
+      <View>
+        <View style={{marginLeft: 10}}>
+          <View style={styles.khung_TungCmt}>
+            <TouchableOpacity>
+              <View
                 style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
                   height: FontSize.scale(30),
                   width: FontSize.verticalScale(30),
-                  borderRadius: 20,
-                }}
-                resizeMode="cover"
-                source={
-                  item.User_comment_child
-                    ? {uri: item.User_comment_child[0].avatar}
-                    : avatar_mau
-                }></Image>
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    borderRadius: 20,
+                  }}
+                  resizeMode="cover"
+                  source={
+                    // item
+                    //   ? {
+                    //       uri: item.User_comment_child[0]?.avatar,
+                    //     }
+                    //   :
+                    avatar_mau
+                  }></Image>
+              </View>
+            </TouchableOpacity>
+            <View style={{flex: 1}}>
+              <TouchableOpacity style={styles.khung_tenUser_Cmt}>
+                <Text style={styles.txt_TenUser_Cmt}>{item.id_cmt}</Text>
+                <Text style={{marginLeft: 15, marginBottom: 5}}>
+                  {item.NoiDung_cmt}
+                </Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-          <View style={{flex: 1}}>
-            <TouchableOpacity style={styles.khung_tenUser_Cmt}>
-              <Text style={styles.txt_TenUser_Cmt}>
-                {item.User_comment_child[0].Username}
-              </Text>
-              <Text style={{marginLeft: 15, marginBottom: 5}}>
-                {item.NoiDung_cmt}
-              </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 70,
+            }}>
+            <TouchableOpacity>
+              <Text style={{marginLeft: 10}}>Thích</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={{marginLeft: 10}}>Trả lời</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: 70,
-          }}>
-          <TouchableOpacity>
-            <Text style={{marginLeft: 10}}>Thích</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={{marginLeft: 10}}>Trả lời</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -187,7 +224,8 @@ export default class ScreenCMT_Child extends React.Component {
 
   componentDidMount = async () => {
     await this.NhanData_Child();
-    await this.DSCMT_Child();
+    // (await this.DSCMT_Child();
+    await this._GetDsCmt();
   };
 
   render() {
@@ -254,13 +292,11 @@ export default class ScreenCMT_Child extends React.Component {
         </View>
         <View style={styles.footer}>
           <FlatList
-            data={this.state.dsCmt}
-            renderItem={this._renderItem}
+            data={this.state.dsCmt_Child}
+            renderItem={this._renderItem2}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}
-            onRefresh={() => {
-              this.setState({refresh: true}, this.DSCMT_Child);
-            }}
+            onRefresh={this._onRefresh}
             ListEmptyComponent={this.EmptyListMessage}
           />
         </View>

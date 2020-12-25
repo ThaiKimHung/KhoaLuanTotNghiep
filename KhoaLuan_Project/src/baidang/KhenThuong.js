@@ -613,13 +613,11 @@ const styles = StyleSheet.create({
   },
   back: {
     flexDirection: 'row',
-    // backgroundColor: 'green',
-    height: FontSize.scale(50),
+    height: FontSize.scale(45),
     backgroundColor: '#007DE3',
-    // backgroundColor: 'red',
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    marginBottom: 10,
+    alignItems: 'center',
+    // justifyContent: 'center',
+    // marginBottom: 10,
   },
   title: {
     fontSize: FontSize.reSize(20),

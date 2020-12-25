@@ -129,11 +129,17 @@ async function AddComment_Child(strbody) {
   let res = await Utils.post_api(apiUser + `addComment_chill`, strbody);
   return res;
 }
-
+async function GetDSCommnet(iduser, id_baidang) {
+  let res = await Utils.get_api(
+    apiUser + `getDSComment?id_user=${iduser}&id_baidang=${id_baidang}`,
+  );
+  return res;
+}
 async function Update_CMT(strbody) {
   let res = await Utils.post_api(apiUser + `UpdateComment`, strbody);
   return res;
 }
+
 async function DeleteComment_Like(id_cmt = '') {
   let res = await Utils.post_api(
     apiUser + `deleteComment_like?id_cmt=${id_cmt}`,
@@ -177,8 +183,16 @@ async function AddBaiDang_KhenThuong_Nhom(strbody) {
   let res = await Utils.post_api(apiUser + `addBaiDang_KT_Group`, strbody);
   return res;
 }
-async function GetDSBaiDang_Nhom(user) {
-  let res = await Utils.get_api(apiUser + `getDSBaiDang?id_user=${user}`);
+async function GetDSBaiDang_Nhom(user, idgroup) {
+  let res = await Utils.get_api(
+    apiUser + `getDSBaiDang_In_Group?id_user=${user}&id_group=${idgroup}`,
+  );
+  return res;
+}
+async function getDSUser_Nhom(idgroup, user) {
+  let res = await Utils.get_api(
+    apiUser + `getDSUser_Group?id_group=${idgroup}&id_user=${user}`,
+  );
   return res;
 }
 
@@ -204,6 +218,7 @@ export {
   DeleteBaiDang_Like,
   AddComment,
   AddComment_Child,
+  GetDSCommnet,
   Update_CMT,
   DeleteComment_Like,
   DeleteComment,
@@ -211,4 +226,6 @@ export {
   GetDS_BaiDangGroup,
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,
+  getDSUser_Nhom,
+  GetDSBaiDang_Nhom,
 };

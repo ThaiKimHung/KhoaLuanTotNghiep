@@ -76,7 +76,7 @@ export default class TinNhanh extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      ROOTGlobal.GetDsAllBaiDang();
+      ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',

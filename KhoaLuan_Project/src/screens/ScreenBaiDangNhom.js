@@ -36,17 +36,8 @@ import moment from 'moment';
 import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
 import ScreenAllBaiDang_Nhom from './ScreenAllBaiDang_Nhom';
 
-const avatar_mau = require('../assets/images/avatar.png');
-const like = require('../assets/images/like.png');
-const commnet = require('../assets/images/comment.png');
-const daubacham = require('../assets/images/daubacham.png');
-const thich = require('../assets/images/thich.png');
-const binhluan = require('../assets/images/binhluan.png');
-const send = require('../assets/images/send.png');
-const welcome = require('../assets/images/welcome.png');
-const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
-
+const goback = require('../assets/images/go-back-left-arrow.png');
 export default class ScreenBaiDangNhom extends React.Component {
   constructor(props) {
     super(props);
@@ -68,19 +59,33 @@ export default class ScreenBaiDangNhom extends React.Component {
   }
 
   render() {
-    let id_gruop = this.props.route.params.id_nguoidang.ID_group;
+    // let id_gruop = this.props.route.params.id_nguoidang.ID_group;
     let ten_group = this.props.route.params.id_nguoidang.Ten_Group;
-    console.log('id group screen all bài đăng', id_gruop, ten_group);
-    console.log('this bai dang nhom:', this);
+    // console.log('id group screen all bài đăng', id_gruop, ten_group);
+    // console.log('this bai dang nhom:', this);
     return (
       <View style={styles.container}>
-        <GoBack
-          name=""
+        {/* <GoBack
+          name={ten_group}
           onPress={() => {
             Utils.goscreen(this, 'NhomScreen');
             // ROOTGlobal.GetDsAllBaiDang();
-          }}></GoBack>
-        {/* khung chứa avata và khung text input*/}
+          }}></GoBack> */}
+        <View style={styles.back}>
+          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={() => Utils.goback(this, '')}
+              style={{justifyContent: 'center', marginLeft: 5}}>
+              <Image
+                source={goback}
+                style={{
+                  height: FontSize.scale(13),
+                  width: FontSize.verticalScale(18),
+                }}></Image>
+            </TouchableOpacity>
+            <Text style={styles.title}>{ten_group}</Text>
+          </View>
+        </View>
 
         <ChonLoaiBaiDang
           onPress={() => {
@@ -224,5 +229,18 @@ const styles = StyleSheet.create({
     // padding: 5,
     // tintColor: 'yellow',
     // marginBottom: -50,
+  },
+  back: {
+    flexDirection: 'row',
+    height: FontSize.scale(45),
+    backgroundColor: '#007DE3',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    // marginBottom: 10,
+  },
+  title: {
+    fontSize: FontSize.reSize(20),
+    marginLeft: 10,
+    // textAlign: 'center',
   },
 });

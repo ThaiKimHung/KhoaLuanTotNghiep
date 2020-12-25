@@ -216,12 +216,11 @@ const styles = StyleSheet.create({
   },
   back: {
     flexDirection: 'row',
-    backgroundColor: 'green',
-    height: '6%',
-    backgroundColor: '#4F94CD',
+    height: FontSize.scale(45),
+    backgroundColor: '#007DE3',
     alignItems: 'center',
     // justifyContent: 'center',
-    // marginLeft: 5,
+    // marginBottom: 10,
   },
   title: {
     fontSize: FontSize.reSize(20),

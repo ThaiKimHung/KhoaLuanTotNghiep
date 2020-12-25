@@ -268,9 +268,11 @@ const styles = StyleSheet.create({
 
   back: {
     flexDirection: 'row',
-    height: FontSize.scale(50),
+    height: FontSize.scale(45),
     backgroundColor: '#007DE3',
-    marginBottom: 10,
+    alignItems: 'center',
+    // justifyContent: 'center',
+    // marginBottom: 10,
   },
   textDang: {
     fontSize: FontSize.reSize(20),

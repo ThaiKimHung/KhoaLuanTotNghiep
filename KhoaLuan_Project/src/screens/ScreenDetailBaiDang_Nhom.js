@@ -45,7 +45,7 @@ const welcome = require('../assets/images/welcome.png');
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenDetailBaiDang extends React.Component {
+export default class ScreenDetailBaiDang_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,9 +62,6 @@ export default class ScreenDetailBaiDang extends React.Component {
       dsCmt: [],
       title: '',
       noidung: '',
-      day: '',
-      // ngay: '',
-      // time: '',
     };
     this.idBaiDang = '';
     this.id_user = '';
@@ -82,8 +79,6 @@ export default class ScreenDetailBaiDang extends React.Component {
       this.setState({
         ChiTietBD: res.data,
       });
-      await console.log('chi tiết bd', this.state.ChiTietBD);
-      // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
     }
   };
   GetData = () => {
@@ -258,13 +253,11 @@ export default class ScreenDetailBaiDang extends React.Component {
       dsCmt: await this.state.ChiTietBD[0].Coment,
       title: await this.state.ChiTietBD[0].title,
       noidung: await this.state.ChiTietBD[0].NoiDung,
-      day: await this.state.ChiTietBD[0].CreatedDate,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
-    await console.log('day', this.state.day);
-    await console.log('ngay', this.state.ngay);
-    await console.log('time', this.state.time);
+    // await console.log('title', this.state.title);
+    // await console.log('noi udng', this.state.noidung);
   };
 
   loadNoiDung = () => {
@@ -402,9 +395,9 @@ export default class ScreenDetailBaiDang extends React.Component {
     // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
-    // let day = id_nguoidang.CreatedDate;
-    let ngay = this.state.day.substring(0, 10);
-    let time = this.state.day.substring(11, 16);
+    let day = id_nguoidang.CreatedDate;
+    let ngay = day.substring(0, 10);
+    let time = day.substring(11, 16);
     let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
     return (
       <View style={styles.container}>
@@ -412,7 +405,7 @@ export default class ScreenDetailBaiDang extends React.Component {
           name=""
           onPress={() => {
             Utils.goback(this, '');
-            ROOTGlobal.GetDsAllBaiDang();
+            ROOTGlobal.GetDsAllBaiDang_Nhom();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
         <View>
@@ -449,27 +442,6 @@ export default class ScreenDetailBaiDang extends React.Component {
               <View style={styles.khung_tenUser}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styles.txt_TenUser}>{this.state.username}</Text>
-                  {group ? (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        // justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 5,
-                      }}>
-                      <Image
-                        source={arrow}
-                        style={{
-                          height: FontSize.scale(10),
-                          width: FontSize.verticalScale(10),
-                        }}></Image>
-                      <TouchableOpacity style={{marginLeft: 5}}>
-                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                          {group.ten_group}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  ) : null}
                 </View>
 
                 <View
@@ -489,7 +461,7 @@ export default class ScreenDetailBaiDang extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() => {
-                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail', {
+                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail_Nhom', {
                   id_nguoidang: this.state.ChiTietBD,
                 });
               }}>
@@ -528,7 +500,7 @@ export default class ScreenDetailBaiDang extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onLongPress={async () => {
-                  Utils.goscreen(this, 'ModalLike_Detail', {
+                  Utils.goscreen(this, 'ModalLike_Detail_Nhom', {
                     id_nguoidang: this.props,
                   });
                 }}

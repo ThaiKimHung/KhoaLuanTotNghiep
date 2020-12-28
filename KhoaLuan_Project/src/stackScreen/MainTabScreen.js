@@ -33,6 +33,7 @@ const thongtin = require('../assets/images/id-card.png');
 
 const MainTabScreen = () => (
   <Tab.Navigator
+    // tabBar=
     initialRouteName="Home"
     activeColor="#fff"
     tabBarOptions={{

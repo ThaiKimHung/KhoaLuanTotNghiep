@@ -196,6 +196,7 @@ export default class ScreenDetailBaiDang extends React.Component {
             onPress={() =>
               Utils.goscreen(this, 'ScreenCMT_Child', {
                 id_nguoidang: item,
+                index: index.toString(),
               })
             }>
             <Text style={{marginLeft: 10}}>

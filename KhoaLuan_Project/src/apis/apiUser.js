@@ -195,8 +195,55 @@ async function getDSUser_Nhom(idgroup, user) {
   );
   return res;
 }
+async function GetDSUser_In_Group(idgroup) {
+  let res = await Utils.get_api(
+    apiUser + `GetDSUser_In_Group?id_group=${idgroup}`,
+  );
+  return res;
+}
 
-// KhoaLuan/deleteBaiDang?id_baidang=1
+async function GetDSAllUser_In_Group(idgroup, iduser) {
+  let res = await Utils.get_api(
+    apiUser + `GetDSAllUser_In_Group?id_group=${idgroup}&id_user=${iduser}`,
+  );
+  return res;
+}
+
+async function GetDSUser_filter_InGroup(idgroup) {
+  let res = await Utils.get_api(
+    apiUser + `GetDSUser_filter_InGroup?id_gr=${idgroup}`,
+  );
+  return res;
+}
+
+async function Update_Quyen_User(iduser, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `Update_quyen_Memmber?id_user=${iduser}`,
+    strbody,
+  );
+  return res;
+}
+
+async function addUserGroup(idgroup, iduser, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `addUserGroup?id_group=${idgroup}&id_user=${iduser}`,
+    strbody,
+  );
+  return res;
+}
+
+async function DeleteUserGroup(idgroup, iduser) {
+  let res = await Utils.post_api(
+    apiUser + `Delete_User?id_group=${idgroup}&id_user=${iduser}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
+// Update_quyen_Memmber?id_user=2
 export {
   Login,
   Logout,
@@ -228,4 +275,10 @@ export {
   AddBaiDang_KhenThuong_Nhom,
   getDSUser_Nhom,
   GetDSBaiDang_Nhom,
+  GetDSUser_In_Group,
+  GetDSUser_filter_InGroup,
+  Update_Quyen_User,
+  addUserGroup,
+  GetDSAllUser_In_Group,
+  DeleteUserGroup,
 };

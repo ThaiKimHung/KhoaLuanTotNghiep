@@ -38,25 +38,27 @@ import ScreenAllBaiDang_Nhom from './ScreenAllBaiDang_Nhom';
 
 const windowWidth = Dimensions.get('window').width;
 const goback = require('../assets/images/go-back-left-arrow.png');
+const bachamdoc = require('../assets/images/daubacham_doc.png');
 export default class ScreenBaiDangNhom extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   refresh: true,
-    //   thich: false,
-    //   text_Cmt: '',
-    //   ChiTietBD: [],
-    //   user: [],
-    //   avatar_user: '',
-    //   solike: 0,
-    //   socmt: 0,
-    //   dslike: {},
-    //   username: '',
-    //   dsCmt: [],
-    //   title: '',
-    //   noidung: '',
-    // };
+    this.state = {
+      quyengroup: false,
+    };
   }
+  Nhandata = async () => {
+    const {id_nguoidang = {}} = this.props.route.params;
+    this.setState({
+      quyengroup: id_nguoidang.quyen_group,
+    });
+
+    console.log('this bài đăng nhóm', id_nguoidang);
+    await console.log('quyyeenf nhóm ======', await this.state.quyengroup);
+  };
+
+  componentDidMount = async () => {
+    await this.Nhandata();
+  };
 
   render() {
     // let id_gruop = this.props.route.params.id_nguoidang.ID_group;
@@ -65,12 +67,6 @@ export default class ScreenBaiDangNhom extends React.Component {
     // console.log('this bai dang nhom:', this);
     return (
       <View style={styles.container}>
-        {/* <GoBack
-          name={ten_group}
-          onPress={() => {
-            Utils.goscreen(this, 'NhomScreen');
-            // ROOTGlobal.GetDsAllBaiDang();
-          }}></GoBack> */}
         <View style={styles.back}>
           <View style={{justifyContent: 'center', flexDirection: 'row'}}>
             <TouchableOpacity
@@ -84,6 +80,23 @@ export default class ScreenBaiDangNhom extends React.Component {
                 }}></Image>
             </TouchableOpacity>
             <Text style={styles.title}>{ten_group}</Text>
+            {this.state.quyengroup == true ? (
+              <TouchableOpacity
+                onPress={() =>
+                  Utils.goscreen(this, 'Modal_CaiDatNhom', {
+                    id_nguoidang: this.props.route.params,
+                  })
+                }
+                style={{justifyContent: 'center', marginLeft: 5}}>
+                <Image
+                  source={bachamdoc}
+                  style={{
+                    height: FontSize.scale(20),
+                    width: FontSize.verticalScale(18),
+                    marginRight: 5,
+                  }}></Image>
+              </TouchableOpacity>
+            ) : null}
           </View>
         </View>
 
@@ -108,128 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    padding: 5,
-    justifyContent: 'space-between',
-  },
-  footer: {
-    margin: 5,
-    paddingHorizontal: 10,
-  },
-  khung_tenUser: {
-    flexDirection: 'column',
-  },
-  khung_tenUser_Cmt: {
-    backgroundColor: '#C0C0C080',
-    flex: 1,
-    padding: 5,
-    marginLeft: 5,
-    borderRadius: 15,
-  },
-  khung_daubacham: {
-    padding: 5,
-  },
-  txt_TenUser: {
-    fontWeight: 'bold',
-    fontSize: FontSize.reSize(20),
-    margin: 5,
-    justifyContent: 'center',
-  },
-  txt_TenUser_Cmt: {
-    fontWeight: 'bold',
-    fontSize: FontSize.reSize(20),
-    marginLeft: 10,
-    // textAlign: 'center',
-  },
 
-  footer1: {
-    margin: 5,
-    paddingHorizontal: 10,
-    backgroundColor: '#1C86EE',
-  },
-  icon_bacham: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
-    // justifyContent: 'space-between',
-  },
-  khung_DemSoLike_Comt: {
-    flexDirection: 'row',
-    marginLeft: 5,
-    // borderWidth: 1,
-  },
-  khung_DemSoLike: {
-    flexDirection: 'row',
-    padding: 3,
-    marginRight: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  khung_DemSoComment: {
-    flexDirection: 'row',
-    padding: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imageLike_Commnet: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
-    tintColor: '#696969',
-  },
-  imageLike_Commnet1: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
-    // tintColor: '#007DE3',
-  },
-  khungLike_Commnet: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    padding: 5,
-    borderColor: '#69696930',
-  },
-  khung_Thich: {
-    flexDirection: 'row',
-    padding: 3,
-    marginRight: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    // backgroundColor: 'yellow',
-  },
-  khung_BinhLuan: {
-    flexDirection: 'row',
-    padding: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
-  khung_CmtTong: {
-    flex: 1,
-  },
-  khung_TungCmt: {
-    flexDirection: 'row',
-    padding: 5,
-    marginLeft: 5,
-    alignItems: 'flex-start',
-    // borderBottomWidth: 0.2,
-    borderRadius: 10,
-  },
-  emptyListStyle: {
-    textAlign: 'center',
-    color: '#696969',
-  },
-  image: {
-    // flex: 1,
-    justifyContent: 'center',
-    resizeMode: 'contain',
-    height: FontSize.scale(250),
-    justifyContent: 'center',
-    alignItems: 'center',
-    // padding: 5,
-    // tintColor: 'yellow',
-    // marginBottom: -50,
-  },
   back: {
     flexDirection: 'row',
     height: FontSize.scale(45),
@@ -242,5 +134,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.reSize(20),
     marginLeft: 10,
     // textAlign: 'center',
+    flex: 1,
   },
 });

@@ -42,6 +42,8 @@ const windowWidth = Dimensions.get('window').width;
 export default class ScreenCMT_Child extends React.Component {
   constructor(props) {
     super(props);
+    this.item = Utils.ngetParam(this, 'id_nguoidang');
+    this.index = Utils.ngetParam(this, 'index');
     this.state = {
       refresh: true,
       dsCmt: '',
@@ -76,28 +78,28 @@ export default class ScreenCMT_Child extends React.Component {
       id_baidang: id_nguoidang.Id_BaiDang,
       id_cmtlon: id_nguoidang.id_cmt,
     });
-    await console.log('id ngupoi dnag', id_nguoidang);
+    // await console.log('id ngupoi dnag', id_nguoidang);
     // await console.log('dscmt', this.state.dsCmt.Comment_child);
     // await console.log('ava', this.state.avatar_cmtlong);
     // await console.log('name', this.state.username_cmtlon);
     // await console.log('noi dung', this.state.noidung_cmtlon);
-    await console.log('id bai dang', this.state.id_baidang);
-  };
-
-  DSCMT_Child = async () => {
-    // const {id_nguoidang = {}} = this.props.route.params;
-    // this.setState({
-    //   dsCmt: id_nguoidang.Comment_child,
-    //   refresh: false,
-    // });
-    // await console.log('dscmt', this.state.dsCmt);
+    // await console.log('id bai dang', this.state.id_baidang);
   };
 
   _GetDsCmt = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSCommnet(id_user, this.state.id_baidang);
     console.log('res ds cmt', res);
-    // console.log('ds cmt 1', res.data);
+
+    const {Comment_child = []} = res.data;
+    const arrNew = [];
+    for (let index = 0; index < Comment_child.length; index++) {
+      const element = Comment_child[index];
+      arrNew = Comment_child.filter(
+        (item) => item.id_cmt == element.id_comment_parent,
+      );
+    }
+    console.log('ds cmt This issss<><>>>', this.item.id_cmt, arrNew);
     if (res.status == 1) {
       this.setState({
         dsCmt: res.data,
@@ -106,11 +108,11 @@ export default class ScreenCMT_Child extends React.Component {
       await this.setState({
         dsCmt_Child: this.state.dsCmt.map((e) => e.Comment_child),
       });
-      await console.log('ds cmt child', this.state.dsCmt_Child);
-      await this.setState({
-        hi: this.state.dsCmt_Child.map((e) => e),
-      });
-      await console.log('ds cmt hi=========', this.state.hi);
+      await console.log('ds cmt child', this.state.dsCmt_Child[this.index]);
+      // await this.setState({
+      //   hi: this.state.dsCmt_Child.map((e) => e),
+      // });
+      // await console.log('ds cmt hi=========', this.state.hi);
     } else {
       this.setState({
         refresh: false,
@@ -165,7 +167,7 @@ export default class ScreenCMT_Child extends React.Component {
   };
 
   _renderItem2 = ({item, index}) => {
-    console.log('item', item);
+    // console.log('item', item);
 
     return (
       <View>
@@ -187,18 +189,19 @@ export default class ScreenCMT_Child extends React.Component {
                   }}
                   resizeMode="cover"
                   source={
-                    // item
-                    //   ? {
-                    //       uri: item.User_comment_child[0]?.avatar,
-                    //     }
-                    //   :
-                    avatar_mau
+                    item
+                      ? {
+                          uri: item.User_comment_child[0]?.avatar,
+                        }
+                      : avatar_mau
                   }></Image>
               </View>
             </TouchableOpacity>
             <View style={{flex: 1}}>
               <TouchableOpacity style={styles.khung_tenUser_Cmt}>
-                <Text style={styles.txt_TenUser_Cmt}>{item.id_cmt}</Text>
+                <Text style={styles.txt_TenUser_Cmt}>
+                  {item.User_comment_child[0].Username}
+                </Text>
                 <Text style={{marginLeft: 15, marginBottom: 5}}>
                   {item.NoiDung_cmt}
                 </Text>
@@ -230,6 +233,8 @@ export default class ScreenCMT_Child extends React.Component {
 
   render() {
     // console.log('this cmt child', this.props.route.params);
+    Utils.nlog('====================', this.item, this.index);
+
     return (
       <View style={styles.container}>
         <GoBack
@@ -292,7 +297,7 @@ export default class ScreenCMT_Child extends React.Component {
         </View>
         <View style={styles.footer}>
           <FlatList
-            data={this.state.dsCmt_Child}
+            data={this.state.dsCmt_Child[this.index]}
             renderItem={this._renderItem2}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}

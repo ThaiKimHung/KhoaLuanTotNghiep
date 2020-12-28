@@ -10,11 +10,13 @@ import {
 
 // const domain = 'http://192.168.3.49/';
 // const domain = 'http://192.168.43.236/';
-const domain = 'http://192.168.3.43/';
+// const domain = 'http://192.168.3.43/';
 // const domain = 'http://192.168.100.5/';
 // const domain = 'https://localhost:44340/';
 // const domain = 'http://192.168.43.178/';
 // const domain = 'http://192.168.0.102/';
+const domain = 'http://192.168.3.54/';
+
 async function post_api(
   strUrl,
   strBody = '{}',
@@ -70,10 +72,17 @@ async function get_api(strUrl, showMsg = false, chktoken = true) {
 }
 
 // -- custom AynsStore
+// function ngetParam(nthis, keys, defaultValue) {
+//   // let param = nthis.props.navigation.getParam(keys, defaultValue);
+//   let param = nthis.props.route.params(keys, defaultValue);
+//   return param;
+// }
+
 function ngetParam(nthis, keys, defaultValue) {
   // let param = nthis.props.navigation.getParam(keys, defaultValue);
-  let param = nthis.props.route.params(keys, defaultValue);
-  return param;
+  let param = nthis.props.route.params[keys];
+  if (param) return param;
+  else return defaultValue;
 }
 //--Thông số cấu hình mặc
 

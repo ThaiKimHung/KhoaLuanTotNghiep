@@ -161,6 +161,10 @@ async function DeleteComment(id_cmt = '') {
   );
   return res;
 }
+async function AddGroup(strbody) {
+  let res = await Utils.post_api(apiUser + `addGroup`, strbody);
+  return res;
+}
 
 async function GetDSGroup(iduser) {
   let res = await Utils.get_api(apiUser + `getDSGroup?id_user=${iduser}`);
@@ -269,6 +273,7 @@ export {
   Update_CMT,
   DeleteComment_Like,
   DeleteComment,
+  AddGroup,
   GetDSGroup,
   GetDS_BaiDangGroup,
   AddBaiDang_KhenThuong,

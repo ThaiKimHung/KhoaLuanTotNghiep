@@ -174,7 +174,7 @@ export default class Test extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={{height: 100, width: 200, backgroundColor: 'green'}}
           onPress={this.open}>
           <Text>hi</Text>
@@ -187,8 +187,8 @@ export default class Test extends Component {
               style={{width: 400, height: 40}}
             />
           </View>
-        ) : null} */}
-
+        ) : null}
+        {/* 
         <View style={{flexDirection: 'column'}}>
           <TouchableOpacity
             onPress={() => {
@@ -237,7 +237,7 @@ export default class Test extends Component {
             horizontal
             showsHorizontalScrollIndicator={false}
             style={{marginTop: 5}}>
-            {/* {/ {this.state.image ? this.renderAsset(this.state.image) : null} /} */}
+        
             {this.state.images
               ? this.state.images.map((i) => (
                   <View key={i.uri}>
@@ -247,7 +247,7 @@ export default class Test extends Component {
                 ))
               : null}
           </ScrollView>
-        </View>
+        </View> */}
       </View>
     );
   }

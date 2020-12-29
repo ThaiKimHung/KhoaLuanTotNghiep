@@ -60,10 +60,10 @@ export default class ScreenAllUser extends React.Component {
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     } else {
-      this.setState({refresh: !this.state.refresh});
+      this.setState({refresh: false});
       alert('thất bại');
     }
   };
@@ -115,6 +115,25 @@ export default class ScreenAllUser extends React.Component {
       <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
         No Data Found
       </Text>
+    );
+  };
+
+  Listfooter = () => {
+    return (
+      // Flat List Item
+      <View
+        style={{
+          flex: 1,
+          // backgroundColor: 'red',
+          height: 70,
+          width: '100%',
+          // justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text style={{fontSize: 15, alignItems: 'center', color: '#4F4F4F50'}}>
+          ----------------------------- End -----------------------------
+        </Text>
+      </View>
     );
   };
   search = (searchText) => {
@@ -171,6 +190,13 @@ export default class ScreenAllUser extends React.Component {
               this.setState({refresh: true}, this._GetAllUser);
             }}
             ListEmptyComponent={this.EmptyListMessage}
+            ListFooterComponent={this.Listfooter}
+            // ListFooterComponentStyle={{
+            //   backgroundColor: 'blue',
+            //   position: 'relative',
+            //   width: '100%',
+            //   bottom: 0,
+            // }}
           />
         </View>
       </View>

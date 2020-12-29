@@ -11,6 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
   Button,
+  TextInput,
 } from 'react-native';
 import FontSize from '../components/size';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
@@ -25,6 +26,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const avatar = require('../assets/images/avatar.png');
 const logout = require('../assets/images/logout.png');
+const addgroup = require('../assets/images/add-group.png');
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);
@@ -106,6 +108,14 @@ export default class ScreenCaiDat extends React.Component {
           <View style={styles.khung_CaiDat}>
             <TouchableOpacity
               style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'ScreenTaoNhom')}>
+              <Image source={addgroup} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Tạo Nhóm
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.st_button}
               onPress={() =>
                 Alert.alert(
                   'Thông Báo',
@@ -122,7 +132,7 @@ export default class ScreenCaiDat extends React.Component {
               }>
               <Image source={logout} style={styles.sizeimage}></Image>
               <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
-                Logout
+                Đăng Xuất
               </Text>
             </TouchableOpacity>
           </View>
@@ -146,10 +156,13 @@ const styles = StyleSheet.create({
   },
   khungchua: {
     flexDirection: 'row',
-    padding: 5,
+    padding: 10,
     alignItems: 'center',
     backgroundColor: '#E9EBEE',
     margin: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#4F4F4F50',
+    // padding: 10,
   },
   khung_CaiDat: {
     paddingHorizontal: 10,
@@ -159,9 +172,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    borderTopWidth: 1,
+    // borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderTopColor: '#4F4F4F50',
+    // borderTopColor: '#4F4F4F50',
     borderBottomColor: '#4F4F4F50',
     borderRadius: 10,
   },

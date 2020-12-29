@@ -28,6 +28,7 @@ import ScreenBaiDangNhom from '../screens/ScreenBaiDangNhom';
 import ScreenDetailBaiDang_Nhom from '../screens/ScreenDetailBaiDang_Nhom';
 import ScreenThanhVienNhom from '../screens/ScreenThanhVienNhom';
 import ScreenThemThanhVienNhom from '../screens/ScreenThemThanhVienNhom';
+import ScreenTaoNhom from '../screens/ScreenTaoNhom';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 
@@ -154,6 +155,7 @@ const HomeStackScreen = () => (
       name="ScreenThemThanhVienNhom"
       component={ScreenThemThanhVienNhom}
     />
+    <HomeStack.Screen name="ScreenTaoNhom" component={ScreenTaoNhom} />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

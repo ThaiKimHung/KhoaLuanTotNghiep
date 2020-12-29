@@ -24,7 +24,7 @@ import {name as appName} from './app.json';
 // import TinNhanh from './src/baidang/TinNhanh';
 
 // import DanhSachLike from './src/components/DanhSachLike';
-import Test from './src/screens/Test';
+import TestTAb from './src/screens/TestTAb';
 // import ModalLike from './src/modal/ModalLike';
 // // import EditKhenThuong from './src/edit/EditKhenThuong';
 
@@ -33,4 +33,4 @@ import Test from './src/screens/Test';
 // import Screen_EditBaiDang from './src/edit/Screen_EditBaiDang';
 // import ScreenAddThanhVienNhom from './src/screens/ScreenAddThanhVienNhom';
 
-AppRegistry.registerComponent(appName, () => Test);
+AppRegistry.registerComponent(appName, () => App);

@@ -19,7 +19,7 @@ const avatar = require('../assets/images/avatar.png');
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 // const congratulation = require('../assets/images/congratulations.png');
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 export default class NhomScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +29,7 @@ export default class NhomScreen extends React.Component {
       filteredData: [],
       dsNhom: [],
     };
+    ROOTGlobal.GetDsNhom = this._GetDSGroup;
   }
 
   _GetDSGroup = async () => {

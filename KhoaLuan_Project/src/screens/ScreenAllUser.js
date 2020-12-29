@@ -16,30 +16,9 @@ import {SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 const avatar = require('../assets/images/avatar.png');
+import {ROOTGlobal} from '../apis/dataGlobal';
 // const congratulation = require('../assets/images/congratulations.png');
-const Online = () => {
-  return (
-    <View
-      style={{
-        height: FontSize.scale(10),
-        width: FontSize.verticalScale(10),
-        backgroundColor: 'green',
-        borderRadius: 8,
-      }}></View>
-  );
-};
 
-const Offine = () => {
-  return (
-    <View
-      style={{
-        height: FontSize.scale(10),
-        width: FontSize.verticalScale(10),
-        backgroundColor: 'gray',
-        borderRadius: 8,
-      }}></View>
-  );
-};
 export default class ScreenAllUser extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +28,32 @@ export default class ScreenAllUser extends React.Component {
       searchText: '',
       filteredData: [],
     };
+    ROOTGlobal.GetDsUser = this._GetAllUser;
   }
+
+  Online = () => {
+    return (
+      <View
+        style={{
+          height: FontSize.scale(10),
+          width: FontSize.verticalScale(10),
+          backgroundColor: 'green',
+          borderRadius: 8,
+        }}></View>
+    );
+  };
+
+  Offine = () => {
+    return (
+      <View
+        style={{
+          height: FontSize.scale(10),
+          width: FontSize.verticalScale(10),
+          backgroundColor: 'gray',
+          borderRadius: 8,
+        }}></View>
+    );
+  };
   _GetAllUser = async () => {
     let res = await GetAllUser();
     console.log('ress all user', res);
@@ -100,7 +104,7 @@ export default class ScreenAllUser extends React.Component {
             paddingRight: 10,
           }}>
           <Text>{item.Username}</Text>
-          {item.TinhTrang === true ? <Online></Online> : <Offine></Offine>}
+          {item.TinhTrang === true ? this.Online() : this.Offine()}
         </View>
       </TouchableOpacity>
     );

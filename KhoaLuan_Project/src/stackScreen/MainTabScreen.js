@@ -19,133 +19,335 @@ import ScreenAllUser from '../screens/ScreenAllUser';
 import ScreenCaiDat from '../screens/ScreenCaiDat';
 // import ExploreScreen from './ExploreScreen';
 // import ProfileScreen from './ProfileScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
+import {useIsFocused} from '@react-navigation/native';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 const HomeStack = createStackNavigator();
 const DetailStack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = AnimatedTabBarNavigator();
 
 const home = require('../assets/images/home.png');
 const group = require('../assets/images/group.png');
 const install = require('../assets/images/installation-symbol.png');
 const thongtin = require('../assets/images/id-card.png');
 
-const MainTabScreen = () => (
-  <Tab.Navigator
-    // tabBar=
-    initialRouteName="Home"
-    activeColor="#fff"
-    tabBarOptions={{
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
-    }}>
-    <Tab.Screen
-      name="Home"
-      component={HomeStackScreen}
-      options={{
-        tabBarLabel: 'Trang Chủ',
-        tabBarColor: '#009387',
-        tabBarIcon: ({color}) => (
-          <Image
-            source={home}
-            style={{
-              height: FontSize.scale(26),
-              width: FontSize.verticalScale(26),
-            }}></Image>
-        ),
-        tabBarBadge: 3,
-      }}
-    />
-    <Tab.Screen
-      name="Nhom"
-      component={DetailsStackScreen}
-      options={{
-        tabBarLabel: 'Nhóm',
-        tabBarColor: '#1f65ff',
-        tabBarIcon: ({color}) => (
-          <Image
-            source={group}
-            style={{
-              height: FontSize.scale(26),
-              width: FontSize.verticalScale(26),
-            }}></Image>
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="DanhBa"
-      component={UserStackScreen}
-      options={{
-        tabBarLabel: 'Danh bạ',
-        tabBarColor: '#1f65ff',
-        tabBarIcon: ({color}) => (
-          <Image
-            source={thongtin}
-            style={{
-              height: FontSize.scale(26),
-              width: FontSize.verticalScale(26),
-            }}></Image>
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="CaiDat"
-      component={CaiDatStackScreen}
-      options={{
-        tabBarLabel: 'Cài Đặt',
-        tabBarColor: '#1f65ff',
-        tabBarIcon: ({color}) => (
-          <Image
+export default class MainTabScreen extends React.Component {
+  HomeStackScreen = () => {
+    // const isFocused = useIsFocused();
+    return (
+      <HomeStack.Navigator headerMode="none">
+        <HomeStack.Screen
+          name="HomeScreen"
+          component={HomeScreen}></HomeStack.Screen>
+      </HomeStack.Navigator>
+    );
+  };
+  DetailsStackScreen = () => {
+    return (
+      <DetailStack.Navigator headerMode="none">
+        <DetailStack.Screen
+          name="NhomScreen"
+          component={NhomScreen}></DetailStack.Screen>
+      </DetailStack.Navigator>
+    );
+  };
+
+  UserStackScreen = () => {
+    return (
+      <HomeStack.Navigator headerMode="none">
+        <HomeStack.Screen
+          name="ScreenAllUser"
+          component={ScreenAllUser}></HomeStack.Screen>
+      </HomeStack.Navigator>
+    );
+  };
+
+  CaiDatStackScreen = () => {
+    return (
+      <HomeStack.Navigator headerMode="none">
+        <HomeStack.Screen
+          name="ScreenCaiDat"
+          component={ScreenCaiDat}></HomeStack.Screen>
+      </HomeStack.Navigator>
+    );
+  };
+
+  render() {
+    return (
+      <Tab.Navigator
+        // tabBar=
+        initialRouteName="Home"
+        // activeColor="#fff"
+        // floating="true"
+        tabBarOptions={{
+          activeTintColor: '#2F7C6E',
+          inactiveTintColor: '#222222',
+          // tab,
+        }}>
+        <Tab.Screen
+          name="Home"
+          component={this.HomeStackScreen}
+          listeners={{
+            tabPress: () => {
+              // Prevent default action
+              ROOTGlobal.GetDsAllBaiDang();
+            },
+          }}
+          options={{
+            tabBarLabel: 'Trang chủ',
+            floating: true,
+
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon
+                name="home"
+                size={size ? size : 24}
+                color={focused ? color : '#222222'}
+                focused={focused}
+                color={color}
+              />
+              // <Image
+              //   source={home}
+              //   style={{
+              //     height: size ? size : 24,
+              //     width: size ? size : 24,
+              //     color: focused ? color : '#222222',
+              //   }}></Image>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Nhom"
+          component={this.DetailsStackScreen}
+          listeners={{
+            tabPress: () => {
+              // Prevent default action
+              ROOTGlobal.GetDsNhom();
+            },
+          }}
+          options={{
+            tabBarLabel: 'Nhóm',
+
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon
+                name="users"
+                size={size ? size : 24}
+                color={focused ? color : '#222222'}
+                focused={focused}
+                color={color}
+              />
+            ),
+          }}
+          // <Image
+          //       source={group}
+          //       style={{
+          //         height: FontSize.scale(26),
+          //         width: FontSize.verticalScale(26),
+          //       }}></Image>
+        />
+        <Tab.Screen
+          name="DanhBa"
+          component={this.UserStackScreen}
+          listeners={{
+            tabPress: () => {
+              // Prevent default action
+              ROOTGlobal.GetDsUser();
+            },
+          }}
+          options={{
+            tabBarLabel: 'Danh bạ',
+
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon
+                name="address-card"
+                size={size ? size : 24}
+                color={focused ? color : '#222222'}
+                focused={focused}
+                color={color}
+              />
+            ),
+          }}
+          // <Image
+          //     source={thongtin}
+          //     style={{
+          //       height: FontSize.scale(26),
+          //       width: FontSize.verticalScale(26),
+          //     }}></Image>
+        />
+        <Tab.Screen
+          name="CaiDat"
+          component={this.CaiDatStackScreen}
+          options={{
+            tabBarLabel: 'Cài đặt',
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon
+                name="cogs"
+                size={size ? size : 24}
+                color={focused ? color : '#222222'}
+                focused={focused}
+                color={color}
+              />
+            ),
+          }}
+        />
+        {/* <Image
             source={install}
             style={{
               height: FontSize.scale(26),
               width: FontSize.verticalScale(26),
-            }}></Image>
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+            }}></Image> */}
+      </Tab.Navigator>
+    );
+  }
+}
 
-export default MainTabScreen;
+// const MainTabScreen = () => (
+//   <Tab.Navigator
+//     // tabBar=
+//     initialRouteName="Home"
+//     // activeColor="#fff"
+//     // floating="true"
+//     tabBarOptions={{
+//       activeTintColor: '#2F7C6E',
+//       inactiveTintColor: '#222222',
+//       // tab,
+//     }}>
+//     <Tab.Screen
+//       name="Home"
+//       component={HomeStackScreen}
+//       options={{
+//         tabBarLabel: 'Trang chủ',
+//         floating: true,
 
-const HomeStackScreen = ({navigation}) => {
-  return (
-    <HomeStack.Navigator headerMode="none">
-      <HomeStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}></HomeStack.Screen>
-    </HomeStack.Navigator>
-  );
-};
+//         tabBarIcon: ({focused, color, size}) => (
+//           <Icon
+//             name="home"
+//             size={size ? size : 24}
+//             color={focused ? color : '#222222'}
+//             focused={focused}
+//             color={color}
+//           />
+//           // <Image
+//           //   source={home}
+//           //   style={{
+//           //     height: size ? size : 24,
+//           //     width: size ? size : 24,
+//           //     color: focused ? color : '#222222',
+//           //   }}></Image>
+//         ),
+//       }}
+//     />
+//     <Tab.Screen
+//       name="Nhom"
+//       component={DetailsStackScreen}
+//       options={{
+//         tabBarLabel: 'Nhóm',
 
-const DetailsStackScreen = ({navigation}) => {
-  return (
-    <DetailStack.Navigator headerMode="none">
-      <DetailStack.Screen
-        name="NhomScreen"
-        component={NhomScreen}></DetailStack.Screen>
-    </DetailStack.Navigator>
-  );
-};
+//         tabBarIcon: ({focused, color, size}) => (
+//           <Icon
+//             name="users"
+//             size={size ? size : 24}
+//             color={focused ? color : '#222222'}
+//             focused={focused}
+//             color={color}
+//           />
+//         ),
+//       }}
+//       // <Image
+//       //       source={group}
+//       //       style={{
+//       //         height: FontSize.scale(26),
+//       //         width: FontSize.verticalScale(26),
+//       //       }}></Image>
+//     />
+//     <Tab.Screen
+//       name="DanhBa"
+//       component={UserStackScreen}
+//       options={{
+//         tabBarLabel: 'Danh bạ',
 
-const UserStackScreen = ({navigation}) => {
-  return (
-    <HomeStack.Navigator headerMode="none">
-      <HomeStack.Screen
-        name="ScreenAllUser"
-        component={ScreenAllUser}></HomeStack.Screen>
-    </HomeStack.Navigator>
-  );
-};
+//         tabBarIcon: ({focused, color, size}) => (
+//           <Icon
+//             name="address-card"
+//             size={size ? size : 24}
+//             color={focused ? color : '#222222'}
+//             focused={focused}
+//             color={color}
+//           />
+//         ),
+//       }}
+//       // <Image
+//       //     source={thongtin}
+//       //     style={{
+//       //       height: FontSize.scale(26),
+//       //       width: FontSize.verticalScale(26),
+//       //     }}></Image>
+//     />
+//     <Tab.Screen
+//       name="CaiDat"
+//       component={CaiDatStackScreen}
+//       options={{
+//         tabBarLabel: 'Cài đặt',
+//         tabBarIcon: ({focused, color, size}) => (
+//           <Icon
+//             name="cogs"
+//             size={size ? size : 24}
+//             color={focused ? color : '#222222'}
+//             focused={focused}
+//             color={color}
+//           />
+//         ),
+//       }}
+//     />
+//     {/* <Image
+//             source={install}
+//             style={{
+//               height: FontSize.scale(26),
+//               width: FontSize.verticalScale(26),
+//             }}></Image> */}
+//   </Tab.Navigator>
+// );
 
-const CaiDatStackScreen = ({navigation}) => {
-  return (
-    <HomeStack.Navigator headerMode="none">
-      <HomeStack.Screen
-        name="ScreenCaiDat"
-        component={ScreenCaiDat}></HomeStack.Screen>
-    </HomeStack.Navigator>
-  );
-};
+// export default MainTabScreen;
+
+// const HomeStackScreen = ({navigation}) => {
+//   return (
+//     <HomeStack.Navigator headerMode="none">
+//       <HomeStack.Screen name="HomeScreen" component={HomeScreen}>
+//         {/* {isFocused ? ROOTGlobal.GetDsAllBaiDang() : null} */}
+//       </HomeStack.Screen>
+//     </HomeStack.Navigator>
+//   );
+// };
+
+// const DetailsStackScreen = ({navigation}) => {
+//   return (
+//     <DetailStack.Navigator headerMode="none">
+//       <DetailStack.Screen
+//         name="NhomScreen"
+//         component={NhomScreen}></DetailStack.Screen>
+//     </DetailStack.Navigator>
+//   );
+// };
+
+// const UserStackScreen = ({navigation}) => {
+//   return (
+//     <HomeStack.Navigator headerMode="none">
+//       <HomeStack.Screen
+//         name="ScreenAllUser"
+//         component={ScreenAllUser}></HomeStack.Screen>
+//     </HomeStack.Navigator>
+//   );
+// };
+
+// const CaiDatStackScreen = ({navigation}) => {
+//   return (
+//     <HomeStack.Navigator headerMode="none">
+//       <HomeStack.Screen
+//         name="ScreenCaiDat"
+//         component={ScreenCaiDat}></HomeStack.Screen>
+//     </HomeStack.Navigator>
+//   );
+// };

@@ -15,6 +15,8 @@ const ROOTGlobal = {
   GetChiTietBaiDang: () => {},
   GanDataChitiet: () => {},
   GetDsAllBaiDang_Nhom: () => {},
+  GetDsNhom: () => {},
+  GetDsUser: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

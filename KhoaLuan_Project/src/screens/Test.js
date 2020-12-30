@@ -20,13 +20,7 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
-import {
-  GetDSKhenThuong,
-  AddBaiDang_KhenThuong,
-  AddBaiDang_KhenThuong_Nhom,
-  GetDSGroup,
-  GetChiTietBaiDang,
-} from '../apis/apiUser';
+import {TestFileBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -41,29 +35,56 @@ export default class Test extends Component {
     this.state = {
       image: null,
       images: null,
+      Image: '',
     };
   }
 
   open = () => {
-    // ImagePicker.openPicker({
-    //   width: 300,
-    //   height: 400,
-    //   cropping: true,
-    // }).then((image) => {
-    //   console.log(image);
-    //   this.setState({
-    //     Image: image.path,
-    //   });
-    //   console.log('staet =====', this.state.Image);
-    // });
     ImagePicker.openPicker({
-      multiple: true,
-    }).then((images) => {
-      console.log(images);
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    }).then((image) => {
+      console.log('image--------', image);
       this.setState({
-        Image: image.path,
+        Image: image,
       });
+      console.log('state image =====', this.state.Image);
+      this.hamTest();
     });
+  };
+
+  _TestFileBaiDang = async () => {
+    // const id_loaibaidang = this.props.route.params.id_loaibaidang;
+    let catchuoi = (await this.state.Image.path.split('/').slice(-1)) + '';
+    let strBody = JSON.stringify({
+      image: this.state.Image.data,
+      name: this.state.Image.path.split('/').slice(-1) + '',
+    });
+    console.log('strBody file ảnh---------', strBody);
+    let res = await TestFileBaiDang(strBody);
+    console.log('res file ảnh-----', res);
+    // if (res.status == 1) {
+    //   let thanhcong = res.status;
+    //   Utils.goscreen(this, 'Nhom');
+    //   showMessage({
+    //     message: 'Thông báo',
+    //     description: 'Tạo nhóm thành công',
+    //     type: 'success',
+    //     duration: 1500,
+    //     icon: 'success',
+    //   });
+    //   await ROOTGlobal.GetDsNhom();
+    // } else {
+    //   showMessage({
+    //     message: 'Thông báo',
+    //     description: 'Đăng bài thất bại',
+    //     type: 'danger',
+    //     duration: 1500,
+    //     icon: 'danger',
+    //   });
+    // }
   };
 
   cleanupImages() {
@@ -78,30 +99,6 @@ export default class Test extends Component {
       .catch((e) => {
         alert(e);
       });
-  }
-
-  pickMultiple() {
-    ImagePicker.openPicker({
-      multiple: true,
-      waitAnimationEnd: false,
-      includeExif: true,
-      forceJpg: true,
-    })
-      .then((images) => {
-        this.setState({
-          image: null,
-          images: images.map((i) => {
-            console.log('received image', i);
-            return {
-              uri: i.path,
-              width: i.width,
-              height: i.height,
-              mime: i.mime,
-            };
-          }),
-        });
-      })
-      .catch((e) => alert(e));
   }
 
   scaledHeight(oldW, oldH, newW) {
@@ -171,6 +168,18 @@ export default class Test extends Component {
       .catch((e) => alert(e));
   };
 
+  hamTest = async () => {
+    let catchuoi = await this.state.Image.path.split('/').slice(-1);
+    await console.log('tesst cắt chuỗi:===========', catchuoi);
+    // await console.log(
+    //   'tesst i:===========',
+    //   await this.state.Image.data.split(),
+    // );
+  };
+  componentDidMount = async () => {
+    // await this.hamTest();
+  };
+
   render() {
     return (
       <View style={{flex: 1}}>
@@ -181,13 +190,17 @@ export default class Test extends Component {
         </TouchableOpacity>
         {this.state.Image ? (
           <View style={{flex: 1}}>
-            <Text>hello</Text>
             <Image
-              source={{uri: this.state.Image}}
-              style={{width: 400, height: 40}}
+              source={{uri: this.state.Image.path}}
+              style={{width: 400, height: 400}}
             />
           </View>
         ) : null}
+        <TouchableOpacity
+          style={{height: 100, width: 200, backgroundColor: 'green'}}
+          onPress={() => this._TestFileBaiDang()}>
+          <Text>Up len test nè</Text>
+        </TouchableOpacity>
         {/* 
         <View style={{flexDirection: 'column'}}>
           <TouchableOpacity

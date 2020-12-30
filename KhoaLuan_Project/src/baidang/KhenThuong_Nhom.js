@@ -27,6 +27,7 @@ import {
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,
   GetDSGroup,
+  AddThongBao,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -81,6 +82,17 @@ export default class KhenThuong extends React.Component {
     });
   }
 
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã thêm 1 bài đăng khen thưởng',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    console.log('res add thông báo', res);
+  };
+
   ChuyenData = async (item) => {
     Utils.goscreen(this, 'KhenThuong_Nhom');
     this.setState({
@@ -119,7 +131,8 @@ export default class KhenThuong extends React.Component {
       this.setState({
         DataChuyenVe: '',
       });
-      ROOTGlobal.GetDsAllBaiDang_Nhom();
+      await this._AddThongBao();
+      await ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',

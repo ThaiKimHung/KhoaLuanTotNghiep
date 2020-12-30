@@ -88,6 +88,16 @@ export default class KhenThuong extends React.Component {
       noidung: text,
     });
   }
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã thêm 1 bài đăng khen thưởng',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    console.log('res add thông báo', res);
+  };
 
   ChuyenData = async (item) => {
     Utils.goscreen(this, 'KhenThuong');
@@ -158,7 +168,8 @@ export default class KhenThuong extends React.Component {
         userSelected: '',
         DataChuyenVe: {},
       });
-      ROOTGlobal.GetDsAllBaiDang();
+      await this._AddThongBao();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -172,11 +183,6 @@ export default class KhenThuong extends React.Component {
 
   DangBaiDang_KhenThuong_Group = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
-
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.DataChuyenVe.Username,
@@ -206,7 +212,8 @@ export default class KhenThuong extends React.Component {
         userSelected: '',
         DataChuyenVe: {},
       });
-      ROOTGlobal.GetDsAllBaiDang();
+      await this._AddThongBao();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -426,7 +433,9 @@ export default class KhenThuong extends React.Component {
           <TouchableOpacity
             style={styles.thanh_search}
             onPress={() => {
-              Utils.goscreen(this, 'SearchUser', {chuyenData: this.ChuyenData});
+              Utils.goscreen(this, 'SearchUser', {
+                chuyenData: this.ChuyenData,
+              });
             }}>
             <Image source={search} style={styles.icon}></Image>
             {this.state.DataChuyenVe ? (

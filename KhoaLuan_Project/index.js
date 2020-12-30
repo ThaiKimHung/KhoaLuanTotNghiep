@@ -33,4 +33,4 @@ import Test from './src/screens/Test';
 // import Screen_EditBaiDang from './src/edit/Screen_EditBaiDang';
 // import ScreenAddThanhVienNhom from './src/screens/ScreenAddThanhVienNhom';
 
-AppRegistry.registerComponent(appName, () => Test);
+AppRegistry.registerComponent(appName, () => App);

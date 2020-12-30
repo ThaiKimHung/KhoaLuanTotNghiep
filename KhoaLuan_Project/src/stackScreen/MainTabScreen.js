@@ -82,9 +82,11 @@ export default class MainTabScreen extends React.Component {
         initialRouteName="Home"
         // activeColor="#fff"
         // floating="true"
+        // ta="#FF0000"
         tabBarOptions={{
-          activeTintColor: '#2F7C6E',
+          activeTintColor: '#007DE3',
           inactiveTintColor: '#222222',
+          activeBackgroundColor: '#007DE3',
           // tab,
         }}>
         <Tab.Screen

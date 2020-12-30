@@ -72,7 +72,7 @@ async function GetDSLike() {
   let res = await Utils.get_api(apiUser + `getDSLike`);
   return res;
 }
-//192.168.3.43/api/KhoaLuan/Baidang_like?id=1&type=1&id_user=1
+
 async function AddLike(id = '', type = '', id_user = '') {
   let res = await Utils.get_api(
     apiUser + `Baidang_like?id=${id}&type=${type}&id_user=${id_user}`,
@@ -247,7 +247,17 @@ async function DeleteUserGroup(idgroup, iduser) {
   return res;
 }
 
-// Update_quyen_Memmber?id_user=2
+//test ảnh đây nè=========================================
+async function TestFileBaiDang(strbody) {
+  let res = await Utils.post_api(apiUser + `File_baidang`, strbody);
+  return res;
+}
+
+async function AddThongBao(strbody) {
+  let res = await Utils.post_api(apiUser + `addThongBao`, strbody);
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -286,4 +296,6 @@ export {
   addUserGroup,
   GetDSAllUser_In_Group,
   DeleteUserGroup,
+  TestFileBaiDang,
+  AddThongBao,
 };

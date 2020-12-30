@@ -23,7 +23,12 @@ import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import {ROOTGlobal} from '../apis/dataGlobal';
 
-import {PostBaiDang, PostBaiDang_Nhom, GetDSGroup} from '../apis/apiUser';
+import {
+  PostBaiDang,
+  PostBaiDang_Nhom,
+  GetDSGroup,
+  AddThongBao,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
@@ -74,6 +79,17 @@ export default class ChaoMungTV extends React.Component {
     // console.log('user selected', this.state.userSelected);
   };
 
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã thêm 1 bài đăng chào mừng thành viên mới',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    console.log('res add thông báo', res);
+  };
+
   _PostBaiDang = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
 
@@ -93,8 +109,6 @@ export default class ChaoMungTV extends React.Component {
     console.log('strBody tin nhanh', strBody);
     let res = await PostBaiDang(strBody);
     if (res.status == 1) {
-      let thanhcong = res.status;
-      // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
       Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
@@ -103,6 +117,7 @@ export default class ChaoMungTV extends React.Component {
         duration: 1500,
         icon: 'success',
       });
+      await this._AddThongBao();
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -143,6 +158,7 @@ export default class ChaoMungTV extends React.Component {
         duration: 1500,
         icon: 'success',
       });
+      await this._AddThongBao();
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({

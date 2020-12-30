@@ -22,7 +22,12 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 
-import {PostBaiDang, PostBaiDang_Nhom, GetDSGroup} from '../apis/apiUser';
+import {
+  PostBaiDang,
+  PostBaiDang_Nhom,
+  GetDSGroup,
+  AddThongBao,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -34,8 +39,6 @@ export default class TinNhanh extends React.Component {
     super(props);
     this.state = {
       haveValue_TieuDe: '',
-      // haveValue_Noidung: '',
-      // DataNhom: {},
       value: null,
       dsNhom: [],
       mangtam: [],
@@ -54,15 +57,11 @@ export default class TinNhanh extends React.Component {
       },
       () => this._render_Dang(),
     );
-    // alert(text);
   }
 
   _PostBaiDang = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
+
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
@@ -91,7 +90,8 @@ export default class TinNhanh extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      ROOTGlobal.GetDsAllBaiDang();
+      await this._AddThongBao();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -105,10 +105,6 @@ export default class TinNhanh extends React.Component {
 
   _PostBaiDang_Nhom = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
@@ -136,7 +132,8 @@ export default class TinNhanh extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      ROOTGlobal.GetDsAllBaiDang();
+      await this._AddThongBao();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -207,6 +204,17 @@ export default class TinNhanh extends React.Component {
           }}></View>
       </View>
     );
+  };
+
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã thêm 1 bài đăng tin nhanh',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    console.log('res add thông báo', res);
   };
 
   _render_Dang = () => {

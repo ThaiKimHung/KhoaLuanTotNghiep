@@ -177,7 +177,9 @@ export default class BaiDangNhomComponent extends React.Component {
                   resizeMode="cover"
                   source={user.avatar ? {uri: user.avatar} : avatar}></Image>
               </View>
-              <Text>{item.title}</Text>
+              <Text style={{fontSize: FontSize.reSize(30), fontWeight: 'bold'}}>
+                {item.title}
+              </Text>
               <Text style={{fontSize: FontSize.reSize(20)}}>
                 {item.NoiDung}
               </Text>

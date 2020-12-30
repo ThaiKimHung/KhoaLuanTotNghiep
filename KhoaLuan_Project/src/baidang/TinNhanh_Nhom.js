@@ -22,7 +22,12 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 
-import {PostBaiDang, PostBaiDang_Nhom, GetDSGroup} from '../apis/apiUser';
+import {
+  PostBaiDang,
+  PostBaiDang_Nhom,
+  GetDSGroup,
+  AddThongBao,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -47,6 +52,16 @@ export default class TinNhanh extends React.Component {
     );
   }
 
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã thêm 1 bài đăng tin nhanh',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    console.log('res add thông báo', res);
+  };
   _PostBaiDang_Nhom = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
     let strBody = JSON.stringify({
@@ -66,8 +81,6 @@ export default class TinNhanh extends React.Component {
     let res = await PostBaiDang_Nhom(strBody);
     console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
-      let thanhcong = res.status;
-      // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
       Utils.goscreen(this, 'ScreenBaiDangNhom');
       showMessage({
         message: 'Thông báo',
@@ -76,7 +89,8 @@ export default class TinNhanh extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      ROOTGlobal.GetDsAllBaiDang_Nhom();
+      await this._AddThongBao();
+      await ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',

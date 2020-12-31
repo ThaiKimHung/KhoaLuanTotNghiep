@@ -30,7 +30,6 @@ import {
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
-import DropDownPicker from 'react-native-custom-dropdown';
 import {ROOTGlobal} from '../apis/dataGlobal';
 
 const goback = require('../assets/images/go-back-left-arrow.png');

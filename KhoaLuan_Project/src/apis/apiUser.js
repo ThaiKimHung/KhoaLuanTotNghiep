@@ -28,6 +28,26 @@ async function GetAllUser() {
   return res;
 }
 
+async function GetUserProfile(iduser) {
+  let res = await Utils.get_api(apiUser + `GetUserProfile?id_user=${iduser}`);
+  return res;
+}
+
+async function UpdateUserProfile_User(iduser, idnv, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `UpdateUserProfile_User?id_user=${iduser}&id_nv=${idnv}`,
+    strbody,
+  );
+  return res;
+}
+async function UpdateUserProfile_NV(iduser, idnv, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `UpdateUserProfile_NV?id_user=${iduser}&id_nv=${idnv}`,
+    strbody,
+  );
+  return res;
+}
+
 async function PostTinhTrang(strbody) {
   let res = await Utils.post_api(apiUser + `UpdateUserName`, strbody);
   return res;
@@ -252,6 +272,13 @@ async function TestFileBaiDang(strbody) {
   let res = await Utils.post_api(apiUser + `File_baidang`, strbody);
   return res;
 }
+async function AvatarUser(iduser, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `AvatarUser?id_user=${iduser}`,
+    strbody,
+  );
+  return res;
+}
 
 async function AddThongBao(strbody) {
   let res = await Utils.post_api(apiUser + `addThongBao`, strbody);
@@ -263,6 +290,9 @@ export {
   Logout,
   GetLoaiBaiDang,
   GetAllUser,
+  GetUserProfile,
+  UpdateUserProfile_User,
+  UpdateUserProfile_NV,
   PostTinhTrang,
   GetDSKhenThuong,
   GetDSBaiDang,
@@ -297,5 +327,6 @@ export {
   GetDSAllUser_In_Group,
   DeleteUserGroup,
   TestFileBaiDang,
+  AvatarUser,
   AddThongBao,
 };

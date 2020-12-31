@@ -29,6 +29,7 @@ import ScreenDetailBaiDang_Nhom from '../screens/ScreenDetailBaiDang_Nhom';
 import ScreenThanhVienNhom from '../screens/ScreenThanhVienNhom';
 import ScreenThemThanhVienNhom from '../screens/ScreenThemThanhVienNhom';
 import ScreenTaoNhom from '../screens/ScreenTaoNhom';
+import ScreenThongTinCaNhan from '../screens/ScreenThongTinCaNhan';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 
@@ -64,6 +65,7 @@ import Edit_KhenThuong_Nhom from '../edit/Edit_KhenThuong_Nhom';
 import Edit_ChaoMungTV_Nhom from '../edit/Edit_ChaoMungTV_Nhom';
 import Edit_KhenThuong_Detail_Nhom from '../edit/Edit_KhenThuong_Detail_Nhom';
 import Edit_ChaoMungTV_Detail_Nhom from '../edit/Edit_ChaoMungTV_Detail_Nhom';
+import Edit_TrangThongTinCaNhan from '../edit/Edit_TrangThongTinCaNhan';
 
 import Test from '../screens/Test';
 // import
@@ -116,6 +118,10 @@ const HomeStackScreen = () => (
       name="Edit_ChaoMungTV_Detail"
       component={Edit_ChaoMungTV_Detail}
     />
+    <HomeStack.Screen
+      name="Edit_TrangThongTinCaNhan"
+      component={Edit_TrangThongTinCaNhan}
+    />
     <HomeStack.Screen name="ScreenBaiDangNhom" component={ScreenBaiDangNhom} />
     <HomeStack.Screen
       name="ScreenDetailBaiDang_Nhom"
@@ -156,6 +162,10 @@ const HomeStackScreen = () => (
       component={ScreenThemThanhVienNhom}
     />
     <HomeStack.Screen name="ScreenTaoNhom" component={ScreenTaoNhom} />
+    <HomeStack.Screen
+      name="ScreenThongTinCaNhan"
+      component={ScreenThongTinCaNhan}
+    />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

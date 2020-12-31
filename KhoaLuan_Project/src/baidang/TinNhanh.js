@@ -16,7 +16,6 @@ import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import DropDownPicker from 'react-native-custom-dropdown';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -157,16 +156,6 @@ export default class TinNhanh extends React.Component {
     }
   };
 
-  LaymangTam = async () => {
-    let temp = this.state.dsNhom.map((e) => {
-      var ritem = {};
-      ritem['value'] = e.ID_group + '';
-      ritem['label'] = e.Ten_Group;
-      return ritem;
-    });
-    await this.setState({mangtam: temp});
-  };
-
   _renderActive = () => {
     this.setState({isActive: !this.state.isActive});
   };
@@ -253,7 +242,6 @@ export default class TinNhanh extends React.Component {
 
   componentDidMount = async () => {
     await this._GetDSGroup();
-    await this.LaymangTam();
   };
 
   render() {

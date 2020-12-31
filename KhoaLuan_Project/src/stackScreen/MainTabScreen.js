@@ -80,14 +80,11 @@ export default class MainTabScreen extends React.Component {
       <Tab.Navigator
         // tabBar=
         initialRouteName="Home"
-        // activeColor="#fff"
-        // floating="true"
-        // ta="#FF0000"
         tabBarOptions={{
-          activeTintColor: '#007DE3',
+          activeTintColor: '#FFFFFF',
           inactiveTintColor: '#222222',
           activeBackgroundColor: '#007DE3',
-          // tab,
+          // tabStyle: {tabBarBackground: 'orange'},
         }}>
         <Tab.Screen
           name="Home"
@@ -181,6 +178,12 @@ export default class MainTabScreen extends React.Component {
         <Tab.Screen
           name="CaiDat"
           component={this.CaiDatStackScreen}
+          listeners={{
+            tabPress: () => {
+              // Prevent default action
+              ROOTGlobal.GetProfileUser();
+            },
+          }}
           options={{
             tabBarLabel: 'Cài đặt',
             tabBarIcon: ({focused, color, size}) => (
@@ -204,152 +207,3 @@ export default class MainTabScreen extends React.Component {
     );
   }
 }
-
-// const MainTabScreen = () => (
-//   <Tab.Navigator
-//     // tabBar=
-//     initialRouteName="Home"
-//     // activeColor="#fff"
-//     // floating="true"
-//     tabBarOptions={{
-//       activeTintColor: '#2F7C6E',
-//       inactiveTintColor: '#222222',
-//       // tab,
-//     }}>
-//     <Tab.Screen
-//       name="Home"
-//       component={HomeStackScreen}
-//       options={{
-//         tabBarLabel: 'Trang chủ',
-//         floating: true,
-
-//         tabBarIcon: ({focused, color, size}) => (
-//           <Icon
-//             name="home"
-//             size={size ? size : 24}
-//             color={focused ? color : '#222222'}
-//             focused={focused}
-//             color={color}
-//           />
-//           // <Image
-//           //   source={home}
-//           //   style={{
-//           //     height: size ? size : 24,
-//           //     width: size ? size : 24,
-//           //     color: focused ? color : '#222222',
-//           //   }}></Image>
-//         ),
-//       }}
-//     />
-//     <Tab.Screen
-//       name="Nhom"
-//       component={DetailsStackScreen}
-//       options={{
-//         tabBarLabel: 'Nhóm',
-
-//         tabBarIcon: ({focused, color, size}) => (
-//           <Icon
-//             name="users"
-//             size={size ? size : 24}
-//             color={focused ? color : '#222222'}
-//             focused={focused}
-//             color={color}
-//           />
-//         ),
-//       }}
-//       // <Image
-//       //       source={group}
-//       //       style={{
-//       //         height: FontSize.scale(26),
-//       //         width: FontSize.verticalScale(26),
-//       //       }}></Image>
-//     />
-//     <Tab.Screen
-//       name="DanhBa"
-//       component={UserStackScreen}
-//       options={{
-//         tabBarLabel: 'Danh bạ',
-
-//         tabBarIcon: ({focused, color, size}) => (
-//           <Icon
-//             name="address-card"
-//             size={size ? size : 24}
-//             color={focused ? color : '#222222'}
-//             focused={focused}
-//             color={color}
-//           />
-//         ),
-//       }}
-//       // <Image
-//       //     source={thongtin}
-//       //     style={{
-//       //       height: FontSize.scale(26),
-//       //       width: FontSize.verticalScale(26),
-//       //     }}></Image>
-//     />
-//     <Tab.Screen
-//       name="CaiDat"
-//       component={CaiDatStackScreen}
-//       options={{
-//         tabBarLabel: 'Cài đặt',
-//         tabBarIcon: ({focused, color, size}) => (
-//           <Icon
-//             name="cogs"
-//             size={size ? size : 24}
-//             color={focused ? color : '#222222'}
-//             focused={focused}
-//             color={color}
-//           />
-//         ),
-//       }}
-//     />
-//     {/* <Image
-//             source={install}
-//             style={{
-//               height: FontSize.scale(26),
-//               width: FontSize.verticalScale(26),
-//             }}></Image> */}
-//   </Tab.Navigator>
-// );
-
-// export default MainTabScreen;
-
-// const HomeStackScreen = ({navigation}) => {
-//   return (
-//     <HomeStack.Navigator headerMode="none">
-//       <HomeStack.Screen name="HomeScreen" component={HomeScreen}>
-//         {/* {isFocused ? ROOTGlobal.GetDsAllBaiDang() : null} */}
-//       </HomeStack.Screen>
-//     </HomeStack.Navigator>
-//   );
-// };
-
-// const DetailsStackScreen = ({navigation}) => {
-//   return (
-//     <DetailStack.Navigator headerMode="none">
-//       <DetailStack.Screen
-//         name="NhomScreen"
-//         component={NhomScreen}></DetailStack.Screen>
-//     </DetailStack.Navigator>
-//   );
-// };
-
-// const UserStackScreen = ({navigation}) => {
-//   return (
-//     <HomeStack.Navigator headerMode="none">
-//       <HomeStack.Screen
-//         name="ScreenAllUser"
-//         component={ScreenAllUser}></HomeStack.Screen>
-//     </HomeStack.Navigator>
-//   );
-// };
-
-// const CaiDatStackScreen = ({navigation}) => {
-//   return (
-//     <HomeStack.Navigator headerMode="none">
-//       <HomeStack.Screen
-//         name="ScreenCaiDat"
-//         component={ScreenCaiDat}></HomeStack.Screen>
-//     </HomeStack.Navigator>
-//   );
-// };

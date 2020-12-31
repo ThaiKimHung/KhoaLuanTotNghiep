@@ -65,26 +65,6 @@ export default class Test extends Component {
     console.log('strBody file ảnh---------', strBody);
     let res = await TestFileBaiDang(strBody);
     console.log('res file ảnh-----', res);
-    // if (res.status == 1) {
-    //   let thanhcong = res.status;
-    //   Utils.goscreen(this, 'Nhom');
-    //   showMessage({
-    //     message: 'Thông báo',
-    //     description: 'Tạo nhóm thành công',
-    //     type: 'success',
-    //     duration: 1500,
-    //     icon: 'success',
-    //   });
-    //   await ROOTGlobal.GetDsNhom();
-    // } else {
-    //   showMessage({
-    //     message: 'Thông báo',
-    //     description: 'Đăng bài thất bại',
-    //     type: 'danger',
-    //     duration: 1500,
-    //     icon: 'danger',
-    //   });
-    // }
   };
 
   cleanupImages() {
@@ -171,10 +151,6 @@ export default class Test extends Component {
   hamTest = async () => {
     let catchuoi = await this.state.Image.path.split('/').slice(-1);
     await console.log('tesst cắt chuỗi:===========', catchuoi);
-    // await console.log(
-    //   'tesst i:===========',
-    //   await this.state.Image.data.split(),
-    // );
   };
   componentDidMount = async () => {
     // await this.hamTest();

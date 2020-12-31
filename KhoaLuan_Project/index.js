@@ -24,7 +24,7 @@ import {name as appName} from './app.json';
 // import TinNhanh from './src/baidang/TinNhanh';
 
 // import DanhSachLike from './src/components/DanhSachLike';
-import Test from './src/screens/Test';
+import Test2 from './src/screens/Test2';
 // import ModalLike from './src/modal/ModalLike';
 // // import EditKhenThuong from './src/edit/EditKhenThuong';
 

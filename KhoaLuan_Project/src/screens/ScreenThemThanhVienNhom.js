@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import FontSize from '../components/size';
 import {Avatar, SearchBar} from 'react-native-elements';
-import CheckBox from '@react-native-community/checkbox';
+
 import {GetDSUser_filter_InGroup, addUserGroup} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import {showMessage, hideMessage} from 'react-native-flash-message';

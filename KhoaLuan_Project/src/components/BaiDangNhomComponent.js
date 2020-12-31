@@ -121,6 +121,7 @@ export default class BaiDangNhomComponent extends React.Component {
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let loaibaidang = item.Id_LoaiBaiDang;
     let khenthuong = item.KhenThuong ? item.KhenThuong[0] : {};
+
     switch (loaibaidang) {
       case 2:
         return (
@@ -210,6 +211,18 @@ export default class BaiDangNhomComponent extends React.Component {
           <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
             <Text>{item.title}</Text>
             <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
           </TouchableOpacity>
         );
     }

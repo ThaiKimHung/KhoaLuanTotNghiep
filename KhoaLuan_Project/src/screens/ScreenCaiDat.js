@@ -16,9 +16,10 @@ import {
 import FontSize from '../components/size';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 
-import {GetAllUser} from '../apis/apiUser';
+import {GetUserProfile} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 
+import {ROOTGlobal} from '../apis/dataGlobal';
 import {Login, PostTinhTrang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -34,17 +35,33 @@ export default class ScreenCaiDat extends React.Component {
       avatar: '',
       name: '',
       id: '',
+      thongtin: '',
     };
+    ROOTGlobal.GetProfileUser = this._GetUserProfile;
   }
 
-  async _getThongTin() {
-    this.setState({
-      avatar: await Utils.ngetStorage(nkey.avatar),
-      name: await Utils.ngetStorage(nkey.Username),
+  _getThongTin = async () => {
+    await this.setState({
       id: await Utils.ngetStorage(nkey.id_user),
+      avatar: await this.state.thongtin[0].Avatar,
+      name: await this.state.thongtin[0].Username,
     });
-    // console.log('ava thoing tin', this.state.id);
-  }
+    await Utils.nsetStorage(nkey.avatar, this.state.thongtin[0].Avatar);
+    await Utils.nsetStorage(nkey.Username, this.state.thongtin[0].Username);
+    // console.log('ava thoing tin', this.state.thongtin[0].Avatar);
+    // console.log('name thoing tin', this.state.thongtin[0].Username);
+  };
+
+  _GetUserProfile = async () => {
+    let res = await GetUserProfile(await Utils.ngetStorage(nkey.id_user));
+    console.log('res get user thoong tin ============', res);
+    if (res.status == 1) {
+      this.setState({
+        thongtin: res.Data,
+      });
+      // await console.log('state ', this.state.thongtin);
+    }
+  };
 
   _logout = async () => {
     let flag = await Utils.ngetStorage(nkey.flag);
@@ -67,9 +84,10 @@ export default class ScreenCaiDat extends React.Component {
     console.log('res update tình trạng sau khi đăng xuất cai dat', res);
   };
 
-  componentDidMount() {
-    this._getThongTin();
-  }
+  componentDidMount = async () => {
+    await this._GetUserProfile();
+    await this._getThongTin();
+  };
 
   render() {
     return (
@@ -81,7 +99,9 @@ export default class ScreenCaiDat extends React.Component {
         </View>
 
         <View style={styles.footer}>
-          <View style={styles.khungchua}>
+          <TouchableOpacity
+            style={styles.khungchua}
+            onPress={() => Utils.goscreen(this, 'ScreenThongTinCaNhan')}>
             <View
               style={{
                 marginLeft: 5,
@@ -98,13 +118,17 @@ export default class ScreenCaiDat extends React.Component {
                 }}
                 resizeMode="cover"
                 source={
-                  this.state.avatar ? {uri: this.state.avatar} : avatar
+                  this.state.thongtin
+                    ? {uri: this.state.thongtin[0].Avatar}
+                    : avatar
                 }></Image>
             </View>
             <Text style={{fontSize: FontSize.reSize(25), marginLeft: 5}}>
-              {this.state.name ? this.state.name : 'Loading...'}
+              {this.state.thongtin
+                ? this.state.thongtin[0].Username
+                : 'Loading...'}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.khung_CaiDat}>
             <TouchableOpacity
               style={styles.st_button}
@@ -147,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#3399FF',
+    backgroundColor: '#007DE3',
     height: FontSize.scale(50),
   },
   footer: {

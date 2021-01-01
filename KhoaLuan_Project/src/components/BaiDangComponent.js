@@ -236,19 +236,9 @@ export default class BaiDangComponenet extends React.Component {
       this.state.likeSelected,
       await Utils.ngetStorage(nkey.id_user),
     );
-
-    // switch(this.state.likeSelected){
-    //   case 1:
-
-    // }
   };
 
-  componentDidMount = async () => {
-    // this._GetDSLike();
-    // console.log('this bài đăng component did mount', this);
-    // this.CheckLike();
-    // await this.GanDataSauKhiChuyenVe();
-  };
+  componentDidMount = async () => {};
 
   render() {
     const {item = {}} = this.props;

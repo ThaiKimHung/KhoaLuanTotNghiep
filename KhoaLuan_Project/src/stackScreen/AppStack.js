@@ -52,6 +52,8 @@ import ChaoMungTV from '../baidang/ChaoMungTV';
 import TinNhanh_Nhom from '../baidang/TinNhanh_Nhom';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
 import ChaoMungTV_Nhom from '../baidang/ChaoMungTV_Nhom';
+import DeXuat from '../baidang/DeXuat';
+import DeXuat_Nhom from '../baidang/DeXuat_Nhom';
 
 import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
 import Screen_EditBaiDang_Detail from '../edit/Screen_EditBaiDang_Detail';
@@ -166,6 +168,8 @@ const HomeStackScreen = () => (
       name="ScreenThongTinCaNhan"
       component={ScreenThongTinCaNhan}
     />
+    <HomeStack.Screen name="DeXuat" component={DeXuat} />
+    <HomeStack.Screen name="DeXuat_Nhom" component={DeXuat_Nhom} />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

@@ -40,7 +40,7 @@ const pickimage = require('../assets/images/pickimage.png');
 const camera = require('../assets/images/photo-camera-interface-symbol-for-button.png');
 const close = require('../assets/images/cancel.png');
 
-export default class TinNhanh extends React.Component {
+export default class TinTucNoiBo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -337,7 +337,7 @@ export default class TinNhanh extends React.Component {
                   }}></Image>
               </TouchableOpacity>
 
-              <Text style={styles.title}>Tạo tin nhanh</Text>
+              <Text style={styles.title}>Tạo tin tức nội bộ</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
               {this._render_Dang()}

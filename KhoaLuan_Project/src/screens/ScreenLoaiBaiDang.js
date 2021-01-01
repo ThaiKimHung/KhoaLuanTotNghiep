@@ -124,8 +124,19 @@ export default class ScreenLoaiBaiDang extends React.Component {
         }
         break;
 
-      case 7:
-        return alert('loại bài đăng' + item);
+      case 7: {
+        if (this.props.route.params && this.props.route.params.screennhom) {
+          Utils.goscreen(this, 'DeXuat_Nhom', {
+            id_loaibaidang: item,
+            screennhom: this.props.route.params.screennhom,
+            tennhom: this.props.route.params.tennhom,
+          });
+        } else {
+          Utils.goscreen(this, 'DeXuat', {
+            id_loaibaidang: item,
+          });
+        }
+      }
     }
   }
 

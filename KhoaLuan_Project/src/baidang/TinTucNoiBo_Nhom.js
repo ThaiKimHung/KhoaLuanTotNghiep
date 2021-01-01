@@ -33,7 +33,7 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class TinNhanh_Nhom extends React.Component {
+export default class TinTucNoiBo_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -168,7 +168,7 @@ export default class TinNhanh_Nhom extends React.Component {
                   }}></Image>
               </TouchableOpacity>
 
-              <Text style={styles.title}>Tạo tin nhanh nhóm</Text>
+              <Text style={styles.title}>Tạo tin tức nội bộ nhóm</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
               {this._render_Dang()}

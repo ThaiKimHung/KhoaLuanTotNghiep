@@ -47,13 +47,17 @@ import ModalLike_Nhom from '../modal/ModalLike_Nhom';
 import ModalLike_Detail_Nhom from '../modal/ModalLike_Detail_Nhom';
 
 import KhenThuong from '../baidang/KhenThuong';
-import TinNhanh from '../baidang/TinNhanh';
-import ChaoMungTV from '../baidang/ChaoMungTV';
-import TinNhanh_Nhom from '../baidang/TinNhanh_Nhom';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
+import TinNhanh from '../baidang/TinNhanh';
+import TinNhanh_Nhom from '../baidang/TinNhanh_Nhom';
+import ChaoMungTV from '../baidang/ChaoMungTV';
 import ChaoMungTV_Nhom from '../baidang/ChaoMungTV_Nhom';
 import DeXuat from '../baidang/DeXuat';
 import DeXuat_Nhom from '../baidang/DeXuat_Nhom';
+import ThongBao from '../baidang/ThongBao';
+import ThongBao_Nhom from '../baidang/ThongBao_Nhom';
+import TinTucNoiBo from '../baidang/TinTucNoiBo';
+import TinTucNoiBo_Nhom from '../baidang/TinTucNoiBo_Nhom';
 
 import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
 import Screen_EditBaiDang_Detail from '../edit/Screen_EditBaiDang_Detail';
@@ -170,6 +174,10 @@ const HomeStackScreen = () => (
     />
     <HomeStack.Screen name="DeXuat" component={DeXuat} />
     <HomeStack.Screen name="DeXuat_Nhom" component={DeXuat_Nhom} />
+    <HomeStack.Screen name="ThongBao" component={ThongBao} />
+    <HomeStack.Screen name="ThongBao_Nhom" component={ThongBao_Nhom} />
+    <HomeStack.Screen name="TinTucNoiBo" component={TinTucNoiBo} />
+    <HomeStack.Screen name="TinTucNoiBo_Nhom" component={TinTucNoiBo_Nhom} />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

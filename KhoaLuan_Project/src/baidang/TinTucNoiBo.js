@@ -45,6 +45,7 @@ export default class TinTucNoiBo extends React.Component {
     super(props);
     this.state = {
       haveValue_TieuDe: '',
+      haveValue_NoiDung: '',
       value: null,
       dsNhom: [],
       mangtam: [],
@@ -54,8 +55,6 @@ export default class TinTucNoiBo extends React.Component {
       selectLyDo: '',
       idgroup: '',
       tengroup: '',
-      Image: '',
-      camera: '',
     };
   }
   handleTieude(text) {
@@ -67,13 +66,22 @@ export default class TinTucNoiBo extends React.Component {
     );
   }
 
+  handleNoiDung(text) {
+    this.setState(
+      {
+        haveValue_NoiDung: text,
+      },
+      () => this._render_Dang(),
+    );
+  }
+
   _PostBaiDang = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
 
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: '',
+      NoiDung: this.state.haveValue_NoiDung,
       Id_Group: 0,
       id_khenthuong: 0,
       typepost: '',
@@ -116,7 +124,7 @@ export default class TinTucNoiBo extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: '',
+      NoiDung: this.state.haveValue_NoiDung,
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: 0,
       typepost: '',
@@ -204,69 +212,6 @@ export default class TinTucNoiBo extends React.Component {
     );
   };
 
-  openGalary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-      includeBase64: true,
-    })
-      .then((image) => {
-        console.log('image--------', image);
-        this.setState({
-          Image: image,
-        });
-        console.log('state image =====', this.state.Image);
-        // this.hamTest();
-      })
-      .catch((e) => {
-        // alert(e);
-      });
-  };
-
-  openCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    })
-      .then((image) => {
-        console.log('camera =============', image);
-        this.setState({
-          camera: image,
-        });
-        console.log('state camera =====', this.state.camera);
-      })
-      .catch((e) => {
-        // alert(e);
-      });
-  };
-
-  xoaAnh = () => {
-    ImagePicker.clean()
-      .then(() => {
-        console.log('removed all tmp images from tmp directory');
-        this.setState({
-          Image: '',
-          camera: '',
-        });
-      })
-      .catch((e) => {
-        alert(e);
-      });
-  };
-  // _TestFileBaiDang = async () => {
-  //   // const id_loaibaidang = this.props.route.params.id_loaibaidang;
-  //   let catchuoi = (await this.state.Image.path.split('/').slice(-1)) + '';
-  //   let strBody = JSON.stringify({
-  //     image: this.state.Image.data,
-  //     name: this.state.Image.path.split('/').slice(-1) + '',
-  //   });
-  //   console.log('strBody file ảnh---------', strBody);
-  //   let res = await TestFileBaiDang(strBody);
-  //   console.log('res file ảnh-----', res);
-  // };
-
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng tin nhanh',
@@ -279,8 +224,8 @@ export default class TinTucNoiBo extends React.Component {
   };
 
   _render_Dang = () => {
-    const {haveValue_TieuDe, selectLyDo} = this.state;
-    if (haveValue_TieuDe && selectLyDo == '') {
+    const {haveValue_TieuDe, selectLyDo, haveValue_NoiDung} = this.state;
+    if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo == '') {
       return (
         <View>
           <TouchableOpacity
@@ -291,7 +236,7 @@ export default class TinTucNoiBo extends React.Component {
           </TouchableOpacity>
         </View>
       );
-    } else if (haveValue_TieuDe && selectLyDo) {
+    } else if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo) {
       return (
         <View>
           <TouchableOpacity
@@ -309,7 +254,6 @@ export default class TinTucNoiBo extends React.Component {
         </View>
       );
     }
-    // console.log('tieu de', haveValue_TieuDe);
   };
 
   componentDidMount = async () => {
@@ -354,6 +298,16 @@ export default class TinTucNoiBo extends React.Component {
                 placeholder="Mời bạn nhập tiêu đề"
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
+            </View>
+            <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+              Nhập nội dung
+            </Text>
+            <View style={styles.khung_tieude}>
+              <TextInput
+                multiline={true}
+                placeholder="Mời bạn nhập nội dung"
+                style={{fontSize: FontSize.reSize(20)}}
+                onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
             </View>
 
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Chọn nhóm</Text>
@@ -405,7 +359,7 @@ export default class TinTucNoiBo extends React.Component {
                 />
               ) : null}
             </View>
-            <View>
+            {/* <View>
               {this.state.camera == '' && this.state.Image != '' ? (
                 <View
                   style={{
@@ -488,9 +442,9 @@ export default class TinTucNoiBo extends React.Component {
                   </TouchableOpacity>
                 </ImageBackground>
               ) : null}
-            </View>
+            </View> */}
 
-            <View>
+            {/* <View>
               {this.state.camera != '' && this.state.Image == '' ? (
                 <View
                   style={{
@@ -576,7 +530,7 @@ export default class TinTucNoiBo extends React.Component {
                   </TouchableOpacity>
                 </ImageBackground>
               ) : null}
-            </View>
+            </View> */}
             {/* <View style={styles.khung_tieude}>
               <TextInput
                 multiline={true}

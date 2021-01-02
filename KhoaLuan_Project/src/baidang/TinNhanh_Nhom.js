@@ -11,6 +11,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
@@ -26,13 +27,21 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  FileBaiDang,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
+
+import ImagePicker from 'react-native-image-crop-picker';
+
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const dropdown = require('../assets/images/caret-down.png');
+const pickimage = require('../assets/images/pickimage.png');
+const camera = require('../assets/images/photo-camera-interface-symbol-for-button.png');
+const close = require('../assets/images/cancel.png');
+
 export default class TinNhanh_Nhom extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +49,8 @@ export default class TinNhanh_Nhom extends React.Component {
       haveValue_TieuDe: '',
       idgroup: '',
       tengroup: '',
+      Image: '',
+      camera: '',
     };
   }
   handleTieude(text) {
@@ -107,8 +118,9 @@ export default class TinNhanh_Nhom extends React.Component {
       return (
         <View>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
               this._PostBaiDang_Nhom();
+              await this.AddAnh();
             }}>
             <Text style={styles.textDang}>Đăng</Text>
           </TouchableOpacity>
@@ -140,6 +152,102 @@ export default class TinNhanh_Nhom extends React.Component {
         this.state.idgroup,
         this.state.tengroup,
       );
+    }
+  };
+
+  openGalary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    })
+      .then((image) => {
+        console.log('image--------', image);
+        this.setState({
+          Image: image,
+        });
+        console.log('state image =====', this.state.Image);
+        // this.hamTest();
+      })
+      .catch((e) => {
+        // alert(e);
+      });
+  };
+
+  openCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    })
+      .then((image) => {
+        console.log('camera =============', image);
+        this.setState({
+          camera: image,
+        });
+        console.log('state camera =====', this.state.camera);
+      })
+      .catch((e) => {
+        // alert(e);
+      });
+  };
+
+  xoaAnh = () => {
+    ImagePicker.clean()
+      .then(() => {
+        console.log('removed all tmp images from tmp directory');
+        this.setState({
+          Image: '',
+          camera: '',
+        });
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  };
+  _FileBaiDang_Galary = async () => {
+    let strBody;
+    {
+      this.state.Image != ''
+        ? (strBody = JSON.stringify({
+            image: this.state.Image.data,
+            name: this.state.Image.path.split('/').slice(-1) + '',
+          }))
+        : (strBody = JSON.stringify({
+            image: null,
+            name: null,
+          }));
+    }
+    console.log('strBody file ảnh Galary---------', strBody);
+    let res = await FileBaiDang(strBody);
+    console.log('res file ảnh Galary-----', res);
+  };
+
+  _FileBaiDang_Camera = async () => {
+    let strBody;
+    {
+      this.state.camera != ''
+        ? (strBody = JSON.stringify({
+            image: this.state.camera.data,
+            name: this.state.camera.path.split('/').slice(-1) + '',
+          }))
+        : (strBody = JSON.stringify({
+            image: null,
+            name: null,
+          }));
+    }
+    console.log('strBody file ảnh Camera ---------', strBody);
+    let res = await FileBaiDang(strBody);
+    console.log('res file ảnh Camera-----', res);
+  };
+
+  AddAnh = async () => {
+    {
+      this.state.Image != ''
+        ? this._FileBaiDang_Galary()
+        : this._FileBaiDang_Camera();
     }
   };
 
@@ -214,6 +322,179 @@ export default class TinNhanh_Nhom extends React.Component {
                   </Text>
                 </TouchableOpacity>
               </View>
+            </View>
+
+            <View>
+              {this.state.camera == '' && this.state.Image != '' ? (
+                <View
+                  style={{
+                    backgroundColor: '#DDDDDD80',
+                    borderRadius: 20,
+                    marginTop: 10,
+                    padding: 5,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => this.openCamera()}>
+                  <Image
+                    source={camera}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                      marginHorizontal: 10,
+                      tintColor: '#696969',
+                    }}></Image>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      color: '#696969',
+                    }}>
+                    Camera
+                  </Text>
+                </View>
+              ) : (
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#DDDDDD80',
+                      borderRadius: 20,
+                      marginTop: 10,
+                      padding: 5,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => this.openCamera()}>
+                    <Image
+                      source={camera}
+                      style={{
+                        height: FontSize.scale(20),
+                        width: FontSize.verticalScale(20),
+                        marginHorizontal: 10,
+                      }}></Image>
+                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+                      Camera
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              {this.state.camera ? (
+                <ImageBackground
+                  style={{
+                    height: FontSize.scale(200),
+                    width: FontSize.verticalScale(200),
+                    marginVertical: 10,
+                  }}
+                  source={{uri: this.state.camera.path}}>
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      top: 5,
+                      right: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => this.xoaAnh()}>
+                    <Image
+                      source={close}
+                      style={{
+                        height: FontSize.scale(15),
+                        width: FontSize.verticalScale(15),
+                        position: 'absolute',
+                        top: 5,
+                        right: 10,
+                      }}></Image>
+                  </TouchableOpacity>
+                </ImageBackground>
+              ) : null}
+            </View>
+
+            <View>
+              {this.state.camera != '' && this.state.Image == '' ? (
+                <View
+                  style={{
+                    backgroundColor: '#DDDDDD80',
+                    borderRadius: 20,
+                    marginTop: 10,
+                    padding: 5,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => this.openGalary()}>
+                  <Image
+                    source={pickimage}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                      marginHorizontal: 10,
+                      tintColor: '#696969',
+                    }}></Image>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      color: '#696969',
+                    }}>
+                    Ảnh
+                  </Text>
+                </View>
+              ) : (
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#DDDDDD80',
+                      borderRadius: 20,
+                      marginVertical: 10,
+                      padding: 5,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => this.openGalary()}>
+                    <Image
+                      source={pickimage}
+                      style={{
+                        height: FontSize.scale(20),
+                        width: FontSize.verticalScale(20),
+                        marginHorizontal: 10,
+                      }}></Image>
+                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>Ảnh</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {this.state.Image ? (
+                <ImageBackground
+                  style={{
+                    height: FontSize.scale(200),
+                    width: FontSize.verticalScale(200),
+                    marginVertical: 10,
+                  }}
+                  source={{uri: this.state.Image.path}}>
+                  <TouchableOpacity
+                    style={{
+                      // height: FontSize.scale(40),
+                      // width: FontSize.verticalScale(40),
+                      borderRadius: 20,
+                      backgroundColor: 'blue',
+                      position: 'absolute',
+                      top: 5,
+                      right: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => this.xoaAnh()}>
+                    <Image
+                      source={close}
+                      style={{
+                        height: FontSize.scale(15),
+                        width: FontSize.verticalScale(15),
+                        // position: 'absolute',
+                        // top: 5,
+                        // right: 10,
+                      }}></Image>
+                  </TouchableOpacity>
+                </ImageBackground>
+              ) : null}
             </View>
           </View>
         </View>

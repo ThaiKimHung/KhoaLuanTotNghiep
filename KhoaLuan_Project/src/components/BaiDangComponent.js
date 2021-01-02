@@ -27,6 +27,8 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 import {GetDSLike, AddLike, DeleteBaiDang_Like} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
+import moment from 'moment';
+import Utils from '../apis/Utils';
 
 const avatar = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -35,11 +37,9 @@ const daubacham = require('../assets/images/daubacham.png');
 const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
 const welcome = require('../assets/images/welcome.png');
-
-const windowWidth = Dimensions.get('window').width;
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
-import moment from 'moment';
-import Utils from '../apis/Utils';
+const light = require('../assets/images/light-bulb.png');
+const windowWidth = Dimensions.get('window').width;
 
 export default class BaiDangComponenet extends React.Component {
   constructor(props) {
@@ -119,8 +119,26 @@ export default class BaiDangComponenet extends React.Component {
     let loaibaidang = item.Id_LoaiBaiDang;
     let khenthuong = item.KhenThuong ? item.KhenThuong[0] : {};
     let hinhanh = item.hinhanh;
-    // console.log('item bài đăng component', hinhanh);
     switch (loaibaidang) {
+      case 1:
+        return (
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#1C86EE',
+              margin: 5,
+            }}>
+            <ImageBackground source={welcome} style={styles.image}>
+              <TouchableOpacity
+                style={styles.footer1}
+                onPress={this.props.onPress}>
+                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(20)}}>
+                  {item.NoiDung}
+                </Text>
+              </TouchableOpacity>
+            </ImageBackground>
+          </TouchableOpacity>
+        );
       case 2:
         return (
           <View
@@ -185,24 +203,61 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
           </View>
         );
+      case 3:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
+            <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        );
       case 4:
         return (
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: '#1C86EE',
               margin: 5,
-            }}>
+            }}
+            onPress={this.props.onPress}>
             <ImageBackground source={welcome} style={styles.image}>
-              <TouchableOpacity
-                style={styles.footer1}
-                onPress={this.props.onPress}>
+              <View style={styles.footer1}>
                 <Text>{item.title}</Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
-              </TouchableOpacity>
+              </View>
             </ImageBackground>
-          </View>
+          </TouchableOpacity>
+        );
+      case 7:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
+            <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
         );
       default:
         return (
@@ -335,7 +390,8 @@ export default class BaiDangComponenet extends React.Component {
 
           {/* khung chứa nội dung bài đăng và cmt*/}
 
-          <this.loadNoiDung></this.loadNoiDung>
+          {/* <this.loadNoiDung></this.loadNoiDung> */}
+          {this.loadNoiDung()}
 
           {/* khung chứa số like và cmt */}
           <View style={styles.khung_DemSoLike_Comt}>

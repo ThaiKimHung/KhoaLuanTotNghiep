@@ -27,6 +27,8 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  File_Updatebaidang,
+  FileBaiDang,
 } from '../apis/apiUser';
 import ImagePicker from 'react-native-image-crop-picker';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -45,6 +47,7 @@ export default class ThongBao extends React.Component {
     super(props);
     this.state = {
       haveValue_TieuDe: '',
+      haveValue_NoiDung: '',
       value: null,
       dsNhom: [],
       mangtam: [],
@@ -54,14 +57,20 @@ export default class ThongBao extends React.Component {
       selectLyDo: '',
       idgroup: '',
       tengroup: '',
-      Image: '',
-      camera: '',
     };
   }
   handleTieude(text) {
     this.setState(
       {
         haveValue_TieuDe: text,
+      },
+      () => this._render_Dang(),
+    );
+  }
+  handleNoiDung(text) {
+    this.setState(
+      {
+        haveValue_NoiDung: text,
       },
       () => this._render_Dang(),
     );
@@ -73,7 +82,7 @@ export default class ThongBao extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: '',
+      NoiDung: this.state.haveValue_NoiDung,
       Id_Group: 0,
       id_khenthuong: 0,
       typepost: '',
@@ -116,7 +125,7 @@ export default class ThongBao extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: '',
+      NoiDung: this.state.haveValue_NoiDung,
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: 0,
       typepost: '',
@@ -204,69 +213,6 @@ export default class ThongBao extends React.Component {
     );
   };
 
-  openGalary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-      includeBase64: true,
-    })
-      .then((image) => {
-        console.log('image--------', image);
-        this.setState({
-          Image: image,
-        });
-        console.log('state image =====', this.state.Image);
-        // this.hamTest();
-      })
-      .catch((e) => {
-        // alert(e);
-      });
-  };
-
-  openCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    })
-      .then((image) => {
-        console.log('camera =============', image);
-        this.setState({
-          camera: image,
-        });
-        console.log('state camera =====', this.state.camera);
-      })
-      .catch((e) => {
-        // alert(e);
-      });
-  };
-
-  xoaAnh = () => {
-    ImagePicker.clean()
-      .then(() => {
-        console.log('removed all tmp images from tmp directory');
-        this.setState({
-          Image: '',
-          camera: '',
-        });
-      })
-      .catch((e) => {
-        alert(e);
-      });
-  };
-  // _TestFileBaiDang = async () => {
-  //   // const id_loaibaidang = this.props.route.params.id_loaibaidang;
-  //   let catchuoi = (await this.state.Image.path.split('/').slice(-1)) + '';
-  //   let strBody = JSON.stringify({
-  //     image: this.state.Image.data,
-  //     name: this.state.Image.path.split('/').slice(-1) + '',
-  //   });
-  //   console.log('strBody file ảnh---------', strBody);
-  //   let res = await TestFileBaiDang(strBody);
-  //   console.log('res file ảnh-----', res);
-  // };
-
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng tin nhanh',
@@ -279,8 +225,8 @@ export default class ThongBao extends React.Component {
   };
 
   _render_Dang = () => {
-    const {haveValue_TieuDe, selectLyDo} = this.state;
-    if (haveValue_TieuDe && selectLyDo == '') {
+    const {haveValue_TieuDe, selectLyDo, haveValue_NoiDung} = this.state;
+    if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo == '') {
       return (
         <View>
           <TouchableOpacity
@@ -291,11 +237,11 @@ export default class ThongBao extends React.Component {
           </TouchableOpacity>
         </View>
       );
-    } else if (haveValue_TieuDe && selectLyDo) {
+    } else if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo) {
       return (
         <View>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
               this._PostBaiDang_Nhom();
             }}>
             <Text style={styles.textDang}>Đăng</Text>
@@ -309,7 +255,6 @@ export default class ThongBao extends React.Component {
         </View>
       );
     }
-    // console.log('tieu de', haveValue_TieuDe);
   };
 
   componentDidMount = async () => {
@@ -337,7 +282,7 @@ export default class ThongBao extends React.Component {
                   }}></Image>
               </TouchableOpacity>
 
-              <Text style={styles.title}>Tạo thông báo</Text>
+              <Text style={styles.title}>Tạo tin thông báo</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
               {this._render_Dang()}
@@ -354,6 +299,17 @@ export default class ThongBao extends React.Component {
                 placeholder="Mời bạn nhập tiêu đề"
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
+            </View>
+
+            <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+              Nhập nội dung
+            </Text>
+            <View style={styles.khung_tieude}>
+              <TextInput
+                multiline={true}
+                placeholder="Mời bạn nhập nội dung"
+                style={{fontSize: FontSize.reSize(20)}}
+                onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
             </View>
 
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Chọn nhóm</Text>
@@ -405,178 +361,7 @@ export default class ThongBao extends React.Component {
                 />
               ) : null}
             </View>
-            <View>
-              {this.state.camera == '' && this.state.Image != '' ? (
-                <View
-                  style={{
-                    backgroundColor: '#DDDDDD80',
-                    borderRadius: 20,
-                    marginTop: 10,
-                    padding: 5,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => this.openCamera()}>
-                  <Image
-                    source={camera}
-                    style={{
-                      height: FontSize.scale(20),
-                      width: FontSize.verticalScale(20),
-                      marginHorizontal: 10,
-                      tintColor: '#696969',
-                    }}></Image>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#696969',
-                    }}>
-                    Camera
-                  </Text>
-                </View>
-              ) : (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: '#DDDDDD80',
-                      borderRadius: 20,
-                      marginTop: 10,
-                      padding: 5,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => this.openCamera()}>
-                    <Image
-                      source={camera}
-                      style={{
-                        height: FontSize.scale(20),
-                        width: FontSize.verticalScale(20),
-                        marginHorizontal: 10,
-                      }}></Image>
-                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-                      Camera
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              {this.state.camera ? (
-                <ImageBackground
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(200),
-                    marginVertical: 10,
-                  }}
-                  source={{uri: this.state.camera.path}}>
-                  <TouchableOpacity
-                    style={{
-                      position: 'absolute',
-                      top: 5,
-                      right: 10,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => this.xoaAnh()}>
-                    <Image
-                      source={close}
-                      style={{
-                        height: FontSize.scale(15),
-                        width: FontSize.verticalScale(15),
-                        position: 'absolute',
-                        top: 5,
-                        right: 10,
-                      }}></Image>
-                  </TouchableOpacity>
-                </ImageBackground>
-              ) : null}
-            </View>
 
-            <View>
-              {this.state.camera != '' && this.state.Image == '' ? (
-                <View
-                  style={{
-                    backgroundColor: '#DDDDDD80',
-                    borderRadius: 20,
-                    marginTop: 10,
-                    padding: 5,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => this.openGalary()}>
-                  <Image
-                    source={pickimage}
-                    style={{
-                      height: FontSize.scale(20),
-                      width: FontSize.verticalScale(20),
-                      marginHorizontal: 10,
-                      tintColor: '#696969',
-                    }}></Image>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#696969',
-                    }}>
-                    Ảnh
-                  </Text>
-                </View>
-              ) : (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: '#DDDDDD80',
-                      borderRadius: 20,
-                      marginVertical: 10,
-                      padding: 5,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => this.openGalary()}>
-                    <Image
-                      source={pickimage}
-                      style={{
-                        height: FontSize.scale(20),
-                        width: FontSize.verticalScale(20),
-                        marginHorizontal: 10,
-                      }}></Image>
-                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>Ảnh</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-
-              {this.state.Image ? (
-                <ImageBackground
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(200),
-                    marginVertical: 10,
-                  }}
-                  source={{uri: this.state.Image.path}}>
-                  <TouchableOpacity
-                    style={{
-                      // height: FontSize.scale(40),
-                      // width: FontSize.verticalScale(40),
-                      borderRadius: 20,
-                      backgroundColor: 'blue',
-                      position: 'absolute',
-                      top: 5,
-                      right: 10,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => this.xoaAnh()}>
-                    <Image
-                      source={close}
-                      style={{
-                        height: FontSize.scale(15),
-                        width: FontSize.verticalScale(15),
-                        // position: 'absolute',
-                        // top: 5,
-                        // right: 10,
-                      }}></Image>
-                  </TouchableOpacity>
-                </ImageBackground>
-              ) : null}
-            </View>
             {/* <View style={styles.khung_tieude}>
               <TextInput
                 multiline={true}

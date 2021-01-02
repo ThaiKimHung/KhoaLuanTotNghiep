@@ -73,7 +73,20 @@ export default class ScreenLoaiBaiDang extends React.Component {
     // alert(5);
     switch (item) {
       case 1:
-        return alert('loại bài đăng' + item);
+        {
+          if (this.props.route.params && this.props.route.params.screennhom) {
+            Utils.goscreen(this, 'TinTucNoiBo_Nhom', {
+              id_loaibaidang: item,
+              screennhom: this.props.route.params.screennhom,
+              tennhom: this.props.route.params.tennhom,
+            });
+          } else {
+            Utils.goscreen(this, 'TinTucNoiBo', {
+              id_loaibaidang: item,
+            });
+          }
+        }
+        break;
       case 2:
         {
           if (this.props.route.params && this.props.route.params.screennhom) {
@@ -90,7 +103,20 @@ export default class ScreenLoaiBaiDang extends React.Component {
         }
         break;
       case 3:
-        return alert('loại bài đăng' + item);
+        {
+          if (this.props.route.params && this.props.route.params.screennhom) {
+            Utils.goscreen(this, 'ThongBao_Nhom', {
+              id_loaibaidang: item,
+              screennhom: this.props.route.params.screennhom,
+              tennhom: this.props.route.params.tennhom,
+            });
+          } else {
+            Utils.goscreen(this, 'ThongBao', {
+              id_loaibaidang: item,
+            });
+          }
+        }
+        break;
       case 4:
         {
           if (this.props.route.params && this.props.route.params.screennhom) {
@@ -124,19 +150,21 @@ export default class ScreenLoaiBaiDang extends React.Component {
         }
         break;
 
-      case 7: {
-        if (this.props.route.params && this.props.route.params.screennhom) {
-          Utils.goscreen(this, 'DeXuat_Nhom', {
-            id_loaibaidang: item,
-            screennhom: this.props.route.params.screennhom,
-            tennhom: this.props.route.params.tennhom,
-          });
-        } else {
-          Utils.goscreen(this, 'DeXuat', {
-            id_loaibaidang: item,
-          });
+      case 7:
+        {
+          if (this.props.route.params && this.props.route.params.screennhom) {
+            Utils.goscreen(this, 'DeXuat_Nhom', {
+              id_loaibaidang: item,
+              screennhom: this.props.route.params.screennhom,
+              tennhom: this.props.route.params.tennhom,
+            });
+          } else {
+            Utils.goscreen(this, 'DeXuat', {
+              id_loaibaidang: item,
+            });
+          }
         }
-      }
+        break;
     }
   }
 

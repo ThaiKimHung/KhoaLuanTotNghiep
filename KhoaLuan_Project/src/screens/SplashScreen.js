@@ -43,16 +43,16 @@ export default class SplashScreen2 extends React.Component {
     };
   }
 
-  async _getThongTin() {
+  _getThongTin = async () => {
     this.setState({
       avatar: await Utils.ngetStorage(nkey.avatar),
       name: await Utils.ngetStorage(nkey.Username),
       flagLuu: await Utils.ngetStorage(nkey.flag),
       id: await Utils.ngetStorage(nkey.id_user),
     });
-    // console.log('ava thoing tin', avatar);
-  }
-  async _logout() {
+  };
+
+  _logout = async () => {
     let flag = await Utils.ngetStorage(nkey.flag);
     console.log('flag trc out Splashscreen', flag);
     let flag1 = await Utils.nsetStorage(nkey.flag, '0');
@@ -61,7 +61,7 @@ export default class SplashScreen2 extends React.Component {
     this.updateTinhTrangUser();
     Utils.goscreen(this, 'SigninScreen');
     // this.props.navigation.navigate('SigninScreen');
-  }
+  };
 
   updateTinhTrangUser = async () => {
     let strBody = JSON.stringify({
@@ -82,7 +82,7 @@ export default class SplashScreen2 extends React.Component {
       description: 'Chào mừng bạn quay lại',
       type: 'success',
       duration: 1500,
-      backgroundColor: '#007DE3',
+      // backgroundColor: '#007DE3',
       icon: 'success',
     });
   }
@@ -147,8 +147,6 @@ export default class SplashScreen2 extends React.Component {
                       borderRadius: 30,
                       height: FontSize.scale(40),
                       width: FontSize.verticalScale(40),
-                      // justifyContent: 'center',
-                      // alignItems: 'center',
                     }}>
                     <Image
                       style={{

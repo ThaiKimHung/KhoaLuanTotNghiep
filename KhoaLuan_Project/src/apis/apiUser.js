@@ -83,6 +83,20 @@ async function Update_BaiDang(strbody) {
   return res;
 }
 
+//test ảnh đây nè=========================================
+async function FileBaiDang(strbody) {
+  let res = await Utils.post_api(apiUser + `File_baidang`, strbody);
+  return res;
+}
+
+async function File_Updatebaidang(strbody) {
+  let res = await Utils.post_api(
+    apiUser + `File_Updatebaidang?id_baidang=0`,
+    strbody,
+  );
+  return res;
+}
+
 async function Update_BaiDang_KhenThuong(strbody) {
   let res = await Utils.post_api(apiUser + `UpdateBaiDang_KT`, strbody);
   return res;
@@ -267,11 +281,6 @@ async function DeleteUserGroup(idgroup, iduser) {
   return res;
 }
 
-//test ảnh đây nè=========================================
-async function TestFileBaiDang(strbody) {
-  let res = await Utils.post_api(apiUser + `File_baidang`, strbody);
-  return res;
-}
 async function AvatarUser(iduser, strbody) {
   let res = await Utils.post_api(
     apiUser + `AvatarUser?id_user=${iduser}`,
@@ -297,6 +306,7 @@ export {
   GetDSKhenThuong,
   GetDSBaiDang,
   GetChiTietBaiDang,
+  File_Updatebaidang,
   GetDSLike,
   AddLike,
   PostBaiDang,
@@ -326,7 +336,7 @@ export {
   addUserGroup,
   GetDSAllUser_In_Group,
   DeleteUserGroup,
-  TestFileBaiDang,
+  FileBaiDang,
   AvatarUser,
   AddThongBao,
 };

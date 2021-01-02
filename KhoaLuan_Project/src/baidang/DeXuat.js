@@ -27,6 +27,8 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  File_Updatebaidang,
+  FileBaiDang,
 } from '../apis/apiUser';
 import ImagePicker from 'react-native-image-crop-picker';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -45,6 +47,7 @@ export default class DeXuat extends React.Component {
     super(props);
     this.state = {
       haveValue_TieuDe: '',
+      haveValue_NoiDung: '',
       value: null,
       dsNhom: [],
       mangtam: [],
@@ -54,14 +57,22 @@ export default class DeXuat extends React.Component {
       selectLyDo: '',
       idgroup: '',
       tengroup: '',
-      Image: '',
-      camera: '',
+      Image: null,
+      camera: null,
     };
   }
   handleTieude(text) {
     this.setState(
       {
         haveValue_TieuDe: text,
+      },
+      () => this._render_Dang(),
+    );
+  }
+  handleNoiDung(text) {
+    this.setState(
+      {
+        haveValue_NoiDung: text,
       },
       () => this._render_Dang(),
     );
@@ -73,7 +84,7 @@ export default class DeXuat extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: '',
+      NoiDung: this.state.haveValue_NoiDung,
       Id_Group: 0,
       id_khenthuong: 0,
       typepost: '',
@@ -116,7 +127,7 @@ export default class DeXuat extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: '',
+      NoiDung: this.state.haveValue_NoiDung,
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: 0,
       typepost: '',
@@ -229,6 +240,7 @@ export default class DeXuat extends React.Component {
       width: 300,
       height: 400,
       cropping: true,
+      includeBase64: true,
     })
       .then((image) => {
         console.log('camera =============', image);
@@ -255,18 +267,41 @@ export default class DeXuat extends React.Component {
         alert(e);
       });
   };
-  // _TestFileBaiDang = async () => {
-  //   // const id_loaibaidang = this.props.route.params.id_loaibaidang;
-  //   let catchuoi = (await this.state.Image.path.split('/').slice(-1)) + '';
-  //   let strBody = JSON.stringify({
-  //     image: this.state.Image.data,
-  //     name: this.state.Image.path.split('/').slice(-1) + '',
-  //   });
-  //   console.log('strBody file ảnh---------', strBody);
-  //   let res = await TestFileBaiDang(strBody);
-  //   console.log('res file ảnh-----', res);
-  // };
+  _FileBaiDang_Galary = async () => {
+    let strBody;
+    {
+      this.state.Image != ''
+        ? (strBody = JSON.stringify({
+            image: this.state.Image.data,
+            name: this.state.Image.path.split('/').slice(-1) + '',
+          }))
+        : (strBody = JSON.stringify({
+            image: null,
+            name: null,
+          }));
+    }
+    console.log('strBody file ảnh Galary---------', strBody);
+    let res = await FileBaiDang(strBody);
+    console.log('res file ảnh Galary-----', res);
+  };
 
+  _FileBaiDang_Camera = async () => {
+    let strBody;
+    {
+      this.state.Image != ''
+        ? (strBody = JSON.stringify({
+            image: this.state.camera.data,
+            name: this.state.camera.path.split('/').slice(-1) + '',
+          }))
+        : (strBody = JSON.stringify({
+            image: null,
+            name: null,
+          }));
+    }
+    console.log('strBody file ảnh Camera ---------', strBody);
+    let res = await FileBaiDang(strBody);
+    console.log('res file ảnh Camera-----', res);
+  };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng tin nhanh',
@@ -279,24 +314,26 @@ export default class DeXuat extends React.Component {
   };
 
   _render_Dang = () => {
-    const {haveValue_TieuDe, selectLyDo} = this.state;
-    if (haveValue_TieuDe && selectLyDo == '') {
+    const {haveValue_TieuDe, selectLyDo, haveValue_NoiDung} = this.state;
+    if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo == '') {
       return (
         <View>
           <TouchableOpacity
             onPress={() => {
               this._PostBaiDang();
+              this.AddAnh();
             }}>
             <Text style={styles.textDang}>Đăng</Text>
           </TouchableOpacity>
         </View>
       );
-    } else if (haveValue_TieuDe && selectLyDo) {
+    } else if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo) {
       return (
         <View>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
               this._PostBaiDang_Nhom();
+              await this.AddAnh();
             }}>
             <Text style={styles.textDang}>Đăng</Text>
           </TouchableOpacity>
@@ -309,7 +346,14 @@ export default class DeXuat extends React.Component {
         </View>
       );
     }
-    // console.log('tieu de', haveValue_TieuDe);
+  };
+
+  AddAnh = async () => {
+    {
+      this.state.Image != ''
+        ? this._FileBaiDang_Galary()
+        : this._FileBaiDang_Camera();
+    }
   };
 
   componentDidMount = async () => {
@@ -354,6 +398,17 @@ export default class DeXuat extends React.Component {
                 placeholder="Mời bạn nhập tiêu đề"
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
+            </View>
+
+            <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+              Nhập nội dung
+            </Text>
+            <View style={styles.khung_tieude}>
+              <TextInput
+                multiline={true}
+                placeholder="Mời bạn nhập nội dung"
+                style={{fontSize: FontSize.reSize(20)}}
+                onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
             </View>
 
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Chọn nhóm</Text>

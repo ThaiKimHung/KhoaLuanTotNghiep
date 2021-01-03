@@ -133,7 +133,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
         }
         break;
       case 5:
-        return alert('loại bài đăng' + item);
+        return alert('chưa hỗ trợ loại bài đăng' + item);
       case 6:
         {
           if (this.props.route.params && this.props.route.params.screennhom) {

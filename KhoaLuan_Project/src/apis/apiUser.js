@@ -89,9 +89,9 @@ async function FileBaiDang(strbody) {
   return res;
 }
 
-async function File_Updatebaidang(strbody) {
+async function File_Updatebaidang(idbaidang, strbody) {
   let res = await Utils.post_api(
-    apiUser + `File_Updatebaidang?id_baidang=0`,
+    apiUser + `File_Updatebaidang?id_baidang=${idbaidang}`,
     strbody,
   );
   return res;
@@ -294,6 +294,29 @@ async function AddThongBao(strbody) {
   return res;
 }
 
+async function GetDSThongBao() {
+  let res = await Utils.get_api(apiUser + `GetDSThongBao`);
+  return res;
+}
+
+async function Update_ThongBao(idbaidang) {
+  let res = await Utils.post_api(
+    apiUser + `UpdateTinhTrangTrueThongBao?id_thongbao=${idbaidang}`,
+  );
+  return res;
+}
+
+async function Delete_ThongBao(idbaidang) {
+  let res = await Utils.post_api(
+    apiUser + `deleteThongBao?id_thongbao=${idbaidang}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -339,4 +362,7 @@ export {
   FileBaiDang,
   AvatarUser,
   AddThongBao,
+  GetDSThongBao,
+  Update_ThongBao,
+  Delete_ThongBao,
 };

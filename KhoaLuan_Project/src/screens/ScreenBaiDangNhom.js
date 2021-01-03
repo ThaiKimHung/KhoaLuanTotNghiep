@@ -52,8 +52,8 @@ export default class ScreenBaiDangNhom extends React.Component {
       quyengroup: id_nguoidang.quyen_group,
     });
 
-    console.log('this bài đăng nhóm', id_nguoidang);
-    await console.log('quyyeenf nhóm ======', await this.state.quyengroup);
+    // console.log('this bài đăng nhóm', id_nguoidang);
+    // await console.log('quyyeenf nhóm ======', await this.state.quyengroup);
   };
 
   componentDidMount = async () => {

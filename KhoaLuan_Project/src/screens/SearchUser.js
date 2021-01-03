@@ -35,10 +35,10 @@ export default class SearchUser extends React.Component {
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     } else {
-      this.setState({refresh: !this.state.refresh});
+      this.setState({refresh: false});
       alert('thất bại');
     }
   };

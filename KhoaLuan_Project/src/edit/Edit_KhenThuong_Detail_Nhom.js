@@ -207,9 +207,10 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       });
       // Utils.goscreen(this, 'Home');
       Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
       await ROOTGlobal.GetDsAllBaiDang_Nhom();
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+
+      await ROOTGlobal.GanDataChitiet_Nhom();
       // await ROOTGlobal.GetChiTietBaiDang();
     } else {
       showMessage({

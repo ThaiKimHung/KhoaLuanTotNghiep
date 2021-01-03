@@ -86,6 +86,9 @@ export default class Edit_ChaoMungTV_Detail_Nhom extends React.Component {
   };
 
   EditBaiDang = async () => {
+    const {
+      id_nguoidang = {},
+    } = this.props.route.params.id_nguoidang.id_nguoidang;
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
@@ -112,10 +115,13 @@ export default class Edit_ChaoMungTV_Detail_Nhom extends React.Component {
         icon: 'success',
       });
       // Utils.goscreen(this, 'Home');
-      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom', {
+        id_nguoidang: id_nguoidang,
+      });
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
+
       await ROOTGlobal.GetDsAllBaiDang_Nhom();
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GanDataChitiet_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -127,23 +133,11 @@ export default class Edit_ChaoMungTV_Detail_Nhom extends React.Component {
     }
   };
 
-  _GetDSGroup = async () => {
-    let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
-    // let res = await GetDSGroup(1);
-    console.log('res', res);
-    if (res.status == 1) {
-      this.setState({
-        dsNhom: res.Data,
-      });
-      // console.log('state', this.state.dsNhom);
-    }
-  };
-
   ganData = async () => {
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
-    console.log('id người đằng', id_nguoidang);
+    // console.log('id người đằng', id_nguoidang);
     this.setState({
       title: id_nguoidang[0].title,
       noidung: id_nguoidang[0].NoiDung,
@@ -151,15 +145,15 @@ export default class Edit_ChaoMungTV_Detail_Nhom extends React.Component {
       idbaidang: id_nguoidang[0].Id_BaiDang,
       idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
     });
-    await console.log('data mang ve', this.state.DataChuyenVe);
-    await console.log('ten', this.state.title);
-    await console.log('id bai dang', this.state.idbaidang);
+    // await console.log('data mang ve', this.state.DataChuyenVe);
+    // await console.log('ten', this.state.title);
+    // await console.log('id bai dang', this.state.idbaidang);
 
     // console.log('noi dung', this.noidung);
   };
 
   componentDidMount = async () => {
-    await this._GetDSGroup();
+    // await this._GetDSGroup();
     // await this.LaymangTam();
     await this.ganData();
   };
@@ -171,7 +165,7 @@ export default class Edit_ChaoMungTV_Detail_Nhom extends React.Component {
     } = this.props.route.params.id_nguoidang.id_nguoidang;
     // let group = id_nguoidang.Group[0].ten_group;
     // console.log('check group', group);
-    // console.log('id nguoi dang', id_nguoidang);
+    // console.log('id nguoi dang========', id_nguoidang);
     // console.log('this detail props chào mừng', this.props);
     return (
       <View style={styles.container}>
@@ -181,7 +175,7 @@ export default class Edit_ChaoMungTV_Detail_Nhom extends React.Component {
               style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() => {
-                  Utils.goscreen(this, 'Home');
+                  Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
                   // Utils.goback(this/);
                 }}>
                 <Image

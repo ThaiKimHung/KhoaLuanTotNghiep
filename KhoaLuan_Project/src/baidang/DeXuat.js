@@ -47,7 +47,7 @@ export default class DeXuat extends React.Component {
     super(props);
     this.state = {
       haveValue_TieuDe: '',
-      haveValue_NoiDung: '',
+      haveValue_Noidung: '',
       value: null,
       dsNhom: [],
       mangtam: [],
@@ -57,8 +57,8 @@ export default class DeXuat extends React.Component {
       selectLyDo: '',
       idgroup: '',
       tengroup: '',
-      Image: null,
-      camera: null,
+      Image: '',
+      camera: '',
     };
   }
   handleTieude(text) {
@@ -69,10 +69,11 @@ export default class DeXuat extends React.Component {
       () => this._render_Dang(),
     );
   }
-  handleNoiDung(text) {
+
+  handleNoidung(text) {
     this.setState(
       {
-        haveValue_NoiDung: text,
+        haveValue_Noidung: text,
       },
       () => this._render_Dang(),
     );
@@ -84,7 +85,7 @@ export default class DeXuat extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: this.state.haveValue_NoiDung,
+      NoiDung: this.state.haveValue_Noidung,
       Id_Group: 0,
       id_khenthuong: 0,
       typepost: '',
@@ -101,7 +102,7 @@ export default class DeXuat extends React.Component {
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
-      Utils.goscreen(this, 'Home', {PostThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',
@@ -127,7 +128,7 @@ export default class DeXuat extends React.Component {
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
       title: this.state.haveValue_TieuDe,
-      NoiDung: this.state.haveValue_NoiDung,
+      NoiDung: this.state.haveValue_Noidung,
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: 0,
       typepost: '',
@@ -143,7 +144,7 @@ export default class DeXuat extends React.Component {
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
-      Utils.goscreen(this, 'Home', {PostThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',
@@ -288,10 +289,12 @@ export default class DeXuat extends React.Component {
   _FileBaiDang_Camera = async () => {
     let strBody;
     {
-      this.state.Image != ''
+      this.state.camera != ''
         ? (strBody = JSON.stringify({
-            image: this.state.camera.data,
-            name: this.state.camera.path.split('/').slice(-1) + '',
+            image: this.state.camera ? this.state.camera.data : null,
+            name: this.state.camera
+              ? this.state.camera.path.split('/').slice(-1) + ''
+              : null,
           }))
         : (strBody = JSON.stringify({
             image: null,
@@ -314,8 +317,8 @@ export default class DeXuat extends React.Component {
   };
 
   _render_Dang = () => {
-    const {haveValue_TieuDe, selectLyDo, haveValue_NoiDung} = this.state;
-    if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo == '') {
+    const {haveValue_TieuDe, selectLyDo} = this.state;
+    if (haveValue_TieuDe && selectLyDo == '') {
       return (
         <View>
           <TouchableOpacity
@@ -327,7 +330,7 @@ export default class DeXuat extends React.Component {
           </TouchableOpacity>
         </View>
       );
-    } else if (haveValue_TieuDe && haveValue_NoiDung && selectLyDo) {
+    } else if (haveValue_TieuDe && selectLyDo) {
       return (
         <View>
           <TouchableOpacity
@@ -381,7 +384,7 @@ export default class DeXuat extends React.Component {
                   }}></Image>
               </TouchableOpacity>
 
-              <Text style={styles.title}>Tạo tin đề xuất</Text>
+              <Text style={styles.title}>Tạo tin nhanh</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
               {this._render_Dang()}
@@ -399,7 +402,6 @@ export default class DeXuat extends React.Component {
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
             </View>
-
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
               Nhập nội dung
             </Text>
@@ -408,7 +410,7 @@ export default class DeXuat extends React.Component {
                 multiline={true}
                 placeholder="Mời bạn nhập nội dung"
                 style={{fontSize: FontSize.reSize(20)}}
-                onChangeText={(text) => this.handleNoiDung(text)}></TextInput>
+                onChangeText={(text) => this.handleNoidung(text)}></TextInput>
             </View>
 
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Chọn nhóm</Text>
@@ -515,18 +517,23 @@ export default class DeXuat extends React.Component {
                 </View>
               )}
               {this.state.camera ? (
-                <ImageBackground
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(200),
-                    marginVertical: 10,
-                  }}
-                  source={{uri: this.state.camera.path}}>
+                <View>
+                  <Image
+                    style={{
+                      height: FontSize.scale(200),
+                      width: FontSize.verticalScale(200),
+                      marginVertical: 10,
+                    }}
+                    source={{uri: this.state.camera.path}}></Image>
                   <TouchableOpacity
                     style={{
+                      // height: FontSize.scale(40),
+                      // width: FontSize.verticalScale(40),
+                      borderRadius: 20,
+                      backgroundColor: 'blue',
                       position: 'absolute',
                       top: 5,
-                      right: 10,
+                      right: 120,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
@@ -536,12 +543,12 @@ export default class DeXuat extends React.Component {
                       style={{
                         height: FontSize.scale(15),
                         width: FontSize.verticalScale(15),
-                        position: 'absolute',
-                        top: 5,
-                        right: 10,
+                        // position: 'absolute',
+                        // top: 5,
+                        // right: 10,
                       }}></Image>
                   </TouchableOpacity>
-                </ImageBackground>
+                </View>
               ) : null}
             </View>
 
@@ -599,13 +606,14 @@ export default class DeXuat extends React.Component {
               )}
 
               {this.state.Image ? (
-                <ImageBackground
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(200),
-                    marginVertical: 10,
-                  }}
-                  source={{uri: this.state.Image.path}}>
+                <View>
+                  <Image
+                    style={{
+                      height: FontSize.scale(200),
+                      width: FontSize.verticalScale(200),
+                      marginVertical: 10,
+                    }}
+                    source={{uri: this.state.Image.path}}></Image>
                   <TouchableOpacity
                     style={{
                       // height: FontSize.scale(40),
@@ -614,7 +622,7 @@ export default class DeXuat extends React.Component {
                       backgroundColor: 'blue',
                       position: 'absolute',
                       top: 5,
-                      right: 10,
+                      right: 120,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
@@ -629,7 +637,7 @@ export default class DeXuat extends React.Component {
                         // right: 10,
                       }}></Image>
                   </TouchableOpacity>
-                </ImageBackground>
+                </View>
               ) : null}
             </View>
             {/* <View style={styles.khung_tieude}>

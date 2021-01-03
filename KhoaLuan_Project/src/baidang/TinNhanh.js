@@ -279,7 +279,7 @@ export default class TinNhanh extends React.Component {
   _FileBaiDang_Camera = async () => {
     let strBody;
     {
-      this.state.Image != ''
+      this.state.camera != ''
         ? (strBody = JSON.stringify({
             image: this.state.camera.data,
             name: this.state.camera.path.split('/').slice(-1) + '',
@@ -495,18 +495,23 @@ export default class TinNhanh extends React.Component {
                 </View>
               )}
               {this.state.camera ? (
-                <ImageBackground
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(200),
-                    marginVertical: 10,
-                  }}
-                  source={{uri: this.state.camera.path}}>
+                <View>
+                  <Image
+                    style={{
+                      height: FontSize.scale(200),
+                      width: FontSize.verticalScale(200),
+                      marginVertical: 10,
+                    }}
+                    source={{uri: this.state.camera.path}}></Image>
                   <TouchableOpacity
                     style={{
+                      // height: FontSize.scale(40),
+                      // width: FontSize.verticalScale(40),
+                      borderRadius: 20,
+                      backgroundColor: 'blue',
                       position: 'absolute',
                       top: 5,
-                      right: 10,
+                      right: 120,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
@@ -516,12 +521,12 @@ export default class TinNhanh extends React.Component {
                       style={{
                         height: FontSize.scale(15),
                         width: FontSize.verticalScale(15),
-                        position: 'absolute',
-                        top: 5,
-                        right: 10,
+                        // position: 'absolute',
+                        // top: 5,
+                        // right: 10,
                       }}></Image>
                   </TouchableOpacity>
-                </ImageBackground>
+                </View>
               ) : null}
             </View>
 
@@ -579,13 +584,14 @@ export default class TinNhanh extends React.Component {
               )}
 
               {this.state.Image ? (
-                <ImageBackground
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(200),
-                    marginVertical: 10,
-                  }}
-                  source={{uri: this.state.Image.path}}>
+                <View>
+                  <Image
+                    style={{
+                      height: FontSize.scale(200),
+                      width: FontSize.verticalScale(200),
+                      marginVertical: 10,
+                    }}
+                    source={{uri: this.state.Image.path}}></Image>
                   <TouchableOpacity
                     style={{
                       // height: FontSize.scale(40),
@@ -594,7 +600,7 @@ export default class TinNhanh extends React.Component {
                       backgroundColor: 'blue',
                       position: 'absolute',
                       top: 5,
-                      right: 10,
+                      right: 120,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
@@ -609,7 +615,7 @@ export default class TinNhanh extends React.Component {
                         // right: 10,
                       }}></Image>
                   </TouchableOpacity>
-                </ImageBackground>
+                </View>
               ) : null}
             </View>
             {/* <View style={styles.khung_tieude}>

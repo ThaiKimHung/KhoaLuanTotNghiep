@@ -14,11 +14,14 @@ const ROOTGlobal = {
   GetDsAllBaiDang: () => {},
   GetChiTietBaiDang: () => {},
   GanDataChitiet: () => {},
+  GetChiTietBaiDang_Nhom: () => {},
+  GanDataChitiet_Nhom: () => {},
   GetDsAllBaiDang_Nhom: () => {},
   GetDsNhom: () => {},
   GetDsUser: () => {},
   GetProfileUser: () => {},
   GetProfileUserTrangCaNhan: () => {},
+  GetDsThongBao: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

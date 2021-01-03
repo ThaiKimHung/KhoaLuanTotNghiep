@@ -46,7 +46,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('id bài đăng', this.state.id_user, idgroup);
+    // console.log('id bài đăng', this.state.id_user, idgroup);
 
     res = await GetDSBaiDang_Nhom(this.state.id_user, idgroup);
     console.log('Danh sách bài đăng Screen all bài đăng:', res);
@@ -79,11 +79,11 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
   };
 
   NhanData = async () => {
-    console.log('id group', this.props.nthis.props.route.params.screennhom);
+    // console.log('id group', this.props.nthis.props.route.params.screennhom);
     this.setState({
       idgroup: this.props.nthis.props.route.params.screennhom,
     });
-    await console.log('state id group', this.state.idgroup);
+    // await console.log('state id group', this.state.idgroup);
   };
 
   _renderItem = ({item, index}) => {
@@ -101,7 +101,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
   };
 
   _onRefresh = () => {
-    this.setState({refresh: true}, () => this._GetDSBaiDang_Nhom);
+    this.setState({refresh: true}, () => this._GetDSBaiDang_Nhom());
   };
 
   componentDidMount = async () => {

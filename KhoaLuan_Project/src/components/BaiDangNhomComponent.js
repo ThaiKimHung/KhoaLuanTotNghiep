@@ -35,7 +35,9 @@ const daubacham = require('../assets/images/daubacham.png');
 const thich = require('../assets/images/thich.png');
 const binhluan = require('../assets/images/binhluan.png');
 const welcome = require('../assets/images/welcome.png');
-
+const noti = require('../assets/images/bell.png');
+const sheld = require('../assets/images/shield.png');
+const light = require('../assets/images/light-bulb.png');
 const windowWidth = Dimensions.get('window').width;
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
 import moment from 'moment';
@@ -88,13 +90,6 @@ export default class BaiDangNhomComponent extends React.Component {
     );
   };
 
-  // HienDsLike = async (item) => {
-  //   await Utils.goscreen(this.props.nthis.props.nthis, 'Home', {
-  //     Dulieu: item,
-  //   });
-  //   // console.log('item truyền về', item);
-  // };
-
   ChuyenData = async (item) => {
     // const {ds = {}} = item;
     console.log('item', item);
@@ -123,6 +118,42 @@ export default class BaiDangNhomComponent extends React.Component {
     let khenthuong = item.KhenThuong ? item.KhenThuong[0] : {};
 
     switch (loaibaidang) {
+      case 1:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <View style={{flexDirection: 'row'}}>
+              <Animatable.Image
+                animation="pulse"
+                iterationCount={10}
+                direction="alternate-reverse"
+                // easing="ease-out"s
+                duration={5000}
+                source={sheld}
+                style={{
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}></Animatable.Image>
+              <View style={{marginLeft: 10}}>
+                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(20)}}>
+                  {item.NoiDung}
+                </Text>
+              </View>
+            </View>
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        );
       case 2:
         return (
           <View
@@ -187,6 +218,42 @@ export default class BaiDangNhomComponent extends React.Component {
             </TouchableOpacity>
           </View>
         );
+      case 3:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <View style={{flexDirection: 'row'}}>
+              <Animatable.Image
+                animation="shake"
+                iterationCount={10}
+                direction="alternate-reverse"
+                // easing="ease-out"s
+                duration={5000}
+                source={noti}
+                style={{
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}></Animatable.Image>
+              <View style={{marginLeft: 10}}>
+                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(20)}}>
+                  {item.NoiDung}
+                </Text>
+              </View>
+            </View>
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        );
       case 4:
         return (
           <View
@@ -205,6 +272,61 @@ export default class BaiDangNhomComponent extends React.Component {
               </TouchableOpacity>
             </ImageBackground>
           </View>
+        );
+      case 6:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
+
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        );
+      case 7:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <View style={{flexDirection: 'row'}}>
+              <Animatable.Image
+                animation="tada"
+                iterationCount={10}
+                direction="alternate-reverse"
+                // easing="ease-out"s
+                duration={5000}
+                source={light}
+                style={{
+                  height: FontSize.scale(50),
+                  width: FontSize.verticalScale(50),
+                }}></Animatable.Image>
+              <View>
+                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(20)}}>
+                  {item.NoiDung}
+                </Text>
+              </View>
+            </View>
+            {item.hinhanh ? (
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+                <Text>có hình ảnh nè</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
         );
       default:
         return (

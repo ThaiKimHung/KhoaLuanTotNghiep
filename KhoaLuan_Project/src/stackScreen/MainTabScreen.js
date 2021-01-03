@@ -17,6 +17,7 @@ import HomeScreen from '../screens/HomeScreen';
 import NhomScreen from '../screens/NhomScreen';
 import ScreenAllUser from '../screens/ScreenAllUser';
 import ScreenCaiDat from '../screens/ScreenCaiDat';
+import ScreenThongBao from '../screens/ScreenThongBao';
 // import ExploreScreen from './ExploreScreen';
 // import ProfileScreen from './ProfileScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -61,6 +62,16 @@ export default class MainTabScreen extends React.Component {
         <HomeStack.Screen
           name="ScreenAllUser"
           component={ScreenAllUser}></HomeStack.Screen>
+      </HomeStack.Navigator>
+    );
+  };
+
+  ThongBaoStackScreen = () => {
+    return (
+      <HomeStack.Navigator headerMode="none">
+        <HomeStack.Screen
+          name="ScreenThongBao"
+          component={ScreenThongBao}></HomeStack.Screen>
       </HomeStack.Navigator>
     );
   };
@@ -132,6 +143,35 @@ export default class MainTabScreen extends React.Component {
             tabBarIcon: ({focused, color, size}) => (
               <Icon
                 name="users"
+                size={size ? size : 24}
+                color={focused ? color : '#222222'}
+                focused={focused}
+                color={color}
+              />
+            ),
+          }}
+          // <Image
+          //       source={group}
+          //       style={{
+          //         height: FontSize.scale(26),
+          //         width: FontSize.verticalScale(26),
+          //       }}></Image>
+        />
+        <Tab.Screen
+          name="ThongBao"
+          component={this.ThongBaoStackScreen}
+          listeners={{
+            tabPress: () => {
+              // Prevent default action
+              // ROOTGlobal.GetDsNhom();
+            },
+          }}
+          options={{
+            tabBarLabel: 'Thông báo',
+
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon
+                name="bell"
                 size={size ? size : 24}
                 color={focused ? color : '#222222'}
                 focused={focused}

@@ -27,6 +27,7 @@ import {
   GetChiTietBaiDang,
   AddLike,
   DeleteBaiDang_Like,
+  AddThongBao,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -62,6 +63,9 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       dsCmt: [],
       title: '',
       noidung: '',
+      day: '',
+      loaibaidang: '',
+      idbaidang: '',
     };
     this.idBaiDang = '';
     this.id_user = '';
@@ -69,6 +73,17 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     ROOTGlobal.GetChiTietBaiDang = this._GetChiTietBaiDang;
     ROOTGlobal.GanDataChitiet = this.GanData;
   }
+
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã bình luận một bài viết',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    console.log('res add thông báo', res);
+  };
 
   _GetChiTietBaiDang = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
@@ -112,6 +127,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       this.setState({
         text_Cmt: '',
       });
+      await this._AddThongBao();
       await this._GetChiTietBaiDang();
       await this.GanData();
     } else {
@@ -253,6 +269,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       dsCmt: await this.state.ChiTietBD[0].Coment,
       title: await this.state.ChiTietBD[0].title,
       noidung: await this.state.ChiTietBD[0].NoiDung,
+      day: await this.state.ChiTietBD[0].CreatedDate,
+      loaibaidang: await this.state.ChiTietBD[0].Id_LoaiBaiDang,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
@@ -266,6 +284,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
     this.idBaiDang = id_nguoidang.Id_BaiDang;
+    console.log('id bài đăng===============', id_nguoidang.Id_BaiDang);
     this.id_user = user.ID_user;
     let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
@@ -395,9 +414,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
-    let day = id_nguoidang.CreatedDate;
-    let ngay = day.substring(0, 10);
-    let time = day.substring(11, 16);
+    let ngay = this.state.day.substring(0, 10);
+    let time = this.state.day.substring(11, 16);
     let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
     return (
       <View style={styles.container}>

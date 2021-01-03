@@ -25,7 +25,7 @@ import {GetDSBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 const avatar = require('../assets/images/avatar.png');
-export default class BaiDangComponentScreen extends React.Component {
+export default class ScreenAllBaiDang extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

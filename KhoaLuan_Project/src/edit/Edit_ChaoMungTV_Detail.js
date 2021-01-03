@@ -147,7 +147,7 @@ export default class Edit_ChaoMungTV extends React.Component {
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
-    console.log('id người đằng', id_nguoidang);
+    // console.log('id người đằng', id_nguoidang);
     this.setState({
       title: id_nguoidang[0].title,
       noidung: id_nguoidang[0].NoiDung,
@@ -155,9 +155,9 @@ export default class Edit_ChaoMungTV extends React.Component {
       idbaidang: id_nguoidang[0].Id_BaiDang,
       idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
     });
-    await console.log('data mang ve', this.state.DataChuyenVe);
-    await console.log('ten', this.state.title);
-    await console.log('id bai dang', this.state.idbaidang);
+    // await console.log('data mang ve', this.state.DataChuyenVe);
+    // await console.log('ten', this.state.title);
+    // await console.log('id bai dang', this.state.idbaidang);
 
     // console.log('noi dung', this.noidung);
   };

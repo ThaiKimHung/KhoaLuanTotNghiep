@@ -299,6 +299,18 @@ async function GetDSThongBao() {
   return res;
 }
 
+async function GetDSThongBaoNgoaiTru(iduser) {
+  let res = await Utils.get_api(
+    apiUser + `GetDSThongBaoNgoaiTru?iduser=${iduser}`,
+  );
+  return res;
+}
+
+async function Danhdaudadoc() {
+  let res = await Utils.post_api(apiUser + `UpdateTinhTrangTrueAllThongBao`);
+  return res;
+}
+
 async function Update_ThongBao(idbaidang) {
   let res = await Utils.post_api(
     apiUser + `UpdateTinhTrangTrueThongBao?id_thongbao=${idbaidang}`,
@@ -363,6 +375,8 @@ export {
   AvatarUser,
   AddThongBao,
   GetDSThongBao,
+  GetDSThongBaoNgoaiTru,
+  Danhdaudadoc,
   Update_ThongBao,
   Delete_ThongBao,
 };

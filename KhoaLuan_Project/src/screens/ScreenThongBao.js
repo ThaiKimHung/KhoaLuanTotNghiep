@@ -18,6 +18,8 @@ import {
   GetDSThongBao,
   Update_ThongBao,
   Delete_ThongBao,
+  GetDSThongBaoNgoaiTru,
+  Danhdaudadoc,
 } from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
@@ -40,7 +42,9 @@ export default class SearchUser extends React.Component {
     };
   }
   _GetDSThongBao = async () => {
-    let res = await GetDSThongBao();
+    let res = await GetDSThongBaoNgoaiTru(
+      await Utils.ngetStorage(nkey.id_user),
+    );
     console.log('ress all thong báo', res);
     if (res.status == 1) {
       this.setState({
@@ -51,6 +55,12 @@ export default class SearchUser extends React.Component {
       this.setState({refresh: false});
       alert('thất bại');
     }
+  };
+
+  _DanhdaudadocAll = async () => {
+    let res = await Danhdaudadoc();
+    console.log('res dánh dấu đã dọc', res);
+    this._GetDSThongBao();
   };
 
   _UpdateThongBao = async (idthongbao) => {
@@ -229,6 +239,13 @@ export default class SearchUser extends React.Component {
             <Text style={styles.title}>Thông báo</Text>
           </View>
         </View>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={{alignItems: 'flex-end'}}
+            onPress={() => this._DanhdaudadocAll()}>
+            <Text>Đánh dấu đã đọc tất cả</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.footer}>
           <FlatList
@@ -254,12 +271,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    // backgroundColor: '#4285F4',
-    height: '8%',
+    backgroundColor: '#4285F4',
+    margin: 5,
+    height: FontSize.scale(20),
     justifyContent: 'center',
-    width: '100%',
-    padding: 10,
-    borderRadius: 10,
+    // width: '100%',
+    paddingHorizontal: 20,
+    borderRadius: 50,
   },
   footer: {
     // flex: 1,

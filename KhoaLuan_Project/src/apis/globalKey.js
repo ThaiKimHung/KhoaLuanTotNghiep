@@ -20,6 +20,7 @@ export const nGlobalKeys = {
   TinhTrang: 'tinhtrang',
   DanhSachLike: {},
   idbaidang: 'idbaidang',
+  idloaibaidang: 'idloaibaidang',
 
   notification: 'notification',
   dataNotifycation: 'dataNotifycation',

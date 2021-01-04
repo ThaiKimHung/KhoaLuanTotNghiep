@@ -322,7 +322,7 @@ export default class Screen_EditBaiDang_Detail_Nhom extends React.Component {
         );
 
       case 2:
-        return Utils.goscreen(this, 'Edit_KhenThuong_Detail_Nhom', {
+        return Utils.goscreen(this, 'Edit_KhenThuong_DetailNhom', {
           id_nguoidang: this.props.route.params,
         });
       case 3:
@@ -427,7 +427,7 @@ export default class Screen_EditBaiDang_Detail_Nhom extends React.Component {
           </View>
         );
       case 4:
-        return Utils.goscreen(this, 'Edit_ChaoMungTV_Detail_Nhom', {
+        return Utils.goscreen(this, 'Edit_ChaoMung_Detail_Nhom', {
           id_nguoidang: this.props.route.params,
         });
       case 6:

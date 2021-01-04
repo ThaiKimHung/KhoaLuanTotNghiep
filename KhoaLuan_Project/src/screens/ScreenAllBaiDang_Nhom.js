@@ -41,14 +41,14 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
 
   _GetDSBaiDang_Nhom = async () => {
     const idgroup = this.props.nthis.props.route.params.screennhom;
-
+    const {id_nguoidang = {}} = this.props.nthis.props.route.params;
     let res = '';
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
     // console.log('id bài đăng', this.state.id_user, idgroup);
 
-    res = await GetDSBaiDang_Nhom(this.state.id_user, idgroup);
+    res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
     console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       this.setState({
@@ -109,7 +109,8 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     await this.NhanData();
   };
   render() {
-    // console.log('this screel all bai dang nhom', this.props);
+    const {id_nguoidang = {}} = this.props.nthis.props.route.params;
+    console.log('this screel all bai dang nhom', id_nguoidang);
     return (
       <View>
         <FlatList

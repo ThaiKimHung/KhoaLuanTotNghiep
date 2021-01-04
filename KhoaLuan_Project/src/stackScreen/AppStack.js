@@ -76,6 +76,7 @@ import Edit_TrangThongTinCaNhan from '../edit/Edit_TrangThongTinCaNhan';
 import Edit_ChaoMung_Detail_Nhom from '../edit/Edit_ChaoMung_Detail_Nhom ';
 import Edit_KhenThuong_DetailNhom from '../edit/Edit_KhenThuong_DetailNhom';
 
+import BaiDangNhom from '../go/BaiDangNhom';
 import Test from '../screens/Test';
 // import
 
@@ -189,6 +190,7 @@ const HomeStackScreen = () => (
       name="Edit_KhenThuong_DetailNhom"
       component={Edit_KhenThuong_DetailNhom}
     />
+    <HomeStack.Screen name="BaiDangNhom" component={BaiDangNhom} />
     {/* ChaoMungThanhVienMoi */}
   </HomeStack.Navigator>
 );

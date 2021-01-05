@@ -24,6 +24,7 @@ import {
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import moment from 'moment';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 const avatar = require('../assets/images/avatar.png');
 const goback = require('../assets/images/go-back-left-arrow.png');
@@ -40,6 +41,7 @@ export default class SearchUser extends React.Component {
       searchText: '',
       filteredData: [],
     };
+    ROOTGlobal.GetDsThongBao = this._GetDSThongBao;
   }
   _GetDSThongBao = async () => {
     let res = await GetDSThongBaoNgoaiTru(
@@ -80,7 +82,13 @@ export default class SearchUser extends React.Component {
     return (
       <View>
         {item.tinhtrang == true ? (
-          <TouchableOpacity style={[styles.khungchua]}>
+          <TouchableOpacity
+            style={[styles.khungchua]}
+            onPress={() =>
+              Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao', {
+                id_nguoidang: item,
+              })
+            }>
             <View
               style={{
                 marginLeft: 5,
@@ -153,7 +161,13 @@ export default class SearchUser extends React.Component {
               borderBottomWidth: 1,
               borderBottomColor: '#C0C0C0',
               //   backgroundColor: '#C0C0C020',
-            }}>
+            }}
+            onPress={
+              (() => this._UpdateThongBao(item.id_tb),
+              Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao', {
+                id_nguoidang: item,
+              }))
+            }>
             <View
               style={{
                 marginLeft: 5,

@@ -23,6 +23,8 @@ const ROOTGlobal = {
   GetProfileUserTrangCaNhan: () => {},
   GetDsThongBao: () => {},
   getGo: () => {},
+  GetChiTietBaiDang_ThongBao: () => {},
+  DemSoLuong: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

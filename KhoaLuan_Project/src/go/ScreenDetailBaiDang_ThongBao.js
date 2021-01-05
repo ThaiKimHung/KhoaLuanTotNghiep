@@ -51,7 +51,7 @@ const light = require('../assets/images/light-bulb.png');
 
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenDetailBaiDang extends React.Component {
+export default class ScreenDetailBaiDang_ThongBao extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,14 +69,16 @@ export default class ScreenDetailBaiDang extends React.Component {
       title: '',
       noidung: '',
       day: '',
+      group: '',
       // ngay: '',
       // time: '',
+      idbaidang: '',
     };
     this.idBaiDang = '';
     this.id_user = '';
     this.id_like = 1;
-    ROOTGlobal.GetChiTietBaiDang = this._GetChiTietBaiDang;
-    ROOTGlobal.GanDataChitiet = this.GanData;
+    ROOTGlobal.GetChiTietBaiDang_ThongBao = this._GetChiTietBaiDang;
+    // ROOTGlobal.GanDataChitiet = this.GanData;
   }
 
   _AddThongBao = async () => {
@@ -89,26 +91,33 @@ export default class ScreenDetailBaiDang extends React.Component {
     let res = await AddThongBao(strBody);
     console.log('res add thông báo', res);
   };
+
   _GetChiTietBaiDang = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
-    let res = await GetChiTietBaiDang(id_user, this.idBaiDang);
+    let res = await GetChiTietBaiDang(id_user, await this.state.idbaidang);
     console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.data,
+        refresh: false,
       });
+      this.GanData();
       await console.log('chi tiết bd', this.state.ChiTietBD);
       // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
+    } else {
+      this.setState({
+        refresh: false,
+      });
     }
   };
   GetData = () => {
     if (this.props.route.params != null) {
       this.setState({
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     } else {
-      this.setState({refresh: !this.state.refresh});
+      this.setState({refresh: false});
     }
   };
 
@@ -116,7 +125,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
     let strBody = JSON.stringify({
-      ID_BaiDang: this.idBaiDang,
+      ID_BaiDang: this.state.idbaidang,
       NoiDung_cmt: this.state.text_Cmt,
       typepost: '',
       // CreatedDate: date + 'T' + time,
@@ -190,7 +199,7 @@ export default class ScreenDetailBaiDang extends React.Component {
             <TouchableOpacity
               style={styles.khung_tenUser_Cmt}
               onLongPress={() => {
-                Utils.goscreen(this, 'PopUpModal_CMT', {
+                Utils.goscreen(this, 'PopUpModal_CMT_ThongBao', {
                   Detail_Cmt: item,
                 });
               }}>
@@ -225,8 +234,12 @@ export default class ScreenDetailBaiDang extends React.Component {
     );
   };
 
-  TaoLike = async (idbaidang, idlike, iduser) => {
-    let res = await AddLike(idbaidang, idlike, iduser);
+  TaoLike = async (idlike) => {
+    let res = await AddLike(
+      this.state.idbaidang,
+      idlike,
+      await Utils.ngetStorage(nkey.id_user),
+    );
     console.log('ress add like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
@@ -277,12 +290,22 @@ export default class ScreenDetailBaiDang extends React.Component {
       title: await this.state.ChiTietBD[0].title,
       noidung: await this.state.ChiTietBD[0].NoiDung,
       day: await this.state.ChiTietBD[0].CreatedDate,
+      group: await this.state.ChiTietBD[0].Group,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
     // await console.log('day', this.state.day);
     // await console.log('ngay', this.state.ngay);
     // await console.log('time', this.state.time);
+  };
+
+  nhanData = async () => {
+    const {id_nguoidang = {}} = this.props.route.params;
+    await Utils.setGlobal(nGlobalKeys.idbaidang, id_nguoidang.id_baidang);
+    console.log('id bài đăng', id_nguoidang.id_baidang);
+    this.setState({
+      idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
+    });
   };
 
   loadNoiDung = () => {
@@ -585,24 +608,26 @@ export default class ScreenDetailBaiDang extends React.Component {
   };
 
   async componentDidMount() {
-    await this.GetData();
+    await this.nhanData();
+    // await this.GetData();
     await this._GetChiTietBaiDang();
-    await this.GanData();
+    // await this.GanData();
     // console.log()
   }
 
   render() {
     // console.log('this detail', this);
-    const {id_nguoidang = {}} = this.props.route.params;
-    this.idBaiDang = id_nguoidang.Id_BaiDang;
+    // const {id_nguoidang = {}} = this.props.route.params;
+    // console.log('this detail', id_nguoidang);
+    // this.idBaiDang = id_nguoidang.Id_BaiDang;
     // let day = id_nguoidang.CreatedDate;
     let ngay = this.state.day.substring(0, 10);
     let time = this.state.day.substring(11, 16);
-    let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
+    let group = this.state.group ? this.state.group[0] : {};
     return (
       <View style={styles.container}>
         <GoBack
-          name=""
+          name="chi ttee"
           onPress={() => {
             Utils.goback(this, '');
             ROOTGlobal.GetDsAllBaiDang();
@@ -700,7 +725,7 @@ export default class ScreenDetailBaiDang extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onPress={() => {
-                  this.DeleteLike(this.idBaiDang);
+                  this.DeleteLike(this.state.idbaidang);
                 }}>
                 <SvgUri
                   width={FontSize.scale(20)}
@@ -722,16 +747,12 @@ export default class ScreenDetailBaiDang extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onLongPress={async () => {
-                  Utils.goscreen(this, 'ModalLike_Detail', {
+                  Utils.goscreen(this, 'ModalLike_Detail_ThongBao', {
                     id_nguoidang: this.props,
                   });
                 }}
                 onPress={async () => {
-                  this.TaoLike(
-                    this.idBaiDang,
-                    this.id_like,
-                    await Utils.ngetStorage(nkey.id_user),
-                  );
+                  this.TaoLike(this.id_like);
                 }}>
                 <Image style={styles.imageLike_Commnet1} source={thich} />
                 <Text

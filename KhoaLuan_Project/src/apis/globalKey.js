@@ -21,6 +21,7 @@ export const nGlobalKeys = {
   DanhSachLike: {},
   idbaidang: 'idbaidang',
   idloaibaidang: 'idloaibaidang',
+  soluong: 0,
 
   notification: 'notification',
   dataNotifycation: 'dataNotifycation',

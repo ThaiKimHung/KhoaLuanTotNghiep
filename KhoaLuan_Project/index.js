@@ -4,6 +4,7 @@
 
 import {AppRegistry} from 'react-native';
 import App from './App';
+
 import {name as appName} from './app.json';
 // import SplashScreen from './src/screens/SplashScreen';
 // import SignInScreen from './src/screens/SignInScreen';
@@ -24,7 +25,7 @@ import {name as appName} from './app.json';
 // import TinNhanh from './src/baidang/TinNhanh';
 
 // import DanhSachLike from './src/components/DanhSachLike';
-import Test2 from './src/screens/Test2';
+import Test from './src/screens/Test';
 // import ModalLike from './src/modal/ModalLike';
 // // import EditKhenThuong from './src/edit/EditKhenThuong';
 

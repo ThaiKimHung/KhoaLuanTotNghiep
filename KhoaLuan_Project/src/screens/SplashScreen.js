@@ -21,8 +21,14 @@ import {Avatar, Accessory} from 'react-native-elements';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Login, PostTinhTrang, GetDSLike} from '../apis/apiUser';
+import {
+  Login,
+  PostTinhTrang,
+  GetDSLike,
+  CountSoLuong_ThongBao,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
+import {ROOTGlobal} from '../apis/dataGlobal';
 
 const avatar = require('../assets/images/avatar.png');
 const logo = require('../assets/images/Jeelogo.png');
@@ -40,7 +46,9 @@ export default class SplashScreen2 extends React.Component {
       id: '',
       loading: true,
       DSLike: [],
+      soluong: '',
     };
+    // ROOTGlobal.DemSoLuong = this._DemSoLuongThongBao;
   }
 
   _getThongTin = async () => {
@@ -75,7 +83,9 @@ export default class SplashScreen2 extends React.Component {
   };
 
   chuyenTrang() {
+    () => ROOTGlobal.DemSoLuong();
     Utils.goscreen(this, 'HomeStackScreen');
+
     // this.props.navigation.navigate('HomeStackScreen');
     showMessage({
       message: 'Thông báo',
@@ -95,6 +105,20 @@ export default class SplashScreen2 extends React.Component {
         }),
       2000,
     );
+  _DemSoLuongThongBao = async () => {
+    let res = await CountSoLuong_ThongBao(
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    console.log('res so luong thong bao------------------', res);
+    if (res.status == 1) {
+      this.setState({
+        soluong: res.Data,
+      });
+      await console.log('sol uong', this.state.soluong);
+      await console.log('hiiii----------', res.Data);
+      await Utils.setGlobal(nGlobalKeys.soluong, this.state.soluong);
+    }
+  };
   _GetDSLike = async () => {
     let res = await GetDSLike();
     console.log('ress ds like', res);
@@ -110,6 +134,7 @@ export default class SplashScreen2 extends React.Component {
     this._getThongTin();
     this.closeActivityIndicator();
     this._GetDSLike();
+    // this._DemSoLuongThongBao();
   }
 
   render() {

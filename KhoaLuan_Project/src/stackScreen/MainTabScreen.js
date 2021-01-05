@@ -26,6 +26,12 @@ import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {useIsFocused} from '@react-navigation/native';
 import {ROOTGlobal} from '../apis/dataGlobal';
 
+import Utils from '../apis/Utils';
+
+import {CountSoLuong_ThongBao} from '../apis/apiUser';
+import {nGlobalKeys} from '../apis/globalKey';
+import {nkey} from '../apis/keyStore';
+
 const HomeStack = createStackNavigator();
 const DetailStack = createStackNavigator();
 const Tab = AnimatedTabBarNavigator();
@@ -36,6 +42,13 @@ const install = require('../assets/images/installation-symbol.png');
 const thongtin = require('../assets/images/id-card.png');
 
 export default class MainTabScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      soluong: '',
+    };
+    // ROOTGlobal.DemSoLuong = this._DemSoLuongThongBao;
+  }
   HomeStackScreen = () => {
     // const isFocused = useIsFocused();
     return (
@@ -86,6 +99,38 @@ export default class MainTabScreen extends React.Component {
     );
   };
 
+  _DemSoLuongThongBao = async () => {
+    let res = await CountSoLuong_ThongBao(
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    console.log('res so luong thong bao------------------', res);
+    if (res.status == 1) {
+      this.setState({
+        soluong: res.Data,
+      });
+      // await console.log('sol uong', this.state.soluong);
+      await console.log('hiiii----------', res.Data);
+      await Utils.setGlobal(nGlobalKeys.soluong, res.Data);
+    }
+  };
+
+  ham = async () => {
+    setInterval(async () => {
+      this._DemSoLuongThongBao();
+      // this.setState({
+      //   soluong: await Utils.getGlobal(nGlobalKeys.soluong),
+      // });
+    }, 5000);
+  };
+
+  componentDidMount = async () => {
+    // this._DemSoLuongThongBao();
+    // this.ham();
+    //  var timer = setInterval(() => {
+    //    console.log('I do not leak!');
+    //  }, 5000);
+  };
+
   render() {
     return (
       <Tab.Navigator
@@ -103,6 +148,7 @@ export default class MainTabScreen extends React.Component {
           listeners={{
             tabPress: () => {
               // Prevent default action
+              // ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsAllBaiDang();
             },
           }}
@@ -118,6 +164,7 @@ export default class MainTabScreen extends React.Component {
                 focused={focused}
                 color={color}
               />
+
               // <Image
               //   source={home}
               //   style={{
@@ -134,6 +181,7 @@ export default class MainTabScreen extends React.Component {
           listeners={{
             tabPress: () => {
               // Prevent default action
+              // ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsNhom();
             },
           }}
@@ -163,20 +211,53 @@ export default class MainTabScreen extends React.Component {
           listeners={{
             tabPress: () => {
               // Prevent default action
-              // ROOTGlobal.GetDsNhom();
+              // ROOTGlobal.DemSoLuong();
+              // this.ham();
+              ROOTGlobal.GetDsThongBao();
             },
           }}
           options={{
             tabBarLabel: 'Thông báo',
-
+            tabBarBadge: 3,
+            // tabBarBadgeStyle: {back},
             tabBarIcon: ({focused, color, size}) => (
-              <Icon
-                name="bell"
-                size={size ? size : 24}
-                color={focused ? color : '#222222'}
-                focused={focused}
-                color={color}
-              />
+              <View style={{flexDirection: 'row'}}>
+                {/* {this.state.soluong != 0 ? (
+                  <View
+                    style={{
+                      top: -10,
+                      right: -30,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'red',
+                      borderRadius: 10,
+                      width: FontSize.verticalScale(20),
+                    }}>
+                    <Text>{this}</Text>
+                  </View>
+                ) : ( */}
+                {/* <View
+                  style={{
+                    top: -10,
+                    right: -30,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'red',
+                    borderRadius: 10,
+                    width: FontSize.verticalScale(20),
+                  }}>
+                  <Text>{this.state.soluong}</Text>
+                </View> */}
+                {/* )} */}
+
+                <Icon
+                  name="bell"
+                  size={size ? size : 24}
+                  color={focused ? color : '#222222'}
+                  focused={focused}
+                  color={color}
+                />
+              </View>
             ),
           }}
           // <Image
@@ -192,6 +273,7 @@ export default class MainTabScreen extends React.Component {
           listeners={{
             tabPress: () => {
               // Prevent default action
+              ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsUser();
             },
           }}

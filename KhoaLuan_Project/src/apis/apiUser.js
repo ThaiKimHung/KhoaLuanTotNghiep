@@ -299,10 +299,20 @@ async function GetDSThongBao() {
   return res;
 }
 
+async function GetThongBao() {
+  let res = await Utils.post_api(apiUser + `GetThongBaone`);
+  return res;
+}
+
 async function GetDSThongBaoNgoaiTru(iduser) {
   let res = await Utils.get_api(
     apiUser + `GetDSThongBaoNgoaiTru?iduser=${iduser}`,
   );
+  return res;
+}
+
+async function CountSoLuong_ThongBao(iduser) {
+  let res = await Utils.get_api(apiUser + `Count_ThongBao?iduser=${iduser}`);
   return res;
 }
 
@@ -379,4 +389,6 @@ export {
   Danhdaudadoc,
   Update_ThongBao,
   Delete_ThongBao,
+  GetThongBao,
+  CountSoLuong_ThongBao,
 };

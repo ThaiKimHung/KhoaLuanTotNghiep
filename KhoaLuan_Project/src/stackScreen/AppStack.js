@@ -46,6 +46,9 @@ import PopUpModal_XoaSua_Detail_Nhom from '../modal/PopUpModal_XoaSua_Detail_Nho
 import PopUpModal_XoaSua_Nhom from '../modal/PopUpModal_XoaSua_Nhom';
 import ModalLike_Nhom from '../modal/ModalLike_Nhom';
 import ModalLike_Detail_Nhom from '../modal/ModalLike_Detail_Nhom';
+import ModalLike_Detail_ThongBao from '../modal/ModalLike_Detail_ThongBao';
+import PopUpModal_CMT_ThongBao from '../modal/PopUpModal_CMT_ThongBao';
+import PopUpModal_SuaCMT_ThongBao from '../modal/PopUpModal_SuaCMT_ThongBao';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
@@ -77,6 +80,7 @@ import Edit_ChaoMung_Detail_Nhom from '../edit/Edit_ChaoMung_Detail_Nhom ';
 import Edit_KhenThuong_DetailNhom from '../edit/Edit_KhenThuong_DetailNhom';
 
 import BaiDangNhom from '../go/BaiDangNhom';
+import ScreenDetailBaiDang_ThongBao from '../go/ScreenDetailBaiDang_ThongBao';
 import Test from '../screens/Test';
 // import
 
@@ -137,7 +141,6 @@ const HomeStackScreen = () => (
       name="ScreenDetailBaiDang_Nhom"
       component={ScreenDetailBaiDang_Nhom}
     />
-
     <HomeStack.Screen
       name="Screen_EditBaiDang_Nhom"
       component={Screen_EditBaiDang_Nhom}
@@ -146,15 +149,6 @@ const HomeStackScreen = () => (
       name="Screen_EditBaiDang_Detail_Nhom"
       component={Screen_EditBaiDang_Detail_Nhom}
     />
-
-    {/* <HomeStack.Screen
-      name="Edit_KhenThuong_Detail_Nhom"
-      component={Edit_KhenThuong_Detail_Nhom}
-    /> */}
-    {/* <HomeStack.Screen
-      name="Edit_ChaoMungTV_Detail_Nhom"
-      component={Edit_ChaoMungTV_Detail_Nhom}
-    /> */}
     <HomeStack.Screen
       name="Edit_ChaoMungTV_Nhom"
       component={Edit_ChaoMungTV_Nhom}
@@ -191,7 +185,10 @@ const HomeStackScreen = () => (
       component={Edit_KhenThuong_DetailNhom}
     />
     <HomeStack.Screen name="BaiDangNhom" component={BaiDangNhom} />
-    {/* ChaoMungThanhVienMoi */}
+    <HomeStack.Screen
+      name="ScreenDetailBaiDang_ThongBao"
+      component={ScreenDetailBaiDang_ThongBao}
+    />
   </HomeStack.Navigator>
 );
 
@@ -258,13 +255,11 @@ const AppStack = () => {
       />
       <Stack.Screen name="ModalLike" component={ModalLike} />
       <Stack.Screen name="ModalLike_Detail" component={ModalLike_Detail} />
-
       <Stack.Screen name="ModalLike_Nhom" component={ModalLike_Nhom} />
       <Stack.Screen
         name="ModalLike_Detail_Nhom"
         component={ModalLike_Detail_Nhom}
       />
-
       <Stack.Screen
         name="PopUpModal_XoaSua_Detail"
         component={PopUpModal_XoaSua_Detail}
@@ -276,6 +271,18 @@ const AppStack = () => {
       <Stack.Screen name="PopUpModal_CMT" component={PopUpModal_CMT} />
       <Stack.Screen name="Modal_CaiDatNhom" component={Modal_CaiDatNhom} />
       <Stack.Screen name="PopUpModal_SuaCMT" component={PopUpModal_SuaCMT} />
+      <Stack.Screen
+        name="ModalLike_Detail_ThongBao"
+        component={ModalLike_Detail_ThongBao}
+      />
+      <Stack.Screen
+        name="PopUpModal_CMT_ThongBao"
+        component={PopUpModal_CMT_ThongBao}
+      />
+      <Stack.Screen
+        name="PopUpModal_SuaCMT_ThongBao"
+        component={PopUpModal_SuaCMT_ThongBao}
+      />
     </Stack.Navigator>
   );
 };

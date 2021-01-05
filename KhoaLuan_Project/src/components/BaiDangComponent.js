@@ -340,7 +340,11 @@ export default class BaiDangComponenet extends React.Component {
     );
   };
 
-  componentDidMount = async () => {};
+  componentDidMount = async () => {
+    // setInterval(() => {
+    //   console.log('day la set interval');
+    // }, 10000);
+  };
 
   render() {
     const {item = {}} = this.props;

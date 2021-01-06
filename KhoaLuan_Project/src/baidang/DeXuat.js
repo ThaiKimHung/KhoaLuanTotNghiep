@@ -95,10 +95,10 @@ export default class DeXuat extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh', strBody);
+    // console.log('strBody tin nhanh', strBody);
 
     let res = await PostBaiDang(strBody);
-    console.log('ress tin nhanh', res);
+    // console.log('ress tin nhanh', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -138,9 +138,9 @@ export default class DeXuat extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});

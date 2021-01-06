@@ -44,7 +44,7 @@ async function post_api(
       body: strBody,
     });
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
     if (res.status == 0) {
       nlog('[API]Lỗi API------------:', res);
     }

@@ -103,35 +103,31 @@ export default class MainTabScreen extends React.Component {
     let res = await CountSoLuong_ThongBao(
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log('res so luong thong bao------------------', res);
+    // console.log('res so luong thong bao------------------', res);
     if (res.status == 1) {
       this.setState({
-        soluong: res.Data,
+        soluong: res.Data.soluong,
       });
       // await console.log('sol uong', this.state.soluong);
-      await console.log('hiiii----------', res.Data);
-      await Utils.setGlobal(nGlobalKeys.soluong, res.Data);
     }
   };
 
   ham = async () => {
     setInterval(async () => {
       this._DemSoLuongThongBao();
-      // this.setState({
-      //   soluong: await Utils.getGlobal(nGlobalKeys.soluong),
-      // });
-    }, 5000);
+    }, 1000);
   };
 
   componentDidMount = async () => {
     // this._DemSoLuongThongBao();
-    // this.ham();
+    await this.ham();
     //  var timer = setInterval(() => {
     //    console.log('I do not leak!');
     //  }, 5000);
   };
 
   render() {
+    const {soluong} = this.state;
     return (
       <Tab.Navigator
         // tabBar=
@@ -218,25 +214,11 @@ export default class MainTabScreen extends React.Component {
           }}
           options={{
             tabBarLabel: 'Thông báo',
-            tabBarBadge: 3,
+            // tabBarBadge: 3,
             // tabBarBadgeStyle: {back},
             tabBarIcon: ({focused, color, size}) => (
               <View style={{flexDirection: 'row'}}>
-                {/* {this.state.soluong != 0 ? (
-                  <View
-                    style={{
-                      top: -10,
-                      right: -30,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: 'red',
-                      borderRadius: 10,
-                      width: FontSize.verticalScale(20),
-                    }}>
-                    <Text>{this}</Text>
-                  </View>
-                ) : ( */}
-                {/* <View
+                <View
                   style={{
                     top: -10,
                     right: -30,
@@ -246,9 +228,8 @@ export default class MainTabScreen extends React.Component {
                     borderRadius: 10,
                     width: FontSize.verticalScale(20),
                   }}>
-                  <Text>{this.state.soluong}</Text>
-                </View> */}
-                {/* )} */}
+                  <Text>{soluong}</Text>
+                </View>
 
                 <Icon
                   name="bell"
@@ -273,7 +254,7 @@ export default class MainTabScreen extends React.Component {
           listeners={{
             tabPress: () => {
               // Prevent default action
-              ROOTGlobal.DemSoLuong();
+              // ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsUser();
             },
           }}

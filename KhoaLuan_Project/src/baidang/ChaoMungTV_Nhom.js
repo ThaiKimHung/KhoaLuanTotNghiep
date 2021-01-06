@@ -64,9 +64,9 @@ export default class ChaoMungTV extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    // console.log('res add thông báo', res);
   };
 
   _PostBaiDang_Nhom = async () => {
@@ -84,9 +84,9 @@ export default class ChaoMungTV extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -147,11 +147,11 @@ export default class ChaoMungTV extends React.Component {
             tengroup: this.props.route.params.tennhom,
           })
         : null;
-      await console.log(
-        'this.state.idgroup và tên group =====',
-        this.state.idgroup,
-        this.state.tengroup,
-      );
+      // await console.log(
+      //   'this.state.idgroup và tên group =====',
+      //   this.state.idgroup,
+      //   this.state.tengroup,
+      // );
     }
   };
   componentDidMount = async () => {

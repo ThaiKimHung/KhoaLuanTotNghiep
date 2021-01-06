@@ -77,9 +77,9 @@ export default class DeXuat_Nhom extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    // console.log('res add thông báo', res);
   };
 
   _PostBaiDang_Nhom = async () => {
@@ -97,9 +97,9 @@ export default class DeXuat_Nhom extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
       Utils.goscreen(this, 'ScreenBaiDangNhom');
       showMessage({
@@ -157,11 +157,11 @@ export default class DeXuat_Nhom extends React.Component {
             tengroup: this.props.route.params.tennhom,
           })
         : null;
-      await console.log(
-        'this.state.idgroup và tên group =====',
-        this.state.idgroup,
-        this.state.tengroup,
-      );
+      // await console.log(
+      //   'this.state.idgroup và tên group =====',
+      //   this.state.idgroup,
+      //   this.state.tengroup,
+      // );
     }
   };
 
@@ -173,11 +173,11 @@ export default class DeXuat_Nhom extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('image--------', image);
+        // console.log('image--------', image);
         this.setState({
           Image: image,
         });
-        console.log('state image =====', this.state.Image);
+        // console.log('state image =====', this.state.Image);
         // this.hamTest();
       })
       .catch((e) => {
@@ -193,11 +193,11 @@ export default class DeXuat_Nhom extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('camera =============', image);
+        // console.log('camera =============', image);
         this.setState({
           camera: image,
         });
-        console.log('state camera =====', this.state.camera);
+        // console.log('state camera =====', this.state.camera);
       })
       .catch((e) => {
         // alert(e);
@@ -207,7 +207,7 @@ export default class DeXuat_Nhom extends React.Component {
   xoaAnh = () => {
     ImagePicker.clean()
       .then(() => {
-        console.log('removed all tmp images from tmp directory');
+        // console.log('removed all tmp images from tmp directory');
         this.setState({
           Image: '',
           camera: '',
@@ -231,9 +231,9 @@ export default class DeXuat_Nhom extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Galary---------', strBody);
+    // console.log('strBody file ảnh Galary---------', strBody);
     let res = await FileBaiDang(strBody);
-    console.log('res file ảnh Galary-----', res);
+    // console.log('res file ảnh Galary-----', res);
   };
 
   _FileBaiDang_Camera = async () => {
@@ -249,9 +249,9 @@ export default class DeXuat_Nhom extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Camera ---------', strBody);
+    // console.log('strBody file ảnh Camera ---------', strBody);
     let res = await FileBaiDang(strBody);
-    console.log('res file ảnh Camera-----', res);
+    // console.log('res file ảnh Camera-----', res);
   };
 
   AddAnh = async () => {
@@ -267,7 +267,7 @@ export default class DeXuat_Nhom extends React.Component {
   };
 
   render() {
-    console.log('tin nhanh nhóm ==========', this.props.route.params);
+    // console.log('tin nhanh nhóm ==========', this.props.route.params);
     const {isActive, selectLyDo} = this.state;
     return (
       <View style={styles.container}>

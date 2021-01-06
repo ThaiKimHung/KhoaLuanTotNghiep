@@ -33,31 +33,31 @@ export default class Test extends Component {
     this.state = {};
   }
 
-  // _getthongbao = async () => {
-  //   // alert(5);
-  //   console.log('hi');
-  //   let res = await GetThongBao();
-  //   console.log('res thong báo', res);
-  // };
-  sendNotification = (data) => {
-    let headers = {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: 'Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj',
-    };
-
-    let endpoint = 'https://onesignal.com/api/v1/notifications';
-
-    let params = {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify({
-        app_id: '2db1f7fd-d78c-4cf2-986b-c1b505665cf8',
-        contents: {en: 'English Message'},
-        included_segments: ['305c45b3-4fc1-4f6c-bba6-a9175010dee7'],
-      }),
-    };
-    fetch(endpoint, params).then((res) => console.log(res));
+  _getthongbao = async () => {
+    // alert(5);
+    console.log('hi');
+    let res = await GetThongBao();
+    console.log('res thong báo', res);
   };
+  // sendNotification = (data) => {
+  //   let headers = {
+  //     'Content-Type': 'application/json; charset=utf-8',
+  //     Authorization: 'Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj',
+  //   };
+
+  //   let endpoint = 'https://onesignal.com/api/v1/notifications';
+
+  //   let params = {
+  //     method: 'POST',
+  //     headers: headers,
+  //     body: JSON.stringify({
+  //       app_id: '2db1f7fd-d78c-4cf2-986b-c1b505665cf8',
+  //       contents: {en: 'English Message'},
+  //       included_segments: ['305c45b3-4fc1-4f6c-bba6-a9175010dee7'],
+  //     }),
+  //   };
+  //   fetch(endpoint, params).then((res) => console.log(res));
+  // };
   componentDidMount = () => {
     // this.sendNotification('hi dây la thong bao');
   };
@@ -66,7 +66,8 @@ export default class Test extends Component {
     return (
       <View style={{flex: 1}}>
         <TouchableOpacity
-          onPress={() => this.sendNotification('dây la thong bao')}
+          // onPress={() => this.sendNotification('dây la thong bao')}
+          onPress={() => this._getthongbao()}
           style={{height: 100, width: 200, backgroundColor: 'green'}}>
           <Text>Thông báo</Text>
         </TouchableOpacity>

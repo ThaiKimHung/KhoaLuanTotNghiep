@@ -300,7 +300,7 @@ async function GetDSThongBao() {
 }
 
 async function GetThongBao() {
-  let res = await Utils.post_api(apiUser + `GetThongBaone`);
+  let res = await Utils.post_api(apiUser + `PushNotify_App`);
   return res;
 }
 

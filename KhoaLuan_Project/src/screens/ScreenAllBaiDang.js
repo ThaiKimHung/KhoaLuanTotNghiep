@@ -24,22 +24,60 @@ import SvgUri from 'react-native-svg-uri';
 import {GetDSBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
+import {colors} from 'react-native-elements';
 const avatar = require('../assets/images/avatar.png');
 export default class ScreenAllBaiDang extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       DSBaiDang: [],
+      DSBaiDang2: [],
       refresh: true,
       length: '',
       thanhcong: '',
       id_user: '',
+      length2: '',
+      tru: '',
     };
     ROOTGlobal.GetDsAllBaiDang = this._GetDSBaiDang;
   }
+  componentDidMount = async () => {
+    await this._GetDSBaiDang();
+    // this._GetDSBaiDang2();
+    await this.hamloadLienTuc();
+  };
 
-  componentDidMount = () => {
-    this._GetDSBaiDang();
+  _GetDSBaiDang2 = async () => {
+    let res = '';
+    this.setState({
+      id_user: await Utils.ngetStorage(nkey.id_user),
+    });
+    console.log('id bài đăng', this.state.id_user);
+
+    res = await GetDSBaiDang(this.state.id_user);
+    console.log('Danh sách bài đăng Screen all bài đăng 2:', res.data.length);
+    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    if (res.status == 1) {
+      this.setState({
+        DSBaiDang2: res.data,
+        length2: res.data.length,
+      });
+      // await console.log('length2 ', this.state.DSBaiDang2.length);
+    }
+  };
+
+  hamTru = async () => {
+    await this.setState({
+      tru: this.state.length2 - this.state.length,
+    });
+    // await console.log('tru', this.state.tru);
+  };
+
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetDSBaiDang2();
+      await this.hamTru();
+    }, 5000);
   };
 
   _GetDSBaiDang = async () => {
@@ -56,13 +94,16 @@ export default class ScreenAllBaiDang extends React.Component {
     }
     {
       res = await GetDSBaiDang(this.state.id_user);
-      console.log('Danh sách bài đăng Screen all bài đăng:', res);
+      console.log(
+        'Danh sách bài đăng Screen all bài _GetDSBaiDang:',
+        res.data.length,
+      );
       // console.log('Danh sách bài đăng Screen all bài đăng:', res);
       if (res.status == 1) {
         this.setState({
           DSBaiDang: res.data,
           refresh: false,
-          length: this.state.DSBaiDang.length,
+          length: res.data.length,
         });
       } else {
         this.setState({
@@ -89,24 +130,67 @@ export default class ScreenAllBaiDang extends React.Component {
 
   _renderItem = ({item, index}) => {
     return (
-      <BaiDangComponent
-        key={index}
-        item={item}
-        nthis={this}
-        onPress={() =>
-          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
-            id_nguoidang: item,
-          })
-        }></BaiDangComponent>
+      <View>
+        {this.state.tru == 0 ? (
+          <View>
+            <BaiDangComponent
+              key={index}
+              item={item}
+              nthis={this}
+              onPress={() =>
+                Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
+                  id_nguoidang: item,
+                })
+              }></BaiDangComponent>
+          </View>
+        ) : (
+          <BaiDangComponent
+            key={index}
+            item={item}
+            nthis={this}
+            onPress={() =>
+              Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
+                id_nguoidang: item,
+              })
+            }></BaiDangComponent>
+        )}
+      </View>
     );
   };
 
   _onRefresh = () => {
     this.setState({refresh: true}, () => this._GetDSBaiDang());
   };
+
   render() {
+    const {tru} = this.state;
     return (
       <View>
+        <Animatable.View
+          style={{
+            position: 'absolute',
+            zIndex: 99,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+          }}
+          animation={tru > 0 ? 'fadeInDownBig' : 'fadeOutUpBig'}
+          delay={1000}
+          duration={1000}>
+          <TouchableOpacity
+            onPress={() => this._onRefresh()}
+            style={{
+              borderRadius: 20,
+              height: 100,
+              width: 250,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              backgroundColor: colors.primary,
+            }}>
+            <Text>Nhấn vào để reload lại trang mới</Text>
+          </TouchableOpacity>
+        </Animatable.View>
         <FlatList
           data={this.state.DSBaiDang}
           renderItem={this._renderItem}

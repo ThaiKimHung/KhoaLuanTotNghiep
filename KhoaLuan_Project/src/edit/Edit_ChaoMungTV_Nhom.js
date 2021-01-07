@@ -104,9 +104,9 @@ export default class Edit_ChaoMungTV_Nhom extends React.Component {
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody edit CMTVM', strBody);
+    // console.log('strBody edit CMTVM', strBody);
     let res = await Update_BaiDang(strBody);
-    console.log('res update edit CMTVM', res);
+    // console.log('res update edit CMTVM', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -133,7 +133,7 @@ export default class Edit_ChaoMungTV_Nhom extends React.Component {
   _GetDSGroup = async () => {
     let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     // let res = await GetDSGroup(1);
-    console.log('res ds group', res);
+    // console.log('res ds group', res);
     if (res.status == 1) {
       this.setState({
         dsNhom: res.Data,
@@ -184,7 +184,7 @@ export default class Edit_ChaoMungTV_Nhom extends React.Component {
               style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() => {
-                  Utils.goscreen(this, 'Home');
+                  Utils.goscreen(this, 'ScreenBaiDangNhom');
                   // Utils.goback(this/);
                 }}>
                 <Image

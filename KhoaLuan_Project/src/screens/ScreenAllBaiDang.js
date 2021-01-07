@@ -52,10 +52,10 @@ export default class ScreenAllBaiDang extends React.Component {
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('id bài đăng', this.state.id_user);
+    // console.log('id bài đăng', this.state.id_user);
 
     res = await GetDSBaiDang(this.state.id_user);
-    console.log('Danh sách bài đăng Screen all bài đăng 2:', res.data.length);
+    // console.log('Danh sách bài đăng Screen all bài đăng 2:', res.data.length);
     // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       this.setState({
@@ -77,39 +77,31 @@ export default class ScreenAllBaiDang extends React.Component {
     setInterval(async () => {
       await this._GetDSBaiDang2();
       await this.hamTru();
-    }, 5000);
+    }, 1000);
   };
 
   _GetDSBaiDang = async () => {
-    let res = '';
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('id bài đăng', this.state.id_user);
+    // console.log('id bài đăng', this.state.id_user);
 
-    if (this.state.id_user == null) {
+    let res = await GetDSBaiDang(this.state.id_user);
+    // console.log(
+    //   'Danh sách bài đăng Screen all bài _GetDSBaiDang:',
+    //   res.data.length,
+    // );
+    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    if (res.status == 1) {
       this.setState({
-        id_user: await Utils.ngetStorage(nkey.id_user),
+        DSBaiDang: res.data,
+        refresh: false,
+        length: res.data.length,
       });
-    }
-    {
-      res = await GetDSBaiDang(this.state.id_user);
-      console.log(
-        'Danh sách bài đăng Screen all bài _GetDSBaiDang:',
-        res.data.length,
-      );
-      // console.log('Danh sách bài đăng Screen all bài đăng:', res);
-      if (res.status == 1) {
-        this.setState({
-          DSBaiDang: res.data,
-          refresh: false,
-          length: res.data.length,
-        });
-      } else {
-        this.setState({
-          refresh: false,
-        });
-      }
+    } else {
+      this.setState({
+        refresh: false,
+      });
     }
   };
 
@@ -130,31 +122,15 @@ export default class ScreenAllBaiDang extends React.Component {
 
   _renderItem = ({item, index}) => {
     return (
-      <View>
-        {this.state.tru == 0 ? (
-          <View>
-            <BaiDangComponent
-              key={index}
-              item={item}
-              nthis={this}
-              onPress={() =>
-                Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
-                  id_nguoidang: item,
-                })
-              }></BaiDangComponent>
-          </View>
-        ) : (
-          <BaiDangComponent
-            key={index}
-            item={item}
-            nthis={this}
-            onPress={() =>
-              Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
-                id_nguoidang: item,
-              })
-            }></BaiDangComponent>
-        )}
-      </View>
+      <BaiDangComponent
+        key={index}
+        item={item}
+        nthis={this}
+        onPress={() =>
+          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
+            id_nguoidang: item,
+          })
+        }></BaiDangComponent>
     );
   };
 
@@ -181,14 +157,14 @@ export default class ScreenAllBaiDang extends React.Component {
             onPress={() => this._onRefresh()}
             style={{
               borderRadius: 20,
-              height: 100,
-              width: 250,
+              height: FontSize.scale(30),
+              width: 150,
               justifyContent: 'center',
               alignItems: 'center',
               alignSelf: 'center',
               backgroundColor: colors.primary,
             }}>
-            <Text>Nhấn vào để reload lại trang mới</Text>
+            <Text>Có bài đăng mới</Text>
           </TouchableOpacity>
         </Animatable.View>
         <FlatList

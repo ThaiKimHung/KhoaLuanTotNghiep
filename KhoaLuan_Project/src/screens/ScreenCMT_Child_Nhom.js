@@ -45,7 +45,7 @@ const welcome = require('../assets/images/welcome.png');
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenCMT_Child extends React.Component {
+export default class ScreenCMT_Child_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.item = Utils.ngetParam(this, 'id_nguoidang');
@@ -90,14 +90,6 @@ export default class ScreenCMT_Child extends React.Component {
     // await console.log('name', this.state.username_cmtlon);
     // await console.log('noi dung', this.state.noidung_cmtlon);
     // await console.log('id bai dang', this.state.id_baidang);
-  };
-
-  hamloadLienTuc = () => {
-    setInterval(async () => {
-      await this._GetDsCmt();
-      // await this.hamTru();
-      // console.log('hi');
-    }, 5000);
   };
 
   _GetDsCmt = async () => {
@@ -176,8 +168,8 @@ export default class ScreenCMT_Child extends React.Component {
       this.setState({
         text_Cmt: '',
       });
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
+      await ROOTGlobal.GanDataChitiet_Nhom();
       await this._GetDsCmt();
       await this._AddThongBao();
     } else {
@@ -188,8 +180,8 @@ export default class ScreenCMT_Child extends React.Component {
         duration: 1500,
         icon: 'danger',
       });
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
+      await ROOTGlobal.GanDataChitiet_Nhom();
     }
   };
 
@@ -228,13 +220,7 @@ export default class ScreenCMT_Child extends React.Component {
               </View>
             </TouchableOpacity>
             <View style={{flex: 1}}>
-              <TouchableOpacity
-                onLongPress={() =>
-                  Utils.goscreen(this, 'PopUpModal_CMT_Child', {
-                    Detail_Cmt: item,
-                  })
-                }
-                style={styles.khung_tenUser_Cmt}>
+              <TouchableOpacity style={styles.khung_tenUser_Cmt}>
                 <Text style={styles.txt_TenUser_Cmt}>
                   {item.User_comment_child[0].Username}
                 </Text>
@@ -265,7 +251,6 @@ export default class ScreenCMT_Child extends React.Component {
     await this.NhanData_Child();
     // (await this.DSCMT_Child();
     await this._GetDsCmt();
-    await this.hamloadLienTuc();
   };
 
   render() {
@@ -276,9 +261,10 @@ export default class ScreenCMT_Child extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={() => {
-            Utils.goscreen(this, 'ScreenDetailBaiDang');
-            ROOTGlobal.GetDsAllBaiDang();
+          onPress={async () => {
+            Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+            await ROOTGlobal.GetChiTietBaiDang_Nhom();
+            await ROOTGlobal.GanDataChitiet_Nhom();
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>

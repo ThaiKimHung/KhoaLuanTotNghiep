@@ -24,7 +24,13 @@ import SvgUri from 'react-native-svg-uri';
 import * as Animatable from 'react-native-animatable';
 
 import {ROOTGlobal} from '../apis/dataGlobal';
-import {GetDSLike, AddLike, DeleteBaiDang_Like} from '../apis/apiUser';
+import {
+  GetDSLike,
+  AddLike,
+  DeleteBaiDang_Like,
+  AddThongBao,
+  BanThongBao,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
@@ -58,20 +64,35 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     this.item = {};
     // ROOTGlobal.GetDsAllBaiDang_Nhom = this.GetDsAllBaiDang_Nhom;
   }
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
+  _AddThongBao_Like = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã tương tác một bài viết',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
-    console.log('ress add like', res);
+    // console.log('ress add like', res);
     // this.setState({
     //   thich: !this.state.thich,
     // });
     await ROOTGlobal.getGo();
-    // await this.GetDsAllBaiDang_Nhom;
+    await this._AddThongBao_Like();
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
-    console.log('ress xóa like', res);
+    // console.log('ress xóa like', res);
     await ROOTGlobal.getGo();
     // await this.GetDsAllBaiDang_Nhom;
   };
@@ -92,14 +113,14 @@ export default class BaiDangNhomComponent_Go extends React.Component {
 
   ChuyenData = async (item) => {
     // const {ds = {}} = item;
-    console.log('item', item);
+    // console.log('item', item);
     // console.log('ds', ds);
     Utils.goscreen(this.props.nthis.props.nthis, 'ScreenBaiDangNhom');
     await this.setState({
       DataChuyenVe: item,
     });
     this.GanDataSauKhiChuyenVe();
-    await console.log('data liek chuyeern veef', this.state.DataChuyenVe);
+    // await console.log('data liek chuyeern veef', this.state.DataChuyenVe);
   };
 
   GanDataSauKhiChuyenVe = async () => {
@@ -107,7 +128,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
       likeSelected: this.state.DataChuyenVe.ID_like,
     });
 
-    await console.log('data liek ', this.state.likeSelected);
+    // await console.log('data liek ', this.state.likeSelected);
   };
 
   loadNoiDung = () => {
@@ -120,7 +141,10 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     switch (loaibaidang) {
       case 1:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <View
+            style={styles.footer}
+            //  onPress={this.props.onPress}
+          >
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="pulse"
@@ -149,10 +173,9 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
-          </TouchableOpacity>
+          </View>
         );
       case 2:
         return (
@@ -190,9 +213,10 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               </Text>
             </Animatable.View>
 
-            <TouchableOpacity
+            <View
               style={styles.footer1}
-              onPress={this.props.onPress}>
+              // onPress={this.props.onPress}
+            >
               <View
                 style={{
                   marginLeft: 5,
@@ -215,12 +239,15 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               <Text style={{fontSize: FontSize.reSize(20)}}>
                 {item.NoiDung}
               </Text>
-            </TouchableOpacity>
+            </View>
           </View>
         );
       case 3:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <View
+            style={styles.footer}
+            // onPress={this.props.onPress}
+          >
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="shake"
@@ -249,10 +276,9 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
-          </TouchableOpacity>
+          </View>
         );
       case 4:
         return (
@@ -262,24 +288,28 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               margin: 5,
             }}>
             <ImageBackground source={welcome} style={styles.image}>
-              <TouchableOpacity
+              <View
                 style={styles.footer1}
-                onPress={this.props.onPress}>
+                // onPress={this.props.onPress}
+              >
                 <Text>{item.title}</Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
-              </TouchableOpacity>
+              </View>
             </ImageBackground>
           </View>
         );
       case 6:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <View
+            style={styles.footer}
+            // onPress={this.props.onPress}
+          >
             <Text>{item.title}</Text>
 
             {item.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
                   style={{
@@ -287,14 +317,16 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
-          </TouchableOpacity>
+          </View>
         );
       case 7:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <View
+            style={styles.footer}
+            // onPress={this.props.onPress}
+          >
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="tada"
@@ -315,7 +347,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               </View>
             </View>
             {item.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
                   style={{
@@ -323,10 +355,9 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
-          </TouchableOpacity>
+          </View>
         );
       default:
         return (
@@ -334,7 +365,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
             <Text>{item.title}</Text>
             <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
             {item.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
                   style={{
@@ -342,7 +373,6 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </TouchableOpacity>

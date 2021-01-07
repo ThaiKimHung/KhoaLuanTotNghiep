@@ -20,7 +20,7 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
-import {GetThongBao} from '../apis/apiUser';
+import {GetThongBao, BanThongBao} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -35,8 +35,8 @@ export default class Test extends Component {
 
   _getthongbao = async () => {
     // alert(5);
-    console.log('hi');
-    let res = await GetThongBao();
+    // console.log('hi');
+    let res = await BanThongBao();
     console.log('res thong báo', res);
   };
   // sendNotification = (data) => {

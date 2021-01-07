@@ -27,6 +27,7 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
   File_Updatebaidang,
   FileBaiDang,
 } from '../apis/apiUser';
@@ -92,10 +93,10 @@ export default class ThongBao extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh', strBody);
+    // console.log('strBody tin nhanh', strBody);
 
     let res = await PostBaiDang(strBody);
-    console.log('ress tin nhanh', res);
+    // console.log('ress tin nhanh', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -135,9 +136,9 @@ export default class ThongBao extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -165,12 +166,12 @@ export default class ThongBao extends React.Component {
   _GetDSGroup = async () => {
     // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     let res = await GetDSGroup(1);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       this.setState({
         dsNhom: res.Data,
       });
-      console.log('state', this.state.dsNhom);
+      // console.log('state', this.state.dsNhom);
     }
   };
 
@@ -213,15 +214,20 @@ export default class ThongBao extends React.Component {
     );
   };
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng tin thông báo',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   _render_Dang = () => {
@@ -262,7 +268,7 @@ export default class ThongBao extends React.Component {
   };
 
   render() {
-    console.log('tin nhanh ==========', this.props.route.params);
+    // console.log('tin nhanh ==========', this.props.route.params);
     const {isActive, selectLyDo} = this.state;
     return (
       <ScrollView style={styles.container}>

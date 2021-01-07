@@ -62,9 +62,9 @@ export default class SplashScreen2 extends React.Component {
 
   _logout = async () => {
     let flag = await Utils.ngetStorage(nkey.flag);
-    console.log('flag trc out Splashscreen', flag);
+    // console.log('flag trc out Splashscreen', flag);
     let flag1 = await Utils.nsetStorage(nkey.flag, '0');
-    console.log('flag1 sau out Splashscreen', flag1);
+    // console.log('flag1 sau out Splashscreen', flag1);
     AsyncStorage.clear();
     this.updateTinhTrangUser();
     Utils.goscreen(this, 'SigninScreen');
@@ -77,9 +77,9 @@ export default class SplashScreen2 extends React.Component {
       TinhTrang: false,
     });
 
-    console.log('strBody update tình trạng Splashscreen', strBody);
+    // console.log('strBody update tình trạng Splashscreen', strBody);
     let res = await PostTinhTrang(strBody);
-    console.log('res update tình trạng sau khi đăng xuất Splashscreen', res);
+    // console.log('res update tình trạng sau khi đăng xuất Splashscreen', res);
   };
 
   chuyenTrang() {
@@ -109,19 +109,19 @@ export default class SplashScreen2 extends React.Component {
     let res = await CountSoLuong_ThongBao(
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log('res so luong thong bao------------------', res);
+    // console.log('res so luong thong bao------------------', res);
     if (res.status == 1) {
       this.setState({
         soluong: res.Data,
       });
-      await console.log('sol uong', this.state.soluong);
-      await console.log('hiiii----------', res.Data);
+      // await console.log('sol uong', this.state.soluong);
+      // await console.log('hiiii----------', res.Data);
       await Utils.setGlobal(nGlobalKeys.soluong, this.state.soluong);
     }
   };
   _GetDSLike = async () => {
     let res = await GetDSLike();
-    console.log('ress ds like', res);
+    // console.log('ress ds like', res);
     if (res.status == 1) {
       this.setState({
         DSLike: res.Data,

@@ -30,7 +30,7 @@ import ScreenThanhVienNhom from '../screens/ScreenThanhVienNhom';
 import ScreenThemThanhVienNhom from '../screens/ScreenThemThanhVienNhom';
 import ScreenTaoNhom from '../screens/ScreenTaoNhom';
 import ScreenThongTinCaNhan from '../screens/ScreenThongTinCaNhan';
-// import from '../screens/Scree'
+import ScreenCMT_Child_Nhom from '../screens/ScreenCMT_Child_Nhom';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 
@@ -49,6 +49,8 @@ import ModalLike_Detail_Nhom from '../modal/ModalLike_Detail_Nhom';
 import ModalLike_Detail_ThongBao from '../modal/ModalLike_Detail_ThongBao';
 import PopUpModal_CMT_ThongBao from '../modal/PopUpModal_CMT_ThongBao';
 import PopUpModal_SuaCMT_ThongBao from '../modal/PopUpModal_SuaCMT_ThongBao';
+import PopUpModal_CMT_Nhom from '../modal/PopUpModal_CMT_Nhom';
+import PopUpModal_CMT_Child from '../modal/PopUpModal_CMT_Child';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
@@ -189,6 +191,10 @@ const HomeStackScreen = () => (
       name="ScreenDetailBaiDang_ThongBao"
       component={ScreenDetailBaiDang_ThongBao}
     />
+    <HomeStack.Screen
+      name="ScreenCMT_Child_Nhom"
+      component={ScreenCMT_Child_Nhom}
+    />
   </HomeStack.Navigator>
 );
 
@@ -282,6 +288,14 @@ const AppStack = () => {
       <Stack.Screen
         name="PopUpModal_SuaCMT_ThongBao"
         component={PopUpModal_SuaCMT_ThongBao}
+      />
+      <Stack.Screen
+        name="PopUpModal_CMT_Nhom"
+        component={PopUpModal_CMT_Nhom}
+      />
+      <Stack.Screen
+        name="PopUpModal_CMT_Child"
+        component={PopUpModal_CMT_Child}
       />
     </Stack.Navigator>
   );

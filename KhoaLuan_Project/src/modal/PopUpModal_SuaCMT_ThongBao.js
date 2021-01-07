@@ -49,15 +49,15 @@ export default class PopUpModal_SuaCMT extends Component {
   }
   GanData = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    await console.log('id nguoi dang sưa bình luận', id_nguoidang);
+    // await console.log('id nguoi dang sưa bình luận', id_nguoidang);
     this.setState({
       id_baidang: id_nguoidang.Id_BaiDang,
       id_cmt: id_nguoidang.id_cmt,
       noidung_cmt: id_nguoidang.NoiDung_cmt,
     });
-    await console.log('id bai dang', this.state.id_baidang);
-    await console.log('id cmt', this.state.id_cmt);
-    await console.log('noi dung cmt', this.state.noidung_cmt);
+    // await console.log('id bai dang', this.state.id_baidang);
+    // await console.log('id cmt', this.state.id_cmt);
+    // await console.log('noi dung cmt', this.state.noidung_cmt);
   };
   Sua_Cmt = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
@@ -73,9 +73,9 @@ export default class PopUpModal_SuaCMT extends Component {
       // UpdatedDate: '2020-12-22T08:20:49.355Z',
       UpdatedBy: 0,
     });
-    console.log('strBody cmt', strBody);
+    // console.log('strBody cmt', strBody);
     let res = await Update_CMT(strBody);
-    console.log('res cmt', res);
+    // console.log('res cmt', res);
 
     if (res.status == 1) {
       showMessage({
@@ -156,7 +156,8 @@ export default class PopUpModal_SuaCMT extends Component {
                         alignItems: 'center',
                         borderRadius: 10,
                       }}
-                      onPress={() => this.Sua_Cmt()}>
+                      // onPress={() => this.Sua_Cmt()}
+                      onPress={() => alert('Đang cập nhật')}>
                       <Text style={{fontSize: 20}}>Sửa</Text>
                     </TouchableOpacity>
                   </View>

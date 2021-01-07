@@ -51,16 +51,16 @@ export default class ScreenThanhVienNhom extends React.Component {
       idgroup: id_nguoidang.ID_group,
       id_user: id_nguoidang.id_user,
     });
-    await console.log(
-      'id nguoi dang ben thanh vien nhom =========',
-      id_nguoidang,
-    );
+    // await console.log(
+    //   'id nguoi dang ben thanh vien nhom =========',
+    //   id_nguoidang,
+    // );
   };
 
   _GetAllUser = async () => {
     let iduser = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSAllUser_In_Group(this.state.idgroup, iduser);
-    console.log('ress all user bên thành viên nhóm ==============', res);
+    // console.log('ress all user bên thành viên nhóm ==============', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
@@ -74,7 +74,7 @@ export default class ScreenThanhVienNhom extends React.Component {
 
   _DeleteUserGroup = async (iduser, username) => {
     let res = await DeleteUserGroup(this.state.idgroup, iduser);
-    console.log('res xóa user group-========', res);
+    // console.log('res xóa user group-========', res);
     if (res.status == 1) {
       this._GetAllUser();
       showMessage({
@@ -94,9 +94,9 @@ export default class ScreenThanhVienNhom extends React.Component {
       quyen_group: quyen_group,
     });
 
-    console.log('strBody update quyên==============', strBody);
+    // console.log('strBody update quyên==============', strBody);
     let res = await Update_Quyen_User(iduser_update, strBody);
-    console.log('res update  update quyên=========', res);
+    // console.log('res update  update quyên=========', res);
     if (res.status == 1) {
       this._GetAllUser();
       showMessage({

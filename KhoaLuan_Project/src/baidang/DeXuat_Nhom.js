@@ -27,6 +27,7 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
   FileBaiDang,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -70,7 +71,9 @@ export default class DeXuat_Nhom extends React.Component {
       () => this._render_Dang(),
     );
   }
-
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng tin đề xuất',
@@ -80,6 +83,7 @@ export default class DeXuat_Nhom extends React.Component {
     // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
     // console.log('res add thông báo', res);
+    await this._BanThongBao();
   };
 
   _PostBaiDang_Nhom = async () => {
@@ -399,7 +403,7 @@ export default class DeXuat_Nhom extends React.Component {
                 </View>
               )}
               {this.state.camera ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),
@@ -488,7 +492,7 @@ export default class DeXuat_Nhom extends React.Component {
               )}
 
               {this.state.Image ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),

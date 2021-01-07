@@ -57,8 +57,8 @@ export default class Modal_CaiDatNhom extends Component {
 
   NhanThongTin = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('this modal xóa sửa', this.props);
-    console.log('id_nguoidang modal xóa sửa', id_nguoidang);
+    // console.log('this modal xóa sửa', this.props);
+    // console.log('id_nguoidang modal xóa sửa', id_nguoidang);
     let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({
@@ -74,7 +74,7 @@ export default class Modal_CaiDatNhom extends Component {
 
   render() {
     const {display} = this.state;
-    console.log('this cài đặt nhóm', this.props);
+    // console.log('this cài đặt nhóm', this.props);
     return (
       <View>
         <Modal

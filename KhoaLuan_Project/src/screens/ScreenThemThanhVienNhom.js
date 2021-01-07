@@ -43,7 +43,7 @@ export default class ScreenThanhVienNhom extends React.Component {
     this.setState({
       idgroup: id_nguoidang.ID_group,
     });
-    await console.log('nhan data', id_nguoidang);
+    // await console.log('nhan data', id_nguoidang);
   };
 
   _AddUserGroup = async (iduser, username) => {
@@ -52,14 +52,14 @@ export default class ScreenThanhVienNhom extends React.Component {
       id_user: 0,
       quyen_group: false,
     });
-    console.log('strBody add user group==============', strBody);
+    // console.log('strBody add user group==============', strBody);
     let res = await addUserGroup(this.state.idgroup, iduser, strBody);
-    console.log(
-      'res  add user group==========',
-      res,
-      this.state.idgroup,
-      iduser,
-    );
+    // console.log(
+    //   'res  add user group==========',
+    //   res,
+    //   this.state.idgroup,
+    //   iduser,
+    // );
     if (res.status == 1) {
       this._GetAllUser();
       showMessage({
@@ -74,7 +74,7 @@ export default class ScreenThanhVienNhom extends React.Component {
 
   _GetAllUser = async () => {
     let res = await GetDSUser_filter_InGroup(this.state.idgroup);
-    console.log('ress all user bên thêm user', res);
+    // console.log('ress all user bên thêm user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,

@@ -27,6 +27,7 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
   File_Updatebaidang,
   FileBaiDang,
 } from '../apis/apiUser';
@@ -168,12 +169,12 @@ export default class DeXuat extends React.Component {
   _GetDSGroup = async () => {
     // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     let res = await GetDSGroup(1);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       this.setState({
         dsNhom: res.Data,
       });
-      console.log('state', this.state.dsNhom);
+      // console.log('state', this.state.dsNhom);
     }
   };
 
@@ -224,11 +225,11 @@ export default class DeXuat extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('image--------', image);
+        // console.log('image--------', image);
         this.setState({
           Image: image,
         });
-        console.log('state image =====', this.state.Image);
+        // console.log('state image =====', this.state.Image);
         // this.hamTest();
       })
       .catch((e) => {
@@ -244,11 +245,11 @@ export default class DeXuat extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('camera =============', image);
+        // console.log('camera =============', image);
         this.setState({
           camera: image,
         });
-        console.log('state camera =====', this.state.camera);
+        // console.log('state camera =====', this.state.camera);
       })
       .catch((e) => {
         // alert(e);
@@ -258,7 +259,7 @@ export default class DeXuat extends React.Component {
   xoaAnh = () => {
     ImagePicker.clean()
       .then(() => {
-        console.log('removed all tmp images from tmp directory');
+        // console.log('removed all tmp images from tmp directory');
         this.setState({
           Image: '',
           camera: '',
@@ -281,9 +282,9 @@ export default class DeXuat extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Galary---------', strBody);
+    // console.log('strBody file ảnh Galary---------', strBody);
     let res = await FileBaiDang(strBody);
-    console.log('res file ảnh Galary-----', res);
+    // console.log('res file ảnh Galary-----', res);
   };
 
   _FileBaiDang_Camera = async () => {
@@ -301,19 +302,23 @@ export default class DeXuat extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Camera ---------', strBody);
+    // console.log('strBody file ảnh Camera ---------', strBody);
     let res = await FileBaiDang(strBody);
-    console.log('res file ảnh Camera-----', res);
+    // console.log('res file ảnh Camera-----', res);
+  };
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
   };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng tin nhanh',
+      title: 'Đã thêm 1 bài đăng tin đề xuất',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   _render_Dang = () => {
@@ -364,7 +369,7 @@ export default class DeXuat extends React.Component {
   };
 
   render() {
-    console.log('tin nhanh ==========', this.props.route.params);
+    // console.log('tin nhanh ==========', this.props.route.params);
     const {isActive, selectLyDo} = this.state;
     return (
       <ScrollView style={styles.container}>
@@ -384,7 +389,7 @@ export default class DeXuat extends React.Component {
                   }}></Image>
               </TouchableOpacity>
 
-              <Text style={styles.title}>Tạo tin nhanh</Text>
+              <Text style={styles.title}>Tạo tin đề xuất</Text>
             </View>
             <View style={{justifyContent: 'center'}}>
               {this._render_Dang()}
@@ -517,7 +522,7 @@ export default class DeXuat extends React.Component {
                 </View>
               )}
               {this.state.camera ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),
@@ -606,7 +611,7 @@ export default class DeXuat extends React.Component {
               )}
 
               {this.state.Image ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),

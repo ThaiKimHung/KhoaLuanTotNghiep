@@ -25,15 +25,19 @@ import {GetDSBaiDang_Nhom} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 const avatar = require('../assets/images/avatar.png');
+import {colors} from 'react-native-elements';
 export default class ScreenAllBaiDang_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       DSBaiDangNhom: [],
+      DSBaiDangNhom2: [],
       refresh: true,
       length: '',
+      length2: '',
       thanhcong: '',
       id_user: '',
+      tru: '',
       // idgroup: '',
     };
     ROOTGlobal.GetDsAllBaiDang_Nhom = this._GetDSBaiDang_Nhom;
@@ -49,17 +53,51 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     // console.log('id bài đăng', this.state.id_user, idgroup);
 
     res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
-    console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       this.setState({
         DSBaiDangNhom: res.data,
         refresh: false,
+        length: res.data.length,
       });
     } else {
       this.setState({
         refresh: false,
       });
     }
+  };
+
+  _GetDSBaiDang_Nhom2 = async () => {
+    const idgroup = this.props.nthis.props.route.params.screennhom;
+    const {id_nguoidang = {}} = this.props.nthis.props.route.params;
+    let res = '';
+    this.setState({
+      id_user: await Utils.ngetStorage(nkey.id_user),
+    });
+    // console.log('id bài đăng', this.state.id_user, idgroup);
+
+    res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
+    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    if (res.status == 1) {
+      this.setState({
+        DSBaiDangNhom2: res.data,
+        length2: res.data.length,
+      });
+    }
+  };
+
+  hamTru = async () => {
+    await this.setState({
+      tru: this.state.length2 - this.state.length,
+    });
+    // await console.log('tru', this.state.tru);
+  };
+
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetDSBaiDang_Nhom2();
+      await this.hamTru();
+    }, 1000);
   };
 
   EmptyListMessage = ({item}) => {
@@ -107,12 +145,39 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
   componentDidMount = async () => {
     await this._GetDSBaiDang_Nhom();
     await this.NhanData();
+    await this.hamloadLienTuc();
   };
   render() {
     const {id_nguoidang = {}} = this.props.nthis.props.route.params;
-    console.log('this screel all bai dang nhom', id_nguoidang);
+    // console.log('this screel all bai dang nhom', id_nguoidang);
+    const {tru} = this.state;
     return (
       <View>
+        <Animatable.View
+          style={{
+            position: 'absolute',
+            zIndex: 99,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+          }}
+          animation={tru > 0 ? 'fadeInDownBig' : 'fadeOutUpBig'}
+          delay={1000}
+          duration={1000}>
+          <TouchableOpacity
+            onPress={() => this._onRefresh()}
+            style={{
+              borderRadius: 20,
+              height: FontSize.scale(30),
+              width: 150,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              backgroundColor: colors.primary,
+            }}>
+            <Text>Có bài đăng mới</Text>
+          </TouchableOpacity>
+        </Animatable.View>
         <FlatList
           data={this.state.DSBaiDangNhom}
           renderItem={this._renderItem}

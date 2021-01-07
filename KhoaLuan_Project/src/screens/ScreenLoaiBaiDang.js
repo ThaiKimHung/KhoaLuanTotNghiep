@@ -41,13 +41,13 @@ export default class ScreenLoaiBaiDang extends React.Component {
 
   _GetDsLoaiBaiDang = async () => {
     let res = await GetLoaiBaiDang(this.state.userID);
-    console.log('res ds loại bài đăng', res);
+    // console.log('res ds loại bài đăng', res);
     if (res.status === 1) {
       this.setState({
         DsLoaiBaiDang: res.data,
         refresh: !this.state.refresh,
       });
-      console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
+      // console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
     } else {
       this.setState({
         refresh: !this.state.refresh,
@@ -57,9 +57,10 @@ export default class ScreenLoaiBaiDang extends React.Component {
 
   EmptyListMessage = ({item}) => {
     return (
-      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
-        No Data Found
-      </Text>
+      // <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+      //   No Data Found
+      // </Text>
+      <ActivityIndicator size="large" color="#0000ff" />
     );
   };
   callBack = (item) => {
@@ -174,24 +175,20 @@ export default class ScreenLoaiBaiDang extends React.Component {
   }
   // Id_LoaiDang
   renderItem = ({item, index}) => {
+    // console.log('item', item);
     return (
       <TouchableOpacity
         style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 10}]}
         onPress={() => this._chuyenTrang(item.Id_LoaiDang)}>
         <View style={styles.khung_DS}>
-          <SvgUri
-            width={FontSize.scale(100)}
-            height={FontSize.verticalScale(100)}
+          <Image
+            style={{
+              width: FontSize.scale(150),
+              height: FontSize.verticalScale(130),
+            }}
             // Icon_app
             // uri:// 'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
-            source={
-              item
-                ? {uri: item.Icon_app}
-                : {
-                    uri:
-                      'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
-                  }
-            }
+            source={item.Icon_app ? {uri: item.Icon_app} : avatar}
           />
           <Text style={{margin: 5, textAlign: 'center'}}>
             {item.TenLoaiDang}
@@ -202,7 +199,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
   };
 
   render() {
-    console.log('this loai bai dang', this.props.route.params);
+    // console.log('this loai bai dang', this.props.route.params);
     // let hi = this.props.route.params.screennhom;
     // console.log('hi', hi);
     return (
@@ -219,22 +216,18 @@ export default class ScreenLoaiBaiDang extends React.Component {
           </Text>
         </View>
         <View style={styles.footer}>
-          {this.state.DsLoaiBaiDang.length != 0 ? (
-            <FlatList
-              data={this.state.DsLoaiBaiDang}
-              renderItem={this.renderItem}
-              ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
-              numColumns={2}
-              keyExtractor={(item, index) => index.toString()}
-              ListEmptyComponent={this.EmptyListMessage}
-              refreshing={this.state.refresh}
-              onRefresh={() => {
-                this.setState({refresh: true}, this._GetDsLoaiBaiDang);
-              }}
-            />
-          ) : (
-            <ActivityIndicator size="large" color="#0000ff" />
-          )}
+          <FlatList
+            data={this.state.DsLoaiBaiDang}
+            renderItem={this.renderItem}
+            ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
+            numColumns={2}
+            keyExtractor={(item, index) => index.toString()}
+            ListEmptyComponent={this.EmptyListMessage}
+            refreshing={this.state.refresh}
+            onRefresh={() => {
+              this.setState({refresh: true}, this._GetDsLoaiBaiDang);
+            }}
+          />
         </View>
       </View>
     );
@@ -253,6 +246,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginHorizontal: 10,
+    marginTop: 5,
   },
   footer: {
     height: '100%',
@@ -267,8 +261,10 @@ const styles = StyleSheet.create({
     borderColor: '#4F4F4F',
     borderWidth: 1,
     borderRadius: 10,
-    height: FontSize.scale(heightScreen / 2.5),
-    width: FontSize.verticalScale(widthScreen / 2.5),
+    height: FontSize.scale(180),
+    width: FontSize.verticalScale(160),
+    justifyContent: 'center',
+    // alignItems: 'center',
     // paddingHorizontal: 10,
   },
   container_khung: {

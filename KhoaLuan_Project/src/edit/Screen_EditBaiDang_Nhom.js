@@ -56,7 +56,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
 
   nhanData = () => {
     this.id_nguoidang = this.props.route.params.id_nguoidang.id_nguoidang;
-    console.log('this id người đăng ', this.id_nguoidang.Id_BaiDang);
+    // console.log('this id người đăng ', this.id_nguoidang.Id_BaiDang);
     this.setState({
       tieude: this.id_nguoidang.title,
       noidung: this.id_nguoidang.NoiDung,
@@ -70,11 +70,11 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('image--------', image);
+        // console.log('image--------', image);
         this.setState({
           Image: image,
         });
-        console.log('state image =====', this.state.Image);
+        // console.log('state image =====', this.state.Image);
         // this.hamTest();
       })
       .catch((e) => {
@@ -90,11 +90,11 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('camera =============', image);
+        // console.log('camera =============', image);
         this.setState({
           camera: image,
         });
-        console.log('state camera =====', this.state.camera);
+        // console.log('state camera =====', this.state.camera);
       })
       .catch((e) => {
         // alert(e);
@@ -104,7 +104,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
   xoaAnh = () => {
     ImagePicker.clean()
       .then(() => {
-        console.log('removed all tmp images from tmp directory');
+        // console.log('removed all tmp images from tmp directory');
         this.setState({
           Image: '',
           camera: '',
@@ -127,9 +127,9 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Galary---------', strBody);
+    // console.log('strBody file ảnh Galary---------', strBody);
     let res = await File_Updatebaidang(this.id_nguoidang.Id_BaiDang, strBody);
-    console.log('res file ảnh Galary-----', res);
+    // console.log('res file ảnh Galary-----', res);
   };
 
   _UP_FileBaiDang_Camera = async () => {
@@ -145,9 +145,9 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Camera ---------', strBody);
+    // console.log('strBody file ảnh Camera ---------', strBody);
     let res = await File_Updatebaidang(this.id_nguoidang.Id_BaiDang, strBody);
-    console.log('res file ảnh Camera-----', res);
+    // console.log('res file ảnh Camera-----', res);
   };
 
   AddAnh = async () => {
@@ -178,7 +178,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
 
     // console.log('strBody tin nhanh', strBody);
     let res = await Update_BaiDang(strBody);
-    console.log('res update bài đăng screen edit bai dang', res);
+    // console.log('res update bài đăng screen edit bai dang', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -519,7 +519,6 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                       width: '100%',
                       backgroundColor: 'blue',
                     }}></Image>
-                  <Text>có hình ảnh nè</Text>
                 </View>
               ) : null}
             </View>
@@ -578,7 +577,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                 </View>
               )}
               {this.state.camera ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),
@@ -667,7 +666,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
               )}
 
               {this.state.Image ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),
@@ -814,7 +813,6 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                       width: '100%',
                       backgroundColor: 'blue',
                     }}></Image>
-                  <Text>có hình ảnh nè</Text>
                 </View>
               ) : null}
 
@@ -873,7 +871,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                   </View>
                 )}
                 {this.state.camera ? (
-                  <View>
+                  <View style={{marginLeft: 5}}>
                     <Image
                       style={{
                         height: FontSize.scale(200),
@@ -964,7 +962,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                 )}
 
                 {this.state.Image ? (
-                  <View>
+                  <View style={{marginLeft: 5}}>
                     <Image
                       style={{
                         height: FontSize.scale(200),
@@ -1154,7 +1152,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                   </View>
                 )}
                 {this.state.camera ? (
-                  <View>
+                  <View style={{marginLeft: 5}}>
                     <Image
                       style={{
                         height: FontSize.scale(200),
@@ -1245,7 +1243,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                 )}
 
                 {this.state.Image ? (
-                  <View>
+                  <View style={{marginLeft: 5}}>
                     <Image
                       style={{
                         height: FontSize.scale(200),

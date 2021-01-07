@@ -28,6 +28,7 @@ import {
   AddBaiDang_KhenThuong_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -82,15 +83,20 @@ export default class KhenThuong extends React.Component {
     });
   }
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng khen thưởng',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   ChuyenData = async (item) => {
@@ -116,9 +122,9 @@ export default class KhenThuong extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody khen thưởng nhóm', strBody);
+    // console.log('strBody khen thưởng nhóm', strBody);
     let res = await AddBaiDang_KhenThuong_Nhom(strBody);
-    console.log('res khen thưởng nhóm', res);
+    // console.log('res khen thưởng nhóm', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -238,11 +244,11 @@ export default class KhenThuong extends React.Component {
             tengroup: this.props.route.params.tennhom,
           })
         : null;
-      await console.log(
-        'this.state.idgroup và tên group =====',
-        this.state.idgroup,
-        this.state.tengroup,
-      );
+      // await console.log(
+      //   'this.state.idgroup và tên group =====',
+      //   this.state.idgroup,
+      //   this.state.tengroup,
+      // );
     }
   };
   componentDidMount = async () => {
@@ -433,8 +439,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderRadius: 10,
-    height: FontSize.scale(heightScreen / 2.5),
-    width: FontSize.verticalScale(widthScreen / 2.5),
+    height: FontSize.scale(160),
+    width: FontSize.verticalScale(160),
+    justifyContent: 'center',
   },
   container_khung: {
     width: FontSize.verticalScale(100),

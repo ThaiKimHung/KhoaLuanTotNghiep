@@ -291,23 +291,12 @@ async function AvatarUser(iduser, strbody) {
 
 async function AddThongBao(strbody) {
   let res = await Utils.post_api(apiUser + `addThongBao`, strbody);
+  // this.BanThongBao();
   return res;
 }
 
-async function GetDSThongBao() {
-  let res = await Utils.get_api(apiUser + `GetDSThongBao`);
-  return res;
-}
-
-async function GetThongBao() {
-  let res = await Utils.post_api(apiUser + `PushNotify_App`);
-  return res;
-}
-
-async function GetDSThongBaoNgoaiTru(iduser) {
-  let res = await Utils.get_api(
-    apiUser + `GetDSThongBaoNgoaiTru?iduser=${iduser}`,
-  );
+async function GetDSThongBao(iduser) {
+  let res = await Utils.get_api(apiUser + `GetDSThongBao?iduser=${iduser}`);
   return res;
 }
 
@@ -336,6 +325,11 @@ async function Delete_ThongBao(idbaidang) {
     true,
     'DELETE',
   );
+  return res;
+}
+
+async function BanThongBao() {
+  let res = await Utils.post_api(apiUser + `BanThongBao`);
   return res;
 }
 
@@ -385,10 +379,9 @@ export {
   AvatarUser,
   AddThongBao,
   GetDSThongBao,
-  GetDSThongBaoNgoaiTru,
   Danhdaudadoc,
   Update_ThongBao,
   Delete_ThongBao,
-  GetThongBao,
+  BanThongBao,
   CountSoLuong_ThongBao,
 };

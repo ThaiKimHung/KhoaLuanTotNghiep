@@ -18,7 +18,7 @@ import SvgUri from 'react-native-svg-uri';
 export default class LoaiBaiDang extends React.Component {
   render() {
     const {anh, tennhom} = this.props;
-    console.log('ảnh', anh);
+    // console.log('ảnh', anh);
     // await Utils.nsetStorage(nkey.id_user, this.state.id_userne);
     return (
       <View style={styles.container}>

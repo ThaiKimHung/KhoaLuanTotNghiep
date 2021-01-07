@@ -26,7 +26,7 @@ const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
 const answer = require('../assets/images/chat.png');
-export default class PopUpModal_CMT extends Component {
+export default class PopUpModal_CMT_Nhom extends Component {
   constructor(props) {
     super(props);
     this.state = {

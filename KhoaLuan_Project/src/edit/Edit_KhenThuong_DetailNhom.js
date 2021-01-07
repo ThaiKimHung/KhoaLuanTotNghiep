@@ -161,7 +161,7 @@ export default class Edit_KhenThuong extends React.Component {
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
-    console.log('id', id_nguoidang);
+    // console.log('id', id_nguoidang);
     let tit = id_nguoidang.title;
     let khenthuong = id_nguoidang[0].KhenThuong
       ? id_nguoidang[0].KhenThuong[0]
@@ -173,10 +173,10 @@ export default class Edit_KhenThuong extends React.Component {
       idbaidang: id_nguoidang[0].Id_BaiDang,
       idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
     });
-    await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
-    await console.log('title', this.state.title);
-    await console.log('noi dung', this.state.noidung);
-    await console.log('item', this.state.selectedItem);
+    // await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
+    // await console.log('title', this.state.title);
+    // await console.log('noi dung', this.state.noidung);
+    // await console.log('item', this.state.selectedItem);
   };
 
   EditBaiDang = async () => {
@@ -198,9 +198,9 @@ export default class Edit_KhenThuong extends React.Component {
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody edit khen thưởng', strBody);
+    // console.log('strBody edit khen thưởng', strBody);
     let res = await Update_BaiDang_KhenThuong(strBody);
-    console.log('res update edit khen thưởng', res);
+    // console.log('res update edit khen thưởng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

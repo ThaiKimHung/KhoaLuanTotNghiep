@@ -26,6 +26,7 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -51,15 +52,20 @@ export default class ThongBao_Nhom extends React.Component {
     );
   }
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng tin thông báo',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
   _PostBaiDang_Nhom = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
@@ -76,9 +82,9 @@ export default class ThongBao_Nhom extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
       Utils.goscreen(this, 'ScreenBaiDangNhom');
       showMessage({
@@ -135,11 +141,11 @@ export default class ThongBao_Nhom extends React.Component {
             tengroup: this.props.route.params.tennhom,
           })
         : null;
-      await console.log(
-        'this.state.idgroup và tên group =====',
-        this.state.idgroup,
-        this.state.tengroup,
-      );
+      // await console.log(
+      //   'this.state.idgroup và tên group =====',
+      //   this.state.idgroup,
+      //   this.state.tengroup,
+      // );
     }
   };
 
@@ -148,7 +154,7 @@ export default class ThongBao_Nhom extends React.Component {
   };
 
   render() {
-    console.log('tin nhanh nhóm ==========', this.props.route.params);
+    // console.log('tin nhanh nhóm ==========', this.props.route.params);
     const {isActive, selectLyDo} = this.state;
     return (
       <View style={styles.container}>

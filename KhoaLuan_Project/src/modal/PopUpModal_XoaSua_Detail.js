@@ -91,8 +91,8 @@ export default class PopUpModal_XoaSua_Detail extends Component {
 
   NhanThongTin = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('this detail modal', this.props);
-    console.log('DetailBaiDang modal', id_nguoidang);
+    // console.log('this detail modal', this.props);
+    // console.log('DetailBaiDang modal', id_nguoidang);
     let user = id_nguoidang[0].User_DangBai[0].ID_user;
     let idbaidang = id_nguoidang[0].Id_BaiDang;
     // await console.log('user', idbaidang);
@@ -165,9 +165,20 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        this.XoaBaiDang();
-                      }}>
+                      onPress={() =>
+                        Alert.alert(
+                          'Thông Báo',
+                          'Bạn Muốn Xóa Bài Đăng?',
+                          [
+                            {text: 'Đồng ý', onPress: () => this.XoaBaiDang()},
+                            {
+                              text: 'Hủy',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        )
+                      }>
                       <Image source={delet} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Xóa</Text>
                     </TouchableOpacity>

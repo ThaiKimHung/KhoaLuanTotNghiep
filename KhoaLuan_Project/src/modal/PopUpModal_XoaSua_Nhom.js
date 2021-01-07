@@ -91,8 +91,8 @@ export default class PopUpModal_XoaSua_Nhom extends Component {
 
   NhanThongTin = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('this modal xóa sửa', this.props);
-    console.log('id_nguoidang modal xóa sửa', id_nguoidang);
+    // console.log('this modal xóa sửa', this.props);
+    // console.log('id_nguoidang modal xóa sửa', id_nguoidang);
     let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({

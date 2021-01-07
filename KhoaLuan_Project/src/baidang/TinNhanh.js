@@ -27,6 +27,7 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
   File_Updatebaidang,
   FileBaiDang,
 } from '../apis/apiUser';
@@ -85,10 +86,10 @@ export default class TinNhanh extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh', strBody);
+    // console.log('strBody tin nhanh', strBody);
 
     let res = await PostBaiDang(strBody);
-    console.log('ress tin nhanh', res);
+    // console.log('ress tin nhanh', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -128,9 +129,9 @@ export default class TinNhanh extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
-    console.log('res tin nhanh nhóm', res);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -158,12 +159,12 @@ export default class TinNhanh extends React.Component {
   _GetDSGroup = async () => {
     // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     let res = await GetDSGroup(1);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       this.setState({
         dsNhom: res.Data,
       });
-      console.log('state', this.state.dsNhom);
+      // console.log('state', this.state.dsNhom);
     }
   };
 
@@ -214,11 +215,11 @@ export default class TinNhanh extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('image--------', image);
+        // console.log('image--------', image);
         this.setState({
           Image: image,
         });
-        console.log('state image =====', this.state.Image);
+        // console.log('state image =====', this.state.Image);
         // this.hamTest();
       })
       .catch((e) => {
@@ -234,11 +235,11 @@ export default class TinNhanh extends React.Component {
       includeBase64: true,
     })
       .then((image) => {
-        console.log('camera =============', image);
+        // console.log('camera =============', image);
         this.setState({
           camera: image,
         });
-        console.log('state camera =====', this.state.camera);
+        // console.log('state camera =====', this.state.camera);
       })
       .catch((e) => {
         // alert(e);
@@ -248,7 +249,7 @@ export default class TinNhanh extends React.Component {
   xoaAnh = () => {
     ImagePicker.clean()
       .then(() => {
-        console.log('removed all tmp images from tmp directory');
+        // console.log('removed all tmp images from tmp directory');
         this.setState({
           Image: '',
           camera: '',
@@ -271,9 +272,9 @@ export default class TinNhanh extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Galary---------', strBody);
+    // console.log('strBody file ảnh Galary---------', strBody);
     let res = await FileBaiDang(strBody);
-    console.log('res file ảnh Galary-----', res);
+    // console.log('res file ảnh Galary-----', res);
   };
 
   _FileBaiDang_Camera = async () => {
@@ -289,9 +290,13 @@ export default class TinNhanh extends React.Component {
             name: null,
           }));
     }
-    console.log('strBody file ảnh Camera ---------', strBody);
+    // console.log('strBody file ảnh Camera ---------', strBody);
     let res = await FileBaiDang(strBody);
-    console.log('res file ảnh Camera-----', res);
+    // console.log('res file ảnh Camera-----', res);
+  };
+
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
   };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
@@ -299,9 +304,10 @@ export default class TinNhanh extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   _render_Dang = () => {
@@ -352,7 +358,7 @@ export default class TinNhanh extends React.Component {
   };
 
   render() {
-    console.log('tin nhanh ==========', this.props.route.params);
+    // console.log('tin nhanh ==========', this.props.route.params);
     const {isActive, selectLyDo} = this.state;
     return (
       <ScrollView style={styles.container}>
@@ -495,7 +501,7 @@ export default class TinNhanh extends React.Component {
                 </View>
               )}
               {this.state.camera ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),
@@ -584,7 +590,7 @@ export default class TinNhanh extends React.Component {
               )}
 
               {this.state.Image ? (
-                <View>
+                <View style={{marginLeft: 5}}>
                   <Image
                     style={{
                       height: FontSize.scale(200),

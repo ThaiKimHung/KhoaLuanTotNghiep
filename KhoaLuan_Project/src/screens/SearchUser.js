@@ -31,7 +31,7 @@ export default class SearchUser extends React.Component {
   }
   _GetAllUser = async () => {
     let res = await GetAllUser();
-    console.log('ress all user bên search user', res);
+    // console.log('ress all user bên search user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
@@ -104,7 +104,7 @@ export default class SearchUser extends React.Component {
   }
 
   render() {
-    console.log('this search', this);
+    // console.log('this search', this);
     return (
       <View style={styles.container}>
         <View style={styles.back}>

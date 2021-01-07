@@ -14,7 +14,7 @@ import {
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import Utils from '../apis/Utils';
-import {AddLike} from '../apis/apiUser';
+import {AddLike, AddThongBao, BanThongBao} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -45,24 +45,41 @@ export default class ModalLike_Detail_ThongBao extends Component {
   //     });
   //   }
   // };
+
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+  _AddThongBao_Like = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã tương tác một bài viết',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
   TaoLike = async (idlike) => {
     let res = await AddLike(
       this.state.idbaidang,
       idlike,
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log('ress add like', res);
+    // console.log('ress add like', res);
     if (res.status == 1) {
       Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao');
       await ROOTGlobal.GetChiTietBaiDang();
       await ROOTGlobal.GanDataChitiet();
+      await this._AddThongBao_Like();
     }
   };
   GanDSLike = async () => {
-    console.log(
-      'danh sách like lưu ở global key ',
-      await Utils.getGlobal(nGlobalKeys.DanhSachLike),
-    );
+    // console.log(
+    //   'danh sách like lưu ở global key ',
+    //   await Utils.getGlobal(nGlobalKeys.DanhSachLike),
+    // );
     if (await Utils.getGlobal(nGlobalKeys.DanhSachLike)) {
       this.setState({
         DSLike: await Utils.getGlobal(nGlobalKeys.DanhSachLike),

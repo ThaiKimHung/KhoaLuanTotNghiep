@@ -30,7 +30,7 @@ export default class DanhSachLike extends React.Component {
 
   _GetDSLike = async () => {
     let res = await GetDSLike();
-    console.log('ress ds like', res);
+    // console.log('ress ds like', res);
     if (res.status == 1) {
       this.setState({
         DSLike: res.Data,

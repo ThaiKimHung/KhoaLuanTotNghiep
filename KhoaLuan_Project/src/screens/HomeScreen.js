@@ -23,7 +23,7 @@ export default class HomeScreen extends React.Component {
   }
   render() {
     // const {ds} = this.props.route.params;
-    console.log('props_homesrceen', this.props);
+    // console.log('props_homesrceen', this.props);
     // console.log('item id', ds);
     return (
       <View style={{flex: 1}}>

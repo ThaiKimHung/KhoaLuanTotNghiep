@@ -106,13 +106,13 @@ export default class Screen_EditBaiDang extends React.Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
-      console.log('image--------', image);
+      // console.log('image--------', image);
       this.setState({
         image: image,
         path: image.path,
       });
-      console.log('state image =====', this.state.image);
-      console.log('path image =====', this.state.path);
+      // console.log('state image =====', this.state.image);
+      // console.log('path image =====', this.state.path);
       // this.hamTest();
     });
   };
@@ -169,7 +169,7 @@ export default class Screen_EditBaiDang extends React.Component {
       gioitinh: thongtin[0].gioitinh,
       idnv: thongtin[0].ID_NV,
     });
-    await console.log('thong tin state', this.state.ava);
+    // await console.log('thong tin state', this.state.ava);
   };
 
   _UpdateUser = async () => {
@@ -180,27 +180,27 @@ export default class Screen_EditBaiDang extends React.Component {
         ? (await this.state.image.path.split('/').slice(-1)) + ''
         : null,
     });
-    console.log('strBody file ảnh---------', strBody);
+    // console.log('strBody file ảnh---------', strBody);
     let res = this.state.image
       ? await AvatarUser(await Utils.ngetStorage(nkey.id_user), strBody)
       : null;
-    console.log('res file ảnh-----', res);
+    // console.log('res file ảnh-----', res);
 
     //UpdateUserProfile_User
     let strBody_UpdateUserProfile_User = JSON.stringify({
       id_user: await Utils.ngetStorage(nkey.id_user),
       username: this.state.username,
     });
-    console.log('strBody UpdateUserProfile_User---------', strBody);
+    // console.log('strBody UpdateUserProfile_User---------', strBody);
     let res_UpdateUserProfile_User = await UpdateUserProfile_User(
       await Utils.ngetStorage(nkey.id_user),
       await this.state.idnv,
       strBody_UpdateUserProfile_User,
     );
-    console.log(
-      ' res UpdateUserProfile_User---------',
-      res_UpdateUserProfile_User,
-    );
+    // console.log(
+    //   ' res UpdateUserProfile_User---------',
+    //   res_UpdateUserProfile_User,
+    // );
 
     //_UpdateUserProfile_NV
     let strBody_UpdateUserProfile_NV = JSON.stringify({
@@ -214,16 +214,16 @@ export default class Screen_EditBaiDang extends React.Component {
         ? await moment(this.state.DateDisplay).format('MM/DD/YYYY')
         : this.state.ngaysinh,
     });
-    console.log(
-      'strBody UpdateUserProfile_NV---------',
-      strBody_UpdateUserProfile_NV,
-    );
+    // console.log(
+    //   'strBody UpdateUserProfile_NV---------',
+    //   strBody_UpdateUserProfile_NV,
+    // );
     let res_UpdateUserProfile_NV = await UpdateUserProfile_NV(
       await Utils.ngetStorage(nkey.id_user),
       await this.state.idnv,
       strBody_UpdateUserProfile_NV,
     );
-    console.log(' res UpdateUserProfile_NV---------', res_UpdateUserProfile_NV);
+    // console.log(' res UpdateUserProfile_NV---------', res_UpdateUserProfile_NV);
 
     if (
       this.state.image
@@ -258,12 +258,12 @@ export default class Screen_EditBaiDang extends React.Component {
       id_user: await Utils.ngetStorage(nkey.id_user),
       username: this.state.username,
     });
-    console.log('strBody UpdateUserProfile_User---------', strBody);
+    // console.log('strBody UpdateUserProfile_User---------', strBody);
     let res = await UpdateUserProfile_User(
       await Utils.ngetStorage(nkey.id_user),
       strBody,
     );
-    console.log(' res UpdateUserProfile_User---------', res);
+    // console.log(' res UpdateUserProfile_User---------', res);
   };
 
   _UpdateUserProfile_NV = async () => {
@@ -276,12 +276,12 @@ export default class Screen_EditBaiDang extends React.Component {
         : this.state.gioitinh,
       ngaysinh: this.state.DateDisplay,
     });
-    console.log('strBody UpdateUserProfile_NV---------', strBody);
+    // console.log('strBody UpdateUserProfile_NV---------', strBody);
     let res = await UpdateUserProfile_NV(
       await Utils.ngetStorage(nkey.id_user),
       strBody,
     );
-    console.log(' res UpdateUserProfile_NV---------', res);
+    // console.log(' res UpdateUserProfile_NV---------', res);
   };
 
   ThucThi = async () => {
@@ -296,7 +296,7 @@ export default class Screen_EditBaiDang extends React.Component {
 
   render() {
     const {isActive, selectLyDo} = this.state;
-    console.log('trang edit thong tin ca nhan', this.props);
+    // console.log('trang edit thong tin ca nhan', this.props);
     return (
       <View style={{flex: 1}}>
         <View style={styles.back}>

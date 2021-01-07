@@ -18,7 +18,6 @@ import {
   GetDSThongBao,
   Update_ThongBao,
   Delete_ThongBao,
-  GetDSThongBaoNgoaiTru,
   Danhdaudadoc,
 } from '../apis/apiUser';
 import Utils from '../apis/Utils';
@@ -44,10 +43,8 @@ export default class SearchUser extends React.Component {
     ROOTGlobal.GetDsThongBao = this._GetDSThongBao;
   }
   _GetDSThongBao = async () => {
-    let res = await GetDSThongBaoNgoaiTru(
-      await Utils.ngetStorage(nkey.id_user),
-    );
-    console.log('ress all thong báo', res);
+    let res = await GetDSThongBao(await Utils.ngetStorage(nkey.id_user));
+    // console.log('ress all thong báo', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
@@ -61,19 +58,19 @@ export default class SearchUser extends React.Component {
 
   _DanhdaudadocAll = async () => {
     let res = await Danhdaudadoc();
-    console.log('res dánh dấu đã dọc', res);
+    // console.log('res dánh dấu đã dọc', res);
     this._GetDSThongBao();
   };
 
   _UpdateThongBao = async (idthongbao) => {
     let res = await Update_ThongBao(idthongbao);
-    console.log('res update thông báo', res);
+    // console.log('res update thông báo', res);
     this._GetDSThongBao();
   };
 
   _DeleteThongBao = async (idthongbao) => {
     let res = await Delete_ThongBao(idthongbao);
-    console.log('res delete thông báo', res);
+    // console.log('res delete thông báo', res);
     this._GetDSThongBao();
   };
 

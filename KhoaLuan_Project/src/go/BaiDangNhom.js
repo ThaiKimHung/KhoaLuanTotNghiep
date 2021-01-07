@@ -59,7 +59,7 @@ export default class BaiDangNhom extends React.Component {
       idnhom: nhom.id_group,
       tennhom: nhom.ten_group,
     });
-    console.log('this bài đăng nhóm', id_nguoidang);
+    // console.log('this bài đăng nhóm', id_nguoidang);
     // await console.log('ten nhóm ======', await this.state.tennhom);
   };
 
@@ -70,7 +70,7 @@ export default class BaiDangNhom extends React.Component {
       await Utils.ngetStorage(nkey.id_user),
       await this.state.idnhom,
     );
-    console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       this.setState({
         DSBaiDangNhom: res.data,

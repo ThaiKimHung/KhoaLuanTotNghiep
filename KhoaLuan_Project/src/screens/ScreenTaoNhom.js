@@ -79,7 +79,7 @@ export default class ScreenTaoNhom extends React.Component {
         this.setState({
           image: null,
           images: images.map((i) => {
-            console.log('received image', i);
+            // console.log('received image', i);
             return {
               uri: i.path,
               width: i.width,
@@ -88,7 +88,7 @@ export default class ScreenTaoNhom extends React.Component {
             };
           }),
         });
-        console.log('state===== images', this.state.images);
+        // console.log('state===== images', this.state.images);
       })
       .catch((e) => alert(e));
   };
@@ -100,8 +100,8 @@ export default class ScreenTaoNhom extends React.Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
-      console.log(image);
-      console.log('path', image.path);
+      // console.log(image);
+      // console.log('path', image.path);
       this.setState({
         image: image.path,
       });
@@ -119,7 +119,7 @@ export default class ScreenTaoNhom extends React.Component {
         this.setState({
           image: null,
           images: images.map((i) => {
-            console.log('received image', i);
+            // console.log('received image', i);
             return {
               uri: i.path,
               width: i.width,
@@ -128,7 +128,7 @@ export default class ScreenTaoNhom extends React.Component {
             };
           }),
         });
-        console.log('state===== images chụp ảnh', this.state.images);
+        // console.log('state===== images chụp ảnh', this.state.images);
       })
       .catch((e) => alert(e));
   };
@@ -149,9 +149,9 @@ export default class ScreenTaoNhom extends React.Component {
       CreatedBy: id_user,
       UpdatedBy: 0,
     });
-    console.log('strBody tạo nhóm---------', strBody);
+    // console.log('strBody tạo nhóm---------', strBody);
     let res = await AddGroup(strBody);
-    console.log('res add nhóm-----', res);
+    // console.log('res add nhóm-----', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});

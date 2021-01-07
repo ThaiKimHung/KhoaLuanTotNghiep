@@ -46,7 +46,7 @@ export default class SignInScreen extends React.Component {
 
   _loginJee = async () => {
     let res = await Login(this.Username, this.Password);
-    console.log('ress đăng nhập', res);
+    // console.log('ress đăng nhập', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -63,10 +63,10 @@ export default class SignInScreen extends React.Component {
         nkey.id_user,
         this.state.DsThongTinUser[0].ID_user,
       );
-      console.log(
-        'id khi đăng nhập screen đănh nhập',
-        await Utils.ngetStorage(nkey.id_user),
-      );
+      // console.log(
+      //   'id khi đăng nhập screen đănh nhập',
+      //   await Utils.ngetStorage(nkey.id_user),
+      // );
       //lưu lại avatar
       await Utils.nsetStorage(nkey.avatar, this.state.DsThongTinUser[0].Avatar);
       //lưu user name
@@ -109,13 +109,13 @@ export default class SignInScreen extends React.Component {
         TinhTrang: true,
       });
     }
-    console.log('strBody tình trạng sau khi đăng nhập', strBody);
+    // console.log('strBody tình trạng sau khi đăng nhập', strBody);
     let res = await PostTinhTrang(strBody);
-    console.log('res update tình trạng sau khi đăng nhập', res);
+    // console.log('res update tình trạng sau khi đăng nhập', res);
   };
   _GetDSLike = async () => {
     let res = await GetDSLike();
-    console.log('ress ds like', res);
+    // console.log('ress ds like', res);
     if (res.status == 1) {
       this.setState({
         DSLike: res.Data,

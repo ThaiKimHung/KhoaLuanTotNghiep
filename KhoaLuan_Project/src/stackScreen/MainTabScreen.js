@@ -160,14 +160,6 @@ export default class MainTabScreen extends React.Component {
                 focused={focused}
                 color={color}
               />
-
-              // <Image
-              //   source={home}
-              //   style={{
-              //     height: size ? size : 24,
-              //     width: size ? size : 24,
-              //     color: focused ? color : '#222222',
-              //   }}></Image>
             ),
           }}
         />
@@ -176,8 +168,6 @@ export default class MainTabScreen extends React.Component {
           component={this.DetailsStackScreen}
           listeners={{
             tabPress: () => {
-              // Prevent default action
-              // ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsNhom();
             },
           }}
@@ -194,43 +184,34 @@ export default class MainTabScreen extends React.Component {
               />
             ),
           }}
-          // <Image
-          //       source={group}
-          //       style={{
-          //         height: FontSize.scale(26),
-          //         width: FontSize.verticalScale(26),
-          //       }}></Image>
         />
         <Tab.Screen
           name="ThongBao"
           component={this.ThongBaoStackScreen}
           listeners={{
             tabPress: () => {
-              // Prevent default action
-              // ROOTGlobal.DemSoLuong();
-              // this.ham();
               ROOTGlobal.GetDsThongBao();
             },
           }}
           options={{
             tabBarLabel: 'Thông báo',
-            // tabBarBadge: 3,
-            // tabBarBadgeStyle: {back},
             tabBarIcon: ({focused, color, size}) => (
               <View style={{flexDirection: 'row'}}>
-                <View
-                  style={{
-                    top: -10,
-                    right: -30,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'red',
-                    borderRadius: 10,
-                    width: FontSize.verticalScale(20),
-                  }}>
-                  <Text>{soluong}</Text>
-                </View>
-
+                {soluong != 0 ? (
+                  <View
+                    style={{
+                      top: -10,
+                      right: -30,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'red',
+                      borderRadius: 10,
+                      width: FontSize.verticalScale(20),
+                    }}>
+                    <Text>{soluong}</Text>
+                  </View>
+                ) : // <View></View>
+                null}
                 <Icon
                   name="bell"
                   size={size ? size : 24}

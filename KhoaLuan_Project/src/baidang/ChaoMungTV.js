@@ -27,6 +27,7 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -78,6 +79,10 @@ export default class ChaoMungTV extends React.Component {
     // console.log('user selected', this.state.userSelected);
   };
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng chào mừng thành viên mới',
@@ -86,6 +91,7 @@ export default class ChaoMungTV extends React.Component {
 
     // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
+    await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
 

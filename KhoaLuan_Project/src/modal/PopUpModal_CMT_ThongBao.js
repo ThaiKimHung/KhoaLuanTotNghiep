@@ -91,9 +91,9 @@ export default class PopUpModal_CMT_ThongBao extends Component {
 
   Xoa_Cmt = async () => {
     let res_like = await DeleteComment_Like(this.state.Idcmt);
-    console.log('res detele like cmt', res_like);
+    // console.log('res detele like cmt', res_like);
     let res = await DeleteComment(this.state.Idcmt);
-    console.log('res delete cmt', res);
+    // console.log('res delete cmt', res);
     if (res_like.status == 1 && res.status == 1) {
       //   Utils.goscreen(this, 'ScreenDetailBaiDang');
       // Utils.goback(this);
@@ -105,7 +105,7 @@ export default class PopUpModal_CMT_ThongBao extends Component {
 
   NhanThongTin = async () => {
     const {Detail_Cmt = {}} = this.props.route.params;
-    console.log('Detail_Cmt modal', Detail_Cmt);
+    // console.log('Detail_Cmt modal', Detail_Cmt);
     let user = Detail_Cmt ? Detail_Cmt.User_comment[0] : {};
 
     await this.setState({

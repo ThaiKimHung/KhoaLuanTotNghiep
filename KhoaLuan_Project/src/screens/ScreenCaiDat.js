@@ -54,7 +54,7 @@ export default class ScreenCaiDat extends React.Component {
 
   _GetUserProfile = async () => {
     let res = await GetUserProfile(await Utils.ngetStorage(nkey.id_user));
-    console.log('res get user thoong tin ============', res);
+    // console.log('res get user thoong tin ============', res);
     if (res.status == 1) {
       this.setState({
         thongtin: res.Data,
@@ -65,9 +65,9 @@ export default class ScreenCaiDat extends React.Component {
 
   _logout = async () => {
     let flag = await Utils.ngetStorage(nkey.flag);
-    console.log('flag trc out', flag);
+    // console.log('flag trc out', flag);
     let flag1 = await Utils.nsetStorage(nkey.flag, '0');
-    console.log('flag1 sau out', flag1);
+    // console.log('flag1 sau out', flag1);
     AsyncStorage.clear();
     this.updateTinhTrangUser();
 
@@ -79,9 +79,9 @@ export default class ScreenCaiDat extends React.Component {
       TinhTrang: false,
     });
 
-    console.log('strBody update tinh trang user', strBody);
+    // console.log('strBody update tinh trang user', strBody);
     let res = await PostTinhTrang(strBody);
-    console.log('res update tình trạng sau khi đăng xuất cai dat', res);
+    // console.log('res update tình trạng sau khi đăng xuất cai dat', res);
   };
 
   componentDidMount = async () => {

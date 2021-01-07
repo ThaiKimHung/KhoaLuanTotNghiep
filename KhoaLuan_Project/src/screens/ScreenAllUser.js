@@ -56,7 +56,7 @@ export default class ScreenAllUser extends React.Component {
   };
   _GetAllUser = async () => {
     let res = await GetAllUser();
-    console.log('ress all user', res);
+    // console.log('ress all user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,

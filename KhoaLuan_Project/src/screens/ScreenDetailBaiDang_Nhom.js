@@ -28,12 +28,14 @@ import {
   AddLike,
   DeleteBaiDang_Like,
   AddThongBao,
+  BanThongBao,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const avatar_mau = require('../assets/images/avatar.png');
 const like = require('../assets/images/like.png');
@@ -47,6 +49,7 @@ const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const noti = require('../assets/images/bell.png');
 const sheld = require('../assets/images/shield.png');
 const light = require('../assets/images/light-bulb.png');
+
 const windowWidth = Dimensions.get('window').width;
 
 export default class ScreenDetailBaiDang_Nhom extends React.Component {
@@ -67,9 +70,9 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       title: '',
       noidung: '',
       day: '',
-      loaibaidang: '',
-      idbaidang: '',
       khenthuong: '',
+      // ngay: '',
+      // time: '',
     };
     this.idBaiDang = '';
     this.id_user = '';
@@ -78,35 +81,50 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     ROOTGlobal.GanDataChitiet_Nhom = this.GanData;
   }
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã bình luận một bài viết',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetChiTietBaiDang();
+      // await this.hamTru();
+      // console.log('hi');
+    }, 5000);
   };
 
   _GetChiTietBaiDang = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
-    let idbaidang = await Utils.getGlobal(nGlobalKeys.idbaidang);
-    let res = await GetChiTietBaiDang(id_user, idbaidang);
-    console.log('res chi tiết bài đăng', res);
+
+    let res = await GetChiTietBaiDang(id_user, this.idBaiDang);
+    // console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.data,
       });
+      // await console.log('chi tiết bd', this.state.ChiTietBD);
+      // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
     }
   };
+
   GetData = () => {
     if (this.props.route.params != null) {
       this.setState({
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     } else {
-      this.setState({refresh: !this.state.refresh});
+      this.setState({refresh: false});
     }
   };
 
@@ -124,8 +142,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     });
 
     let res = await AddComment(strBody);
-    console.log('res cmt', res);
-    console.log('strBody cmt', strBody);
+    // console.log('res cmt', res);
+    // console.log('strBody cmt', strBody);
 
     if (res.status == 1) {
       this.setState({
@@ -164,7 +182,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     return (
       <View>
         <View style={styles.khung_TungCmt}>
-          <TouchableOpacity>
+          <View>
             <View
               style={{
                 marginLeft: 5,
@@ -183,12 +201,12 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                   userCmt.avatar ? {uri: userCmt.avatar} : avatar_mau
                 }></Image>
             </View>
-          </TouchableOpacity>
+          </View>
           <View style={{flex: 1}}>
             <TouchableOpacity
               style={styles.khung_tenUser_Cmt}
               onLongPress={() => {
-                Utils.goscreen(this, 'PopUpModal_CMT', {
+                Utils.goscreen(this, 'PopUpModal_CMT_Nhom', {
                   Detail_Cmt: item,
                 });
               }}>
@@ -209,8 +227,9 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
-              Utils.goscreen(this, 'ScreenCMT_Child', {
+              Utils.goscreen(this, 'ScreenCMT_Child_Nhom', {
                 id_nguoidang: item,
+                index: index.toString(),
               })
             }>
             <Text style={{marginLeft: 10}}>
@@ -222,12 +241,25 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     );
   };
 
+  _AddThongBao_Like = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã tương tác một bài viết',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
-    console.log('ress add like', res);
+    // console.log('ress add like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
+      await this._AddThongBao_Like();
       // await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -244,7 +276,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
-    console.log('ress xóa like', res);
+    // console.log('ress xóa like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
@@ -263,7 +295,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
   };
 
   GanData = async () => {
-    this.setState({
+    await this.setState({
       user: await this.state.ChiTietBD[0].User_DangBai[0].ID_user,
       avatar_user: await this.state.ChiTietBD[0].User_DangBai[0].avatar,
       username: await this.state.ChiTietBD[0].User_DangBai[0].Username,
@@ -275,29 +307,12 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       noidung: await this.state.ChiTietBD[0].NoiDung,
       day: await this.state.ChiTietBD[0].CreatedDate,
       khenthuong: await this.state.ChiTietBD[0].KhenThuong,
-      // loaibaidang: await this.state.ChiTietBD[0].Id_LoaiBaiDang,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
-    // await console.log('title', this.state.title);
-    await console.log('khen thưởng', this.state.khenthuong);
-  };
-
-  gan = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    await Utils.setGlobal(nGlobalKeys.idbaidang, id_nguoidang.Id_BaiDang);
-    await Utils.setGlobal(
-      nGlobalKeys.idloaibaidang,
-      id_nguoidang.Id_LoaiBaiDang,
-    );
-
-    // await this.setState({
-    //   loaibaidang: await Utils.getGlobal(nGlobalKeys.idloaibaidang),
-    // });
-    // await console.log(
-    //   'set id  loại bài đăng',
-    //   await Utils.getGlobal(nGlobalKeys.idloaibaidang),
-    // );
+    // await console.log('day', this.state.day);
+    // await console.log('ngay', this.state.ngay);
+    // await console.log('time', this.state.time);
   };
 
   loadNoiDung = () => {
@@ -306,18 +321,11 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
     this.idBaiDang = id_nguoidang.Id_BaiDang;
-
-    // console.log(
-    //   'id bài đăng-------------',
-    //   id_nguoidang.Id_BaiDang,
-    //   this.state.idloaibaidang,
-    // );
     this.id_user = user.ID_user;
-    let idloaibaidang = id_nguoidang.Id_LoaiBaiDang;
-    // console.log('id loai bài đăng', idloaibaidang);
+    let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     let khenthuong1 = this.state.khenthuong ? this.state.khenthuong[0] : {};
-    switch (idloaibaidang) {
+    switch (idbaidang) {
       case 1:
         return (
           <View style={styles.footer} onPress={this.props.onPress}>
@@ -341,7 +349,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
               </View>
             </View>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -349,7 +357,6 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -385,13 +392,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                   uri: khenthuong1.icon,
                 }}
               />
-              {/* <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
-                {khenthuong.tieude_kt}
-                
-              </Text> */}
               <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
                 {khenthuong1.tieude_kt}
-                {/* {this.state.khenthuong?.tieude_kt} */}
               </Text>
             </Animatable.View>
 
@@ -455,7 +457,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
               </View>
             </View>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -463,7 +465,6 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -501,11 +502,11 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
         );
       case 6:
         return (
-          <View style={styles.footer}>
+          <View style={{paddingHorizontal: 10}}>
             <Text>{this.state.title}</Text>
             {/* <Text>{this.state.noidung}</Text> */}
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -513,14 +514,13 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
         );
       case 7:
         return (
-          <View style={styles.footer} onPress={this.props.onPress}>
+          <View style={{paddingHorizontal: 10}} onPress={this.props.onPress}>
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="pulse"
@@ -541,7 +541,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
               </View>
             </View>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -549,18 +549,18 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
         );
+
       default:
         return (
           <View style={styles.footer}>
             <Text>{this.state.title}</Text>
             <Text>{this.state.noidung}</Text>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -568,7 +568,6 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -577,11 +576,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
   };
 
   async componentDidMount() {
-    await this.gan();
     await this.GetData();
     await this._GetChiTietBaiDang();
     await this.GanData();
-
+    await this.hamloadLienTuc();
     // console.log()
   }
 
@@ -589,6 +587,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
+    // let day = id_nguoidang.CreatedDate;
     let ngay = this.state.day.substring(0, 10);
     let time = this.state.day.substring(11, 16);
     let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
@@ -601,6 +600,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
             ROOTGlobal.GetDsAllBaiDang_Nhom();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
+
         <View>
           <View style={styles.header}>
             <TouchableOpacity
@@ -635,6 +635,27 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
               <View style={styles.khung_tenUser}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styles.txt_TenUser}>{this.state.username}</Text>
+                  {/* {group ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 5,
+                      }}>
+                      <Image
+                        source={arrow}
+                        style={{
+                          height: FontSize.scale(10),
+                          width: FontSize.verticalScale(10),
+                        }}></Image>
+                      <TouchableOpacity style={{marginLeft: 5}}>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                          {group.ten_group}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : null} */}
                 </View>
 
                 <View
@@ -745,7 +766,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
 
         <View
           style={{
-            justifyContent: 'flex-end',
+            // flex: 1,
+            // justifyContent: 'flex-end',
+            position: 'absolute',
+            bottom: 0,
             flexDirection: 'row',
             alignItems: 'center',
             marginLeft: 5,
@@ -804,6 +828,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: 'yellow',
   },
   header: {
     flexDirection: 'row',

@@ -38,7 +38,7 @@ export default class ScreenTaoNhom extends React.Component {
   }
   _GetUserProfile = async () => {
     let res = await GetUserProfile(await Utils.ngetStorage(nkey.id_user));
-    console.log('res get user thoong tin ============', res);
+    // console.log('res get user thoong tin ============', res);
     if (res.status == 1) {
       this.setState({
         thongtin: res.Data,
@@ -47,7 +47,7 @@ export default class ScreenTaoNhom extends React.Component {
       await this.setState({
         ngay: await this.state.thongtin[0].ngaysinh,
       });
-      await console.log('ngay ', this.state.ngay);
+      // await console.log('ngay ', this.state.ngay);
       await Utils.nsetStorage(nkey.avatar, this.state.thongtin[0].Avatar);
       await Utils.nsetStorage(nkey.Username, this.state.thongtin[0].Username);
     } else {

@@ -24,7 +24,13 @@ import SvgUri from 'react-native-svg-uri';
 import * as Animatable from 'react-native-animatable';
 
 import {ROOTGlobal} from '../apis/dataGlobal';
-import {GetDSLike, AddLike, DeleteBaiDang_Like} from '../apis/apiUser';
+import {
+  GetDSLike,
+  AddLike,
+  DeleteBaiDang_Like,
+  AddThongBao,
+  BanThongBao,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import moment from 'moment';
@@ -59,18 +65,47 @@ export default class BaiDangComponenet extends React.Component {
     this.item = {};
   }
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã thêm 1 bài đăng khen thưởng',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
+  _AddThongBao_Like = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã tương tác một bài viết',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
-    console.log('ress add like', res);
+    // console.log('ress add like', res);
     // this.setState({
     //   thich: !this.state.thich,
     // });
     await ROOTGlobal.GetDsAllBaiDang();
+    await this._AddThongBao_Like();
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
-    console.log('ress xóa like', res);
+    // console.log('ress xóa like', res);
     await ROOTGlobal.GetDsAllBaiDang();
   };
 
@@ -90,14 +125,14 @@ export default class BaiDangComponenet extends React.Component {
 
   ChuyenData = async (item) => {
     // const {ds = {}} = item;
-    console.log('item', item);
+    // console.log('item', item);
     // console.log('ds', ds);
     Utils.goscreen(this.props.nthis.props.nthis, 'Home');
     await this.setState({
       DataChuyenVe: item,
     });
     this.GanDataSauKhiChuyenVe();
-    await console.log('data liek chuyeern veef', this.state.DataChuyenVe);
+    // await console.log('data liek chuyeern veef', this.state.DataChuyenVe);
   };
 
   GanDataSauKhiChuyenVe = async () => {
@@ -105,7 +140,7 @@ export default class BaiDangComponenet extends React.Component {
       likeSelected: this.state.DataChuyenVe.ID_like,
     });
 
-    await console.log('data liek ', this.state.likeSelected);
+    // await console.log('data liek ', this.state.likeSelected);
   };
 
   loadNoiDung = () => {
@@ -147,7 +182,6 @@ export default class BaiDangComponenet extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </TouchableOpacity>
@@ -247,7 +281,6 @@ export default class BaiDangComponenet extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </TouchableOpacity>
@@ -268,6 +301,26 @@ export default class BaiDangComponenet extends React.Component {
                 </Text>
               </View>
             </ImageBackground>
+          </TouchableOpacity>
+        );
+      case 6:
+        return (
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
+            {/* <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.NoiDung}
+              </Text> */}
+            {item.hinhanh ? (
+              <View style={{marginVertical: 5}}>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+              </View>
+            ) : null}
           </TouchableOpacity>
         );
       case 7:
@@ -293,7 +346,7 @@ export default class BaiDangComponenet extends React.Component {
               </View>
             </View>
             {item.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
                   style={{
@@ -301,7 +354,6 @@ export default class BaiDangComponenet extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </TouchableOpacity>
@@ -312,7 +364,7 @@ export default class BaiDangComponenet extends React.Component {
             <Text>{item.title}</Text>
             <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
             {item.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
                   style={{
@@ -320,7 +372,6 @@ export default class BaiDangComponenet extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </TouchableOpacity>

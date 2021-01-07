@@ -28,6 +28,7 @@ import {
   AddBaiDang_KhenThuong_Nhom,
   GetDSGroup,
   AddThongBao,
+  BanThongBao,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -60,9 +61,10 @@ export default class KhenThuong extends React.Component {
   }
   EmptyListMessage = ({item}) => {
     return (
-      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
-        No Data Found
-      </Text>
+      // <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+      //   No Data Found
+      // </Text>
+      <ActivityIndicator size="large" color="#0000ff" />
     );
   };
   _GetDsKhenThuong = async () => {
@@ -88,15 +90,21 @@ export default class KhenThuong extends React.Component {
       noidung: text,
     });
   }
+
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã thêm 1 bài đăng khen thưởng',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   ChuyenData = async (item) => {
@@ -118,12 +126,12 @@ export default class KhenThuong extends React.Component {
   _GetDSGroup = async () => {
     let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     // let res = await GetDSGroup(1);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       this.setState({
         dsNhom: res.Data,
       });
-      console.log('state', this.state.dsNhom);
+      // console.log('state', this.state.dsNhom);
     }
   };
   LaymangTam = async () => {
@@ -152,9 +160,9 @@ export default class KhenThuong extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody khen thưởng k nhóm', strBody);
+    // console.log('strBody khen thưởng k nhóm', strBody);
     let res = await AddBaiDang_KhenThuong(strBody);
-    console.log('res khen thưởng k nhóm', res);
+    // console.log('res khen thưởng k nhóm', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -196,9 +204,9 @@ export default class KhenThuong extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody khen thưởng nhóm', strBody);
+    // console.log('strBody khen thưởng nhóm', strBody);
     let res = await AddBaiDang_KhenThuong_Nhom(strBody);
-    console.log('res khen thưởng nhóm', res);
+    // console.log('res khen thưởng nhóm', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -535,22 +543,18 @@ export default class KhenThuong extends React.Component {
         </View>
 
         <View style={styles.footer}>
-          {this.state.DsKhenThuong.length != 0 ? (
-            <FlatList
-              data={this.state.DsKhenThuong}
-              renderItem={this.renderItem}
-              ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
-              numColumns={2}
-              keyExtractor={(item, index) => index.toString()}
-              ListEmptyComponent={this.EmptyListMessage}
-              refreshing={this.state.refresh}
-              onRefresh={() => {
-                this.setState({refresh: true}, this._GetDsKhenThuong);
-              }}
-            />
-          ) : (
-            <ActivityIndicator size="large" color="#0000ff" />
-          )}
+          <FlatList
+            data={this.state.DsKhenThuong}
+            renderItem={this.renderItem}
+            ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
+            numColumns={2}
+            keyExtractor={(item, index) => index.toString()}
+            ListEmptyComponent={this.EmptyListMessage}
+            refreshing={this.state.refresh}
+            onRefresh={() => {
+              this.setState({refresh: true}, this._GetDsKhenThuong);
+            }}
+          />
         </View>
       </ScrollView>
     );
@@ -571,6 +575,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     // marginVertical: 10,
+    marginTop: 5,
   },
   footer: {
     height: 'auto',
@@ -583,8 +588,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderRadius: 10,
-    height: FontSize.scale(heightScreen / 2.5),
-    width: FontSize.verticalScale(widthScreen / 2.5),
+    height: FontSize.scale(160),
+    width: FontSize.verticalScale(160),
+    justifyContent: 'center',
   },
   container_khung: {
     width: FontSize.verticalScale(100),

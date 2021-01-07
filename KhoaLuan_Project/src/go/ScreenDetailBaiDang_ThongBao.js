@@ -28,6 +28,7 @@ import {
   AddLike,
   DeleteBaiDang_Like,
   AddThongBao,
+  BanThongBao,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -81,29 +82,46 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     // ROOTGlobal.GanDataChitiet = this.GanData;
   }
 
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã bình luận một bài viết',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(strBody);
-    console.log('res add thông báo', res);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
+  _AddThongBao_Like = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã tương tác một bài viết',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   _GetChiTietBaiDang = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
     let res = await GetChiTietBaiDang(id_user, await this.state.idbaidang);
-    console.log('res chi tiết bài đăng', res);
+    // console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.data,
         refresh: false,
       });
       this.GanData();
-      await console.log('chi tiết bd', this.state.ChiTietBD);
+      // await console.log('chi tiết bd', this.state.ChiTietBD);
       // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
     } else {
       this.setState({
@@ -135,8 +153,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     });
 
     let res = await AddComment(strBody);
-    console.log('res cmt', res);
-    console.log('strBody cmt', strBody);
+    // console.log('res cmt', res);
+    // console.log('strBody cmt', strBody);
 
     if (res.status == 1) {
       this.setState({
@@ -240,10 +258,11 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       idlike,
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log('ress add like', res);
+    // console.log('ress add like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
+      await this._AddThongBao_Like();
       // await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -260,7 +279,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
-    console.log('ress xóa like', res);
+    // console.log('ress xóa like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
@@ -302,7 +321,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
   nhanData = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
     await Utils.setGlobal(nGlobalKeys.idbaidang, id_nguoidang.id_baidang);
-    console.log('id bài đăng', id_nguoidang.id_baidang);
+    // console.log('id bài đăng', id_nguoidang.id_baidang);
     this.setState({
       idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
     });
@@ -341,7 +360,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
               </View>
             </View>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -349,7 +368,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -450,7 +468,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
               </View>
             </View>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -458,7 +476,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -500,7 +517,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             <Text>{this.state.title}</Text>
             {/* <Text>{this.state.noidung}</Text> */}
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -508,7 +525,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -536,7 +552,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
               </View>
             </View>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -544,7 +560,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>
@@ -591,7 +606,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             <Text>{this.state.title}</Text>
             <Text>{this.state.noidung}</Text>
             {id_nguoidang.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
                   style={{
@@ -599,7 +614,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     width: '100%',
                     backgroundColor: 'blue',
                   }}></Image>
-                <Text>có hình ảnh nè</Text>
               </View>
             ) : null}
           </View>

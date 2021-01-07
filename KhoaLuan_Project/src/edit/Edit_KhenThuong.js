@@ -196,9 +196,9 @@ export default class Edit_KhenThuong extends React.Component {
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody edit khen thưởng', strBody);
+    // console.log('strBody edit khen thưởng', strBody);
     let res = await Update_BaiDang_KhenThuong(strBody);
-    console.log('res update edit khen thưởng', res);
+    // console.log('res update edit khen thưởng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

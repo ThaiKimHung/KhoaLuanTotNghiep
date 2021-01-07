@@ -87,7 +87,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
-    console.log('id', id_nguoidang);
+    // console.log('id', id_nguoidang);
     let tit = id_nguoidang.title;
 
     this.setState({
@@ -96,10 +96,10 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       idbaidang: id_nguoidang[0].Id_BaiDang,
       idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
     });
-    await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
-    await console.log('title', this.state.title);
-    await console.log('noi dung', this.state.noidung);
-    await console.log('item', this.state.selectedItem);
+    // await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
+    // await console.log('title', this.state.title);
+    // await console.log('noi dung', this.state.noidung);
+    // await console.log('item', this.state.selectedItem);
   };
 
   EditBaiDang = async () => {
@@ -117,9 +117,9 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody edit khen thưởng', strBody);
+    // console.log('strBody edit khen thưởng', strBody);
     let res = await Update_BaiDang(strBody);
-    console.log('res update edit khen thưởng', res);
+    // console.log('res update edit khen thưởng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -151,7 +151,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
   render() {
     const {isActive, selectLyDo} = this.state;
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('id người dăng test- ------', id_nguoidang);
+    // console.log('id người dăng test- ------', id_nguoidang);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.back}>
@@ -189,7 +189,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
                   flex: 1,
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Sửa chào mừng nhóm</Text>
+                <Text style={styles.title}>Sửa CMTV nhóm</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
                 <TouchableOpacity onPress={() => this.EditBaiDang()}>
@@ -275,13 +275,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#9C9C9C',
+    // backgroundColor: '#9C9C9C',
     // justifyContent: 'center',
     // flex: 1,
     height: 'auto',
-    padding: 10,
-    borderRadius: 10,
+    // padding: 10,
+    // borderRadius: 10,
     marginHorizontal: 10,
+    marginVertical: 10,
     // marginVertical: 10,
   },
   footer: {

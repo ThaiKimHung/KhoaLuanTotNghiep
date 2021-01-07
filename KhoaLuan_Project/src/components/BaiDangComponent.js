@@ -545,6 +545,7 @@ export default class BaiDangComponenet extends React.Component {
 
               <TouchableOpacity
                 style={styles.khung_Thich}
+                activeOpacity={0.8}
                 onLongPress={async () => {
                   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
@@ -566,6 +567,7 @@ export default class BaiDangComponenet extends React.Component {
 
             <TouchableOpacity
               style={styles.khung_BinhLuan}
+              activeOpacity={0.8}
               onPress={this.props.onPress}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>

@@ -153,33 +153,6 @@ export default class PopUpModal_CMT_Nhom extends Component {
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5, height: FontSize.scale(150)}}>
-                    {/* <TouchableOpacity
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: 5,
-                      }}>
-                      <Image source={answer} style={styles.image_st}></Image>
-                      <Text style={{fontSize: 20}}>Trả lời</Text>
-                    </TouchableOpacity> */}
-
-                    {/* <TouchableOpacity
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: 5,
-                      }}
-                      onPress={() => {
-                        Utils.goscreen(this, 'PopUpModal_SuaCMT', {
-                          id_nguoidang: Detail_Cmt,
-                        });
-                        this.setState({
-                          display: !this.state.display,
-                        });
-                      }}>
-                      <Image source={edite} style={styles.image_st}></Image>
-                      <Text style={{fontSize: 20}}>Sửa</Text>
-                    </TouchableOpacity> */}
                     <TouchableOpacity
                       style={{
                         flexDirection: 'row',
@@ -197,24 +170,51 @@ export default class PopUpModal_CMT_Nhom extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        this.Xoa_Cmt();
-                      }}>
+                      onPress={() =>
+                        Alert.alert(
+                          'Thông Báo',
+                          'Bạn Muốn Xóa Bình Luận?',
+                          [
+                            {text: 'Đồng ý', onPress: () => this.Xoa_Cmt()},
+                            {
+                              text: 'Hủy',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        )
+                      }>
                       <Image source={delet} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Xóa</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View style={{marginTop: 5, height: FontSize.scale(150)}}>
-                    <TouchableOpacity
+                  <View style={{marginTop: 5}}>
+                    <View
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
-                      }}>
-                      <Image source={answer} style={styles.image_st}></Image>
-                      <Text style={{fontSize: 20}}>Trả lời</Text>
-                    </TouchableOpacity>
+                      }}
+                      // onPress={() => {
+                      //   this.change(),
+                      //     this.props.navigation.navigate('SearchUser');
+                      // }}
+                    >
+                      <Image source={edite} style={styles.image_st1}></Image>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}
+                      onPress={() => this.change()}>
+                      <Image source={delet} style={styles.image_st1}></Image>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
+                    </View>
                   </View>
                 )}
               </View>

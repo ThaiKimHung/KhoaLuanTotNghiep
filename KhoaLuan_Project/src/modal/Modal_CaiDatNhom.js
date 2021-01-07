@@ -98,50 +98,6 @@ export default class Modal_CaiDatNhom extends Component {
                   maxHeight: deviceHeight * 0.4,
                   // height: '50%',
                 }}>
-                {/* {this.state.id_NguoiDang == this.state.id_user ? (
-                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
-                    <TouchableOpacity
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: 5,
-                      }}>
-                      <Image source={edite} style={styles.image_st}></Image>
-                      <Text style={{fontSize: 20}}>Sửa</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: 5,
-                      }}
-                      onPress={() =>
-                        Alert.alert(
-                          'Thông Báo',
-                          'Bạn Muốn Xóa Bài Đăng?',
-                          [
-                            {
-                              text: 'Đồng ý',
-                              // onPress: () => this.XoaBaiDang()
-                            },
-                            {
-                              text: 'Hủy',
-                              style: 'cancel',
-                            },
-                          ],
-                          {cancelable: false},
-                        )
-                      }
-                      // onPress={() => {
-                      //   this.XoaBaiDang();
-                      // }}
-                    >
-                      <Image source={delet} style={styles.image_st}></Image>
-                      <Text style={{fontSize: 20}}>Xóa</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : ( */}
                 <View style={{marginTop: 5, height: FontSize.Height(50)}}>
                   <TouchableOpacity
                     style={{

@@ -125,7 +125,7 @@ export default class ScreenThanhVienNhom extends React.Component {
             onPress={() =>
               Alert.alert(
                 'Thông Báo',
-                'Bạn Muốn Thêm Thành Viên ' + item.Username,
+                'Bạn Muốn Thêm Thành Viên ?' + item.Username,
                 [
                   {
                     text: 'Đồng ý',

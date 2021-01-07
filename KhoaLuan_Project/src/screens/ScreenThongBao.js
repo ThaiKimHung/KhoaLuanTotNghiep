@@ -74,6 +74,16 @@ export default class SearchUser extends React.Component {
     this._GetDSThongBao();
   };
 
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetDSThongBao();
+    }, 1000);
+  };
+
+  componentDidMount = async () => {
+    await this.hamloadLienTuc();
+  };
+
   _renderItem = ({item, index}) => {
     // console.log(item);
     return (
@@ -159,12 +169,12 @@ export default class SearchUser extends React.Component {
               borderBottomColor: '#C0C0C0',
               //   backgroundColor: '#C0C0C020',
             }}
-            onPress={
-              (() => this._UpdateThongBao(item.id_tb),
-              Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao', {
-                id_nguoidang: item,
-              }))
-            }>
+            onPress={() => {
+              this._UpdateThongBao(item.id_tb),
+                Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao', {
+                  id_nguoidang: item,
+                });
+            }}>
             <View
               style={{
                 marginLeft: 5,

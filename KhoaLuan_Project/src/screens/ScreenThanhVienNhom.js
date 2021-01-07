@@ -147,7 +147,7 @@ export default class ScreenThanhVienNhom extends React.Component {
               onPress={() =>
                 Alert.alert(
                   'Thông Báo',
-                  'Bạn Muốn Cập Nhật Quyền Của Thành Viên ' + item.Username,
+                  'Bạn Muốn Cập Nhật Quyền Của Thành Viên ? ' + item.Username,
                   [
                     {
                       text: 'Đồng ý',
@@ -180,7 +180,7 @@ export default class ScreenThanhVienNhom extends React.Component {
                 onPress={() =>
                   Alert.alert(
                     'Thông Báo',
-                    'Bạn Muốn Cập Nhật Quyền Của Thành Viên ' + item.Username,
+                    'Bạn Muốn Cập Nhật Quyền Của Thành Viên ?' + item.Username,
                     [
                       {
                         text: 'Đồng ý',
@@ -211,7 +211,7 @@ export default class ScreenThanhVienNhom extends React.Component {
                 onPress={() =>
                   Alert.alert(
                     'Thông Báo',
-                    'Bạn Muốn Xóa Thành Viên ' + item.Username,
+                    'Bạn Muốn Xóa Thành Viên ?' + item.Username,
                     [
                       {
                         text: 'Đồng ý',

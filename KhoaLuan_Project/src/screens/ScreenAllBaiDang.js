@@ -81,19 +81,16 @@ export default class ScreenAllBaiDang extends React.Component {
   };
 
   _GetDSBaiDang = async () => {
-    this.setState({
+    await this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
     // console.log('id bài đăng', this.state.id_user);
 
     let res = await GetDSBaiDang(this.state.id_user);
-    // console.log(
-    //   'Danh sách bài đăng Screen all bài _GetDSBaiDang:',
-    //   res.data.length,
-    // );
-    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    // console.log('ress-------', res);
+
     if (res.status == 1) {
-      this.setState({
+      await this.setState({
         DSBaiDang: res.data,
         refresh: false,
         length: res.data.length,
@@ -154,7 +151,7 @@ export default class ScreenAllBaiDang extends React.Component {
           delay={1000}
           duration={1000}>
           <TouchableOpacity
-            onPress={() => this._onRefresh()}
+            onPress={() => this._GetDSBaiDang()}
             style={{
               borderRadius: 20,
               height: FontSize.scale(30),

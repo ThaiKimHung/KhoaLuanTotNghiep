@@ -13,113 +13,116 @@ import {
 } from 'react-native';
 import FontSize from '../components/size';
 
-import {
-  DeleteBaiDang,
-  DeleteCommentTrongBaiDang,
-  DeleteLikeTrongBaiDang,
-} from '../apis/apiUser';
+import {DeleteComment, DeleteComment_Like, Update_CMT} from '../apis/apiUser';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useRoute} from '@react-navigation/native';
+// import {useRoute} from '@react-navigation/native';
 import {ROOTGlobal} from '../apis/dataGlobal';
+
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
-export default class PopUpModal_XoaSua_Detail extends Component {
+const answer = require('../assets/images/chat.png');
+export default class PopUpModal_CMT_Child_Nhom extends Component {
   constructor(props) {
     super(props);
     this.state = {
       display: true,
       id_user: '',
-      idBaiDang: '',
       id_NguoiDang: '',
       xoathanhcong: true,
+      Idcmt: '',
     };
   }
-  async _getThongTin() {
+  _getThongTin = async () => {
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    // await console.log('lưu iduser', this.state.id_user);
-  }
-  change() {
+  };
+
+  change = async () => {
     this.setState({
       display: !this.state.display,
     });
     // this.props.navigation.goBack();
     Utils.goback(this, '');
-  }
+    await ROOTGlobal.GetChiTietBaiDang();
+    await ROOTGlobal.GanDataChitiet();
+    await ROOTGlobal.GetDSCmt();
+  };
 
-  XoaBaiDang = async () => {
-    //xóa like
-    let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
-    // xóa cmt
-    let res_cmt = await DeleteCommentTrongBaiDang(this.state.idBaiDang);
-
-    //xóa bài đăng
-    let res = await DeleteBaiDang(this.state.idBaiDang);
-    if (res_like.status == 1 && res_cmt.status == 1 && res.status == 1) {
+  Xoa_Cmt = async () => {
+    let res_like = await DeleteComment_Like(this.state.Idcmt);
+    // console.log('res detele like cmt', res_like);
+    let res = await DeleteComment(this.state.Idcmt);
+    // console.log('res delete cmt', res);
+    if (res_like.status == 1 && res.status == 1) {
+      //   Utils.goscreen(this, 'ScreenDetailBaiDang');
+      // Utils.goback(this);
+      // await ROOTGlobal.GetChiTietBaiDang();
+      // await ROOTGlobal.GanDataChitiet();
       showMessage({
         message: 'Thông báo',
-        description: 'Xóa bài thành công',
+        description: 'Xóa bình luận thành công',
         type: 'success',
         duration: 1500,
         icon: 'success',
-      });
-      this.setState({
-        thanhcong: true,
-      });
-      this.xoathanhcong();
-      await ROOTGlobal.GetDsAllBaiDang();
-    } else {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Xóa bài thất bại',
-        type: 'danger',
-        duration: 1500,
-        icon: 'danger',
-      });
-      this.setState({
-        thanhcong: false,
       });
       this.change();
     }
   };
 
   NhanThongTin = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    // console.log('this detail modal', this.props);
-    // console.log('DetailBaiDang modal', id_nguoidang);
-    let user = id_nguoidang[0].User_DangBai[0].ID_user;
-    let idbaidang = id_nguoidang[0].Id_BaiDang;
-    // await console.log('user', idbaidang);
+    const {Detail_Cmt = {}} = this.props.route.params;
+    console.log('log item', Detail_Cmt);
+    // console.log('Detail_Cmt modal', Detail_Cmt);
+    let user = Detail_Cmt ? Detail_Cmt.User_comment_child[0] : {};
+    // await console.log('user', user);
     await this.setState({
-      idBaiDang: idbaidang ? idbaidang : null,
-      id_NguoiDang: user ? user : null,
+      id_NguoiDang: user ? user.ID_user : null,
+      Idcmt: Detail_Cmt.id_cmt,
     });
-    // await console.log('this , truyền vào', this.state.id_NguoiDang);
   };
 
-  xoathanhcong = () => {
-    this.setState({
-      display: !this.state.display,
-    });
-    Utils.goscreen(this, 'Home');
-  };
-
-  loadNoiDungChinhSua = () => {};
-
-  async componentDidMount() {
+  componentDidMount = async () => {
     await this._getThongTin();
     await this.NhanThongTin();
-  }
+  };
 
+  // <View style={{marginTop: 5}}>
+  //                   <View
+  //                     style={{
+  //                       flexDirection: 'row',
+  //                       alignItems: 'center',
+  //                       padding: 5,
+  //                     }}
+  //                     // onPress={() => {
+  //                     //   this.change(),
+  //                     //     this.props.navigation.navigate('SearchUser');
+  //                     // }}
+  //                   >
+  //                     <Image source={edite} style={styles.image_st1}></Image>
+  //                     <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
+  //                   </View>
+
+  //                   <View
+  //                     style={{
+  //                       flexDirection: 'row',
+  //                       alignItems: 'center',
+  //                       padding: 5,
+  //                     }}
+  //                     onPress={() => this.change()}>
+  //                     <Image source={delet} style={styles.image_st1}></Image>
+  //                     <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
+  //                   </View>
+  //                 </View>
   render() {
+    // console.log('log item cmt child', this.props.route.params);
     const {display} = this.state;
-    // console.log('this modal popup detail', this);
+    const {Detail_Cmt = {}} = this.props.route.params;
     return (
       <View>
         <Modal
@@ -143,19 +146,14 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                   maxHeight: deviceHeight * 0.4,
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
-                  <View style={{marginTop: 5}}>
+                  <View style={{marginTop: 5, height: FontSize.scale(150)}}>
                     <TouchableOpacity
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        // Utils.goscreen(this, 'Screen_EditBaiDang_Detail', {
-                        //   id_nguoidang: this.props.route.params,
-                        // });
-                        alert('Đang cập nhật');
-                      }}>
+                      onPress={() => alert('Đang cập nhật')}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
                     </TouchableOpacity>
@@ -169,9 +167,9 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                       onPress={() =>
                         Alert.alert(
                           'Thông Báo',
-                          'Bạn Muốn Xóa Bài Đăng?',
+                          'Bạn Muốn Xóa Bình Luận?',
                           [
-                            {text: 'Đồng ý', onPress: () => this.XoaBaiDang()},
+                            {text: 'Đồng ý', onPress: () => this.Xoa_Cmt()},
                             {
                               text: 'Hủy',
                               style: 'cancel',
@@ -198,9 +196,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                       // }}
                     >
                       <Image source={edite} style={styles.image_st1}></Image>
-                      <Text style={{fontSize: 20, color: '#696969'}}>
-                        Sửa nè
-                      </Text>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
                     </View>
 
                     <View

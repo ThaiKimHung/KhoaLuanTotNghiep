@@ -143,7 +143,7 @@ export default class ScreenCaiDat extends React.Component {
               onPress={() =>
                 Alert.alert(
                   'Thông Báo',
-                  'Bạn Muốn Đăng Xuất',
+                  'Bạn Muốn Đăng Xuất?',
                   [
                     {text: 'Đồng ý', onPress: () => this._logout()},
                     {

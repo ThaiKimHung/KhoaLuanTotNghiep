@@ -51,6 +51,8 @@ import PopUpModal_CMT_ThongBao from '../modal/PopUpModal_CMT_ThongBao';
 import PopUpModal_SuaCMT_ThongBao from '../modal/PopUpModal_SuaCMT_ThongBao';
 import PopUpModal_CMT_Nhom from '../modal/PopUpModal_CMT_Nhom';
 import PopUpModal_CMT_Child from '../modal/PopUpModal_CMT_Child';
+import PopUpModal_XoaSua_Detail_ThongBao from '../modal/PopUpModal_XoaSua_Detail_ThongBao';
+import PopUpModal_CMT_Child_Nhom from '../modal/PopUpModal_CMT_Child_Nhom';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
@@ -296,6 +298,14 @@ const AppStack = () => {
       <Stack.Screen
         name="PopUpModal_CMT_Child"
         component={PopUpModal_CMT_Child}
+      />
+      <Stack.Screen
+        name="PopUpModal_XoaSua_Detail_ThongBao"
+        component={PopUpModal_XoaSua_Detail_ThongBao}
+      />
+      <Stack.Screen
+        name="PopUpModal_CMT_Child_Nhom"
+        component={PopUpModal_CMT_Child_Nhom}
       />
     </Stack.Navigator>
   );

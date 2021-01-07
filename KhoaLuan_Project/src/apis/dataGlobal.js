@@ -25,6 +25,7 @@ const ROOTGlobal = {
   getGo: () => {},
   GetChiTietBaiDang_ThongBao: () => {},
   DemSoLuong: () => {},
+  GetDSCmt: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

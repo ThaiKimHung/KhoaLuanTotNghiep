@@ -52,43 +52,6 @@ export default class PopUpModal_CMT_ThongBao extends Component {
     // await ROOTGlobal.GanDataChitiet();
   };
 
-  // XoaBaiDang = async () => {
-  //   //xóa like
-  //   let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
-  //   // console.log('res like', res_like);
-  //   let res_cmt = await DeleteCommentTrongBaiDang(this.state.idBaiDang);
-  //   // console.log('res cmt', res_cmt);
-
-  //   //xóa bài đăng
-  //   let res = await DeleteBaiDang(this.state.idBaiDang);
-  //   if (res_like.status == 1 && res_cmt.status == 1 && res.status == 1) {
-  //     showMessage({
-  //       message: 'Thông báo',
-  //       description: 'Xóa bài thành công',
-  //       type: 'success',
-  //       duration: 1500,
-  //       icon: 'success',
-  //     });
-  //     this.setState({
-  //       thanhcong: true,
-  //     });
-  //     this.xoathanhcong();
-  //     await ROOTGlobal.GetDsAllBaiDang();
-  //   } else {
-  //     showMessage({
-  //       message: 'Thông báo',
-  //       description: 'Xóa bài thất bại',
-  //       type: 'danger',
-  //       duration: 1500,
-  //       icon: 'danger',
-  //     });
-  //     this.setState({
-  //       thanhcong: false,
-  //     });
-  //     this.change();
-  //   }
-  // };
-
   Xoa_Cmt = async () => {
     let res_like = await DeleteComment_Like(this.state.Idcmt);
     // console.log('res detele like cmt', res_like);
@@ -164,12 +127,13 @@ export default class PopUpModal_CMT_ThongBao extends Component {
                         padding: 5,
                       }}
                       onPress={() => {
-                        Utils.goscreen(this, 'PopUpModal_SuaCMT_ThongBao', {
-                          id_nguoidang: Detail_Cmt,
-                        });
-                        this.setState({
-                          display: !this.state.display,
-                        });
+                        // Utils.goscreen(this, 'PopUpModal_SuaCMT_ThongBao', {
+                        //   id_nguoidang: Detail_Cmt,
+                        // });
+                        alert('Đang cập nhật');
+                        // this.setState({
+                        //   display: !this.state.display,
+                        // });
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
@@ -181,24 +145,51 @@ export default class PopUpModal_CMT_ThongBao extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => {
-                        this.Xoa_Cmt();
-                      }}>
+                      onPress={() =>
+                        Alert.alert(
+                          'Thông Báo',
+                          'Bạn Muốn Xóa Bình Luận?',
+                          [
+                            {text: 'Đồng ý', onPress: () => this.Xoa_Cmt()},
+                            {
+                              text: 'Hủy',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        )
+                      }>
                       <Image source={delet} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Xóa</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View style={{marginTop: 5, height: FontSize.scale(150)}}>
-                    <TouchableOpacity
+                  <View style={{marginTop: 5}}>
+                    <View
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
-                      }}>
-                      <Image source={answer} style={styles.image_st}></Image>
-                      <Text style={{fontSize: 20}}>Trả lời</Text>
-                    </TouchableOpacity>
+                      }}
+                      // onPress={() => {
+                      //   this.change(),
+                      //     this.props.navigation.navigate('SearchUser');
+                      // }}
+                    >
+                      <Image source={edite} style={styles.image_st1}></Image>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}
+                      onPress={() => this.change()}>
+                      <Image source={delet} style={styles.image_st1}></Image>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
+                    </View>
                   </View>
                 )}
               </View>

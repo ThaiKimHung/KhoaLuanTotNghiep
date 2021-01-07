@@ -87,6 +87,7 @@ export default class ScreenDetailBaiDang extends React.Component {
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
+
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã bình luận một bài viết',

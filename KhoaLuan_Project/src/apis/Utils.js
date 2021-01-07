@@ -11,11 +11,11 @@ import {
 // const domain = 'http://192.168.3.49/';
 // const domain = 'http://192.168.43.236/';
 // const domain = 'http://192.168.3.43/';
-// const domain = 'http://192.168.100.5/';
+const domain = 'http://192.168.100.5/';
 // const domain = 'https://localhost:44340/';
 // const domain = 'http://192.168.43.178/';
 // const domain = 'http://192.168.0.102/';
-const domain = 'http://192.168.3.54/';
+// const domain = 'http://192.168.3.54/';
 // const domain = 'http://192.168.3.62/';
 // const domain = 'http://192.168.0.102/';
 async function post_api(

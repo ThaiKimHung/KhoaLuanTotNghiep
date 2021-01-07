@@ -54,6 +54,13 @@ export default class ScreenAllUser extends React.Component {
         }}></View>
     );
   };
+
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetAllUser();
+    }, 1000);
+  };
+
   _GetAllUser = async () => {
     let res = await GetAllUser();
     // console.log('ress all user', res);
@@ -149,9 +156,10 @@ export default class ScreenAllUser extends React.Component {
     this.setState({filteredData: filteredData});
   };
 
-  componentDidMount() {
-    this._GetAllUser();
-  }
+  componentDidMount = async () => {
+    await this._GetAllUser();
+    await this.hamloadLienTuc();
+  };
 
   render() {
     // console.log(' ds user dưới body', this.state.DsUser);

@@ -564,42 +564,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             ) : null}
           </View>
         );
-      // case 7:
-      //   return (
-      //     <View style={styles.footer} onPress={this.props.onPress}>
-      //       <View style={{flexDirection: 'row'}}>
-      //         <Animatable.Image
-      //           animation="pulse"
-      //           iterationCount={10}
-      //           direction="alternate-reverse"
-      //           // easing="ease-out"s
-      //           duration={5000}
-      //           source={light}
-      //           style={{
-      //             height: FontSize.scale(40),
-      //             width: FontSize.verticalScale(40),
-      //           }}></Animatable.Image>
-      //         <View style={{marginLeft: 10}}>
-      //           <Text>{this.state.title}</Text>
-      //           <Text style={{fontSize: FontSize.reSize(20)}}>
-      //             {this.state.noidung}
-      //           </Text>
-      //         </View>
-      //       </View>
-      //       {id_nguoidang.hinhanh ? (
-      //         <View>
-      //           <Image
-      //             source={{uri: id_nguoidang.image}}
-      //             style={{
-      //               height: FontSize.scale(200),
-      //               width: '100%',
-      //               backgroundColor: 'blue',
-      //             }}></Image>
-      //           <Text>có hình ảnh nè</Text>
-      //         </View>
-      //       ) : null}
-      //     </View>
-      //   );
       default:
         return (
           <View style={styles.footer}>
@@ -641,7 +605,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     return (
       <View style={styles.container}>
         <GoBack
-          name="chi ttee"
+          name=""
           onPress={() => {
             Utils.goback(this, '');
             ROOTGlobal.GetDsAllBaiDang();
@@ -722,7 +686,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() => {
-                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail', {
+                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail_ThongBao', {
                   id_nguoidang: this.state.ChiTietBD,
                 });
               }}>
@@ -810,9 +774,9 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
         <View
           style={{
             // flex: 1,
-            // justifyContent: 'flex-end',
-            position: 'absolute',
-            bottom: 0,
+            justifyContent: 'flex-end',
+            // position: 'absolute',
+            // bottom: 0,
             flexDirection: 'row',
             alignItems: 'center',
             marginLeft: 5,

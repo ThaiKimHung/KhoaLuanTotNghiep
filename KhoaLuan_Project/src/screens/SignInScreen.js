@@ -55,29 +55,27 @@ export default class SignInScreen extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      this.setState({DsThongTinUser: res.data});
-      this.chuyenTrang();
+      await this.setState({DsThongTinUser: res.data});
 
       // lưu giá trị
       await Utils.nsetStorage(
         nkey.id_user,
         this.state.DsThongTinUser[0].ID_user,
       );
-      // console.log(
-      //   'id khi đăng nhập screen đănh nhập',
-      //   await Utils.ngetStorage(nkey.id_user),
-      // );
-      //lưu lại avatar
-      await Utils.nsetStorage(nkey.avatar, this.state.DsThongTinUser[0].Avatar);
-      //lưu user name
+
       await Utils.nsetStorage(
         nkey.Username,
         this.state.DsThongTinUser[0].Username,
       );
+      //lưu lại avatar
+      await Utils.nsetStorage(nkey.avatar, this.state.DsThongTinUser[0].Avatar);
+      //lưu user name
+
       // nếu là 1 thì đăng nhập thành công
       await Utils.nsetStorage(nkey.flag, '1');
 
-      this.updateTinhTrangUser();
+      await this.updateTinhTrangUser();
+      await this.chuyenTrang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -90,9 +88,9 @@ export default class SignInScreen extends React.Component {
     }
   };
 
-  chuyenTrang = () => {
+  chuyenTrang = async () => {
     // this.props.navigation.replace('HomeStackScreen');
-    Utils.goscreenReplace(this, 'HomeStackScreen');
+    await Utils.goscreenReplace(this, 'HomeStackScreen');
   };
 
   onPressShowPassword = () => {

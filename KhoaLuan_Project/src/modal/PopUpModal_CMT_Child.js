@@ -26,7 +26,7 @@ const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
 const answer = require('../assets/images/chat.png');
-export default class PopUpModal_CMT extends Component {
+export default class PopUpModal_CMT_Child extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +51,7 @@ export default class PopUpModal_CMT extends Component {
     Utils.goback(this, '');
     await ROOTGlobal.GetChiTietBaiDang();
     await ROOTGlobal.GanDataChitiet();
-    /// thay load lai cmt child
+    await ROOTGlobal.GetDSCmt();
   };
 
   Xoa_Cmt = async () => {
@@ -85,6 +85,7 @@ export default class PopUpModal_CMT extends Component {
       id_NguoiDang: user ? user.ID_user : null,
       Idcmt: Detail_Cmt.id_cmt,
     });
+    await console.log('id_NguoiDang popup cmt child', this.state.id_NguoiDang);
   };
 
   componentDidMount = async () => {
@@ -118,31 +119,72 @@ export default class PopUpModal_CMT extends Component {
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
                 }}>
-                <View style={{marginTop: 5, height: FontSize.scale(150)}}>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      padding: 5,
-                    }}
-                    onPress={() => alert('Đang cập nhật')}>
-                    <Image source={edite} style={styles.image_st}></Image>
-                    <Text style={{fontSize: 20}}>Sửa</Text>
-                  </TouchableOpacity>
+                {this.state.id_NguoiDang == this.state.id_user ? (
+                  <View style={{marginTop: 5, height: FontSize.scale(150)}}>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}
+                      onPress={() => alert('Đang cập nhật')}>
+                      <Image source={edite} style={styles.image_st}></Image>
+                      <Text style={{fontSize: 20}}>Sửa</Text>
+                    </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      padding: 5,
-                    }}
-                    onPress={() => {
-                      this.Xoa_Cmt();
-                    }}>
-                    <Image source={delet} style={styles.image_st}></Image>
-                    <Text style={{fontSize: 20}}>Xóa</Text>
-                  </TouchableOpacity>
-                </View>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}
+                      onPress={() =>
+                        Alert.alert(
+                          'Thông Báo',
+                          'Bạn Muốn Xóa Bình Luận?',
+                          [
+                            {text: 'Đồng ý', onPress: () => this.Xoa_Cmt()},
+                            {
+                              text: 'Hủy',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        )
+                      }>
+                      <Image source={delet} style={styles.image_st}></Image>
+                      <Text style={{fontSize: 20}}>Xóa</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View style={{marginTop: 5}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}
+                      // onPress={() => {
+                      //   this.change(),
+                      //     this.props.navigation.navigate('SearchUser');
+                      // }}
+                    >
+                      <Image source={edite} style={styles.image_st1}></Image>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 5,
+                      }}
+                      onPress={() => this.change()}>
+                      <Image source={delet} style={styles.image_st1}></Image>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
+                    </View>
+                  </View>
+                )}
               </View>
             </TouchableWithoutFeedback>
           </TouchableOpacity>

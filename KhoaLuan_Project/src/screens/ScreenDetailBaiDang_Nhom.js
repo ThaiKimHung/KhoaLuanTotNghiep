@@ -596,8 +596,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
         <GoBack
           name=""
           onPress={() => {
-            Utils.goback(this, '');
-            ROOTGlobal.GetDsAllBaiDang_Nhom();
+            Utils.goscreen(this, 'ScreenThongBao');
+            ROOTGlobal.GetDsThongBao();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 

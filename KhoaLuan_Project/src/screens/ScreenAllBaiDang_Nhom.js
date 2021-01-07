@@ -47,7 +47,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     const idgroup = this.props.nthis.props.route.params.screennhom;
     const {id_nguoidang = {}} = this.props.nthis.props.route.params;
     let res = '';
-    this.setState({
+    await this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
     // console.log('id bài đăng', this.state.id_user, idgroup);
@@ -55,7 +55,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
     // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
-      this.setState({
+      await this.setState({
         DSBaiDangNhom: res.data,
         refresh: false,
         length: res.data.length,
@@ -71,7 +71,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     const idgroup = this.props.nthis.props.route.params.screennhom;
     const {id_nguoidang = {}} = this.props.nthis.props.route.params;
     let res = '';
-    this.setState({
+    await this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
     // console.log('id bài đăng', this.state.id_user, idgroup);
@@ -79,7 +79,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
     // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
-      this.setState({
+      await this.setState({
         DSBaiDangNhom2: res.data,
         length2: res.data.length,
       });

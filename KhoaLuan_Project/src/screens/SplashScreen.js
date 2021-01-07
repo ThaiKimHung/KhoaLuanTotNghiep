@@ -194,7 +194,7 @@ export default class SplashScreen2 extends React.Component {
                   onPress={() =>
                     Alert.alert(
                       'Thông Báo',
-                      'Bạn Muốn Đăng Xuất',
+                      'Bạn Muốn Đăng Xuất ?',
                       [
                         {text: 'Đồng Ý', onPress: () => this._logout()},
                         {

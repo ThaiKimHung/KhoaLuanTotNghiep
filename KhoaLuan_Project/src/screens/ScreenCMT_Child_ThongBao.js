@@ -47,7 +47,7 @@ const welcome = require('../assets/images/welcome.png');
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenCMT_Child_Nhom extends React.Component {
+export default class ScreenCMT_Child_ThongBao extends React.Component {
   constructor(props) {
     super(props);
     this.item = Utils.ngetParam(this, 'id_nguoidang');
@@ -66,7 +66,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       like: '',
       likecmt: '',
     };
-    ROOTGlobal.GetDSCmt_Child_Nhom = this._GetDsCmt;
+    ROOTGlobal.GetDSCmt = this._GetDsCmt;
   }
 
   EmptyListMessage = ({item}) => {
@@ -81,8 +81,9 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
   };
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('idn guoi dang', id_nguoidang);
-    this.setState({
+    // await console.log('id nguoi dang', id_nguoidang);
+    await this.setState({
+      // dsCmt: id_nguoidang,
       avatar_cmtlong: id_nguoidang.User_comment[0].avatar,
       username_cmtlon: id_nguoidang.User_comment[0].Username,
       noidung_cmtlon: id_nguoidang.NoiDung_cmt,
@@ -91,18 +92,19 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       like: id_nguoidang.Like,
       likecmt: id_nguoidang.Like_Comment ? id_nguoidang.Like_Comment[0] : '',
     });
+    // await console.log('like cmt');
   };
 
   hamloadLienTuc = () => {
     setInterval(async () => {
       await this._GetDsCmt();
-      // console.log('hi');
     }, 5000);
   };
 
   _GetDsCmt = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSCommnet(id_user, this.state.id_baidang);
+    // console.log('res ds cmt', res);
 
     const {Comment_child = []} = res.data;
     const arrNew = [];
@@ -128,6 +130,25 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
     }
   };
 
+  _AddCommentLike = async (idcmt) => {
+    let res = await Comment_like(
+      await idcmt,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+
+    await this._GetDsCmt();
+    await this._AddThongBao_LikeCMT();
+    // await this.GanData();
+    // console.log('res cmt like', res);
+  };
+
+  _DeleteCommentLike = async (idcmt) => {
+    let res = await DeleteComment_Like(idcmt);
+    // console.log('res dele like', res);
+    await this._GetDsCmt();
+    // await this.GanData();
+  };
+
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
@@ -142,24 +163,6 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
     let res = await AddThongBao(strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
-  };
-
-  _AddCommentLike = async (idcmt) => {
-    let res = await Comment_like(
-      await idcmt,
-      await Utils.ngetStorage(nkey.id_user),
-    );
-    await this._GetDsCmt();
-    await this._AddThongBao_LikeCMT();
-    // await this.GanData();
-    // console.log('res cmt like', res);
-  };
-
-  _DeleteCommentLike = async (idcmt) => {
-    let res = await DeleteComment_Like(idcmt);
-    // console.log('res dele like', res);
-    await this._GetDsCmt();
-    // await this.GanData();
   };
 
   _AddThongBao_LikeCMT = async () => {
@@ -199,8 +202,8 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       this.setState({
         text_Cmt: '',
       });
-      await ROOTGlobal.GetChiTietBaiDang_Nhom();
-      await ROOTGlobal.GanDataChitiet_Nhom();
+      await ROOTGlobal.GetChiTietBaiDang_ThongBao();
+      // await ROOTGlobal.GanDataChitiet();
       await this._GetDsCmt();
       await this._AddThongBao();
     } else {
@@ -211,8 +214,10 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
         duration: 1500,
         icon: 'danger',
       });
-      await ROOTGlobal.GetChiTietBaiDang_Nhom();
-      await ROOTGlobal.GanDataChitiet_Nhom();
+      await ROOTGlobal.ScreenDetailBaiDang_ThongBao();
+      // await ROOTGlobal.GanDataChitiet();
+      await this._GetDsCmt();
+      await this._AddThongBao();
     }
   };
 
@@ -221,77 +226,73 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
   };
 
   _renderItem2 = ({item, index}) => {
-    // console.log('item', item);
+    // console.log(item);
+    // let userCmt = item.User_comment ? item.User_comment[0] : '';
     let likecmt = item.Like_child;
     let like_comment = item.Like_Comment_child
       ? item.Like_Comment_child[0]
       : '';
     return (
-      <View>
-        <View style={{marginLeft: 10}}>
-          <View style={styles.khung_TungCmt}>
-            <View>
-              <View
+      <View style={{marginLeft: 10, marginBottom: 5}}>
+        <View style={styles.khung_TungCmt}>
+          <TouchableOpacity>
+            <View
+              style={{
+                marginLeft: 5,
+                borderRadius: 30,
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(30),
+              }}>
+              <Image
                 style={{
-                  marginLeft: 5,
-                  borderRadius: 30,
                   height: FontSize.scale(30),
                   width: FontSize.verticalScale(30),
-                }}>
-                <Image
-                  style={{
-                    height: FontSize.scale(30),
-                    width: FontSize.verticalScale(30),
-                    borderRadius: 20,
-                  }}
-                  resizeMode="cover"
-                  source={
-                    item
-                      ? {
-                          uri: item.User_comment_child[0]?.avatar,
-                        }
-                      : avatar_mau
-                  }></Image>
-              </View>
+                  borderRadius: 20,
+                }}
+                resizeMode="cover"
+                source={
+                  item
+                    ? {
+                        uri: item.User_comment_child[0]?.avatar,
+                      }
+                    : avatar_mau
+                }></Image>
             </View>
+          </TouchableOpacity>
+          <View style={{flex: 1}}>
             <TouchableOpacity
-              style={{flex: 1}}
-              onLongPress={() => {
-                // alert(5),
-                Utils.goscreen(this, 'PopUpModal_CMT_Child_Nhom', {
+              onLongPress={() =>
+                Utils.goscreen(this, 'PopUpModal_CMT_Child', {
                   Detail_Cmt: item,
-                });
-              }}>
-              <View style={styles.khung_tenUser_Cmt}>
-                <Text style={styles.txt_TenUser_Cmt}>
-                  {item.User_comment_child[0].Username}
-                </Text>
-                <Text style={{marginLeft: 15, marginBottom: 5}}>
-                  {item.NoiDung_cmt}
-                </Text>
-              </View>
+                })
+              }
+              style={styles.khung_tenUser_Cmt}>
+              <Text style={styles.txt_TenUser_Cmt}>
+                {item.User_comment_child[0].Username}
+              </Text>
+              <Text style={{marginLeft: 15, marginBottom: 5}}>
+                {item.NoiDung_cmt}
+              </Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginHorizontal: 70,
-              marginBottom: 10,
-            }}>
-            {likecmt ? (
-              <TouchableOpacity
-                onPress={() => this._DeleteCommentLike(item.id_cmt)}>
-                <Text style={{marginLeft: 10, color: '#007DE3'}}>
-                  Thích({like_comment.tong})
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => this._AddCommentLike(item.id_cmt)}>
-                <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: 70,
+          }}>
+          {likecmt ? (
+            <TouchableOpacity
+              onPress={() => this._DeleteCommentLike(item.id_cmt)}>
+              <Text style={{marginLeft: 10, color: '#007DE3'}}>
+                Thích({like_comment.tong})
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => this._AddCommentLike(item.id_cmt)}>
+              <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );
@@ -299,7 +300,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
 
   componentDidMount = async () => {
     await this.NhanData_Child();
-    // (await this.DSCMT_Child();
+
     await this._GetDsCmt();
     await this.hamloadLienTuc();
   };
@@ -309,14 +310,13 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={async () => {
-            Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
-            await ROOTGlobal.GetChiTietBaiDang_Nhom();
-            await ROOTGlobal.GanDataChitiet_Nhom();
+          onPress={() => {
+            Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao');
+            ROOTGlobal.GetChiTietBaiDang_ThongBao();
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>
-            <TouchableOpacity>
+            <View>
               <View
                 style={{
                   marginLeft: 5,
@@ -337,7 +337,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
                       : avatar_mau
                   }></Image>
               </View>
-            </TouchableOpacity>
+            </View>
             <View
               style={{
                 // flex: 1,
@@ -373,6 +373,10 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
                 <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
               </View>
             )}
+
+            <View>
+              <Text style={{marginLeft: 10}}>Trả lời</Text>
+            </View>
           </View>
         </View>
         <View style={styles.footer}>

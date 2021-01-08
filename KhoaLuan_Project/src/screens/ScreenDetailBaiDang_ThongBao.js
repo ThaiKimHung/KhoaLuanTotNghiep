@@ -29,6 +29,8 @@ import {
   DeleteBaiDang_Like,
   AddThongBao,
   BanThongBao,
+  Comment_like,
+  DeleteComment_Like,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -71,8 +73,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       noidung: '',
       day: '',
       group: '',
-      // ngay: '',
-      // time: '',
       idbaidang: '',
     };
     this.idBaiDang = '';
@@ -108,6 +108,43 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     let res = await AddThongBao(strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
+  };
+
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetChiTietBaiDang();
+    }, 1000);
+  };
+
+  _AddThongBao_LikeCMT = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã bày tỏ cảm xúc một bình luận',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+
+    // console.log('res add thông báo', res);
+  };
+
+  _AddCommentLike = async (idcmt) => {
+    let res = await Comment_like(
+      await idcmt,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    await this._GetChiTietBaiDang();
+    await this.GanData();
+    await this._AddThongBao_LikeCMT();
+    // console.log('res cmt like', res);
+  };
+
+  _DeleteCommentLike = async (idcmt) => {
+    let res = await DeleteComment_Like(idcmt);
+    // console.log('res dele like', res);
+    await this._GetChiTietBaiDang();
+    await this.GanData();
   };
 
   _GetChiTietBaiDang = async () => {
@@ -189,6 +226,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
 
   _renderItem = ({item, index}) => {
     let userCmt = item.User_comment ? item.User_comment[0] : '';
+    let likecmt = item.Like;
+    let like_comment = item.Like_Comment ? item.Like_Comment[0] : '';
     // console.log('length', item.Comment_child.length);
     return (
       <View>
@@ -233,12 +272,21 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             flexDirection: 'row',
             marginHorizontal: 70,
           }}>
-          <TouchableOpacity>
-            <Text style={{marginLeft: 10}}>Thích</Text>
-          </TouchableOpacity>
+          {likecmt ? (
+            <TouchableOpacity
+              onPress={() => this._DeleteCommentLike(item.id_cmt)}>
+              <Text style={{marginLeft: 10, color: '#007DE3'}}>
+                Thích({like_comment.tong})
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => this._AddCommentLike(item.id_cmt)}>
+              <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() =>
-              Utils.goscreen(this, 'ScreenCMT_Child', {
+              Utils.goscreen(this, 'ScreenCMT_Child_ThongBao', {
                 id_nguoidang: item,
                 index: index.toString(),
               })
@@ -310,6 +358,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       noidung: await this.state.ChiTietBD[0].NoiDung,
       day: await this.state.ChiTietBD[0].CreatedDate,
       group: await this.state.ChiTietBD[0].Group,
+      // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
@@ -591,6 +640,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     await this._GetChiTietBaiDang();
     // await this.GanData();
     // console.log()
+    await this.hamloadLienTuc();
   }
 
   render() {
@@ -607,8 +657,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
         <GoBack
           name=""
           onPress={() => {
-            Utils.goback(this, '');
-            ROOTGlobal.GetDsAllBaiDang();
+            Utils.goscreen(this, 'ScreenThongBao');
+            ROOTGlobal.GetDsThongBao();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 

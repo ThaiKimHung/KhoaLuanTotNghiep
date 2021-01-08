@@ -17,8 +17,9 @@ import {
   DeleteBaiDang,
   DeleteCommentTrongBaiDang,
   DeleteLikeTrongBaiDang,
+  deleteGroup,
 } from '../apis/apiUser';
-import FlashMessage, {showMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -37,7 +38,7 @@ export default class Modal_CaiDatNhom extends Component {
     this.state = {
       display: true,
       id_user: '',
-      idBaiDang: '',
+      idgroup: '',
       id_NguoiDang: '',
       xoathanhcong: true,
     };
@@ -56,20 +57,44 @@ export default class Modal_CaiDatNhom extends Component {
   }
 
   NhanThongTin = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
+    const {id_nguoidang = {}} = this.props.route.params.id_nguoidang;
     // console.log('this modal xóa sửa', this.props);
-    // console.log('id_nguoidang modal xóa sửa', id_nguoidang);
-    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
+    console.log('id_nguoidang modal xóa sửa', id_nguoidang);
+    // let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({
-      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
-      id_NguoiDang: user ? user.ID_user : null,
+      idgroup: await id_nguoidang.ID_group,
     });
+  };
+
+  _Delete_Group = async () => {
+    let res = await deleteGroup(await this.state.idgroup);
+    console.log('res', res);
+    if (res.status == 1) {
+      await ROOTGlobal.GetDsNhom();
+      await Utils.goscreen(this, 'NhomScreen');
+      showMessage({
+        message: 'Thông báo',
+        description: 'Xóa nhóm thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+    } else {
+      await ROOTGlobal.GetDsNhom();
+      showMessage({
+        message: 'Thông báo',
+        description: 'Xóa nhóm thất bại.',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
+    }
   };
 
   async componentDidMount() {
     await this._getThongTin();
-    // await this.NhanThongTin();
+    await this.NhanThongTin();
   }
 
   render() {
@@ -96,6 +121,8 @@ export default class Modal_CaiDatNhom extends Component {
                   width: '100%',
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
                   // height: '50%',
                 }}>
                 <View style={{marginTop: 5, height: FontSize.Height(50)}}>
@@ -126,6 +153,16 @@ export default class Modal_CaiDatNhom extends Component {
                     }>
                     <Image source={add_group} style={styles.image_st}></Image>
                     <Text style={{fontSize: 20}}>Thêm thành viên</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      padding: 5,
+                    }}
+                    onPress={() => this._Delete_Group()}>
+                    <Image source={delet} style={styles.image_st}></Image>
+                    <Text style={{fontSize: 20}}>Xóa Nhóm</Text>
                   </TouchableOpacity>
                 </View>
                 {/* )} */}

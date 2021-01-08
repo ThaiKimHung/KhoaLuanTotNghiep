@@ -59,28 +59,29 @@ export default class SearchUser extends React.Component {
   _DanhdaudadocAll = async () => {
     let res = await Danhdaudadoc();
     // console.log('res dánh dấu đã dọc', res);
-    this._GetDSThongBao();
+    await this._GetDSThongBao();
   };
 
   _UpdateThongBao = async (idthongbao) => {
     let res = await Update_ThongBao(idthongbao);
     // console.log('res update thông báo', res);
-    this._GetDSThongBao();
+    await this._GetDSThongBao();
   };
 
   _DeleteThongBao = async (idthongbao) => {
     let res = await Delete_ThongBao(idthongbao);
     // console.log('res delete thông báo', res);
-    this._GetDSThongBao();
+    await this._GetDSThongBao();
   };
 
-  hamloadLienTuc = () => {
+  hamloadLienTuc = async () => {
     setInterval(async () => {
       await this._GetDSThongBao();
     }, 1000);
   };
 
   componentDidMount = async () => {
+    await this._GetDSThongBao();
     await this.hamloadLienTuc();
   };
 
@@ -248,10 +249,6 @@ export default class SearchUser extends React.Component {
     );
   };
 
-  async componentDidMount() {
-    await this._GetDSThongBao();
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -292,13 +289,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   header: {
-    backgroundColor: '#4285F4',
+    backgroundColor: '#007DE3',
     margin: 5,
     height: FontSize.scale(20),
     justifyContent: 'center',
     // width: '100%',
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: 10,
   },
   footer: {
     // flex: 1,

@@ -29,6 +29,8 @@ import {
   DeleteBaiDang_Like,
   AddThongBao,
   BanThongBao,
+  Comment_like,
+  DeleteComment_Like,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -71,6 +73,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       noidung: '',
       day: '',
       khenthuong: '',
+      thichcmt: '',
       // ngay: '',
       // time: '',
     };
@@ -112,10 +115,47 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.data,
+        refresh: false,
       });
       // await console.log('chi tiết bd', this.state.ChiTietBD);
       // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
+      this.GanData();
+    } else {
+      this.setState({
+        refresh: true,
+      });
     }
+  };
+
+  _AddThongBao_LikeCMT = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã bày tỏ cảm xúc một bình luận',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
+  _AddCommentLike = async (idcmt) => {
+    let res = await Comment_like(
+      await idcmt,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    await this._GetChiTietBaiDang();
+    await this.GanData();
+    await this._AddThongBao_LikeCMT();
+    // console.log('res cmt like', res);
+  };
+
+  _DeleteCommentLike = async (idcmt) => {
+    let res = await DeleteComment_Like(idcmt);
+    // console.log('res dele like', res);
+    await this._GetChiTietBaiDang();
+    await this.GanData();
+    await this._AddThongBao_LikeCMT();
   };
 
   GetData = () => {
@@ -178,6 +218,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
 
   _renderItem = ({item, index}) => {
     let userCmt = item.User_comment ? item.User_comment[0] : '';
+    let like_comment = item.Like_Comment ? item.Like_Comment[0] : '';
+    let likecmt = item.Like;
     // console.log('length', item.Comment_child.length);
     return (
       <View>
@@ -222,9 +264,18 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
             flexDirection: 'row',
             marginHorizontal: 70,
           }}>
-          <TouchableOpacity>
-            <Text style={{marginLeft: 10}}>Thích</Text>
-          </TouchableOpacity>
+          {likecmt ? (
+            <TouchableOpacity
+              onPress={() => this._DeleteCommentLike(item.id_cmt)}>
+              <Text style={{marginLeft: 10, color: '#007DE3'}}>
+                Thích({like_comment.tong})
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => this._AddCommentLike(item.id_cmt)}>
+              <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() =>
               Utils.goscreen(this, 'ScreenCMT_Child_Nhom', {
@@ -307,6 +358,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       noidung: await this.state.ChiTietBD[0].NoiDung,
       day: await this.state.ChiTietBD[0].CreatedDate,
       khenthuong: await this.state.ChiTietBD[0].KhenThuong,
+      // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
@@ -596,8 +648,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
         <GoBack
           name=""
           onPress={() => {
-            Utils.goscreen(this, 'ScreenThongBao');
-            ROOTGlobal.GetDsThongBao();
+            Utils.goscreen(this, 'ScreenBaiDangNhom');
+            ROOTGlobal.GetDsAllBaiDang_Nhom();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 
@@ -635,27 +687,6 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
               <View style={styles.khung_tenUser}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styles.txt_TenUser}>{this.state.username}</Text>
-                  {/* {group ? (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        // justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 5,
-                      }}>
-                      <Image
-                        source={arrow}
-                        style={{
-                          height: FontSize.scale(10),
-                          width: FontSize.verticalScale(10),
-                        }}></Image>
-                      <TouchableOpacity style={{marginLeft: 5}}>
-                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                          {group.ten_group}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  ) : null} */}
                 </View>
 
                 <View

@@ -41,7 +41,7 @@ export default class NhomScreen extends React.Component {
         dsNhom: res.Data,
         refresh: false,
       });
-      // console.log('ds nhóm', this.state.dsNhom);
+      console.log('ds nhóm', this.state.dsNhom);
     } else {
       this.setState({
         refresh: false,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   footer: {
-    height: '92%',
+    height: '100%',
     width: '100%',
     paddingTop: 5,
   },

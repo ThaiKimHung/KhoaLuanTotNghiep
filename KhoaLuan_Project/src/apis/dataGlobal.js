@@ -26,6 +26,7 @@ const ROOTGlobal = {
   GetChiTietBaiDang_ThongBao: () => {},
   DemSoLuong: () => {},
   GetDSCmt: () => {},
+  GetDSCmt_Child_Nhom: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

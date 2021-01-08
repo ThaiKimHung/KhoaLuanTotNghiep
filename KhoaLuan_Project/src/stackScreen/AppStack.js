@@ -31,6 +31,7 @@ import ScreenThemThanhVienNhom from '../screens/ScreenThemThanhVienNhom';
 import ScreenTaoNhom from '../screens/ScreenTaoNhom';
 import ScreenThongTinCaNhan from '../screens/ScreenThongTinCaNhan';
 import ScreenCMT_Child_Nhom from '../screens/ScreenCMT_Child_Nhom';
+import ScreenCMT_Child_ThongBao from '../screens/ScreenCMT_Child_ThongBao';
 
 import BaiDangComponent from '../components/BaiDangComponent';
 
@@ -53,6 +54,8 @@ import PopUpModal_CMT_Nhom from '../modal/PopUpModal_CMT_Nhom';
 import PopUpModal_CMT_Child from '../modal/PopUpModal_CMT_Child';
 import PopUpModal_XoaSua_Detail_ThongBao from '../modal/PopUpModal_XoaSua_Detail_ThongBao';
 import PopUpModal_CMT_Child_Nhom from '../modal/PopUpModal_CMT_Child_Nhom';
+import PopUpModal_SuaCMT_Child from '../modal/PopUpModal_SuaCMT_Child';
+import PopUpModal_SuaCMT_Child_Nhom from '../modal/PopUpModal_SuaCMT_Child_Nhom';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
@@ -84,7 +87,7 @@ import Edit_ChaoMung_Detail_Nhom from '../edit/Edit_ChaoMung_Detail_Nhom ';
 import Edit_KhenThuong_DetailNhom from '../edit/Edit_KhenThuong_DetailNhom';
 
 import BaiDangNhom from '../go/BaiDangNhom';
-import ScreenDetailBaiDang_ThongBao from '../go/ScreenDetailBaiDang_ThongBao';
+import ScreenDetailBaiDang_ThongBao from '../screens/ScreenDetailBaiDang_ThongBao';
 import Test from '../screens/Test';
 // import
 
@@ -197,6 +200,10 @@ const HomeStackScreen = () => (
       name="ScreenCMT_Child_Nhom"
       component={ScreenCMT_Child_Nhom}
     />
+    <HomeStack.Screen
+      name="ScreenCMT_Child_ThongBao"
+      component={ScreenCMT_Child_ThongBao}
+    />
   </HomeStack.Navigator>
 );
 
@@ -306,6 +313,15 @@ const AppStack = () => {
       <Stack.Screen
         name="PopUpModal_CMT_Child_Nhom"
         component={PopUpModal_CMT_Child_Nhom}
+      />
+      <Stack.Screen
+        name="PopUpModal_SuaCMT_Child"
+        component={PopUpModal_SuaCMT_Child}
+      />
+
+      <Stack.Screen
+        name="PopUpModal_SuaCMT_Child_Nhom"
+        component={PopUpModal_SuaCMT_Child_Nhom}
       />
     </Stack.Navigator>
   );

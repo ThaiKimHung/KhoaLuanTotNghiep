@@ -110,7 +110,7 @@ export default class PopUpModal_CMT_ThongBao extends Component {
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5, height: FontSize.scale(150)}}>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -118,7 +118,7 @@ export default class PopUpModal_CMT_ThongBao extends Component {
                       }}>
                       <Image source={answer} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Trả lời</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity
                       style={{

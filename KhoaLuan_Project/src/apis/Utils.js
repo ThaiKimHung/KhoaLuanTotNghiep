@@ -88,7 +88,7 @@ function ngetParam(nthis, keys, defaultValue) {
 //--Thông số cấu hình mặc
 
 function nlog(...val) {
-  console.log(...val);
+  // console.log(...val);
 }
 
 // -- custom AynsStore

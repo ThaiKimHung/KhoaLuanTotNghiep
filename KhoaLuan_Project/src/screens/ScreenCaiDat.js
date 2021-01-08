@@ -14,7 +14,7 @@ import {
   TextInput,
 } from 'react-native';
 import FontSize from '../components/size';
-import FlashMessage, {showMessage} from 'react-native-flash-message';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import {GetUserProfile} from '../apis/apiUser';
 import Utils from '../apis/Utils';

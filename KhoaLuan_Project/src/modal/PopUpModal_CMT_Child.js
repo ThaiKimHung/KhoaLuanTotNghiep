@@ -77,7 +77,7 @@ export default class PopUpModal_CMT_Child extends Component {
 
   NhanThongTin = async () => {
     const {Detail_Cmt = {}} = this.props.route.params;
-    console.log('log item', Detail_Cmt);
+    // console.log('log item', Detail_Cmt);
     // console.log('Detail_Cmt modal', Detail_Cmt);
     let user = Detail_Cmt ? Detail_Cmt.User_comment_child[0] : {};
     // await console.log('user', user);
@@ -85,7 +85,7 @@ export default class PopUpModal_CMT_Child extends Component {
       id_NguoiDang: user ? user.ID_user : null,
       Idcmt: Detail_Cmt.id_cmt,
     });
-    await console.log('id_NguoiDang popup cmt child', this.state.id_NguoiDang);
+    // await console.log('id_NguoiDang popup cmt child', this.state.id_NguoiDang);
   };
 
   componentDidMount = async () => {
@@ -127,7 +127,15 @@ export default class PopUpModal_CMT_Child extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => alert('Đang cập nhật')}>
+                      // onPress={() => alert('Đang cập nhật')}
+                      onPress={() => {
+                        Utils.goscreen(this, 'PopUpModal_SuaCMT_Child', {
+                          id_nguoidang: Detail_Cmt,
+                        });
+                        this.setState({
+                          display: !this.state.display,
+                        });
+                      }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
                     </TouchableOpacity>

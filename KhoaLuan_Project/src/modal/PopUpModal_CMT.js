@@ -151,6 +151,7 @@ export default class PopUpModal_CMT extends Component {
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
                 }}>
+                <Text>đây là pôpp</Text>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5, height: FontSize.scale(150)}}>
                     {/* <TouchableOpacity
@@ -163,7 +164,7 @@ export default class PopUpModal_CMT extends Component {
                       <Text style={{fontSize: 20}}>Trả lời</Text>
                     </TouchableOpacity> */}
 
-                    {/* <TouchableOpacity
+                    <TouchableOpacity
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -179,8 +180,8 @@ export default class PopUpModal_CMT extends Component {
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
-                    </TouchableOpacity> */}
-                    <TouchableOpacity
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -189,7 +190,7 @@ export default class PopUpModal_CMT extends Component {
                       onPress={() => alert('Đang cập nhật')}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity
                       style={{

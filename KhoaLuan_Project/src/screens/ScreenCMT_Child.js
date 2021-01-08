@@ -27,6 +27,8 @@ import {
   GetDSCommnet,
   AddThongBao,
   BanThongBao,
+  Comment_like,
+  DeleteComment_Like,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -61,6 +63,8 @@ export default class ScreenCMT_Child extends React.Component {
       text_Cmt: '',
       dsCmt_Child: '',
       hi: [],
+      like: '',
+      likecmt: '',
     };
     ROOTGlobal.GetDSCmt = this._GetDsCmt;
   }
@@ -77,14 +81,18 @@ export default class ScreenCMT_Child extends React.Component {
   };
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    this.setState({
+    // await console.log('id nguoi dang', id_nguoidang);
+    await this.setState({
       // dsCmt: id_nguoidang,
       avatar_cmtlong: id_nguoidang.User_comment[0].avatar,
       username_cmtlon: id_nguoidang.User_comment[0].Username,
       noidung_cmtlon: id_nguoidang.NoiDung_cmt,
       id_baidang: id_nguoidang.Id_BaiDang,
       id_cmtlon: id_nguoidang.id_cmt,
+      like: id_nguoidang.Like,
+      likecmt: id_nguoidang.Like_Comment ? id_nguoidang.Like_Comment[0] : '',
     });
+    // await console.log('like cmt');
   };
 
   hamloadLienTuc = () => {
@@ -122,6 +130,24 @@ export default class ScreenCMT_Child extends React.Component {
     }
   };
 
+  _AddCommentLike = async (idcmt) => {
+    let res = await Comment_like(
+      await idcmt,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    await this._GetDsCmt();
+    await this._AddThongBao_LikeCMT();
+    // await this.GanData();
+    // console.log('res cmt like', res);
+  };
+
+  _DeleteCommentLike = async (idcmt) => {
+    let res = await DeleteComment_Like(idcmt);
+    // console.log('res dele like', res);
+    await this._GetDsCmt();
+    // await this.GanData();
+  };
+
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
@@ -129,6 +155,18 @@ export default class ScreenCMT_Child extends React.Component {
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã bình luận một bình luận',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
+  };
+
+  _AddThongBao_LikeCMT = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã bày tỏ cảm xúc một bình luận',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
@@ -185,6 +223,12 @@ export default class ScreenCMT_Child extends React.Component {
   };
 
   _renderItem2 = ({item, index}) => {
+    // console.log(item);
+    // let userCmt = item.User_comment ? item.User_comment[0] : '';
+    let likecmt = item.Like_child;
+    let like_comment = item.Like_Comment_child
+      ? item.Like_Comment_child[0]
+      : '';
     return (
       <View>
         <View style={{marginLeft: 10}}>
@@ -235,12 +279,19 @@ export default class ScreenCMT_Child extends React.Component {
               flexDirection: 'row',
               marginHorizontal: 70,
             }}>
-            <TouchableOpacity>
-              <Text style={{marginLeft: 10}}>Thích</Text>
-            </TouchableOpacity>
-            <View>
-              <Text style={{marginLeft: 10, color: '#696969'}}>Trả lời</Text>
-            </View>
+            {likecmt ? (
+              <TouchableOpacity
+                onPress={() => this._DeleteCommentLike(item.id_cmt)}>
+                <Text style={{marginLeft: 10, color: '#007DE3'}}>
+                  Thích({like_comment.tong})
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => this._AddCommentLike(item.id_cmt)}>
+                <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -265,7 +316,7 @@ export default class ScreenCMT_Child extends React.Component {
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>
-            <TouchableOpacity>
+            <View>
               <View
                 style={{
                   marginLeft: 5,
@@ -286,7 +337,7 @@ export default class ScreenCMT_Child extends React.Component {
                       : avatar_mau
                   }></Image>
               </View>
-            </TouchableOpacity>
+            </View>
             <View
               style={{
                 // flex: 1,
@@ -307,12 +358,25 @@ export default class ScreenCMT_Child extends React.Component {
               flexDirection: 'row',
               marginHorizontal: 70,
             }}>
-            <TouchableOpacity>
-              <Text style={{marginLeft: 10}}>Thích</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
+            {this.state.like ? (
+              <View
+              // onPress={() => this._DeleteCommentLike(this.state.id_cmtlon)}
+              >
+                <Text style={{marginLeft: 10, color: '#007DE3'}}>
+                  Thích({this.state.likecmt ? this.state.likecmt.tong : ''})
+                </Text>
+              </View>
+            ) : (
+              <View
+              // onPress={() => this._AddCommentLike(this.state.id_cmtlon)}
+              >
+                <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
+              </View>
+            )}
+
+            <View>
               <Text style={{marginLeft: 10}}>Trả lời</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
         <View style={styles.footer}>

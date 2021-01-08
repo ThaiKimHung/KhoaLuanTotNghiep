@@ -77,7 +77,7 @@ export default class PopUpModal_CMT_Child_Nhom extends Component {
 
   NhanThongTin = async () => {
     const {Detail_Cmt = {}} = this.props.route.params;
-    console.log('log item', Detail_Cmt);
+    // console.log('log item', Detail_Cmt);
     // console.log('Detail_Cmt modal', Detail_Cmt);
     let user = Detail_Cmt ? Detail_Cmt.User_comment_child[0] : {};
     // await console.log('user', user);
@@ -92,35 +92,7 @@ export default class PopUpModal_CMT_Child_Nhom extends Component {
     await this.NhanThongTin();
   };
 
-  // <View style={{marginTop: 5}}>
-  //                   <View
-  //                     style={{
-  //                       flexDirection: 'row',
-  //                       alignItems: 'center',
-  //                       padding: 5,
-  //                     }}
-  //                     // onPress={() => {
-  //                     //   this.change(),
-  //                     //     this.props.navigation.navigate('SearchUser');
-  //                     // }}
-  //                   >
-  //                     <Image source={edite} style={styles.image_st1}></Image>
-  //                     <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
-  //                   </View>
-
-  //                   <View
-  //                     style={{
-  //                       flexDirection: 'row',
-  //                       alignItems: 'center',
-  //                       padding: 5,
-  //                     }}
-  //                     onPress={() => this.change()}>
-  //                     <Image source={delet} style={styles.image_st1}></Image>
-  //                     <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
-  //                   </View>
-  //                 </View>
   render() {
-    // console.log('log item cmt child', this.props.route.params);
     const {display} = this.state;
     const {Detail_Cmt = {}} = this.props.route.params;
     return (
@@ -153,7 +125,15 @@ export default class PopUpModal_CMT_Child_Nhom extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => alert('Đang cập nhật')}>
+                      // onPress={() => alert('Đang cập nhật')}
+                      onPress={() => {
+                        Utils.goscreen(this, 'PopUpModal_SuaCMT_Child_Nhom', {
+                          id_nguoidang: Detail_Cmt,
+                        });
+                        this.setState({
+                          display: !this.state.display,
+                        });
+                      }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
                     </TouchableOpacity>
@@ -189,12 +169,7 @@ export default class PopUpModal_CMT_Child_Nhom extends Component {
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
-                      }}
-                      // onPress={() => {
-                      //   this.change(),
-                      //     this.props.navigation.navigate('SearchUser');
-                      // }}
-                    >
+                      }}>
                       <Image source={edite} style={styles.image_st1}></Image>
                       <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
                     </View>

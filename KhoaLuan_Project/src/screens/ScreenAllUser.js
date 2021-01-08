@@ -143,8 +143,8 @@ export default class ScreenAllUser extends React.Component {
       </View>
     );
   };
-  search = (searchText) => {
-    this.setState({searchText: searchText});
+  search = async (searchText) => {
+    await this.setState({searchText: searchText});
     // let filteredData = this.state.DsUser.filter(function (item) {
     //   return item.Username.includes(searchText);
     // });
@@ -153,7 +153,7 @@ export default class ScreenAllUser extends React.Component {
         .toUpperCase()
         .includes(Utils.removeAccents(searchText.toUpperCase())),
     );
-    this.setState({filteredData: filteredData});
+    await this.setState({filteredData: filteredData});
   };
 
   componentDidMount = async () => {

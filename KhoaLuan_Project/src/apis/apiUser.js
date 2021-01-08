@@ -174,6 +174,18 @@ async function Update_CMT(strbody) {
   return res;
 }
 
+async function Update_CMT_Child(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateCommentChild`, strbody);
+  return res;
+}
+
+async function Comment_like(idcmt, iduser) {
+  let res = await Utils.get_api(
+    apiUser + `Comment_like?id=${idcmt}&type=1&id_user=${iduser}`,
+  );
+  return res;
+}
+
 async function DeleteComment_Like(id_cmt = '') {
   let res = await Utils.post_api(
     apiUser + `deleteComment_like?id_cmt=${id_cmt}`,
@@ -258,6 +270,17 @@ async function Update_Quyen_User(iduser, strbody) {
   let res = await Utils.post_api(
     apiUser + `Update_quyen_Memmber?id_user=${iduser}`,
     strbody,
+  );
+  return res;
+}
+
+async function deleteGroup(idgruop) {
+  let res = await Utils.post_api(
+    apiUser + `deleteGroup?id_group=${idgruop}`,
+    null,
+    false,
+    true,
+    'DELETE',
   );
   return res;
 }
@@ -359,11 +382,14 @@ export {
   AddComment,
   AddComment_Child,
   GetDSCommnet,
+  Comment_like,
   Update_CMT,
+  Update_CMT_Child,
   DeleteComment_Like,
   DeleteComment,
   AddGroup,
   GetDSGroup,
+  deleteGroup,
   GetDS_BaiDangGroup,
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,

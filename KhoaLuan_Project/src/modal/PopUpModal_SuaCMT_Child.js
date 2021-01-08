@@ -14,7 +14,7 @@ import {
 // import ModalComponent from '../components/ModalComponent';
 
 import FontSize from '../components/size';
-import {Update_CMT} from '../apis/apiUser';
+import {Update_CMT_Child, Update_CMT} from '../apis/apiUser';
 import FlashMessage, {showMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -25,7 +25,7 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 const logo = require('../assets/images/Jeelogo.png');
 
 const deviceHeight = Dimensions.get('window').height;
-export default class PopUpModal_SuaCMT extends Component {
+export default class PopUpModal_SuaCMT_Child extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +40,7 @@ export default class PopUpModal_SuaCMT extends Component {
       display: !this.state.display,
     });
     // this.props.navigation.goBack();
-    Utils.goscreen(this, 'ScreenDetailBaiDang');
+    Utils.goscreen(this, 'ScreenCMT_Child');
   }
   handleNoiDung_CMT(text) {
     this.setState({
@@ -64,18 +64,18 @@ export default class PopUpModal_SuaCMT extends Component {
 
     let strBody = JSON.stringify({
       id_cmt: this.state.id_cmt,
-      ID_BaiDang: this.state.id_baidang,
+      ID_BaiDang: 0,
       NoiDung_cmt: this.state.noidung_cmt,
       id_cmt_parent: 0,
       typepost: '',
-      // CreatedDate: null,
+      CreatedDate: '',
       CreatedBy: 0,
-      // UpdatedDate: null,
+      UpdatedDate: '',
       UpdatedBy: id_user,
     });
-    console.log('strBody cmt', strBody);
-    let res = await Update_CMT(strBody);
-    console.log('res cmt', res);
+    // console.log('strBody cmt child', strBody);
+    let res = await Update_CMT_Child(strBody);
+    // console.log('res cmt', res);
 
     if (res.status == 1) {
       showMessage({
@@ -91,7 +91,7 @@ export default class PopUpModal_SuaCMT extends Component {
     } else {
       showMessage({
         message: 'Thông báo',
-        description: 'Sửa bình luận thất bại',
+        description: 'Bình luận thất bại',
         type: 'danger',
         duration: 1500,
         icon: 'danger',

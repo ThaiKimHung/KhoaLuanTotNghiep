@@ -41,9 +41,9 @@ export default class ScreenLoaiBaiDang extends React.Component {
 
   _GetDsLoaiBaiDang = async () => {
     let res = await GetLoaiBaiDang(this.state.userID);
-    // console.log('res ds loại bài đăng', res);
+    console.log('res ds loại bài đăng', res);
     if (res.status === 1) {
-      this.setState({
+      await this.setState({
         DsLoaiBaiDang: res.data,
         refresh: !this.state.refresh,
       });

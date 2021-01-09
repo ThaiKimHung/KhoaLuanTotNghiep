@@ -19,6 +19,7 @@ import ModalComponent from './src/modal/ModalComponent';
 import Utils from './src/apis/Utils';
 import Test from './src/screens/Test';
 const Stack = createStackNavigator();
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);

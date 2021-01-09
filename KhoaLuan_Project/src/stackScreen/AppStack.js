@@ -33,6 +33,8 @@ import ScreenThongTinCaNhan from '../screens/ScreenThongTinCaNhan';
 import ScreenCMT_Child_Nhom from '../screens/ScreenCMT_Child_Nhom';
 import ScreenCMT_Child_ThongBao from '../screens/ScreenCMT_Child_ThongBao';
 
+import ScreenBangTin from '../screens/ScreenBangTin';
+
 import BaiDangComponent from '../components/BaiDangComponent';
 
 import ModalComponent from '../modal/ModalComponent';
@@ -204,6 +206,7 @@ const HomeStackScreen = () => (
       name="ScreenCMT_Child_ThongBao"
       component={ScreenCMT_Child_ThongBao}
     />
+    <HomeStack.Screen name="ScreenBangTin" component={ScreenBangTin} />
   </HomeStack.Navigator>
 );
 

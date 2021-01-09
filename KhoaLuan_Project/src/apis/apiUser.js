@@ -356,6 +356,11 @@ async function BanThongBao() {
   return res;
 }
 
+async function GetDSMedia() {
+  let res = await Utils.get_api(apiUser + `GetDSMedia`);
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -410,4 +415,5 @@ export {
   Delete_ThongBao,
   BanThongBao,
   CountSoLuong_ThongBao,
+  GetDSMedia,
 };

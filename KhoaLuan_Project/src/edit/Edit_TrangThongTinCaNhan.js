@@ -105,16 +105,20 @@ export default class Screen_EditBaiDang extends React.Component {
       height: 400,
       cropping: true,
       includeBase64: true,
-    }).then((image) => {
-      // console.log('image--------', image);
-      this.setState({
-        image: image,
-        path: image.path,
+    })
+      .then((image) => {
+        // console.log('image--------', image);
+        this.setState({
+          image: image,
+          path: image.path,
+        });
+        // console.log('state image =====', this.state.image);
+        // console.log('path image =====', this.state.path);
+        // this.hamTest();
+      })
+      .catch((e) => {
+        // alert(e);
       });
-      // console.log('state image =====', this.state.image);
-      // console.log('path image =====', this.state.path);
-      // this.hamTest();
-    });
   };
 
   _renderActive = () => {
@@ -377,7 +381,7 @@ export default class Screen_EditBaiDang extends React.Component {
                     height: FontSize.scale(60),
                     width: FontSize.verticalScale(60),
                     borderRadius: 50,
-                    backgroundColor: 'yellow',
+                    // backgroundColor: 'yellow',
                   }}
                   resizeMode="cover"
                   source={this.state.ava ? {uri: this.state.ava} : avatar}>

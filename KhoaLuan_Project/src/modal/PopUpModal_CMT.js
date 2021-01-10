@@ -150,8 +150,8 @@ export default class PopUpModal_CMT extends Component {
                   width: '100%',
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
+                  borderRadius: 10,
                 }}>
-                <Text>đây là pôpp</Text>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5, height: FontSize.scale(150)}}>
                     {/* <TouchableOpacity

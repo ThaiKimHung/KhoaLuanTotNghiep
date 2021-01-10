@@ -145,7 +145,7 @@ export default class BaiDangComponenet extends React.Component {
 
   loadNoiDung = () => {
     const {item = {}} = this.props;
-    console.log('item', item.image);
+    // console.log('item', item.image);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     let loaibaidang = item.Id_LoaiBaiDang;
     let khenthuong = item.KhenThuong ? item.KhenThuong[0] : {};
@@ -276,6 +276,10 @@ export default class BaiDangComponenet extends React.Component {
               <View>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
@@ -314,6 +318,10 @@ export default class BaiDangComponenet extends React.Component {
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
@@ -349,6 +357,10 @@ export default class BaiDangComponenet extends React.Component {
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
@@ -496,7 +508,14 @@ export default class BaiDangComponenet extends React.Component {
                   },
                 )
               }>
-              <Image style={styles.daubacham} source={daubacham} />
+              <Image
+                style={{
+                  height: FontSize.scale(20),
+                  width: FontSize.verticalScale(20),
+                  // tintColor: '#007DE3',
+                }}
+                source={daubacham}
+              />
             </TouchableOpacity>
           </View>
 
@@ -526,6 +545,11 @@ export default class BaiDangComponenet extends React.Component {
               // đây sẽ là  delete
               <TouchableOpacity
                 style={styles.khung_Thich}
+                onLongPress={async () => {
+                  Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+                    id_nguoidang: this.props,
+                  });
+                }}
                 onPress={() => {
                   this.DeleteLike(item.Id_BaiDang);
                 }}>

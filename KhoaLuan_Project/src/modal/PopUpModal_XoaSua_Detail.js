@@ -141,6 +141,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                   width: '100%',
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
+                  borderRadius: 10,
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5}}>

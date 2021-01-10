@@ -853,24 +853,51 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
 
           {this.state.text_Cmt ? (
             <TouchableOpacity
-              style={{marginRight: 5}}
+              style={{
+                marginRight: 5,
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onPress={() => this.DangCmt()}>
               <Image
                 source={send}
                 style={{
-                  height: FontSize.scale(20),
-                  width: FontSize.verticalScale(20),
+                  height: FontSize.scale(28),
+                  width: FontSize.verticalScale(28),
+                  justifyContent: 'center',
                   // padding: 10,
-                  tintColor: '#007DE3',
+                  // tintColor: '#007DE3',
                 }}></Image>
             </TouchableOpacity>
           ) : (
-            <View style={{marginRight: 5}}>
+            // <TouchableOpacity
+            //   style={{marginRight: 5}}
+            //   onPress={() => this.DangCmt()}>
+            //   <Image
+            //     source={send}
+            //     style={{
+            //       height: FontSize.scale(20),
+            //       width: FontSize.verticalScale(20),
+            //       // padding: 10,
+            //       tintColor: '#007DE3',
+            //     }}></Image>
+            // </TouchableOpacity>
+            <View
+              style={{
+                marginRight: 5,
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <Image
                 source={send}
                 style={{
-                  height: FontSize.scale(20),
-                  width: FontSize.verticalScale(20),
+                  height: FontSize.scale(28),
+                  width: FontSize.verticalScale(28),
+                  justifyContent: 'center',
                   // padding: 10,
                   tintColor: '#696969',
                 }}></Image>

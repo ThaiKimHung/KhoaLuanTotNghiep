@@ -459,7 +459,14 @@ export default class BaiDangNhomComponent extends React.Component {
                   },
                 )
               }>
-              <Image style={styles.daubacham} source={daubacham} />
+              <Image
+                style={{
+                  height: FontSize.scale(20),
+                  width: FontSize.verticalScale(20),
+                  // tintColor: '#007DE3',
+                }}
+                source={daubacham}
+              />
             </TouchableOpacity>
           </View>
 
@@ -488,6 +495,15 @@ export default class BaiDangNhomComponent extends React.Component {
               // đây sẽ là  delete
               <TouchableOpacity
                 style={styles.khung_Thich}
+                onLongPress={async () => {
+                  Utils.goscreen(
+                    this.props.nthis.props.nthis,
+                    'ModalLike_Nhom',
+                    {
+                      id_nguoidang: this.props,
+                    },
+                  );
+                }}
                 onPress={() => {
                   this.DeleteLike(item.Id_BaiDang);
                 }}>

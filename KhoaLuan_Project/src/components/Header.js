@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FontSize from './size';
 
-const iconMenu = require('../assets/images/menu.png');
+// const iconMenu = require('../assets/images/menu.png');
 
 const timkiem = require('../assets/images/search.png');
 const height = Dimensions.get('screen').height;

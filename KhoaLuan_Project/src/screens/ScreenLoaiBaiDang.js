@@ -45,12 +45,12 @@ export default class ScreenLoaiBaiDang extends React.Component {
     if (res.status === 1) {
       await this.setState({
         DsLoaiBaiDang: res.data,
-        refresh: !this.state.refresh,
+        refresh: false,
       });
       // console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
     } else {
       this.setState({
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     }
   };

@@ -160,7 +160,21 @@ export default class Modal_CaiDatNhom extends Component {
                       alignItems: 'center',
                       padding: 5,
                     }}
-                    onPress={() => this._Delete_Group()}>
+                    onPress={() =>
+                      Alert.alert(
+                        'Thông Báo',
+                        'Bạn Muốn Xóa Nhóm ?',
+                        [
+                          {text: 'Đồng Ý', onPress: () => this._Delete_Group()},
+                          {
+                            text: 'Hủy',
+                            //   onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                        ],
+                        {cancelable: false},
+                      )
+                    }>
                     <Image source={delet} style={styles.image_st}></Image>
                     <Text style={{fontSize: 20}}>Xóa Nhóm</Text>
                   </TouchableOpacity>

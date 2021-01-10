@@ -361,6 +361,21 @@ async function GetDSMedia() {
   return res;
 }
 
+async function GetDetailMedia(idbangtin) {
+  let res = await Utils.get_api(
+    apiUser + `GetDetailMedia?_idmedia=${idbangtin}`,
+  );
+  return res;
+}
+async function addMedia(tieude, iduser, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `addMedia?tieude=${tieude}&template=''&id_user=${iduser}`,
+    strbody,
+  );
+  // this.BanThongBao();
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -416,4 +431,6 @@ export {
   BanThongBao,
   CountSoLuong_ThongBao,
   GetDSMedia,
+  GetDetailMedia,
+  addMedia,
 };

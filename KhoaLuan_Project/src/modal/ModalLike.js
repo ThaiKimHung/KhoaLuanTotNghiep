@@ -118,7 +118,11 @@ export default class ModalLike extends Component {
         <Modal animationType="slide" visible={display} transparent={true}>
           <TouchableOpacity
             onPress={() => this.change()}
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <TouchableWithoutFeedback>
               <View
                 style={{
@@ -126,6 +130,7 @@ export default class ModalLike extends Component {
                   //   width: '50%',
                   backgroundColor: 'white',
                   justifyContent: 'center',
+                  borderRadius: 10,
                 }}>
                 <View
                   style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>

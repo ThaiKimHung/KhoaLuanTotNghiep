@@ -140,6 +140,8 @@ export default class PopUpModal_XoaSua extends Component {
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
                   // height: '50%',
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
                   <View style={{marginTop: 5, height: FontSize.Height(50)}}>

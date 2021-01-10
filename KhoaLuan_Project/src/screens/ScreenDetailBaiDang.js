@@ -750,6 +750,11 @@ export default class ScreenDetailBaiDang extends React.Component {
             {this.state.dslike ? (
               <TouchableOpacity
                 style={styles.khung_Thich}
+                onLongPress={async () => {
+                  Utils.goscreen(this, 'ModalLike_Detail', {
+                    id_nguoidang: this.props,
+                  });
+                }}
                 onPress={() => {
                   this.DeleteLike(this.idBaiDang);
                 }}>
@@ -855,24 +860,39 @@ export default class ScreenDetailBaiDang extends React.Component {
 
           {this.state.text_Cmt ? (
             <TouchableOpacity
-              style={{marginRight: 5}}
+              style={{
+                marginRight: 5,
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onPress={() => this.DangCmt()}>
               <Image
                 source={send}
                 style={{
-                  height: FontSize.scale(20),
-                  width: FontSize.verticalScale(20),
+                  height: FontSize.scale(28),
+                  width: FontSize.verticalScale(28),
+                  justifyContent: 'center',
                   // padding: 10,
-                  tintColor: '#007DE3',
+                  // tintColor: '#007DE3',
                 }}></Image>
             </TouchableOpacity>
           ) : (
-            <View style={{marginRight: 5}}>
+            <View
+              style={{
+                marginRight: 5,
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(40),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <Image
                 source={send}
                 style={{
-                  height: FontSize.scale(20),
-                  width: FontSize.verticalScale(20),
+                  height: FontSize.scale(28),
+                  width: FontSize.verticalScale(28),
+                  justifyContent: 'center',
                   // padding: 10,
                   tintColor: '#696969',
                 }}></Image>
@@ -953,9 +973,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageLike_Commnet: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
-    tintColor: '#696969',
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
+    // tintColor: '#696969',
   },
   imageLike_Commnet1: {
     height: FontSize.scale(15),

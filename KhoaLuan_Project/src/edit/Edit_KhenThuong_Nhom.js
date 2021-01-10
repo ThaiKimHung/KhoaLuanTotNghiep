@@ -73,11 +73,11 @@ export default class Edit_KhenThuong_Nhom extends React.Component {
     if (res.status === 1) {
       this.setState({
         DsKhenThuong: res.Data,
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     } else {
       this.setState({
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     }
   };

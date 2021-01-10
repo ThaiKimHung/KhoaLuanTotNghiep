@@ -126,6 +126,7 @@ export default class PopUpModal_SuaCMT_Child_Nhom extends Component {
                   width: '100%',
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
+                  borderRadius: 10,
                 }}>
                 <View
                   style={{

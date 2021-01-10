@@ -19,13 +19,15 @@ import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
 // const {colors} = useTheme();
 import ScreenAllBaiDang from './ScreenAllBaiDang';
 import FontSize from '../components/size';
-
+import {ROOTGlobal, rootGlobal} from '../apis/dataGlobal';
 import {GetDSMedia} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import GoBack from '../components/GoBack';
 import {ImageBackground} from 'react-native';
 
+const plus = require('../assets/images/plus.png');
+const avatar = require('../assets/images/avatar.png');
 export default class ScreenBangTin extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +35,7 @@ export default class ScreenBangTin extends React.Component {
       dsBangTin: '',
       refresh: true,
     };
+    ROOTGlobal.DsMedia = this._GetDsMedia;
   }
 
   _GetAsync = async () => {
@@ -48,12 +51,12 @@ export default class ScreenBangTin extends React.Component {
     if (res.status == 1) {
       this.setState({
         dsBangTin: res.Data,
-        refresh: !this.state.refresh,
+        refresh: false,
       });
-      // console.log('ds loại bài đăng', this.state.DsLoaiBaiDang);
+      console.log('ds loại bài đăng', this.state.dsBangTin);
     } else {
       this.setState({
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     }
   };
@@ -70,51 +73,88 @@ export default class ScreenBangTin extends React.Component {
   renderItem = ({item, index}) => {
     // console.log('item', item);
     return (
-      <View>
-        {item.img_media ? (
-          <TouchableOpacity style={[styles.khung]}>
-            <ImageBackground
-              source={{uri: item.hinhanh}}
+      <TouchableOpacity
+        onPress={() =>
+          Utils.goscreen(this, 'Modal_DetailBangTin', {
+            id_media: item.id_media,
+          })
+        }
+        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 10}]}>
+        {item.img_media != '' || item.img_media != null ? (
+          <ImageBackground
+            source={{uri: item.hinhanh}}
+            style={{
+              borderRadius: 10,
+              height: FontSize.scale(75),
+              width: FontSize.verticalScale(145),
+              backgroundColor: 'yellow',
+            }}>
+            <View
               style={{
-                height: FontSize.scale(250),
-                width: FontSize.verticalScale(250),
-                backgroundColor: 'yellow',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
               }}>
-              <View style={styles.khung_DS}>
-                {/* <Image
-            style={{
-              width: FontSize.scale(150),
-              height: FontSize.verticalScale(130),
-            }}
-            // Icon_app
-            // uri:// 'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
-            source={item.Icon_app ? {uri: item.Icon_app} : avatar}
-          /> */}
-                <Text style={{margin: 5, textAlign: 'center'}}>
-                  {item.id_media}
-                </Text>
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                    borderRadius: 30,
+                  }}
+                  resizeMode="cover"
+                  source={
+                    // item.hinhanh_user ? {uri: item.Avatar} :
+                    avatar
+                  }></Image>
               </View>
-            </ImageBackground>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={[styles.khung]}>
-            <View style={styles.khung_DS}>
-              {/* <Image
-            style={{
-              width: FontSize.scale(150),
-              height: FontSize.verticalScale(130),
-            }}
-            // Icon_app
-            // uri:// 'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
-            source={item.Icon_app ? {uri: item.Icon_app} : avatar}
-          /> */}
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.id_media}
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.username}
               </Text>
             </View>
+            {/* <Text style={{margin: 5, textAlign: 'center'}}>{item.username}</Text> */}
+          </ImageBackground>
+        ) : (
+          <TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 30,
+                  height: FontSize.scale(40),
+                  width: FontSize.verticalScale(40),
+                }}>
+                <Image
+                  style={{
+                    height: FontSize.scale(40),
+                    width: FontSize.verticalScale(40),
+                    borderRadius: 30,
+                  }}
+                  resizeMode="cover"
+                  source={
+                    // item.hinhanh_user ? {uri: item.Avatar} :
+                    avatar
+                  }></Image>
+              </View>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.username}
+              </Text>
+            </View>
+            <Text> đay là k có ảnh</Text>
           </TouchableOpacity>
         )}
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -127,21 +167,45 @@ export default class ScreenBangTin extends React.Component {
       <View style={styles.container}>
         <GoBack
           // nthis={this}
-          name=""
+          name="Bảng tin"
           onPress={() => {
             Utils.goback(this, '');
           }}></GoBack>
-        <View style={styles.header}>
-          <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(20)}}>
-            Bạn muốn đăng bài gì?
+        <TouchableOpacity
+          onPress={() => Utils.goscreen(this, 'Media')}
+          style={{
+            height: FontSize.scale(30),
+            justifyContent: 'space-between',
+            padding: 10,
+            borderRadius: 20,
+            marginHorizontal: 10,
+            marginTop: 5,
+            flexDirection: 'row',
+            borderWidth: 1,
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              marginLeft: 10,
+              textAlign: 'center',
+              fontSize: FontSize.reSize(20),
+            }}>
+            Thêm tin
           </Text>
-        </View>
+          <Image
+            source={plus}
+            style={{
+              height: FontSize.scale(20),
+              width: FontSize.verticalScale(20),
+              justifyContent: 'center',
+            }}></Image>
+        </TouchableOpacity>
         <View style={styles.footer}>
           <FlatList
             data={this.state.dsBangTin}
             renderItem={this.renderItem}
-            // ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
-            // numColumns={2}
+            ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
+            numColumns={2}
             keyExtractor={(item, index) => index.toString()}
             ListEmptyComponent={this.EmptyListMessage}
             refreshing={this.state.refresh}
@@ -162,7 +226,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#00AFF0',
+    // backgroundColor: '#00AFF0',
     height: FontSize.scale(50),
     justifyContent: 'center',
     padding: 10,
@@ -171,21 +235,24 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   footer: {
-    height: '100%',
-    width: '100%',
+    // height: '100%',
+    // width: '100%',
     paddingTop: 10,
   },
   khung: {
+    // flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // flexWrap: 'wrap',
+    // backgroundColor: 'yellow',
     borderColor: '#4F4F4F',
     borderWidth: 1,
     borderRadius: 10,
-    height: FontSize.scale(300),
-    width: FontSize.verticalScale(300),
-    marginHorizontal: 25,
-    marginVertical: 5,
+    height: FontSize.scale(80),
+    width: FontSize.verticalScale(150),
+    justifyContent: 'center',
+    // alignItems: 'center',
+    // paddingHorizontal: 10,
+    margin: 10,
   },
   container_khung: {
     width: FontSize.verticalScale(100),
@@ -195,8 +262,8 @@ const styles = StyleSheet.create({
   },
   khung_DS: {
     // width: FontSize.verticalScale(100),
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     // margin: 2,
   },
   emptyListStyle: {

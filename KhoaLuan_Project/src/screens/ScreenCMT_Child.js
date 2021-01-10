@@ -65,6 +65,7 @@ export default class ScreenCMT_Child extends React.Component {
       hi: [],
       like: '',
       likecmt: '',
+      dsCmt_user: '',
     };
     ROOTGlobal.GetDSCmt = this._GetDsCmt;
   }
@@ -104,7 +105,7 @@ export default class ScreenCMT_Child extends React.Component {
   _GetDsCmt = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSCommnet(id_user, this.state.id_baidang);
-    // console.log('res ds cmt', res);
+    //    console.log('res ds cmt', res);
 
     const {Comment_child = []} = res.data;
     const arrNew = [];
@@ -122,12 +123,21 @@ export default class ScreenCMT_Child extends React.Component {
       });
       await this.setState({
         dsCmt_Child: this.state.dsCmt.map((e) => e.Comment_child),
+        // dsCmt_user: this.state.dsCmt.map((e) => e.User_comment),
       });
     } else {
       this.setState({
         refresh: false,
       });
     }
+  };
+
+  ganData = async () => {
+    let usercmt = (await this.state.dsCmt) ? this.state.dsCmt[0] : '';
+    // await console.log('ds cmt user', this.state.dsCmt_Child);
+    // await this.setState({
+    // await
+    // })
   };
 
   _AddCommentLike = async (idcmt) => {
@@ -224,7 +234,7 @@ export default class ScreenCMT_Child extends React.Component {
 
   _renderItem2 = ({item, index}) => {
     // console.log(item);
-    // let userCmt = item.User_comment ? item.User_comment[0] : '';
+    let userCmt = item.User_comment ? item.User_comment[0] : '';
     let likecmt = item.Like_child;
     let like_comment = item.Like_Comment_child
       ? item.Like_Comment_child[0]
@@ -302,6 +312,7 @@ export default class ScreenCMT_Child extends React.Component {
     await this.NhanData_Child();
 
     await this._GetDsCmt();
+    await this.ganData();
     await this.hamloadLienTuc();
   };
 
@@ -382,6 +393,7 @@ export default class ScreenCMT_Child extends React.Component {
         <View style={styles.footer}>
           <FlatList
             data={this.state.dsCmt_Child[this.index]}
+            // data={this.state.dsCmt_Child}
             renderItem={this._renderItem2}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}

@@ -18,7 +18,7 @@ import {AddLike, AddThongBao, BanThongBao} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
-export default class ModalLike_Nhom extends Component {
+export default class ModalLike_CMT extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,8 +66,9 @@ export default class ModalLike_Nhom extends Component {
     let res = await AddLike(idbaidang, idlike, iduser);
     // console.log('ress add like', res);
     if (res.status == 1) {
-      Utils.goscreen(this, 'ScreenBaiDangNhom');
-      await ROOTGlobal.GetDsAllBaiDang_Nhom();
+      Utils.goscreen(this, 'ScreenDetailBaiDang');
+      await ROOTGlobal.GetChiTietBaiDang();
+      await ROOTGlobal.GanDataChitiet();
       await this._AddThongBao_Like();
     }
   };
@@ -79,11 +80,13 @@ export default class ModalLike_Nhom extends Component {
       });
     }
   };
+
   GanData = async () => {
-    const {item = {}} = this.props.route.params.id_nguoidang;
-    this.idbaidang = item.Id_BaiDang;
+    let id_nguoidang = this.props.route.params.id_nguoidang.route.params
+      .id_nguoidang;
+    this.idbaidang = id_nguoidang.Id_BaiDang;
     this.iduser = await Utils.ngetStorage(nkey.id_user);
-    // console.log('item nhan liek', this.idbaidang);
+    // console.log('item nhan liek', id_nguoidang);
   };
 
   _renderItem = ({item, index}) => {
@@ -112,7 +115,10 @@ export default class ModalLike_Nhom extends Component {
 
   render() {
     const {display} = this.state;
-    // console.log('this modal like', this.props);
+    // console.log(
+    //   'this modal like',
+    //   this.props.route.params.id_nguoidang.route.params.id_nguoidang,
+    // );
     return (
       <View style={styles.container}>
         <Modal animationType="slide" visible={display} transparent={true}>

@@ -132,6 +132,7 @@ export default class ModalLike_Detail extends Component {
                   //   width: '50%',
                   backgroundColor: 'white',
                   justifyContent: 'center',
+                  borderRadius: 10,
                 }}>
                 <View
                   style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>

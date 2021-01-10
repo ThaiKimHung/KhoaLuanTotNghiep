@@ -46,7 +46,7 @@ export default class SignInScreen extends React.Component {
 
   _loginJee = async () => {
     let res = await Login(this.Username, this.Password);
-    // console.log('ress đăng nhập', res);
+    console.log('ress đăng nhập', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

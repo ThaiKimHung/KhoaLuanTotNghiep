@@ -87,13 +87,21 @@ export default class ScreenBaiDangNhom extends React.Component {
                     id_nguoidang: this.props.route.params,
                   })
                 }
-                style={{justifyContent: 'center', marginLeft: 5}}>
+                style={{
+                  justifyContent: 'center',
+                  margin: 5,
+                  backgroundColor: '#FFFFFF',
+                  height: FontSize.scale(22),
+                  width: FontSize.verticalScale(22),
+                  alignItems: 'center',
+                }}>
                 <Image
                   source={bachamdoc}
                   style={{
                     height: FontSize.scale(20),
                     width: FontSize.verticalScale(18),
-                    marginRight: 5,
+                    // marginRight: 5,
+                    // justifyContent: 'center',
                   }}></Image>
               </TouchableOpacity>
             ) : null}

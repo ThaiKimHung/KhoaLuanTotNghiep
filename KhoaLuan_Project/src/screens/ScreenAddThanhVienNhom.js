@@ -58,7 +58,7 @@ export default class ScreenAddThanhVienNhom extends React.Component {
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
-        refresh: !this.state.refresh,
+        refresh: false,
       });
     } else {
       this.setState({refresh: !this.state.refresh});

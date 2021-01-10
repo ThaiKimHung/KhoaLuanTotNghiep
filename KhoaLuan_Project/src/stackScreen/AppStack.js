@@ -58,6 +58,7 @@ import PopUpModal_XoaSua_Detail_ThongBao from '../modal/PopUpModal_XoaSua_Detail
 import PopUpModal_CMT_Child_Nhom from '../modal/PopUpModal_CMT_Child_Nhom';
 import PopUpModal_SuaCMT_Child from '../modal/PopUpModal_SuaCMT_Child';
 import PopUpModal_SuaCMT_Child_Nhom from '../modal/PopUpModal_SuaCMT_Child_Nhom';
+import Modal_DetailBangTin from '../modal/Modal_DetailBangTin';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
@@ -71,6 +72,7 @@ import ThongBao from '../baidang/ThongBao';
 import ThongBao_Nhom from '../baidang/ThongBao_Nhom';
 import TinTucNoiBo from '../baidang/TinTucNoiBo';
 import TinTucNoiBo_Nhom from '../baidang/TinTucNoiBo_Nhom';
+import Media from '../baidang/Media';
 
 import Screen_EditBaiDang from '../edit/Screen_EditBaiDang';
 import Screen_EditBaiDang_Detail from '../edit/Screen_EditBaiDang_Detail';
@@ -207,6 +209,7 @@ const HomeStackScreen = () => (
       component={ScreenCMT_Child_ThongBao}
     />
     <HomeStack.Screen name="ScreenBangTin" component={ScreenBangTin} />
+    <HomeStack.Screen name="Media" component={Media} />
   </HomeStack.Navigator>
 );
 
@@ -321,10 +324,13 @@ const AppStack = () => {
         name="PopUpModal_SuaCMT_Child"
         component={PopUpModal_SuaCMT_Child}
       />
-
       <Stack.Screen
         name="PopUpModal_SuaCMT_Child_Nhom"
         component={PopUpModal_SuaCMT_Child_Nhom}
+      />
+      <Stack.Screen
+        name="Modal_DetailBangTin"
+        component={Modal_DetailBangTin}
       />
     </Stack.Navigator>
   );

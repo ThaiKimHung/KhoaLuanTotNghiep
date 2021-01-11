@@ -94,7 +94,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -130,7 +130,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
   _AddThongBao_LikeCMT = async () => {
     let strBody = JSON.stringify({
       title: 'Đã bày tỏ cảm xúc một bình luận',
-      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+      create_tb_by: await Utils.ngetStorage(
+        await Utils.ngetStorage(nkey.id_user),
+        nkey.id_user,
+      ),
     });
 
     // console.log('strBody add Thông báo', strBody);
@@ -140,10 +143,13 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
   };
 
   _AddCommentLike = async (idcmt) => {
+    // alert(5);
     let res = await Comment_like(
       await idcmt,
+      1,
       await Utils.ngetStorage(nkey.id_user),
     );
+    console.log(res);
     await this._GetChiTietBaiDang();
     await this.GanData();
     await this._AddThongBao_LikeCMT();
@@ -266,13 +272,25 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
           }}>
           {likecmt ? (
             <TouchableOpacity
+              onLongPress={async () => {
+                Utils.goscreen(this, 'ModalLike_CMT_Nhom', {
+                  id_nguoidang: item,
+                });
+              }}
               onPress={() => this._DeleteCommentLike(item.id_cmt)}>
               <Text style={{marginLeft: 10, color: '#007DE3'}}>
-                Thích({like_comment.tong})
+                {likecmt.title}
+                {/* ({like_comment.tong}) */}
               </Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => this._AddCommentLike(item.id_cmt)}>
+            <TouchableOpacity
+              onLongPress={async () => {
+                Utils.goscreen(this, 'ModalLike_CMT_Nhom', {
+                  id_nguoidang: item,
+                });
+              }}
+              onPress={() => this._AddCommentLike(item.id_cmt)}>
               <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
             </TouchableOpacity>
           )}
@@ -299,7 +317,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -722,6 +740,11 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
             {this.state.dslike ? (
               <TouchableOpacity
                 style={styles.khung_Thich}
+                onLongPress={async () => {
+                  Utils.goscreen(this, 'ModalLike_Detail_Nhom', {
+                    id_nguoidang: this.props,
+                  });
+                }}
                 onPress={() => {
                   this.DeleteLike(this.idBaiDang);
                 }}>
@@ -940,13 +963,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageLike_Commnet: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
-    tintColor: '#696969',
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
+    // tintColor: '#696969',
   },
   imageLike_Commnet1: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
     // tintColor: '#007DE3',
   },
   khungLike_Commnet: {

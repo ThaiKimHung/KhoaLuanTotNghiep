@@ -20,22 +20,30 @@ import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
 import ScreenAllBaiDang from './ScreenAllBaiDang';
 import FontSize from '../components/size';
 import {ROOTGlobal, rootGlobal} from '../apis/dataGlobal';
-import {GetDSMedia} from '../apis/apiUser';
+import {GetDSMedia, Delete_Media} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import GoBack from '../components/GoBack';
 import {ImageBackground} from 'react-native';
+import {touch} from 'react-native-fs';
 
 const plus = require('../assets/images/plus.png');
 const avatar = require('../assets/images/avatar.png');
+const cancel = require('../assets/images/cancel.png');
 export default class ScreenBangTin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dsBangTin: '',
       refresh: true,
+      userID: '',
     };
     ROOTGlobal.DsMedia = this._GetDsMedia;
+  }
+
+  async componentDidMount() {
+    await this._GetAsync();
+    await this._GetDsMedia();
   }
 
   _GetAsync = async () => {
@@ -61,6 +69,14 @@ export default class ScreenBangTin extends React.Component {
     }
   };
 
+  deletMedia = async (id_media) => {
+    let res = Delete_Media(id_media);
+    console.log('res', res);
+    if (res.status == 1) {
+      this._GetAsync();
+    }
+  };
+
   EmptyListMessage = ({item}) => {
     return (
       // <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
@@ -71,97 +87,255 @@ export default class ScreenBangTin extends React.Component {
   };
 
   renderItem = ({item, index}) => {
-    // console.log('item', item);
+    // console.log('item', item.createby);
+
+    let createby = item.createby;
     return (
-      <TouchableOpacity
-        onPress={() =>
-          Utils.goscreen(this, 'Modal_DetailBangTin', {
-            id_media: item.id_media,
-          })
-        }
-        style={[styles.khung, {marginLeft: index % 2 != 0 ? 10 : 10}]}>
-        {item.img_media != '' || item.img_media != null ? (
-          <ImageBackground
-            source={{uri: item.hinhanh}}
-            style={{
-              borderRadius: 10,
-              height: FontSize.scale(75),
-              width: FontSize.verticalScale(145),
-              backgroundColor: 'yellow',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 10,
-              }}>
-              <View
+      <View style={[styles.khung]}>
+        {item.img_media != null ? (
+          <View
+          // style={{backgroundColor: 'yellow'}}
+          >
+            {item.createby == this.state.userID ? (
+              <ImageBackground
+                source={{uri: item.hinhanh}}
                 style={{
-                  marginLeft: 5,
-                  borderRadius: 30,
-                  height: FontSize.scale(40),
-                  width: FontSize.verticalScale(40),
+                  marginTop: 5,
+                  borderRadius: 10,
+                  height: '98%',
+                  width: FontSize.verticalScale(290),
+                  // backgroundColor: 'gray',
                 }}>
-                <Image
+                <View
                   style={{
-                    height: FontSize.scale(40),
-                    width: FontSize.verticalScale(40),
-                    borderRadius: 30,
-                  }}
-                  resizeMode="cover"
-                  source={
-                    // item.hinhanh_user ? {uri: item.Avatar} :
-                    avatar
-                  }></Image>
-              </View>
-              <Text style={{fontSize: FontSize.reSize(20)}}>
-                {item.username}
-              </Text>
-            </View>
-            {/* <Text style={{margin: 5, textAlign: 'center'}}>{item.username}</Text> */}
-          </ImageBackground>
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                    justifyContent: 'space-between',
+                    // backgroundColor: 'red',
+                  }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View
+                      style={{
+                        marginLeft: 10,
+                        borderRadius: 30,
+                        height: FontSize.scale(40),
+                        width: FontSize.verticalScale(40),
+                      }}>
+                      <Image
+                        style={{
+                          height: FontSize.scale(40),
+                          width: FontSize.verticalScale(40),
+                          borderRadius: 30,
+                        }}
+                        resizeMode="cover"
+                        source={
+                          // item.hinhanh_user ? {uri: item.Avatar} :
+                          avatar
+                        }></Image>
+                    </View>
+                    <Text
+                      style={{fontSize: FontSize.reSize(20), marginLeft: 10}}>
+                      {item.username}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => this.Delete_Media(item.id_media)}
+                    style={{marginRight: 10}}>
+                    <Image
+                      source={cancel}
+                      style={{
+                        height: FontSize.scale(20),
+                        width: FontSize.verticalScale(20),
+                      }}></Image>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'green',
+                    height: '80%',
+                  }}>
+                  <Text>
+                    {item.title}
+                    (có hình của bản thân)
+                  </Text>
+                </View>
+                {/* <Text style={{margin: 5, textAlign: 'center'}}>{item.username}</Text> */}
+              </ImageBackground>
+            ) : (
+              <ImageBackground
+                source={{uri: item.hinhanh}}
+                style={{
+                  marginTop: 5,
+                  borderRadius: 10,
+                  height: '98%',
+                  width: FontSize.verticalScale(290),
+                  // backgroundColor: 'green',
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}>
+                  <View
+                    style={{
+                      marginLeft: 10,
+                      borderRadius: 30,
+                      height: FontSize.scale(40),
+                      width: FontSize.verticalScale(40),
+                    }}>
+                    <Image
+                      style={{
+                        height: FontSize.scale(40),
+                        width: FontSize.verticalScale(40),
+                        borderRadius: 30,
+                      }}
+                      resizeMode="cover"
+                      source={
+                        // item.hinhanh_user ? {uri: item.Avatar} :
+                        avatar
+                      }></Image>
+                  </View>
+                  <Text style={{fontSize: FontSize.reSize(20), marginLeft: 10}}>
+                    {item.username}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'green',
+                    height: '80%',
+                  }}>
+                  <Text>{item.title}(hình người ta)</Text>
+                </View>
+                {/* <Text style={{margin: 5, textAlign: 'center'}}>{item.username}</Text> */}
+              </ImageBackground>
+            )}
+          </View>
         ) : (
-          <TouchableOpacity>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 10,
-              }}>
+          <View>
+            {item.createby == this.state.userID ? (
               <View
                 style={{
-                  marginLeft: 5,
-                  borderRadius: 30,
-                  height: FontSize.scale(40),
-                  width: FontSize.verticalScale(40),
+                  marginTop: 5,
+                  borderRadius: 10,
+                  backgroundColor: '#007DE3',
+                  height: '98%',
+                  width: FontSize.verticalScale(290),
                 }}>
-                <Image
+                <View
                   style={{
-                    height: FontSize.scale(40),
-                    width: FontSize.verticalScale(40),
-                    borderRadius: 30,
-                  }}
-                  resizeMode="cover"
-                  source={
-                    // item.hinhanh_user ? {uri: item.Avatar} :
-                    avatar
-                  }></Image>
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                    justifyContent: 'space-between',
+                    // backgroundColor: 'red',
+                  }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View
+                      style={{
+                        marginLeft: 10,
+                        borderRadius: 30,
+                        height: FontSize.scale(40),
+                        width: FontSize.verticalScale(40),
+                      }}>
+                      <Image
+                        style={{
+                          height: FontSize.scale(40),
+                          width: FontSize.verticalScale(40),
+                          borderRadius: 30,
+                        }}
+                        resizeMode="cover"
+                        source={
+                          // item.hinhanh_user ? {uri: item.Avatar} :
+                          avatar
+                        }></Image>
+                    </View>
+                    <Text
+                      style={{fontSize: FontSize.reSize(20), marginLeft: 10}}>
+                      {item.username}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => this.Delete_Media(item.id_media)}
+                    style={{marginRight: 10}}>
+                    <Image
+                      source={cancel}
+                      style={{
+                        height: FontSize.scale(20),
+                        width: FontSize.verticalScale(20),
+                      }}></Image>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'green',
+                    height: '80%',
+                  }}>
+                  <Text>{item.title}</Text>
+                </View>
               </View>
-              <Text style={{fontSize: FontSize.reSize(20)}}>
-                {item.username}
-              </Text>
-            </View>
-            <Text> đay là k có ảnh</Text>
-          </TouchableOpacity>
+            ) : (
+              <View
+                style={{
+                  marginTop: 5,
+                  borderRadius: 10,
+                  backgroundColor: '#007DE3',
+                  height: '98%',
+                  width: FontSize.verticalScale(290),
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}>
+                  <View
+                    style={{
+                      marginLeft: 10,
+                      borderRadius: 30,
+                      height: FontSize.scale(40),
+                      width: FontSize.verticalScale(40),
+                    }}>
+                    <Image
+                      style={{
+                        height: FontSize.scale(40),
+                        width: FontSize.verticalScale(40),
+                        borderRadius: 30,
+                      }}
+                      resizeMode="cover"
+                      source={
+                        // item.hinhanh_user ? {uri: item.Avatar} :
+                        avatar
+                      }></Image>
+                  </View>
+                  <Text style={{fontSize: FontSize.reSize(20), marginLeft: 10}}>
+                    {item.username}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'green',
+                    height: '80%',
+                  }}>
+                  <Text>{item.title}</Text>
+                </View>
+              </View>
+            )}
+          </View>
         )}
-      </TouchableOpacity>
+      </View>
     );
   };
 
-  async componentDidMount() {
-    await this._GetAsync();
-    await this._GetDsMedia();
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -204,8 +378,9 @@ export default class ScreenBangTin extends React.Component {
           <FlatList
             data={this.state.dsBangTin}
             renderItem={this.renderItem}
-            ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
-            numColumns={2}
+            // ItemSeparatorComponent={() => <View style={{height: 5}}></View>}
+            // numColumns={2}
+            horizontal={true}
             keyExtractor={(item, index) => index.toString()}
             ListEmptyComponent={this.EmptyListMessage}
             refreshing={this.state.refresh}
@@ -237,7 +412,9 @@ const styles = StyleSheet.create({
   footer: {
     // height: '100%',
     // width: '100%',
+    flex: 1,
     paddingTop: 10,
+    // backgroundColor: 'green',
   },
   khung: {
     // flex: 1,
@@ -247,8 +424,10 @@ const styles = StyleSheet.create({
     borderColor: '#4F4F4F',
     borderWidth: 1,
     borderRadius: 10,
-    height: FontSize.scale(80),
-    width: FontSize.verticalScale(150),
+    // height: FontSize.scale(80),
+    // width: '50%',
+    height: '90%',
+    width: FontSize.verticalScale(300),
     justifyContent: 'center',
     // alignItems: 'center',
     // paddingHorizontal: 10,

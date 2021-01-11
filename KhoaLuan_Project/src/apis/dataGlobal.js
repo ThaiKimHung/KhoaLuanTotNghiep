@@ -27,7 +27,9 @@ const ROOTGlobal = {
   DemSoLuong: () => {},
   GetDSCmt: () => {},
   GetDSCmt_Child_Nhom: () => {},
+  GetDSCmt_Child_Thongbao: () => {},
   DsMedia: () => {},
+  ScrollHome: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

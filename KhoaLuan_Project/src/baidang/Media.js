@@ -71,8 +71,8 @@ export default class Media extends React.Component {
             name: this.state.Image.path.split('/').slice(-1) + '',
           }))
         : (strBody = JSON.stringify({
-            image: this.state.camera.data,
-            name: this.state.camera.path.split('/').slice(-1) + '',
+            image: null,
+            name: null,
           }));
     }
 
@@ -85,6 +85,7 @@ export default class Media extends React.Component {
     );
     console.log('ress media', res);
     if (res.status == 1) {
+      await ROOTGlobal.DsMedia();
       Utils.goscreen(this, 'ScreenBangTin');
       showMessage({
         message: 'Thông báo',
@@ -94,7 +95,6 @@ export default class Media extends React.Component {
         icon: 'success',
       });
       // await this._AddThongBao();
-      await ROOTGlobal.DsMedia();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -175,13 +175,13 @@ export default class Media extends React.Component {
     }
   };
 
-  AddAnh = async () => {
-    {
-      this.state.Image != ''
-        ? this._FileBaiDang_Galary()
-        : this._FileBaiDang_Camera();
-    }
-  };
+  // AddAnh = async () => {
+  //   {
+  //     this.state.Image != ''
+  //       ? this._FileBaiDang_Galary()
+  //       : this._FileBaiDang_Camera();
+  //   }
+  // };
 
   componentDidMount = async () => {};
 
@@ -225,7 +225,7 @@ export default class Media extends React.Component {
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
             </View>
 
-            <View>
+            {/* <View>
               {this.state.camera == '' && this.state.Image != '' ? (
                 <View
                   style={{
@@ -313,7 +313,7 @@ export default class Media extends React.Component {
                   </TouchableOpacity>
                 </View>
               ) : null}
-            </View>
+            </View> */}
 
             <View>
               {this.state.camera != '' && this.state.Image == '' ? (

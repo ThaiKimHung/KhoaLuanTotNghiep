@@ -56,7 +56,7 @@ export default class ModalLike_Detail_Nhom extends Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -65,8 +65,8 @@ export default class ModalLike_Detail_Nhom extends Component {
     // console.log('ress add like', res);
     if (res.status == 1) {
       Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
+      await ROOTGlobal.GanDataChitiet_Nhom();
       await this._AddThongBao_Like();
     }
   };

@@ -59,9 +59,20 @@ import PopUpModal_CMT_Child_Nhom from '../modal/PopUpModal_CMT_Child_Nhom';
 import PopUpModal_SuaCMT_Child from '../modal/PopUpModal_SuaCMT_Child';
 import PopUpModal_SuaCMT_Child_Nhom from '../modal/PopUpModal_SuaCMT_Child_Nhom';
 import Modal_DetailBangTin from '../modal/Modal_DetailBangTin';
+import ModalLike_CMT from '../modal/ModalLike_CMT';
+import ModalLike_CMT_Nhom from '../modal/ModalLike_CMT_Nhom';
+import ModalLike_CMT_Thongbao from '../modal/ModalLike_CMT_Thongbao';
+import ModalLike_CMT_Child from '../modal/ModalLike_CMT_Child';
+import ModalLike_CMT_Child_Nhom from '../modal/ModalLike_CMT_Child_Nhom';
+import ModalLike_CMT_Child_Thongbao from '../modal/ModalLike_CMT_Child_Thongbao';
 
 import KhenThuong from '../baidang/KhenThuong';
+import KhenThuong_V2 from '../baidang/KhenThuong_V2';
+
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
+import KhenThuong_Nhom_V2 from '../baidang/KhenThuong_Nhom_V2';
+import ChaoMungTV_V2 from '../baidang/ChaoMungTV_V2';
+
 import TinNhanh from '../baidang/TinNhanh';
 import TinNhanh_Nhom from '../baidang/TinNhanh_Nhom';
 import ChaoMungTV from '../baidang/ChaoMungTV';
@@ -93,6 +104,7 @@ import Edit_KhenThuong_DetailNhom from '../edit/Edit_KhenThuong_DetailNhom';
 import BaiDangNhom from '../go/BaiDangNhom';
 import ScreenDetailBaiDang_ThongBao from '../screens/ScreenDetailBaiDang_ThongBao';
 import Test from '../screens/Test';
+
 // import
 
 const AuthenStack = createStackNavigator();
@@ -114,7 +126,12 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="ScreenLoaiBaiDang" component={ScreenLoaiBaiDang} />
     {/* <HomeStack.Screen name="HomeScreen" component={HomeScreen} /> */}
     <HomeStack.Screen name="KhenThuong" component={KhenThuong} />
+    <HomeStack.Screen name="KhenThuong_V2" component={KhenThuong_V2} />
     <HomeStack.Screen name="KhenThuong_Nhom" component={KhenThuong_Nhom} />
+    <HomeStack.Screen
+      name="KhenThuong_Nhom_V2"
+      component={KhenThuong_Nhom_V2}
+    />
     <HomeStack.Screen name="SearchUser" component={SearchUser} />
     <HomeStack.Screen name="TinNhanh" component={TinNhanh} />
     <HomeStack.Screen name="TinNhanh_Nhom" component={TinNhanh_Nhom} />
@@ -124,6 +141,7 @@ const HomeStackScreen = () => (
     />
     <HomeStack.Screen name="ScreenCMT_Child" component={ScreenCMT_Child} />
     <HomeStack.Screen name="ChaoMungTV" component={ChaoMungTV} />
+    <HomeStack.Screen name="ChaoMungTV_V2" component={ChaoMungTV_V2} />
     <HomeStack.Screen name="ChaoMungTV_Nhom" component={ChaoMungTV_Nhom} />
     <HomeStack.Screen
       name="Screen_EditBaiDang"
@@ -331,6 +349,24 @@ const AppStack = () => {
       <Stack.Screen
         name="Modal_DetailBangTin"
         component={Modal_DetailBangTin}
+      />
+      <Stack.Screen name="ModalLike_CMT" component={ModalLike_CMT} />
+      <Stack.Screen name="ModalLike_CMT_Nhom" component={ModalLike_CMT_Nhom} />
+      <Stack.Screen
+        name="ModalLike_CMT_Thongbao"
+        component={ModalLike_CMT_Thongbao}
+      />
+      <Stack.Screen
+        name="ModalLike_CMT_Child"
+        component={ModalLike_CMT_Child}
+      />
+      <Stack.Screen
+        name="ModalLike_CMT_Child_Nhom"
+        component={ModalLike_CMT_Child_Nhom}
+      />
+      <Stack.Screen
+        name="ModalLike_CMT_Child_Thongbao"
+        component={ModalLike_CMT_Child_Thongbao}
       />
     </Stack.Navigator>
   );

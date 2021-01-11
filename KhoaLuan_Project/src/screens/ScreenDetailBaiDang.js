@@ -99,7 +99,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -158,6 +158,7 @@ export default class ScreenDetailBaiDang extends React.Component {
   _AddCommentLike = async (idcmt) => {
     let res = await Comment_like(
       await idcmt,
+      1,
       await Utils.ngetStorage(nkey.id_user),
     );
     await this._GetChiTietBaiDang();
@@ -232,7 +233,7 @@ export default class ScreenDetailBaiDang extends React.Component {
   };
 
   _renderItem = ({item, index}) => {
-    // console.log(item);
+    console.log(item);
     let userCmt = item.User_comment ? item.User_comment[0] : '';
     let likecmt = item.Like;
     let like_comment = item.Like_Comment ? item.Like_Comment[0] : '';
@@ -282,13 +283,25 @@ export default class ScreenDetailBaiDang extends React.Component {
           }}>
           {likecmt ? (
             <TouchableOpacity
+              onLongPress={async () => {
+                Utils.goscreen(this, 'ModalLike_CMT', {
+                  id_nguoidang: item,
+                });
+              }}
               onPress={() => this._DeleteCommentLike(item.id_cmt)}>
               <Text style={{marginLeft: 10, color: '#007DE3'}}>
-                Thích({like_comment.tong})
+                {likecmt.title}
+                {/* ?({like_comment.tong})? */}
               </Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => this._AddCommentLike(item.id_cmt)}>
+            <TouchableOpacity
+              onLongPress={async () => {
+                Utils.goscreen(this, 'ModalLike_CMT', {
+                  id_nguoidang: item,
+                });
+              }}
+              onPress={() => this._AddCommentLike(item.id_cmt)}>
               <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
             </TouchableOpacity>
           )}
@@ -316,7 +329,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -328,7 +341,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -978,8 +991,8 @@ const styles = StyleSheet.create({
     // tintColor: '#696969',
   },
   imageLike_Commnet1: {
-    height: FontSize.scale(15),
-    width: FontSize.verticalScale(15),
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
     // tintColor: '#007DE3',
   },
   khungLike_Commnet: {

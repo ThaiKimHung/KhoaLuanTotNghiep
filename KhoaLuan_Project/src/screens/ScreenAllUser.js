@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import FontSize from '../components/size';
 import {SearchBar} from 'react-native-elements';
-import {GetAllUser} from '../apis/apiUser';
+import {GetAllUser, GetDSNhanVien} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 const avatar = require('../assets/images/avatar.png');
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -62,8 +62,8 @@ export default class ScreenAllUser extends React.Component {
   };
 
   _GetAllUser = async () => {
-    let res = await GetAllUser();
-    // console.log('ress all user', res);
+    let res = await GetDSNhanVien();
+    console.log('ress all user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,
@@ -71,7 +71,7 @@ export default class ScreenAllUser extends React.Component {
       });
     } else {
       this.setState({refresh: false});
-      alert('thất bại');
+      alert('thất bại tải all user');
     }
   };
   FoodterMessage = ({item}) => {
@@ -84,7 +84,7 @@ export default class ScreenAllUser extends React.Component {
   _renderItem = ({item, index}) => {
     return (
       <TouchableOpacity style={[styles.khungchua]}>
-        <View
+        {/* <View
           style={{
             marginLeft: 5,
             borderRadius: 30,
@@ -100,7 +100,7 @@ export default class ScreenAllUser extends React.Component {
             }}
             resizeMode="cover"
             source={item.Avatar ? {uri: item.Avatar} : avatar}></Image>
-        </View>
+        </View> */}
 
         <View
           style={{
@@ -110,8 +110,9 @@ export default class ScreenAllUser extends React.Component {
             flex: 1,
             paddingRight: 10,
           }}>
-          <Text>{item.Username}</Text>
-          {item.TinhTrang === true ? this.Online() : this.Offine()}
+          <Text style={{marginLeft: 10}}>{item.hoten}</Text>
+
+          {/* {item.TinhTrang === true ? this.Online() : this.Offine()} */}
         </View>
       </TouchableOpacity>
     );
@@ -149,7 +150,7 @@ export default class ScreenAllUser extends React.Component {
     //   return item.Username.includes(searchText);
     // });
     let filteredData = this.state.DsUser.filter((item) =>
-      Utils.removeAccents(item['Username'])
+      Utils.removeAccents(item['hoten'])
         .toUpperCase()
         .includes(Utils.removeAccents(searchText.toUpperCase())),
     );
@@ -158,7 +159,7 @@ export default class ScreenAllUser extends React.Component {
 
   componentDidMount = async () => {
     await this._GetAllUser();
-    await this.hamloadLienTuc();
+    // await this.hamloadLienTuc();
   };
 
   render() {
@@ -240,10 +241,12 @@ const styles = StyleSheet.create({
     // padding: 10,
     marginTop: 5,
     // justifyContent: 'flex-start',
+    borderRadius: 10,
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#C0C0C0',
     backgroundColor: '#C0C0C020',
+    height: FontSize.scale(50),
   },
   emptyListStyle: {
     padding: 10,

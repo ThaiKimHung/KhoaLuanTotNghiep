@@ -62,7 +62,7 @@ export default class ScreenAddThanhVienNhom extends React.Component {
       });
     } else {
       this.setState({refresh: !this.state.refresh});
-      alert('thất bại');
+      alert('thất bại lấy tất cả thành viên');
     }
   };
   FoodterMessage = ({item}) => {

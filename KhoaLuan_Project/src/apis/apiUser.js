@@ -179,9 +179,9 @@ async function Update_CMT_Child(strbody) {
   return res;
 }
 
-async function Comment_like(idcmt, iduser) {
+async function Comment_like(idcmt, type, iduser) {
   let res = await Utils.get_api(
-    apiUser + `Comment_like?id=${idcmt}&type=1&id_user=${iduser}`,
+    apiUser + `Comment_like?id=${idcmt}&type=${type}&id_user=${iduser}`,
   );
   return res;
 }
@@ -312,14 +312,17 @@ async function AvatarUser(iduser, strbody) {
   return res;
 }
 
-async function AddThongBao(strbody) {
-  let res = await Utils.post_api(apiUser + `addThongBao`, strbody);
+async function AddThongBao(iduser, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `addThongBao?id_user=${iduser}`,
+    strbody,
+  );
   // this.BanThongBao();
   return res;
 }
 
 async function GetDSThongBao(iduser) {
-  let res = await Utils.get_api(apiUser + `GetDSThongBao?iduser=${iduser}`);
+  let res = await Utils.get_api(apiUser + `GetDSThongBao?id_user=${iduser}`);
   return res;
 }
 
@@ -357,7 +360,7 @@ async function BanThongBao() {
 }
 
 async function GetDSMedia() {
-  let res = await Utils.get_api(apiUser + `GetDSMedia`);
+  let res = await Utils.get_api(apiUser + `GetDSAllMedia`);
   return res;
 }
 
@@ -369,10 +372,26 @@ async function GetDetailMedia(idbangtin) {
 }
 async function addMedia(tieude, iduser, strbody) {
   let res = await Utils.post_api(
-    apiUser + `addMedia?tieude=${tieude}&template=''&id_user=${iduser}`,
+    apiUser + `addMedia?tieude=${tieude}&template=null&id_user=${iduser}`,
     strbody,
   );
   // this.BanThongBao();
+  return res;
+}
+
+async function GetDSNhanVien() {
+  let res = await Utils.get_api(apiUser + `GetDSNhanVien`);
+  return res;
+}
+
+async function Delete_Media(id_media) {
+  let res = await Utils.post_api(
+    apiUser + `deleteMedia?id_media=${id_media}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
   return res;
 }
 
@@ -433,4 +452,6 @@ export {
   GetDSMedia,
   GetDetailMedia,
   addMedia,
+  GetDSNhanVien,
+  Delete_Media,
 };

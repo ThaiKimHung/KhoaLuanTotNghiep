@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import BaiDangNhomComponent from '../components/BaiDangNhomComponent';
+import BaiDangComponent from '../components/BaiDangComponent';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import * as Animatable from 'react-native-animatable';
@@ -21,70 +21,52 @@ import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 
-import {GetDSBaiDang_Nhom} from '../apis/apiUser';
+import {GetDSBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
-const avatar = require('../assets/images/avatar.png');
 import {colors} from 'react-native-elements';
-export default class ScreenAllBaiDang_Nhom extends React.Component {
+import {ScrollView} from 'react-native';
+const avatar = require('../assets/images/avatar.png');
+export default class ScreenAllBaiDang extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      DSBaiDangNhom: [],
-      DSBaiDangNhom2: [],
+      DSBaiDang: [],
+      DSBaiDang2: [],
       refresh: true,
       length: '',
-      length2: '',
       thanhcong: '',
       id_user: '',
+      length2: '',
       tru: '',
       searchText: '',
       filteredData: [],
-      // idgroup: '',
     };
-    ROOTGlobal.GetDsAllBaiDang_Nhom = this._GetDSBaiDang_Nhom;
+    ROOTGlobal.GetDsAllBaiDang = this._GetDSBaiDang;
+    ROOTGlobal.ScrollHome = this._onScroll;
   }
-
-  _GetDSBaiDang_Nhom = async () => {
-    const idgroup = this.props.nthis.props.route.params.screennhom;
-    const {id_nguoidang = {}} = this.props.nthis.props.route.params;
-    let res = '';
-    await this.setState({
-      id_user: await Utils.ngetStorage(nkey.id_user),
-    });
-    // console.log('id bài đăng', this.state.id_user, idgroup);
-
-    res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
-    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
-    if (res.status == 1) {
-      await this.setState({
-        DSBaiDangNhom: res.data,
-        refresh: false,
-        length: res.data.length,
-      });
-    } else {
-      this.setState({
-        refresh: false,
-      });
-    }
+  componentDidMount = async () => {
+    await this._GetDSBaiDang();
+    // this._GetDSBaiDang2();
+    await this.hamloadLienTuc();
   };
 
-  _GetDSBaiDang_Nhom2 = async () => {
-    const idgroup = this.props.nthis.props.route.params.screennhom;
-    const {id_nguoidang = {}} = this.props.nthis.props.route.params;
+  _GetDSBaiDang2 = async () => {
     let res = '';
-    await this.setState({
+    this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    // console.log('id bài đăng', this.state.id_user, idgroup);
+    // console.log('id bài đăng', this.state.id_user);
 
-    res = await GetDSBaiDang_Nhom(this.state.id_user, id_nguoidang.ID_group);
+    res = await GetDSBaiDang(this.state.id_user);
+    // console.log('Danh sách bài đăng Screen all bài đăng 2:', res.data.length);
     // console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
-      await this.setState({
-        DSBaiDangNhom2: res.data,
+      this.setState({
+        DSBaiDang2: res.data,
         length2: res.data.length,
       });
+      // await console.log('length2 ', this.state.DSBaiDang2.length);
     }
   };
 
@@ -97,9 +79,31 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
 
   hamloadLienTuc = () => {
     setInterval(async () => {
-      await this._GetDSBaiDang_Nhom2();
+      await this._GetDSBaiDang2();
       await this.hamTru();
     }, 1000);
+  };
+
+  _GetDSBaiDang = async () => {
+    await this.setState({
+      id_user: await Utils.ngetStorage(nkey.id_user),
+    });
+    // console.log('id bài đăng', this.state.id_user);
+
+    let res = await GetDSBaiDang(this.state.id_user);
+    // console.log('ress-------', res);
+
+    if (res.status == 1) {
+      await this.setState({
+        DSBaiDang: res.data,
+        refresh: false,
+        length: res.data.length,
+      });
+    } else {
+      this.setState({
+        refresh: false,
+      });
+    }
   };
 
   EmptyListMessage = ({item}) => {
@@ -109,7 +113,6 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
       </Text>
     );
   };
-
   FoodterMessage = ({item}) => {
     return (
       <View onPress={() => getItem(item)}>
@@ -118,30 +121,19 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     );
   };
 
-  NhanData = async () => {
-    // console.log('id group', this.props.nthis.props.route.params.screennhom);
-    this.setState({
-      idgroup: this.props.nthis.props.route.params.screennhom,
-    });
-    // await console.log('state id group', this.state.idgroup);
-  };
-
   _renderItem = ({item, index}) => {
+    // console.log(item);
     return (
-      <BaiDangNhomComponent
+      <BaiDangComponent
         key={index}
         item={item}
         nthis={this}
         onPress={() =>
-          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang_Nhom', {
+          Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
             id_nguoidang: item,
           })
-        }></BaiDangNhomComponent>
+        }></BaiDangComponent>
     );
-  };
-
-  _onRefresh = () => {
-    this.setState({refresh: true}, () => this._GetDSBaiDang_Nhom());
   };
 
   search = async (searchText) => {
@@ -149,7 +141,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     // let filteredData = this.state.DsUser.filter(function (item) {
     //   return item.Username.includes(searchText);
     // });
-    let filteredData = this.state.DSBaiDangNhom.filter((item) =>
+    let filteredData = this.state.DSBaiDang.filter((item) =>
       Utils.removeAccents(item['title'])
         .toUpperCase()
         .includes(Utils.removeAccents(searchText.toUpperCase())),
@@ -157,14 +149,17 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
     await this.setState({filteredData: filteredData});
   };
 
-  componentDidMount = async () => {
-    await this._GetDSBaiDang_Nhom();
-    await this.NhanData();
-    await this.hamloadLienTuc();
+  _onScroll = () => {
+    // alert('5');
+    this.flatListRef.scrollToIndex({animated: true, index: 0});
+    // flatListRef.scrollToIndex({animated: true, index: 0});
   };
+
+  _onRefresh = () => {
+    this.setState({refresh: true}, () => this._GetDSBaiDang());
+  };
+
   render() {
-    const {id_nguoidang = {}} = this.props.nthis.props.route.params;
-    // console.log('this screel all bai dang nhom', id_nguoidang);
     const {tru} = this.state;
     return (
       <View>
@@ -211,7 +206,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
           delay={1000}
           duration={1000}>
           <TouchableOpacity
-            onPress={() => this._onRefresh()}
+            onPress={() => this._GetDSBaiDang()}
             style={{
               borderRadius: 20,
               height: FontSize.scale(30),
@@ -225,10 +220,13 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
           </TouchableOpacity>
         </Animatable.View>
         <FlatList
+          ref={(ref) => {
+            this.flatListRef = ref;
+          }}
           data={
             this.state.filteredData && this.state.filteredData.length > 0
               ? this.state.filteredData
-              : this.state.DSBaiDangNhom
+              : this.state.DSBaiDang
           }
           renderItem={this._renderItem}
           keyExtractor={(item, index) => index.toString()}

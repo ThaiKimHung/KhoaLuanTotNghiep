@@ -14,20 +14,20 @@ import {
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import Utils from '../apis/Utils';
-import {AddLike, AddThongBao, BanThongBao} from '../apis/apiUser';
+import {AddLike, AddThongBao, BanThongBao, Comment_like} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
-export default class ModalLike_Detail_ThongBao extends Component {
+export default class ModalLike_CMT_Nhom extends Component {
   constructor(props) {
     super(props);
     this.state = {
       display: true,
       DSLike: [],
-      idbaidang: '',
     };
     // this.DSLike = [];
-    this.idbaidang = '';
+    this.idcmd = '';
+    this.iduser = '';
   }
   change() {
     this.setState({
@@ -49,9 +49,10 @@ export default class ModalLike_Detail_ThongBao extends Component {
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
+
   _AddThongBao_Like = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã tương tác một bài viết',
+      title: 'Đã tương tác một với bình luận',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
@@ -61,25 +62,28 @@ export default class ModalLike_Detail_ThongBao extends Component {
     // console.log('res add thông báo', res);
   };
 
-  TaoLike = async (idlike) => {
-    let res = await AddLike(
-      this.state.idbaidang,
+  _AddCommentLike = async (idcmt, idlike) => {
+    let res = await Comment_like(
+      await idcmt,
       idlike,
       await Utils.ngetStorage(nkey.id_user),
     );
-    // console.log('ress add like', res);
+    // console.log(res);
     if (res.status == 1) {
-      Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao');
-      await ROOTGlobal.GetChiTietBaiDang_ThongBao();
-      // await ROOTGlobal.GanDataChitiet();
+      // Utils.goscreen(this, 'ScreenDetaiBaiDang_Nhom');
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
+      await ROOTGlobal.GanDataChitiet_Nhom();
       await this._AddThongBao_Like();
+      await this.change();
     }
+    // await this._GetChiTietBaiDang();
+    // await this.GanData();
+    // await this._AddThongBao_Like();
+    // console.log('res cmt like', res);
   };
+
   GanDSLike = async () => {
-    // console.log(
-    //   'danh sách like lưu ở global key ',
-    //   await Utils.getGlobal(nGlobalKeys.DanhSachLike),
-    // );
+    // console.log('a like', await Utils.getGlobal(nGlobalKeys.DanhSachLike));
     if (await Utils.getGlobal(nGlobalKeys.DanhSachLike)) {
       this.setState({
         DSLike: await Utils.getGlobal(nGlobalKeys.DanhSachLike),
@@ -88,14 +92,12 @@ export default class ModalLike_Detail_ThongBao extends Component {
   };
 
   GanData = async () => {
-    // let id_nguoidang = this.props.route.params.id_nguoidang.route.params
-    //   .id_nguoidang;
-    // this.idbaidang = id_nguoidang.Id_BaiDang;
-    this.setState({
-      idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
-    });
-    // this.iduser = await Utils.ngetStorage(nkey.id_user);
-    // console.log('item nhan liek', id_nguoidang);
+    const {id_nguoidang = {}} = this.props.route.params;
+    // console.log('this', this.props);
+    this.idbcmt = await id_nguoidang.id_cmt;
+    this.iduser = await Utils.ngetStorage(nkey.id_user);
+    // console.log('item nhan ', id_nguoidang);
+    // await console.log(this.idbcmt);
   };
 
   _renderItem = ({item, index}) => {
@@ -103,7 +105,7 @@ export default class ModalLike_Detail_ThongBao extends Component {
       <TouchableOpacity
         style={{paddingHorizontal: 5, paddingVertical: 5}}
         onPress={() => {
-          this.TaoLike(item.ID_like);
+          this._AddCommentLike(this.idbcmt, item.ID_like);
         }}>
         <SvgUri
           width={FontSize.scale(25)}
@@ -124,9 +126,6 @@ export default class ModalLike_Detail_ThongBao extends Component {
 
   render() {
     const {display} = this.state;
-    // const id_nguoidang = this.props.route.params.id_nguoidang.route.params
-    //   .id_nguoidang;
-    // console.log('id nguoi dang', id_nguoidang);
     // console.log(
     //   'this modal like',
     //   this.props.route.params.id_nguoidang.route.params.id_nguoidang,

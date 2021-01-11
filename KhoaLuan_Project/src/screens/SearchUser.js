@@ -39,7 +39,7 @@ export default class SearchUser extends React.Component {
       });
     } else {
       this.setState({refresh: false});
-      alert('thất bại');
+      alert('thất bại tìm kiếm');
     }
   };
 

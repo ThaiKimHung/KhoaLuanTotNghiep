@@ -76,7 +76,7 @@ export default class BaiDangComponenet extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -88,7 +88,7 @@ export default class BaiDangComponenet extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -299,7 +299,10 @@ export default class BaiDangComponenet extends React.Component {
             onPress={this.props.onPress}>
             <ImageBackground source={welcome} style={styles.image}>
               <View style={styles.footer1}>
-                <Text>{item.title}</Text>
+                <Text
+                  style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
+                  {item.title}
+                </Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
@@ -347,7 +350,9 @@ export default class BaiDangComponenet extends React.Component {
                   width: FontSize.verticalScale(50),
                 }}></Animatable.Image>
               <View style={{marginLeft: 10}}>
-                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(25)}}>
+                  {item.title}
+                </Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>

@@ -146,6 +146,7 @@ export default class MainTabScreen extends React.Component {
               // Prevent default action
               // ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsAllBaiDang();
+              ROOTGlobal.ScrollHome();
             },
           }}
           options={{

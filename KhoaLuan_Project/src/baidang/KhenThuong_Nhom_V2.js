@@ -29,6 +29,7 @@ import {
   GetDSGroup,
   AddThongBao,
   BanThongBao,
+  GetDSNhanVien,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -39,7 +40,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class KhenThuong extends React.Component {
+export default class KhenThuong_Nhom_V2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,8 +51,66 @@ export default class KhenThuong extends React.Component {
       DataChuyenVe: '',
       idgroup: '',
       tengroup: '',
+      dsUser: '',
+      tenUser: [],
+      isActive_User: false,
     };
   }
+
+  _GetAllUser = async () => {
+    let res = await GetDSNhanVien();
+    // console.log('ress all user bên search user', res);
+    if (res.status == 1) {
+      this.setState({
+        dsUser: res.Data,
+        refresh: false,
+      });
+    } else {
+      this.setState({refresh: false});
+      alert('thất bại tải ds user');
+    }
+    await console.log('ds thành viên', this.state.dsUser);
+  };
+
+  _renderActiveUser = () => {
+    this.setState({isActive_User: !this.state.isActive_User});
+  };
+  // _keyExtractor = ({ item, index }) => index.toString();
+  _callBackUser = async (item) => {
+    // this.setState({
+    //   noidung:
+    // });
+    this.state.tenUser.push(item.hoten);
+    await console.log(this.state.tenUser);
+    // this.setState(() => {
+    this._renderActiveUser();
+    // () => this._render_Dang();
+    // });
+  };
+
+  _keyExtracUser = (item, index) => `${item.id_NV}`;
+  _renderPHUser = ({item, index}) => {
+    // console.log(item);
+    return (
+      <View
+        key={index}
+        style={{
+          backgroundColor: 'white',
+        }}>
+        <TouchableOpacity
+          onPress={() => this._callBackUser(item)}
+          style={{paddingHorizontal: 15, paddingVertical: 16}}>
+          <Text>{item.hoten}</Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: 2,
+            width: '100%',
+            // backgroundColor: colors.black_20,
+          }}></View>
+      </View>
+    );
+  };
   EmptyListMessage = ({item}) => {
     return (
       <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
@@ -109,9 +168,14 @@ export default class KhenThuong extends React.Component {
   DangBaiDang_KhenThuong_Group = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
 
+    let ten = '';
+    for (var i = 0; i < this.state.tenUser.length; i++) {
+      ten += this.state.tenUser[i] + ' ';
+    }
+
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
-      title: this.state.DataChuyenVe.Username,
+      title: ten,
       NoiDung: this.state.noidung,
       Id_Group: this.state.idgroup,
       id_khenthuong: this.state.selectedItem,
@@ -212,8 +276,8 @@ export default class KhenThuong extends React.Component {
   };
 
   _render_Dang = () => {
-    const {DataChuyenVe, idgroup, tengroup, noidung, selectedItem} = this.state;
-    if (DataChuyenVe && noidung && tengroup && selectedItem && idgroup) {
+    const {tenUser, idgroup, tengroup, noidung, selectedItem} = this.state;
+    if (tenUser && noidung && selectedItem && idgroup) {
       return (
         <View>
           <TouchableOpacity
@@ -253,9 +317,11 @@ export default class KhenThuong extends React.Component {
   };
   componentDidMount = async () => {
     await this._GetDsKhenThuong();
+    await this._GetAllUser();
     await this.GanData();
   };
   render() {
+    const {isActive, selectLyDo, isActive_User, noidung, tenUser} = this.state;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.back}>
@@ -310,34 +376,55 @@ export default class KhenThuong extends React.Component {
             }}>
             Chọn thành viên:
           </Text>
-          <TouchableOpacity
-            style={styles.thanh_search}
-            onPress={() => {
-              Utils.goscreen(this, 'SearchUser', {chuyenData: this.ChuyenData});
-            }}>
-            <Image source={search} style={styles.icon}></Image>
-            {this.state.DataChuyenVe ? (
-              <Text
+          <View style={{marginTop: 5}}>
+            <View
+              style={{
+                borderWidth: 1,
+                padding: 15,
+                borderRadius: 20,
+                borderColor: '#DDDDDD80',
+                backgroundColor: '#DDDDDD80',
+              }}>
+              <TouchableOpacity
+                onPress={this._renderActiveUser}
+                style={[
+                  {
+                    fontSize: 14,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: 5,
+                  },
+                ]}>
+                <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
+                  {tenUser.map((item, index) => item + ' ')}
+                  {/* {noidung} */}
+                </Text>
+
+                <Image
+                  source={dropdown}
+                  style={[{tintColor: '#4F4F4F80', width: 20, height: 18}]}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+            {isActive_User == true ? (
+              <FlatList
                 style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#000000',
-                  flex: 1,
-                }}>
-                {this.state.DataChuyenVe.Username}
-              </Text>
-            ) : (
-              <Text
-                style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#69696980',
-                  flex: 1,
-                }}>
-                Mời bạn chọn nhân viên
-              </Text>
-            )}
-          </TouchableOpacity>
+                  marginTop: 1,
+                  backgroundColor: 'white',
+                  height: FontSize.scale(200),
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: 'gray',
+                  borderBottomColor: 'white',
+                }}
+                data={this.state.dsUser}
+                renderItem={this._renderPHUser}
+                keyExtractor={this._keyExtracUser}
+              />
+            ) : null}
+          </View>
 
           <Text
             style={{
@@ -419,7 +506,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#9C9C9C',
+    // backgroundColor: '#9C9C9C',
     // justifyContent: 'center',
     // flex: 1,
     height: 'auto',

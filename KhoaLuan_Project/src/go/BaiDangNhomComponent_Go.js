@@ -75,7 +75,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
@@ -617,10 +617,8 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
   daubacham: {
-    height: FontSize.scale(17),
-    width: FontSize.verticalScale(18),
-    marginRight: 2,
-    tintColor: '#69696930',
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
   },
   khungLike_Commnet: {
     borderTopWidth: 1,

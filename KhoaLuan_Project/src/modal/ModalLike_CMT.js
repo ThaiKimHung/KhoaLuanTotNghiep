@@ -14,7 +14,7 @@ import {
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import Utils from '../apis/Utils';
-import {AddLike, AddThongBao, BanThongBao} from '../apis/apiUser';
+import {AddLike, AddThongBao, BanThongBao, Comment_like} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -26,7 +26,7 @@ export default class ModalLike_CMT extends Component {
       DSLike: [],
     };
     // this.DSLike = [];
-    this.idbaidang = '';
+    this.idcmd = '';
     this.iduser = '';
   }
   change() {
@@ -52,26 +52,35 @@ export default class ModalLike_CMT extends Component {
 
   _AddThongBao_Like = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã tương tác một bài viết',
+      title: 'Đã tương tác một với bình luận',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
 
-  TaoLike = async (idbaidang, idlike, iduser) => {
-    let res = await AddLike(idbaidang, idlike, iduser);
-    // console.log('ress add like', res);
+  _AddCommentLike = async (idcmt, idlike) => {
+    let res = await Comment_like(
+      await idcmt,
+      idlike,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    // console.log(res);
     if (res.status == 1) {
       Utils.goscreen(this, 'ScreenDetailBaiDang');
       await ROOTGlobal.GetChiTietBaiDang();
       await ROOTGlobal.GanDataChitiet();
       await this._AddThongBao_Like();
     }
+    // await this._GetChiTietBaiDang();
+    // await this.GanData();
+    // await this._AddThongBao_Like();
+    // console.log('res cmt like', res);
   };
+
   GanDSLike = async () => {
     // console.log('a like', await Utils.getGlobal(nGlobalKeys.DanhSachLike));
     if (await Utils.getGlobal(nGlobalKeys.DanhSachLike)) {
@@ -82,11 +91,12 @@ export default class ModalLike_CMT extends Component {
   };
 
   GanData = async () => {
-    let id_nguoidang = this.props.route.params.id_nguoidang.route.params
-      .id_nguoidang;
-    this.idbaidang = id_nguoidang.Id_BaiDang;
+    const {id_nguoidang = {}} = this.props.route.params;
+    // console.log('this', this.props);
+    this.idbcmt = await id_nguoidang.id_cmt;
     this.iduser = await Utils.ngetStorage(nkey.id_user);
-    // console.log('item nhan liek', id_nguoidang);
+    // console.log('item nhan ', id_nguoidang);
+    // await console.log(this.idbcmt);
   };
 
   _renderItem = ({item, index}) => {
@@ -94,7 +104,7 @@ export default class ModalLike_CMT extends Component {
       <TouchableOpacity
         style={{paddingHorizontal: 5, paddingVertical: 5}}
         onPress={() => {
-          this.TaoLike(this.idbaidang, item.ID_like, this.iduser);
+          this._AddCommentLike(this.idbcmt, item.ID_like);
         }}>
         <SvgUri
           width={FontSize.scale(25)}

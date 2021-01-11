@@ -51,7 +51,7 @@ export default class ScreenTaoNhom extends React.Component {
       await Utils.nsetStorage(nkey.avatar, this.state.thongtin[0].Avatar);
       await Utils.nsetStorage(nkey.Username, this.state.thongtin[0].Username);
     } else {
-      alert('thất bại');
+      alert('thất bại tải thông tin cá nhân');
     }
   };
 

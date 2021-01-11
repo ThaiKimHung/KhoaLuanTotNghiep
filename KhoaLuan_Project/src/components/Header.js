@@ -25,58 +25,17 @@ export default class Header extends React.Component {
   // console.log('nthis cua ma hinh :', nthis);
   constructor(props) {
     super(props);
-    this.state = {
-      ShowTextInput: true,
-    };
   }
 
-  onPressShowTextInput = () => {
-    this.setState({
-      ShowTextInput: !this.state.ShowTextInput,
-    });
-  };
-
   render() {
-    const {nthis} = this.props;
-
-    const Timkiem = () => {
-      return (
-        <View style={styles.bgHeader}>
-          <Text style={styles.headerStyle}>Jee</Text>
-          <TouchableOpacity
-            style={styles.khung_icon}
-            onPress={() => this.onPressShowTextInput()}>
-            <Image source={timkiem} style={styles.icon}></Image>
-          </TouchableOpacity>
-        </View>
-      );
-    };
-
-    const Timkiem_TextInput = () => {
-      return (
-        <View style={styles.header2}>
-          <Text style={styles.headerStyle}>Jee</Text>
-          <TextInput
-            autoFocus={true}
-            style={styles.khung_timkiem_Text}
-            placeholder="Nhập thông tin bàn cần tìm"></TextInput>
-          <TouchableOpacity
-            style={styles.khung_icon}
-            onPress={() => this.onPressShowTextInput()}>
-            <Image source={timkiem} style={styles.icon}></Image>
-          </TouchableOpacity>
-        </View>
-      );
-    };
-
-    var {ShowTextInput} = this.state;
     return (
-      <View>
-        {ShowTextInput == true ? (
-          <Timkiem></Timkiem>
-        ) : (
-          <Timkiem_TextInput></Timkiem_TextInput>
-        )}
+      <View style={styles.bgHeader}>
+        <Text style={styles.headerStyle}>JFace</Text>
+        {/* <TouchableOpacity
+          style={styles.khung_icon}
+          onPress={() => this.onPressShowTextInput()}>
+          <Image source={timkiem} style={styles.icon}></Image>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -84,8 +43,8 @@ export default class Header extends React.Component {
 
 const styles = StyleSheet.create({
   bgHeader: {
-    backgroundColor: '#EEEEEE',
-    justifyContent: 'space-between',
+    backgroundColor: '#007DE3',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     elevation: 10,
     shadowOffset: {width: 0, height: 10},
@@ -98,7 +57,7 @@ const styles = StyleSheet.create({
   },
   headerStyle: {
     fontSize: 25,
-    color: '#4285F4',
+    color: '#FFFFFF',
   },
   khung_icon: {
     width: FontSize.scale(30),

@@ -23,12 +23,15 @@ import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
 
 import {
+  PostBaiDang,
+  PostBaiDang_Nhom,
   GetDSKhenThuong,
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,
   GetDSGroup,
   AddThongBao,
   BanThongBao,
+  GetDSNhanVien,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -38,7 +41,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class KhenThuong extends React.Component {
+export default class ChaoMungTV_V2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,7 +59,10 @@ export default class KhenThuong extends React.Component {
       isOpen: false,
       nhomSelected: '',
       isActive: false,
+      isActive_User: false,
       selectLyDo: '',
+      dsUser: '',
+      tenUser: [],
     };
   }
   EmptyListMessage = ({item}) => {
@@ -67,19 +73,60 @@ export default class KhenThuong extends React.Component {
       <ActivityIndicator size="large" color="#0000ff" />
     );
   };
-  _GetDsKhenThuong = async () => {
-    let res = await GetDSKhenThuong();
-    // console.log('res ds khen thưởng', res);
-    if (res.status === 1) {
+
+  _GetAllUser = async () => {
+    let res = await GetDSNhanVien();
+    // console.log('ress all user bên search user', res);
+    if (res.status == 1) {
       this.setState({
-        DsKhenThuong: res.Data,
+        dsUser: res.Data,
         refresh: false,
       });
     } else {
-      this.setState({
-        refresh: false,
-      });
+      this.setState({refresh: false});
+      alert('thất bại tải ds user');
     }
+    await console.log('ds thành viên', this.state.dsUser);
+  };
+
+  _renderActiveUser = () => {
+    this.setState({isActive_User: !this.state.isActive_User});
+  };
+  // _keyExtractor = ({ item, index }) => index.toString();
+  _callBackUser = async (item) => {
+    // this.setState({
+    //   noidung:
+    // });
+    this.state.tenUser.push(item.hoten);
+    await console.log(this.state.tenUser);
+    // this.setState(() => {
+    this._renderActiveUser();
+    // () => this._render_Dang();
+    // });
+  };
+
+  _keyExtracUser = (item, index) => `${item.id_NV}`;
+  _renderPHUser = ({item, index}) => {
+    // console.log(item);
+    return (
+      <View
+        key={index}
+        style={{
+          backgroundColor: 'white',
+        }}>
+        <TouchableOpacity
+          onPress={() => this._callBackUser(item)}
+          style={{paddingHorizontal: 15, paddingVertical: 16}}>
+          <Text>{item.hoten}</Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: 2,
+            width: '100%',
+            // backgroundColor: colors.black_20,
+          }}></View>
+      </View>
+    );
   };
 
   // updateSearch = (search) => {
@@ -107,22 +154,6 @@ export default class KhenThuong extends React.Component {
     // console.log('res add thông báo', res);
   };
 
-  ChuyenData = async (item) => {
-    Utils.goscreen(this, 'KhenThuong');
-    this.setState({
-      DataChuyenVe: item,
-    });
-  };
-
-  GanDataSauKhiChuyenVe = () => {
-    this.state.DataChuyenVe
-      ? this.setState({
-          userSelected: this.state.DataChuyenVe.ID_user,
-        })
-      : null;
-    // console.log('user selected', this.state.userSelected);
-  };
-
   _GetDSGroup = async () => {
     let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     // let res = await GetDSGroup(1);
@@ -134,6 +165,7 @@ export default class KhenThuong extends React.Component {
       // console.log('state', this.state.dsNhom);
     }
   };
+
   LaymangTam = async () => {
     let temp = this.state.dsNhom.map((e) => {
       var ritem = {};
@@ -144,37 +176,38 @@ export default class KhenThuong extends React.Component {
     await this.setState({mangtam: temp});
   };
 
-  DangBaiDang_KhenThuong = async () => {
+  _PostBaiDang = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
+
+    let ten = '';
+    for (var i = 0; i < this.state.tenUser.length; i++) {
+      ten += this.state.tenUser[i] + ' ';
+    }
 
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
-      title: this.state.DataChuyenVe.Username,
+      title: ten,
       NoiDung: this.state.noidung,
       Id_Group: 0,
-      id_khenthuong: this.state.selectedItem,
-      typepost: 'string',
+      id_khenthuong: 0,
+      typepost: '',
       // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
-      UpdateDate: '',
+      UpdateDate: '0',
       UpdateBy: 0,
     });
 
-    // console.log('strBody khen thưởng k nhóm', strBody);
-    let res = await AddBaiDang_KhenThuong(strBody);
-    // console.log('res khen thưởng k nhóm', res);
+    console.log('strBody tin nhanh', strBody);
+    let res = await PostBaiDang(strBody);
+    console.log('res', res);
     if (res.status == 1) {
+      Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',
         type: 'success',
         duration: 1500,
         icon: 'success',
-      });
-      Utils.goscreen(this, 'Home');
-      this.setState({
-        userSelected: '',
-        DataChuyenVe: {},
       });
       await this._AddThongBao();
       await ROOTGlobal.GetDsAllBaiDang();
@@ -189,36 +222,38 @@ export default class KhenThuong extends React.Component {
     }
   };
 
-  DangBaiDang_KhenThuong_Group = async () => {
+  _PostBaiDang_Nhom = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
+    let ten = '';
+    for (var i = 0; i < this.state.tenUser.length; i++) {
+      ten += this.state.tenUser[i] + ' ';
+    }
     let strBody = JSON.stringify({
       Id_LoaiBaiDang: id_loaibaidang,
-      title: this.state.DataChuyenVe.Username,
+      title: ten,
       NoiDung: this.state.noidung,
       Id_Group: this.state.selectLyDo.ID_group,
-      id_khenthuong: this.state.selectedItem,
-      typepost: 'string',
+      id_khenthuong: 0,
+      typepost: '',
       // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
-      UpdateDate: '',
+      UpdateDate: '0',
       UpdateBy: 0,
     });
 
-    // console.log('strBody khen thưởng nhóm', strBody);
-    let res = await AddBaiDang_KhenThuong_Nhom(strBody);
-    // console.log('res khen thưởng nhóm', res);
+    console.log('strBody tin nhanh nhóm', strBody);
+    let res = await PostBaiDang_Nhom(strBody);
+    // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
+      let thanhcong = res.status;
+      // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
+      Utils.goscreen(this, 'Home');
       showMessage({
         message: 'Thông báo',
         description: 'Đăng bài thành công',
         type: 'success',
         duration: 1500,
         icon: 'success',
-      });
-      Utils.goscreen(this, 'Home');
-      this.setState({
-        userSelected: '',
-        DataChuyenVe: {},
       });
       await this._AddThongBao();
       await ROOTGlobal.GetDsAllBaiDang();
@@ -231,67 +266,6 @@ export default class KhenThuong extends React.Component {
         icon: 'danger',
       });
     }
-  };
-
-  renderItem = ({item, index}) => {
-    return (
-      <View>
-        {this.state.selectedItem == item.ID_khenthuong ? (
-          <TouchableOpacity
-            onPress={() => {
-              if (this.state.selectedItem == item.ID_khenthuong) {
-                this.setState({
-                  selectedItem: '',
-                });
-              }
-            }}
-            style={[
-              styles.khung,
-              {
-                marginLeft: index % 2 != 0 ? 5 : 0,
-                backgroundColor: '#87CEFF',
-              },
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                selectedItem: item.ID_khenthuong,
-              });
-            }}
-            style={[
-              styles.khung,
-              {marginLeft: index % 2 != 0 ? 5 : 0, backgroundColor: 'yellow'},
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
   };
 
   _renderActive = () => {
@@ -334,34 +308,26 @@ export default class KhenThuong extends React.Component {
   };
 
   _render_Dang = () => {
-    let {userSelected, selectLyDo, noidung, selectedItem} = this.state;
-    if (
-      userSelected != 0 &&
-      noidung != '' &&
-      selectLyDo == '' &&
-      selectedItem != 0
-    ) {
+    const {tenUser, selectLyDo, noidung} = this.state;
+    if (tenUser && noidung != '' && selectLyDo == '') {
       return (
         <View>
           <TouchableOpacity
             onPress={() => {
-              this.DangBaiDang_KhenThuong();
+              // this.DangBaiDang_KhenThuong();
+              this._PostBaiDang();
             }}>
             <Text style={styles.textDang}>Đăng</Text>
           </TouchableOpacity>
         </View>
       );
-    } else if (
-      userSelected != 0 &&
-      noidung != '' &&
-      selectLyDo != '' &&
-      selectedItem != 0
-    ) {
+    } else if (tenUser && noidung != '' && selectLyDo != '') {
       return (
         <View>
           <TouchableOpacity
             onPress={() => {
-              this.DangBaiDang_KhenThuong_Group();
+              // this.DangBaiDang_KhenThuong_Group();
+              this._PostBaiDang_Nhom();
             }}>
             <Text style={styles.textDang}>Đăng</Text>
           </TouchableOpacity>
@@ -377,15 +343,15 @@ export default class KhenThuong extends React.Component {
   };
 
   componentDidMount = async () => {
-    await this._GetDsKhenThuong();
-    await this.GanDataSauKhiChuyenVe();
+    await this._GetAllUser();
+    // await this.GanDataSauKhiChuyenVe();
     await this._GetDSGroup();
     await this.LaymangTam();
   };
   render() {
-    const {isActive, selectLyDo} = this.state;
+    const {isActive, selectLyDo, isActive_User, noidung, tenUser} = this.state;
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.back}>
           <View
             style={{
@@ -420,7 +386,7 @@ export default class KhenThuong extends React.Component {
                   flex: 1,
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Tạo tin khen thưởng</Text>
+                <Text style={styles.title}>Tạo tin CMTV mới</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
                 {this._render_Dang()}
@@ -438,36 +404,55 @@ export default class KhenThuong extends React.Component {
             }}>
             Chọn thành viên:
           </Text>
-          <TouchableOpacity
-            style={styles.thanh_search}
-            onPress={() => {
-              Utils.goscreen(this, 'SearchUser', {
-                chuyenData: this.ChuyenData,
-              });
-            }}>
-            <Image source={search} style={styles.icon}></Image>
-            {this.state.DataChuyenVe ? (
-              <Text
+          <View style={{marginTop: 5}}>
+            <View
+              style={{
+                borderWidth: 1,
+                padding: 15,
+                borderRadius: 20,
+                borderColor: '#DDDDDD80',
+                backgroundColor: '#DDDDDD80',
+              }}>
+              <TouchableOpacity
+                onPress={this._renderActiveUser}
+                style={[
+                  {
+                    fontSize: 14,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: 5,
+                  },
+                ]}>
+                <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
+                  {tenUser.map((item, index) => item + ' ')}
+                  {/* {noidung} */}
+                </Text>
+
+                <Image
+                  source={dropdown}
+                  style={[{tintColor: '#4F4F4F80', width: 20, height: 18}]}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+            {isActive_User == true ? (
+              <FlatList
                 style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#000000',
-                  flex: 1,
-                }}>
-                {this.state.DataChuyenVe.Username}
-              </Text>
-            ) : (
-              <Text
-                style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#69696980',
-                  flex: 1,
-                }}>
-                Mời bạn chọn nhân viên
-              </Text>
-            )}
-          </TouchableOpacity>
+                  marginTop: 1,
+                  backgroundColor: 'white',
+                  height: FontSize.scale(200),
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: 'gray',
+                  borderBottomColor: 'white',
+                }}
+                data={this.state.dsUser}
+                renderItem={this._renderPHUser}
+                keyExtractor={this._keyExtracUser}
+              />
+            ) : null}
+          </View>
 
           <Text
             style={{
@@ -528,7 +513,7 @@ export default class KhenThuong extends React.Component {
                 style={{
                   marginTop: 1,
                   backgroundColor: 'white',
-                  height: 'auto',
+                  height: FontSize.scale(200),
                   borderRadius: 10,
                   borderWidth: 2,
                   borderColor: 'gray',
@@ -541,22 +526,7 @@ export default class KhenThuong extends React.Component {
             ) : null}
           </View>
         </View>
-
-        <View style={styles.footer}>
-          <FlatList
-            data={this.state.DsKhenThuong}
-            renderItem={this.renderItem}
-            ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
-            numColumns={2}
-            keyExtractor={(item, index) => index.toString()}
-            ListEmptyComponent={this.EmptyListMessage}
-            refreshing={this.state.refresh}
-            onRefresh={() => {
-              this.setState({refresh: true}, this._GetDsKhenThuong);
-            }}
-          />
-        </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -567,7 +537,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#9C9C9C',
+    // backgroundColor: '#9C9C9C',
     // justifyContent: 'center',
     // flex: 1,
     height: 'auto',

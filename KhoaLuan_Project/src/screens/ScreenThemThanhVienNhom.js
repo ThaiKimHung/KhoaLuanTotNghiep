@@ -82,7 +82,7 @@ export default class ScreenThanhVienNhom extends React.Component {
       });
     } else {
       this.setState({refresh: false});
-      alert('thất bại');
+      alert('thất bại tải user all');
     }
   };
   handleNoiDung(text) {

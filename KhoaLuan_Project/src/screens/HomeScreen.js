@@ -14,8 +14,10 @@ import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
 // import {useTheme} from '@react-navigation/native';
 // const {colors} = useTheme();
 import ScreenAllBaiDang from './ScreenAllBaiDang';
+import ScreenAllBaiDang_V2 from './ScreenAllBaiDang_V2';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import FontSize from '../components/size';
+import {SearchBar} from 'react-native-elements';
 
 import {GetDSMedia} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -44,34 +46,36 @@ export default class HomeScreen extends React.Component {
             Utils.goscreen(this, 'ScreenLoaiBaiDang');
           }}></ChonLoaiBaiDang>
 
-        <View
-          style={{
-            height: FontSize.scale(40),
-            justifyContent: 'center',
-            borderBottomColor: '#C0C0C0',
-            borderBottomWidth: 1,
-          }}>
-          <TouchableOpacity
+        <ScrollView>
+          <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}
-            onPress={() => Utils.goscreen(this, 'ScreenBangTin')}>
-            <Text style={{textAlign: 'center', fontSize: 18}}>Xem tin</Text>
-            <Image
-              source={arrow}
+              height: FontSize.scale(40),
+              justifyContent: 'center',
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+            }}>
+            <TouchableOpacity
               style={{
-                height: FontSize.scale(15),
-                width: FontSize.verticalScale(15),
-              }}></Image>
-          </TouchableOpacity>
-        </View>
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: 10,
+              }}
+              onPress={() => Utils.goscreen(this, 'ScreenBangTin')}>
+              <Text style={{textAlign: 'center', fontSize: 18}}>Xem tin</Text>
+              <Image
+                source={arrow}
+                style={{
+                  height: FontSize.scale(15),
+                  width: FontSize.verticalScale(15),
+                }}></Image>
+            </TouchableOpacity>
+          </View>
 
-        <View style={{flex: 1}}>
-          <ScreenAllBaiDang nthis={this}></ScreenAllBaiDang>
-        </View>
+          <View style={{flex: 1}}>
+            <ScreenAllBaiDang_V2 nthis={this}></ScreenAllBaiDang_V2>
+          </View>
+        </ScrollView>
       </View>
     );
   }

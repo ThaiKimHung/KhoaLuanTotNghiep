@@ -67,6 +67,7 @@ export default class SignInScreen extends React.Component {
         nkey.Username,
         this.state.DsThongTinUser[0].Username,
       );
+      await Utils.nsetStorage(nkey.password, this.Password);
       //lưu lại avatar
       await Utils.nsetStorage(nkey.avatar, this.state.DsThongTinUser[0].Avatar);
       //lưu user name
@@ -125,7 +126,7 @@ export default class SignInScreen extends React.Component {
     this._GetDSLike();
   };
   render() {
-    var {ShowPassword} = this.state;
+    const {ShowPassword} = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>

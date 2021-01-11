@@ -72,8 +72,8 @@ export default class PopUpModal_XoaSua extends Component {
       this.setState({
         thanhcong: true,
       });
-      this.xoathanhcong();
-      ROOTGlobal.GetDsAllBaiDang();
+      await this.xoathanhcong();
+      await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',

@@ -169,7 +169,7 @@ export default class TinTucNoiBo extends React.Component {
 
   _GetDSGroup = async () => {
     // let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
-    let res = await GetDSGroup(1);
+    let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     // console.log('res', res);
     if (res.status == 1) {
       this.setState({
@@ -225,7 +225,7 @@ export default class TinTucNoiBo extends React.Component {
     });
 
     // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };

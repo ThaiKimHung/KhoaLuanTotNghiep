@@ -121,7 +121,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
       case 4:
         {
           if (this.props.route.params && this.props.route.params.screennhom) {
-            Utils.goscreen(this, 'ChaoMungTV_Nhom', {
+            Utils.goscreen(this, 'ChaoMungTV_Nhom_V2', {
               id_loaibaidang: item,
               screennhom: this.props.route.params.screennhom,
               tennhom: this.props.route.params.tennhom,

@@ -72,6 +72,7 @@ import KhenThuong_V2 from '../baidang/KhenThuong_V2';
 import KhenThuong_Nhom from '../baidang/KhenThuong_Nhom';
 import KhenThuong_Nhom_V2 from '../baidang/KhenThuong_Nhom_V2';
 import ChaoMungTV_V2 from '../baidang/ChaoMungTV_V2';
+import ChaoMungTV_Nhom_V2 from '../baidang/ChaoMungTV_Nhom_V2';
 
 import TinNhanh from '../baidang/TinNhanh';
 import TinNhanh_Nhom from '../baidang/TinNhanh_Nhom';
@@ -143,6 +144,10 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="ChaoMungTV" component={ChaoMungTV} />
     <HomeStack.Screen name="ChaoMungTV_V2" component={ChaoMungTV_V2} />
     <HomeStack.Screen name="ChaoMungTV_Nhom" component={ChaoMungTV_Nhom} />
+    <HomeStack.Screen
+      name="ChaoMungTV_Nhom_V2"
+      component={ChaoMungTV_Nhom_V2}
+    />
     <HomeStack.Screen
       name="Screen_EditBaiDang"
       component={Screen_EditBaiDang}

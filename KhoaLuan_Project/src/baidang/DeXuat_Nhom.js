@@ -76,7 +76,7 @@ export default class DeXuat_Nhom extends React.Component {
   };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng tin đề xuất',
+      title: 'Đã tạo 1 đề xuất',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

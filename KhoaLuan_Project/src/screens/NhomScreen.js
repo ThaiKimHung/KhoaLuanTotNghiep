@@ -35,7 +35,7 @@ export default class NhomScreen extends React.Component {
   _GetDSGroup = async () => {
     let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
     // let res = await GetDSGroup(1);
-    // console.log('res', res);
+    console.log('res', res);
     if (res.status == 1) {
       this.setState({
         dsNhom: res.Data,
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     paddingTop: 5,
+    marginBottom: 10,
   },
   khungchua: {
     flexDirection: 'row',

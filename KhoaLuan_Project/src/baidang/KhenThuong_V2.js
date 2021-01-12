@@ -16,6 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import _ from 'lodash';
 
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -39,6 +40,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
+const cancel = require('../assets/images/cancel.png');
 export default class KhenThuong_V2 extends React.Component {
   constructor(props) {
     super(props);
@@ -84,7 +86,7 @@ export default class KhenThuong_V2 extends React.Component {
       this.setState({refresh: false});
       alert('thất bại tải ds user');
     }
-    await console.log('ds thành viên', this.state.dsUser);
+    // await console.log('ds thành viên', this.state.dsUser);
   };
 
   _renderActiveUser = () => {
@@ -96,7 +98,7 @@ export default class KhenThuong_V2 extends React.Component {
     //   noidung:
     // });
     this.state.tenUser.push(item.hoten);
-    await console.log(this.state.tenUser);
+    // await console.log(this.state.tenUser);
     // this.setState(() => {
     this._renderActiveUser();
     // () => this._render_Dang();
@@ -155,9 +157,9 @@ export default class KhenThuong_V2 extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async () => {
+  _AddThongBao = async (ten) => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng khen thưởng',
+      title: 'Đã tạo một khen thưởng nhân viên:' + ten,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
@@ -203,14 +205,14 @@ export default class KhenThuong_V2 extends React.Component {
       NoiDung: this.state.noidung,
       Id_Group: 0,
       id_khenthuong: this.state.selectedItem,
-      typepost: 'string',
+      typepost: '',
       // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '',
       UpdateBy: 0,
     });
 
-    console.log('strBody khen thưởng k nhóm', strBody);
+    // console.log('strBody khen thưởng k nhóm', strBody);
     let res = await AddBaiDang_KhenThuong(strBody);
     // console.log('res khen thưởng k nhóm', res);
     if (res.status == 1) {
@@ -226,7 +228,7 @@ export default class KhenThuong_V2 extends React.Component {
         userSelected: '',
         DataChuyenVe: {},
       });
-      await this._AddThongBao();
+      await this._AddThongBao(ten);
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -253,7 +255,7 @@ export default class KhenThuong_V2 extends React.Component {
       NoiDung: this.state.noidung,
       Id_Group: this.state.selectLyDo.ID_group,
       id_khenthuong: this.state.selectedItem,
-      typepost: 'string',
+      typepost: '',
       // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '',
@@ -276,7 +278,7 @@ export default class KhenThuong_V2 extends React.Component {
         userSelected: '',
         DataChuyenVe: {},
       });
-      await this._AddThongBao();
+      await this._AddThongBao(ten);
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -391,7 +393,12 @@ export default class KhenThuong_V2 extends React.Component {
 
   _render_Dang = () => {
     const {tenUser, selectLyDo, noidung, selectedItem} = this.state;
-    if (tenUser && noidung != '' && selectLyDo == '' && selectedItem != 0) {
+    if (
+      _.size(tenUser) > 0 &&
+      noidung != '' &&
+      selectLyDo == '' &&
+      selectedItem != 0
+    ) {
       return (
         <View>
           <TouchableOpacity
@@ -403,7 +410,7 @@ export default class KhenThuong_V2 extends React.Component {
         </View>
       );
     } else if (
-      tenUser &&
+      _.size(tenUser) > 0 &&
       noidung != '' &&
       selectLyDo != '' &&
       selectedItem != 0
@@ -510,17 +517,33 @@ export default class KhenThuong_V2 extends React.Component {
                     marginTop: 5,
                   },
                 ]}>
-                <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
-                  {tenUser.map((item, index) => item + ' ')}
-                  {/* {noidung} */}
-                </Text>
-
+                <View>
+                  <Text style={[{fontSize: 18, flex: 1}]}>
+                    {tenUser.map((item, index) => item + ' ')}
+                    {/* {noidung} */}
+                  </Text>
+                </View>
                 <Image
                   source={dropdown}
                   style={[{tintColor: '#4F4F4F80', width: 20, height: 18}]}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
+              {_.size(tenUser) > 0 ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      tenUser: [],
+                    });
+                  }}>
+                  <Image
+                    source={cancel}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                    }}></Image>
+                </TouchableOpacity>
+              ) : null}
             </View>
             {isActive_User == true ? (
               <FlatList
@@ -593,6 +616,21 @@ export default class KhenThuong_V2 extends React.Component {
                   resizeMode="contain"
                 />
               </TouchableOpacity>
+              {selectLyDo ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      selectLyDo: '',
+                    });
+                  }}>
+                  <Image
+                    source={cancel}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                    }}></Image>
+                </TouchableOpacity>
+              ) : null}
             </View>
             {isActive == true ? (
               <FlatList

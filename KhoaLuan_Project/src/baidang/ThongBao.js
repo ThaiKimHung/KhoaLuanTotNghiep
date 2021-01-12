@@ -108,7 +108,7 @@ export default class ThongBao extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      await this._AddThongBao();
+      await this._AddThongBao(this.state.haveValue_TieuDe);
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -150,7 +150,7 @@ export default class ThongBao extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      await this._AddThongBao();
+      await this._AddThongBao(this.state.haveValue_TieuDe);
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -218,9 +218,9 @@ export default class ThongBao extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async () => {
+  _AddThongBao = async (tieude) => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng tin thông báo',
+      title: 'Đã tạo thông báo ' + tieude,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

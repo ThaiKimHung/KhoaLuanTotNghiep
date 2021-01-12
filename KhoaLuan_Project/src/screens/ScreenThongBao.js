@@ -97,6 +97,7 @@ export default class SearchUser extends React.Component {
                 id_nguoidang: item,
               })
             }>
+            <View></View>
             <View
               style={{
                 marginLeft: 5,
@@ -121,7 +122,7 @@ export default class SearchUser extends React.Component {
                 flex: 1,
                 paddingRight: 10,
               }}>
-              <View>
+              <View style={{flex: 1}}>
                 <Text>{item.user_name}</Text>
                 <Text>{item.title}</Text>
                 <View style={{flexDirection: 'row'}}>
@@ -135,16 +136,8 @@ export default class SearchUser extends React.Component {
                   </Text>
                 </View>
               </View>
+
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                {/* <TouchableOpacity
-                  onPress={() => this._UpdateThongBao(item.id_tb)}>
-                  <Image
-                    source={seen}
-                    style={{
-                      height: FontSize.scale(15),
-                      width: FontSize.verticalScale(15),
-                    }}></Image>
-                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{marginLeft: 5}}
                   onPress={() => this._DeleteThongBao(item.id_tb)}>
@@ -193,48 +186,42 @@ export default class SearchUser extends React.Component {
                 resizeMode="cover"
                 source={item.avatar ? {uri: item.avatar} : avatar}></Image>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                flex: 1,
-                paddingRight: 10,
-              }}>
-              <View>
-                <Text>{item.user_name}</Text>
-                <Text>{item.title}</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text>
-                    {moment(item.timetb.substring(0, 10), 'YYYY-MM-DD').format(
-                      'DD-MM-YYYY',
-                    )}
-                  </Text>
-                  <Text style={{marginLeft: 5}}>
-                    {item.timetb.substring(11, 16)}
-                  </Text>
-                </View>
+
+            <View style={{flex: 1}}>
+              <Text>{item.user_name}</Text>
+              <Text>{item.title}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text>
+                  {moment(item.timetb.substring(0, 10), 'YYYY-MM-DD').format(
+                    'DD-MM-YYYY',
+                  )}
+                </Text>
+                <Text style={{marginLeft: 5}}>
+                  {item.timetb.substring(11, 16)}
+                </Text>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity
-                  onPress={() => this._UpdateThongBao(item.id_tb)}>
-                  <Image
-                    source={seen}
-                    style={{
-                      height: FontSize.scale(15),
-                      width: FontSize.verticalScale(15),
-                    }}></Image>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{margin: 5}}
-                  onPress={() => this._DeleteThongBao(item.id_tb)}>
-                  <Image
-                    source={deletee}
-                    style={{
-                      height: FontSize.scale(15),
-                      width: FontSize.verticalScale(15),
-                    }}></Image>
-                </TouchableOpacity>
-              </View>
+            </View>
+
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <TouchableOpacity
+                onPress={() => this._UpdateThongBao(item.id_tb)}>
+                <Image
+                  source={seen}
+                  style={{
+                    height: FontSize.scale(15),
+                    width: FontSize.verticalScale(15),
+                  }}></Image>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{margin: 5}}
+                onPress={() => this._DeleteThongBao(item.id_tb)}>
+                <Image
+                  source={deletee}
+                  style={{
+                    height: FontSize.scale(15),
+                    width: FontSize.verticalScale(15),
+                  }}></Image>
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         )}
@@ -309,6 +296,7 @@ const styles = StyleSheet.create({
   khungchua: {
     flexDirection: 'row',
     // padding: 10,
+    // width: FontSize.verticalScale(350),
     marginTop: 5,
     // justifyContent: 'flex-start',
     alignItems: 'center',

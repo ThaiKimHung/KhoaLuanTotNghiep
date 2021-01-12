@@ -40,6 +40,7 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
       tru: '',
       searchText: '',
       filteredData: [],
+      search: '',
       // idgroup: '',
     };
     ROOTGlobal.GetDsAllBaiDang_Nhom = this._GetDSBaiDang_Nhom;
@@ -165,40 +166,35 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
   render() {
     const {id_nguoidang = {}} = this.props.nthis.props.route.params;
     // console.log('this screel all bai dang nhom', id_nguoidang);
-    const {tru} = this.state;
+    const {tru, search} = this.state;
     return (
       <View>
-        <View
-          style={{
-            backgroundColor: '#FFFFFF',
-            padding: 10,
-            borderRadius: 10,
-            // backgroundColor: 'blue',
-          }}>
-          <SearchBar
-            placeholder="Nhập tiêu đề để tìm kiếm bài đăng..."
-            showCancel="true"
-            platform="android"
-            containerStyle={{
-              backgroundColor: '#DDDDDD80',
-              borderRadius: 20,
-              height: FontSize.scale(40),
-              justifyContent: 'center',
-            }}
-            onChangeText={this.search}
-            value={this.state.searchText}
-          />
-          {/* <TouchableOpacity
-            onPress={() => this._onScroll()}
+        {search == 0 ? (
+          <Animatable.View
+            animation={'fadeInDown'}
+            // delay={1000}
+            duration={1000}
             style={{
-              position: 'absolute',
-              top: 0,
-              backgroundColor: 'yellow',
-              height: FontSize.scale(50),
+              backgroundColor: '#FFFFFF',
+              padding: 10,
+              borderRadius: 10,
+              // backgroundColor: 'blue',
             }}>
-            <Text>hi</Text>
-          </TouchableOpacity> */}
-        </View>
+            <SearchBar
+              placeholder="Nhập tiêu đề để tìm kiếm bài đăng..."
+              showCancel="true"
+              platform="android"
+              containerStyle={{
+                backgroundColor: '#DDDDDD80',
+                borderRadius: 20,
+                height: FontSize.scale(40),
+                justifyContent: 'center',
+              }}
+              onChangeText={this.search}
+              value={this.state.searchText}
+            />
+          </Animatable.View>
+        ) : null}
         <Animatable.View
           style={{
             position: 'absolute',
@@ -230,6 +226,10 @@ export default class ScreenAllBaiDang_Nhom extends React.Component {
               ? this.state.filteredData
               : this.state.DSBaiDangNhom
           }
+          onScroll={(e) => {
+            this.setState({search: e.nativeEvent.contentOffset.y});
+          }}
+          style={{marginBottom: 10}}
           renderItem={this._renderItem}
           keyExtractor={(item, index) => index.toString()}
           refreshing={this.state.refresh}

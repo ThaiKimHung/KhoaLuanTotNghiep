@@ -14,7 +14,13 @@ import {
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import Utils from '../apis/Utils';
-import {AddLike, AddThongBao, BanThongBao, Comment_like} from '../apis/apiUser';
+import {
+  AddLike,
+  AddThongBao,
+  BanThongBao,
+  Comment_like,
+  AddThongBao_Like,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -50,18 +56,21 @@ export default class ModalLike_CMT_Child_Thongbao extends Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao_Like = async () => {
+  _AddThongBao_LikeCMT = async (idcmt) => {
     let strBody = JSON.stringify({
-      title: 'Đã tương tác một với bình luận',
+      title: 'Đã bày tỏ cảm xúc với một bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
-    if (res.stattus == 1) {
-      await this._BanThongBao();
-    }
-    // console.log('res add thông báo', res);
+    console.log('strBody add Thông báo like cmt', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      idcmt,
+      0,
+      strBody,
+    );
+    await this._BanThongBao();
+    console.log('res add thông báo like cmt', res);
   };
 
   _AddCommentLike = async (idcmt, idlike) => {
@@ -75,7 +84,7 @@ export default class ModalLike_CMT_Child_Thongbao extends Component {
       // Utils.goscreen(this, 'ScreenDetailBaiDang');
       await ROOTGlobal.GetChiTietBaiDang_ThongBao();
       // await ROOTGlobal.GanDataChitiet();
-      await this._AddThongBao_Like();
+      // await this._AddThongBao_Like();
       await this.change();
     }
     // await this._GetChiTietBaiDang();
@@ -106,8 +115,9 @@ export default class ModalLike_CMT_Child_Thongbao extends Component {
     return (
       <TouchableOpacity
         style={{paddingHorizontal: 5, paddingVertical: 5}}
-        onPress={() => {
-          this._AddCommentLike(this.idbcmt, item.ID_like);
+        onPress={async () => {
+          await this._AddCommentLike(this.idbcmt, item.ID_like);
+          await this._AddThongBao_LikeCMT(this.idbcmt);
         }}>
         <SvgUri
           width={FontSize.scale(25)}

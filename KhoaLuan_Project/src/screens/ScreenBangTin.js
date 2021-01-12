@@ -11,10 +11,12 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Utils from '../apis/Utils';
 import Header from '../components/Header';
 import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 // import {useTheme} from '@react-navigation/native';
 // const {colors} = useTheme();
 import ScreenAllBaiDang from './ScreenAllBaiDang';
@@ -55,13 +57,13 @@ export default class ScreenBangTin extends React.Component {
 
   _GetDsMedia = async () => {
     let res = await GetDSMedia();
-    console.log('res ds loại bài đăng', res);
+    // console.log('res ds loại bài đăng', res);
     if (res.status == 1) {
       this.setState({
         dsBangTin: res.Data,
         refresh: false,
       });
-      console.log('ds loại bài đăng', this.state.dsBangTin);
+      // console.log('ds loại bài đăng', this.state.dsBangTin);
     } else {
       this.setState({
         refresh: false,
@@ -70,10 +72,26 @@ export default class ScreenBangTin extends React.Component {
   };
 
   deletMedia = async (id_media) => {
-    let res = Delete_Media(id_media);
-    console.log('res', res);
+    let res = await Delete_Media(id_media);
+    // console.log('res', res);
+    // console.log(res);
     if (res.status == 1) {
-      this._GetAsync();
+      showMessage({
+        message: 'Thông báo',
+        description: 'Xóa bảng tin thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+      this._GetDsMedia();
+    } else {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Xóa thất bại',
+        type: 'danger',
+        duration: 1500,
+        icon: 'danger',
+      });
     }
   };
 
@@ -140,7 +158,24 @@ export default class ScreenBangTin extends React.Component {
                     </Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() => this.Delete_Media(item.id_media)}
+                    onPress={() =>
+                      Alert.alert(
+                        'Thông Báo',
+                        'Bạn Muốn Xóa Bảng Tin ?',
+                        [
+                          {
+                            text: 'Đồng Ý',
+                            onPress: () => this.deletMedia(item.id_media),
+                          },
+                          {
+                            text: 'Hủy',
+                            //   onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                        ],
+                        {cancelable: false},
+                      )
+                    }
                     style={{marginRight: 10}}>
                     <Image
                       source={cancel}
@@ -261,7 +296,25 @@ export default class ScreenBangTin extends React.Component {
                     </Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() => this.Delete_Media(item.id_media)}
+                    onPress={() =>
+                      Alert.alert(
+                        'Thông Báo',
+                        'Bạn Muốn Xóa Bảng Tin ?',
+                        [
+                          {
+                            text: 'Đồng Ý',
+                            onPress: () => this.deletMedia(item.id_media),
+                          },
+                          {
+                            text: 'Hủy',
+                            //   onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                        ],
+                        {cancelable: false},
+                      )
+                    }
+                    // onPress={() => this.Delete_Media(item.id_media)}
                     style={{marginRight: 10}}>
                     <Image
                       source={cancel}

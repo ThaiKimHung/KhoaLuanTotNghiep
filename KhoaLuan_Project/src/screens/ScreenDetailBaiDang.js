@@ -31,6 +31,7 @@ import {
   BanThongBao,
   Comment_like,
   DeleteComment_Like,
+  AddThongBao_Like,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -163,7 +164,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     );
     await this._GetChiTietBaiDang();
     await this.GanData();
-    await this._AddThongBao_LikeCMT();
+    // await this._AddThongBao_LikeCMT();
     // console.log('res cmt like', res);
   };
 
@@ -198,8 +199,6 @@ export default class ScreenDetailBaiDang extends React.Component {
     });
 
     let res = await AddComment(strBody);
-    // console.log('res cmt', res);
-    // console.log('strBody cmt', strBody);
 
     if (res.status == 1) {
       this.setState({
@@ -233,7 +232,7 @@ export default class ScreenDetailBaiDang extends React.Component {
   };
 
   _renderItem = ({item, index}) => {
-    console.log(item);
+    // console.log(item);
     let userCmt = item.User_comment ? item.User_comment[0] : '';
     let likecmt = item.Like;
     let like_comment = item.Like_Comment ? item.Like_Comment[0] : '';
@@ -288,7 +287,9 @@ export default class ScreenDetailBaiDang extends React.Component {
                   id_nguoidang: item,
                 });
               }}
-              onPress={() => this._DeleteCommentLike(item.id_cmt)}>
+              onPress={() => {
+                this._DeleteCommentLike(item.id_cmt);
+              }}>
               <Text style={{marginLeft: 10, color: '#007DE3'}}>
                 {likecmt.title}
                 {/* ?({like_comment.tong})? */}
@@ -301,7 +302,10 @@ export default class ScreenDetailBaiDang extends React.Component {
                   id_nguoidang: item,
                 });
               }}
-              onPress={() => this._AddCommentLike(item.id_cmt)}>
+              onPress={() => {
+                this._AddCommentLike(item.id_cmt);
+                this._AddThongBao_LikeCMT(item.id_cmt);
+              }}>
               <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
             </TouchableOpacity>
           )}
@@ -322,28 +326,38 @@ export default class ScreenDetailBaiDang extends React.Component {
     );
   };
 
-  _AddThongBao_Like = async () => {
+  _AddThongBao_LikeBaiDang = async (idbaidang) => {
     let strBody = JSON.stringify({
-      title: 'Đã tương tác một bài viết',
+      title: 'Đã bày tỏ cảm xúc một bài viết của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
+    console.log('strBody add Thông báo like bài đăng', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      0,
+      idbaidang,
+      strBody,
+    );
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo like bài đăng', res);
   };
 
-  _AddThongBao_LikeCMT = async () => {
+  _AddThongBao_LikeCMT = async (idcmt) => {
     let strBody = JSON.stringify({
-      title: 'Đã bày tỏ cảm xúc một bình luận',
+      title: 'Đã bày tỏ cảm xúc với một bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
+    console.log('strBody add Thông báo like cmt', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      idcmt,
+      0,
+      strBody,
+    );
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo like cmt', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
@@ -352,8 +366,6 @@ export default class ScreenDetailBaiDang extends React.Component {
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
-      await this._AddThongBao_Like();
-      // await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -801,6 +813,7 @@ export default class ScreenDetailBaiDang extends React.Component {
                     this.id_like,
                     await Utils.ngetStorage(nkey.id_user),
                   );
+                  this._AddThongBao_LikeBaiDang(this.idBaiDang);
                 }}>
                 <Image style={styles.imageLike_Commnet1} source={thich} />
                 <Text

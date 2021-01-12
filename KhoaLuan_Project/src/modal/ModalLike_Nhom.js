@@ -14,7 +14,12 @@ import {
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import Utils from '../apis/Utils';
-import {AddLike, AddThongBao, BanThongBao} from '../apis/apiUser';
+import {
+  AddLike,
+  AddThongBao,
+  BanThongBao,
+  AddThongBao_Like,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -50,16 +55,21 @@ export default class ModalLike_Nhom extends Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao_Like = async () => {
+  _AddThongBao_LikeBaiDang = async (idbaidang) => {
     let strBody = JSON.stringify({
-      title: 'Đã tương tác một bài viết',
+      title: 'Đã bày tỏ cảm xúc một bài viết của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
+    console.log('strBody add Thông báo like bài đăng', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      0,
+      idbaidang,
+      strBody,
+    );
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo like bài đăng', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
@@ -68,7 +78,7 @@ export default class ModalLike_Nhom extends Component {
     if (res.status == 1) {
       Utils.goscreen(this, 'ScreenBaiDangNhom');
       await ROOTGlobal.GetDsAllBaiDang_Nhom();
-      await this._AddThongBao_Like();
+      // await this._AddThongBao_Like();
     }
   };
   GanDSLike = async () => {
@@ -90,8 +100,9 @@ export default class ModalLike_Nhom extends Component {
     return (
       <TouchableOpacity
         style={{paddingHorizontal: 5, paddingVertical: 5}}
-        onPress={() => {
-          this.TaoLike(this.idbaidang, item.ID_like, this.iduser);
+        onPress={async () => {
+          await this.TaoLike(this.idbaidang, item.ID_like, this.iduser);
+          await this._AddThongBao_LikeBaiDang(this.idbaidang);
         }}>
         <SvgUri
           width={FontSize.scale(25)}

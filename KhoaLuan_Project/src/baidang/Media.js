@@ -76,14 +76,14 @@ export default class Media extends React.Component {
           }));
     }
 
-    console.log('strBody tin nhanh', strBody);
+    // console.log('strBody tin nhanh', strBody);
 
     let res = await addMedia(
       this.state.haveValue_TieuDe,
       await Utils.ngetStorage(nkey.id_user),
       strBody,
     );
-    console.log('ress media', res);
+    // console.log('ress media', res);
     if (res.status == 1) {
       await ROOTGlobal.DsMedia();
       Utils.goscreen(this, 'ScreenBangTin');
@@ -151,10 +151,7 @@ export default class Media extends React.Component {
 
   _render_Dang = () => {
     const {haveValue_TieuDe, Image, camera} = this.state;
-    if (
-      (haveValue_TieuDe && Image != '') ||
-      (haveValue_TieuDe && camera != '')
-    ) {
+    if (haveValue_TieuDe) {
       return (
         <View>
           <TouchableOpacity
@@ -169,7 +166,7 @@ export default class Media extends React.Component {
     } else {
       return (
         <View>
-          <Text style={styles.textDang}>Đăng</Text>
+          <Text style={styles.textDang_invisibale}>Đăng</Text>
         </View>
       );
     }
@@ -224,96 +221,6 @@ export default class Media extends React.Component {
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleTieude(text)}></TextInput>
             </View>
-
-            {/* <View>
-              {this.state.camera == '' && this.state.Image != '' ? (
-                <View
-                  style={{
-                    backgroundColor: '#DDDDDD80',
-                    borderRadius: 20,
-                    marginTop: 10,
-                    padding: 5,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => this.openCamera()}>
-                  <Image
-                    source={camera}
-                    style={{
-                      height: FontSize.scale(20),
-                      width: FontSize.verticalScale(20),
-                      marginHorizontal: 10,
-                      tintColor: '#696969',
-                    }}></Image>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#696969',
-                    }}>
-                    Camera
-                  </Text>
-                </View>
-              ) : (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: '#DDDDDD80',
-                      borderRadius: 20,
-                      marginTop: 10,
-                      padding: 5,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => this.openCamera()}>
-                    <Image
-                      source={camera}
-                      style={{
-                        height: FontSize.scale(20),
-                        width: FontSize.verticalScale(20),
-                        marginHorizontal: 10,
-                      }}></Image>
-                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-                      Camera
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              {this.state.camera ? (
-                <View style={{marginLeft: 5}}>
-                  <Image
-                    style={{
-                      height: FontSize.scale(200),
-                      width: FontSize.verticalScale(200),
-                      marginVertical: 10,
-                    }}
-                    source={{uri: this.state.camera.path}}></Image>
-                  <TouchableOpacity
-                    style={{
-                      // height: FontSize.scale(40),
-                      // width: FontSize.verticalScale(40),
-                      borderRadius: 20,
-                      backgroundColor: 'blue',
-                      position: 'absolute',
-                      top: 5,
-                      right: 120,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    onPress={() => this.xoaAnh()}>
-                    <Image
-                      source={close}
-                      style={{
-                        height: FontSize.scale(15),
-                        width: FontSize.verticalScale(15),
-                        // position: 'absolute',
-                        // top: 5,
-                        // right: 10,
-                      }}></Image>
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-            </View> */}
 
             <View>
               {this.state.camera != '' && this.state.Image == '' ? (

@@ -113,6 +113,7 @@ async function AddLike(id = '', type = '', id_user = '') {
   );
   return res;
 }
+
 async function DeleteLikeTrongBaiDang(idbaidang = '') {
   let res = await Utils.post_api(
     apiUser + `deleteBaiDang_like?id_baidang=${idbaidang}`,
@@ -321,6 +322,16 @@ async function AddThongBao(iduser, strbody) {
   return res;
 }
 
+async function AddThongBao_Like(iduser, idcmt, idbaidang, strbody) {
+  let res = await Utils.post_api(
+    apiUser +
+      `addThongBao_like?id_user=${iduser}&id_cmt=${idcmt}&id_baidang=${idbaidang}`,
+    strbody,
+  );
+  // this.BanThongBao();
+  return res;
+}
+
 async function GetDSThongBao(iduser) {
   let res = await Utils.get_api(apiUser + `GetDSThongBao?id_user=${iduser}`);
   return res;
@@ -454,4 +465,5 @@ export {
   addMedia,
   GetDSNhanVien,
   Delete_Media,
+  AddThongBao_Like,
 };

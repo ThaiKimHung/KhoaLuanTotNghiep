@@ -16,7 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-
+import _ from 'lodash';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
@@ -36,6 +36,7 @@ import {nkey} from '../apis/keyStore';
 
 import {ROOTGlobal} from '../apis/dataGlobal';
 
+const cancel = require('../assets/images/cancel.png');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
@@ -69,7 +70,7 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
       this.setState({refresh: false});
       alert('thất bại tải ds user');
     }
-    await console.log('ds thành viên', this.state.dsUser);
+    // await console.log('ds thành viên', this.state.dsUser);
   };
 
   _renderActiveUser = () => {
@@ -81,7 +82,7 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
     //   noidung:
     // });
     this.state.tenUser.push(item.hoten);
-    await console.log(this.state.tenUser);
+    // await console.log(this.state.tenUser);
     // this.setState(() => {
     this._renderActiveUser();
     // () => this._render_Dang();
@@ -158,13 +159,6 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
     // console.log('res add thông báo', res);
   };
 
-  ChuyenData = async (item) => {
-    Utils.goscreen(this, 'KhenThuong_Nhom');
-    this.setState({
-      DataChuyenVe: item,
-    });
-  };
-
   DangBaiDang_KhenThuong_Group = async () => {
     const id_loaibaidang = this.props.route.params.id_loaibaidang;
 
@@ -179,7 +173,7 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
       NoiDung: this.state.noidung,
       Id_Group: this.state.idgroup,
       id_khenthuong: this.state.selectedItem,
-      typepost: 'string',
+      typepost: '',
       // CreatedDate: date + 'T' + time,
       CreatedBy: await Utils.ngetStorage(nkey.id_user),
       UpdateDate: '',
@@ -277,7 +271,7 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
 
   _render_Dang = () => {
     const {tenUser, idgroup, tengroup, noidung, selectedItem} = this.state;
-    if (tenUser && noidung && selectedItem && idgroup) {
+    if (_.size(tenUser) > 0 && noidung && selectedItem && idgroup) {
       return (
         <View>
           <TouchableOpacity
@@ -396,7 +390,7 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
                     marginTop: 5,
                   },
                 ]}>
-                <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
+                <Text style={[{fontSize: 18, flex: 1}]}>
                   {tenUser.map((item, index) => item + ' ')}
                   {/* {noidung} */}
                 </Text>
@@ -407,6 +401,21 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
                   resizeMode="contain"
                 />
               </TouchableOpacity>
+              {_.size(tenUser) > 0 ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      tenUser: [],
+                    });
+                  }}>
+                  <Image
+                    source={cancel}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                    }}></Image>
+                </TouchableOpacity>
+              ) : null}
             </View>
             {isActive_User == true ? (
               <FlatList

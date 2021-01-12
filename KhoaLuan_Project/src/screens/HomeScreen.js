@@ -46,36 +46,34 @@ export default class HomeScreen extends React.Component {
             Utils.goscreen(this, 'ScreenLoaiBaiDang');
           }}></ChonLoaiBaiDang>
 
-        <ScrollView>
-          <View
+        <View
+          style={{
+            height: FontSize.scale(40),
+            justifyContent: 'center',
+            borderBottomColor: '#C0C0C0',
+            borderBottomWidth: 1,
+          }}>
+          <TouchableOpacity
             style={{
-              height: FontSize.scale(40),
-              justifyContent: 'center',
-              borderBottomColor: '#C0C0C0',
-              borderBottomWidth: 1,
-            }}>
-            <TouchableOpacity
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: 10,
+            }}
+            onPress={() => Utils.goscreen(this, 'ScreenBangTin')}>
+            <Text style={{textAlign: 'center', fontSize: 18}}>Xem tin</Text>
+            <Image
+              source={arrow}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: 10,
-              }}
-              onPress={() => Utils.goscreen(this, 'ScreenBangTin')}>
-              <Text style={{textAlign: 'center', fontSize: 18}}>Xem tin</Text>
-              <Image
-                source={arrow}
-                style={{
-                  height: FontSize.scale(15),
-                  width: FontSize.verticalScale(15),
-                }}></Image>
-            </TouchableOpacity>
-          </View>
+                height: FontSize.scale(15),
+                width: FontSize.verticalScale(15),
+              }}></Image>
+          </TouchableOpacity>
+        </View>
 
-          <View style={{flex: 1}}>
-            <ScreenAllBaiDang_V2 nthis={this}></ScreenAllBaiDang_V2>
-          </View>
-        </ScrollView>
+        <View style={{flex: 1}}>
+          <ScreenAllBaiDang_V2 nthis={this}></ScreenAllBaiDang_V2>
+        </View>
       </View>
     );
   }

@@ -30,6 +30,7 @@ import {
   DeleteBaiDang_Like,
   AddThongBao,
   BanThongBao,
+  AddThongBao_Like,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -68,16 +69,38 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao_Like = async () => {
+  _AddThongBao_LikeBaiDang = async (idbaidang) => {
     let strBody = JSON.stringify({
-      title: 'Đã tương tác một bài viết',
+      title: 'Đã bày tỏ cảm xúc một bài viết của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
+    // console.log('strBody add Thông báo like bài đăng', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      0,
+      idbaidang,
+      strBody,
+    );
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo like bài đăng', res);
+  };
+
+  _AddThongBao_LikeCMT = async (idcmt) => {
+    let strBody = JSON.stringify({
+      title: 'Đã bày tỏ cảm xúc với một bình luận của bạn',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo like cmt', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      idcmt,
+      0,
+      strBody,
+    );
+    await this._BanThongBao();
+    // console.log('res add thông báo like cmt', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
@@ -87,7 +110,6 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     //   thich: !this.state.thich,
     // });
     await ROOTGlobal.getGo();
-    await this._AddThongBao_Like();
   };
 
   DeleteLike = async (idbaidang) => {
@@ -380,22 +402,22 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     }
   };
 
-  TaoLike_Like = async () => {
-    Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
-      chuyenData: this.ChuyenData,
-    });
+  // TaoLike_Like = async () => {
+  //   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+  //     chuyenData: this.ChuyenData,
+  //   });
 
-    await this.TaoLike(
-      this.item.Id_BaiDang,
-      this.state.likeSelected,
-      await Utils.ngetStorage(nkey.id_user),
-    );
+  //   await this.TaoLike(
+  //     this.item.Id_BaiDang,
+  //     this.state.likeSelected,
+  //     await Utils.ngetStorage(nkey.id_user),
+  //   );
 
-    // switch(this.state.likeSelected){
-    //   case 1:
+  //   // switch(this.state.likeSelected){
+  //   //   case 1:
 
-    // }
-  };
+  //   // }
+  // };
 
   componentDidMount = async () => {
     // this._GetDSLike();
@@ -520,11 +542,12 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                   );
                 }}
                 onPress={async () => {
-                  this.TaoLike(
+                  await this.TaoLike(
                     item.Id_BaiDang,
                     this.id_like,
                     await Utils.ngetStorage(nkey.id_user),
                   );
+                  await this._AddThongBao_LikeBaiDang(item.Id_BaiDang);
                 }}>
                 <View style={{flexDirection: 'row'}}>
                   <Image style={styles.imageLike_Commnet} source={thich} />

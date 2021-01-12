@@ -31,6 +31,7 @@ import {
   BanThongBao,
   Comment_like,
   DeleteComment_Like,
+  AddThongBao_Like,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -127,21 +128,39 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     }
   };
 
-  _AddThongBao_LikeCMT = async () => {
+  _AddThongBao_LikeBaiDang = async (idbaidang) => {
     let strBody = JSON.stringify({
-      title: 'Đã bày tỏ cảm xúc một bình luận',
-      create_tb_by: await Utils.ngetStorage(
-        await Utils.ngetStorage(nkey.id_user),
-        nkey.id_user,
-      ),
+      title: 'Đã bày tỏ cảm xúc một bài viết của bạn',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(strBody);
+    console.log('strBody add Thông báo like bài đăng', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      0,
+      idbaidang,
+      strBody,
+    );
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo like bài đăng', res);
   };
 
+  _AddThongBao_LikeCMT = async (idcmt) => {
+    let strBody = JSON.stringify({
+      title: 'Đã bày tỏ cảm xúc với một bình luận của bạn',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    console.log('strBody add Thông báo like cmt', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      idcmt,
+      0,
+      strBody,
+    );
+    await this._BanThongBao();
+    console.log('res add thông báo like cmt', res);
+  };
   _AddCommentLike = async (idcmt) => {
     // alert(5);
     let res = await Comment_like(
@@ -152,7 +171,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     console.log(res);
     await this._GetChiTietBaiDang();
     await this.GanData();
-    await this._AddThongBao_LikeCMT();
+    // await this._AddThongBao_LikeCMT();
     // console.log('res cmt like', res);
   };
 
@@ -161,7 +180,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     // console.log('res dele like', res);
     await this._GetChiTietBaiDang();
     await this.GanData();
-    await this._AddThongBao_LikeCMT();
+    // await this._AddThongBao_LikeCMT();
   };
 
   GetData = () => {
@@ -290,7 +309,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                   id_nguoidang: item,
                 });
               }}
-              onPress={() => this._AddCommentLike(item.id_cmt)}>
+              onPress={async () => {
+                await this._AddCommentLike(item.id_cmt);
+                await this._AddThongBao_LikeCMT(item.id_cmt);
+              }}>
               <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
             </TouchableOpacity>
           )}
@@ -310,25 +332,13 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     );
   };
 
-  _AddThongBao_Like = async () => {
-    let strBody = JSON.stringify({
-      title: 'Đã tương tác một bài viết',
-      create_tb_by: await Utils.ngetStorage(nkey.id_user),
-    });
-
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
-    await this._BanThongBao();
-    // console.log('res add thông báo', res);
-  };
-
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
     // console.log('ress add like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
-      await this._AddThongBao_Like();
+      // await this._AddThongBao_Like();
       // await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -778,6 +788,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     this.id_like,
                     await Utils.ngetStorage(nkey.id_user),
                   );
+                  this._AddThongBao_LikeBaiDang(this.idBaiDang);
                 }}>
                 <Image style={styles.imageLike_Commnet1} source={thich} />
                 <Text

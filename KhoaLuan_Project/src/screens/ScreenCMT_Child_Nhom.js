@@ -29,6 +29,7 @@ import {
   BanThongBao,
   Comment_like,
   DeleteComment_Like,
+  AddThongBao_Like,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -134,7 +135,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã bình luận một bình luận',
+      title: 'Đã trả lời bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
@@ -147,10 +148,11 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
   _AddCommentLike = async (idcmt) => {
     let res = await Comment_like(
       await idcmt,
+      1,
       await Utils.ngetStorage(nkey.id_user),
     );
     await this._GetDsCmt();
-    await this._AddThongBao_LikeCMT();
+    // await this._AddThongBao_LikeCMT();
     // await this.GanData();
     // console.log('res cmt like', res);
   };
@@ -162,16 +164,21 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
     // await this.GanData();
   };
 
-  _AddThongBao_LikeCMT = async () => {
+  _AddThongBao_LikeCMT = async (idcmt) => {
     let strBody = JSON.stringify({
-      title: 'Đã bày tỏ cảm xúc một bình luận',
+      title: 'Đã bày tỏ cảm xúc với một bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
+    console.log('strBody add Thông báo like cmt', strBody);
+    let res = await AddThongBao_Like(
+      await Utils.ngetStorage(nkey.id_user),
+      idcmt,
+      0,
+      strBody,
+    );
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo like cmt', res);
   };
 
   DangCmt_Child = async () => {
@@ -297,7 +304,10 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
                     id_nguoidang: item,
                   });
                 }}
-                onPress={() => this._AddCommentLike(item.id_cmt)}>
+                onPress={() => {
+                  this._AddCommentLike(item.id_cmt);
+                  this._AddThongBao_LikeCMT(item.id_cmt);
+                }}>
                 <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
               </TouchableOpacity>
             )}

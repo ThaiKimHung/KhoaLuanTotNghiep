@@ -36,11 +36,13 @@ import {
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
+import _ from 'lodash';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
+const cancel = require('../assets/images/cancel.png');
 export default class ChaoMungTV_V2 extends React.Component {
   constructor(props) {
     super(props);
@@ -86,19 +88,20 @@ export default class ChaoMungTV_V2 extends React.Component {
       this.setState({refresh: false});
       alert('thất bại tải ds user');
     }
-    await console.log('ds thành viên', this.state.dsUser);
+    // await console.log('ds thành viên', this.state.dsUser);
   };
 
   _renderActiveUser = () => {
     this.setState({isActive_User: !this.state.isActive_User});
   };
   // _keyExtractor = ({ item, index }) => index.toString();
+
   _callBackUser = async (item) => {
     // this.setState({
     //   noidung:
     // });
     this.state.tenUser.push(item.hoten);
-    await console.log(this.state.tenUser);
+    // await console.log(this.state.tenUser);
     // this.setState(() => {
     this._renderActiveUser();
     // () => this._render_Dang();
@@ -142,9 +145,9 @@ export default class ChaoMungTV_V2 extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async () => {
+  _AddThongBao = async (ten) => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng khen thưởng',
+      title: 'Chào mừng thành viên' + ten,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
@@ -197,9 +200,9 @@ export default class ChaoMungTV_V2 extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh', strBody);
+    // console.log('strBody tin nhanh', strBody);
     let res = await PostBaiDang(strBody);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       Utils.goscreen(this, 'Home');
       showMessage({
@@ -209,7 +212,7 @@ export default class ChaoMungTV_V2 extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      await this._AddThongBao();
+      await this._AddThongBao(ten);
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -241,7 +244,7 @@ export default class ChaoMungTV_V2 extends React.Component {
       UpdateBy: 0,
     });
 
-    console.log('strBody tin nhanh nhóm', strBody);
+    // console.log('strBody tin nhanh nhóm', strBody);
     let res = await PostBaiDang_Nhom(strBody);
     // console.log('res tin nhanh nhóm', res);
     if (res.status == 1) {
@@ -255,7 +258,7 @@ export default class ChaoMungTV_V2 extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      await this._AddThongBao();
+      await this._AddThongBao(ten);
       await ROOTGlobal.GetDsAllBaiDang();
     } else {
       showMessage({
@@ -309,7 +312,7 @@ export default class ChaoMungTV_V2 extends React.Component {
 
   _render_Dang = () => {
     const {tenUser, selectLyDo, noidung} = this.state;
-    if (tenUser && noidung != '' && selectLyDo == '') {
+    if (_.size(tenUser) > 0 && noidung != '' && selectLyDo == '') {
       return (
         <View>
           <TouchableOpacity
@@ -321,7 +324,7 @@ export default class ChaoMungTV_V2 extends React.Component {
           </TouchableOpacity>
         </View>
       );
-    } else if (tenUser && noidung != '' && selectLyDo != '') {
+    } else if (_.size(tenUser) > 0 && noidung != '' && selectLyDo != '') {
       return (
         <View>
           <TouchableOpacity
@@ -424,7 +427,7 @@ export default class ChaoMungTV_V2 extends React.Component {
                     marginTop: 5,
                   },
                 ]}>
-                <Text numberOfLines={1} style={[{fontSize: 18, flex: 1}]}>
+                <Text style={[{fontSize: 18, flex: 1}]}>
                   {tenUser.map((item, index) => item + ' ')}
                   {/* {noidung} */}
                 </Text>
@@ -435,6 +438,21 @@ export default class ChaoMungTV_V2 extends React.Component {
                   resizeMode="contain"
                 />
               </TouchableOpacity>
+              {_.size(tenUser) > 0 ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      tenUser: [],
+                    });
+                  }}>
+                  <Image
+                    source={cancel}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                    }}></Image>
+                </TouchableOpacity>
+              ) : null}
             </View>
             {isActive_User == true ? (
               <FlatList
@@ -507,6 +525,21 @@ export default class ChaoMungTV_V2 extends React.Component {
                   resizeMode="contain"
                 />
               </TouchableOpacity>
+              {selectLyDo ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      selectLyDo: '',
+                    });
+                  }}>
+                  <Image
+                    source={cancel}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                    }}></Image>
+                </TouchableOpacity>
+              ) : null}
             </View>
             {isActive == true ? (
               <FlatList

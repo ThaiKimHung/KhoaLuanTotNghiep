@@ -48,7 +48,7 @@ const welcome = require('../assets/images/welcome.png');
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenCMT_Child_ThongBao extends React.Component {
+export default class ScreenCMT_Child_ThongBao_CMT extends React.Component {
   constructor(props) {
     super(props);
     this.item = Utils.ngetParam(this, 'id_nguoidang');
@@ -155,12 +155,10 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async (idcmt_cha) => {
+  _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã trả lời bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
-      id_bd: 0,
-      id_cmt: idcmt_cha,
     });
 
     // console.log('strBody add Thông báo', strBody);
@@ -213,7 +211,7 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
       await ROOTGlobal.GetChiTietBaiDang_ThongBao();
       // await ROOTGlobal.GanDataChitiet();
       await this._GetDsCmt();
-      await this._AddThongBao(this.state.id_cmtlon);
+      await this._AddThongBao();
     } else {
       showMessage({
         message: 'Thông báo',

@@ -75,6 +75,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       day: '',
       khenthuong: '',
       thichcmt: '',
+      hinh: '',
+      image: '',
       // ngay: '',
       // time: '',
     };
@@ -92,6 +94,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
     let strBody = JSON.stringify({
       title: 'Đã bình luận một bài viết',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
+      id_cmt: 1,
     });
 
     // console.log('strBody add Thông báo', strBody);
@@ -386,6 +389,8 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
       noidung: await this.state.ChiTietBD[0].NoiDung,
       day: await this.state.ChiTietBD[0].CreatedDate,
       khenthuong: await this.state.ChiTietBD[0].KhenThuong,
+      hinh: await this.state.ChiTietBD[0].hinhanh,
+      image: await this.state.ChiTietBD[0].image,
       // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
@@ -428,7 +433,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                 </Text>
               </View>
             </View>
-            {id_nguoidang.hinhanh ? (
+            {/* {id_nguoidang.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
@@ -438,7 +443,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
         );
       case 2:
@@ -536,7 +541,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                 </Text>
               </View>
             </View>
-            {id_nguoidang.hinhanh ? (
+            {/* {id_nguoidang.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
@@ -546,7 +551,7 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                     backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
         );
       case 4:
@@ -585,10 +590,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
           <View style={{paddingHorizontal: 10}}>
             <Text>{this.state.title}</Text>
             {/* <Text>{this.state.noidung}</Text> */}
-            {id_nguoidang.hinhanh ? (
+            {this.state.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
-                  source={{uri: id_nguoidang.image}}
+                  source={{uri: this.state.image}}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
@@ -620,10 +625,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
                 </Text>
               </View>
             </View>
-            {id_nguoidang.hinhanh ? (
+            {this.state.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
-                  source={{uri: id_nguoidang.image}}
+                  source={{uri: this.state.image}}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
@@ -639,10 +644,10 @@ export default class ScreenDetailBaiDang_Nhom extends React.Component {
           <View style={styles.footer}>
             <Text>{this.state.title}</Text>
             <Text>{this.state.noidung}</Text>
-            {id_nguoidang.hinhanh ? (
+            {this.state.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
-                  source={{uri: id_nguoidang.image}}
+                  source={{uri: this.state.image}}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',

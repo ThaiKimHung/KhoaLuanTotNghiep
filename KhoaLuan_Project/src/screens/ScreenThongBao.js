@@ -19,6 +19,7 @@ import {
   Update_ThongBao,
   Delete_ThongBao,
   Danhdaudadoc,
+  getDSBaiDangViewDetail,
 } from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
@@ -52,13 +53,13 @@ export default class SearchUser extends React.Component {
       });
     } else {
       this.setState({refresh: false});
-      alert('thất bại tải thông báo');
+      // alert('thất bại tải thông báo');
     }
   };
 
   _DanhdaudadocAll = async () => {
-    let res = await Danhdaudadoc();
-    // console.log('res dánh dấu đã dọc', res);
+    let res = await Danhdaudadoc(await Utils.ngetStorage(nkey.id_user));
+    console.log('res dánh dấu đã dọc', res);
     await this._GetDSThongBao();
   };
 
@@ -90,67 +91,135 @@ export default class SearchUser extends React.Component {
     return (
       <View>
         {item.tinhtrang == true ? (
-          <TouchableOpacity
-            style={[styles.khungchua]}
-            onPress={() =>
-              Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao', {
-                id_nguoidang: item,
-              })
-            }>
-            <View></View>
-            <View
-              style={{
-                marginLeft: 5,
-                borderRadius: 30,
-                height: FontSize.scale(30),
-                width: FontSize.verticalScale(30),
-                margin: 10,
-              }}>
-              <Image
-                style={{
-                  height: FontSize.scale(30),
-                  width: FontSize.verticalScale(30),
-                  borderRadius: 30,
-                }}
-                resizeMode="cover"
-                source={item.avatar ? {uri: item.avatar} : avatar}></Image>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                flex: 1,
-                paddingRight: 10,
-              }}>
-              <View style={{flex: 1}}>
-                <Text>{item.user_name}</Text>
-                <Text>{item.title}</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text>
-                    {moment(item.timetb.substring(0, 10), 'YYYY-MM-DD').format(
-                      'DD-MM-YYYY',
-                    )}
-                  </Text>
-                  <Text style={{marginLeft: 5}}>
-                    {item.timetb.substring(11, 16)}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity
-                  style={{marginLeft: 5}}
-                  onPress={() => this._DeleteThongBao(item.id_tb)}>
+          <View>
+            {item.id_baidang != null ? (
+              <TouchableOpacity
+                style={[styles.khungchua]}
+                onPress={() =>
+                  Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao', {
+                    id_nguoidang: item,
+                  })
+                }>
+                <View></View>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderRadius: 30,
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    margin: 10,
+                  }}>
                   <Image
-                    source={deletee}
                     style={{
-                      height: FontSize.scale(15),
-                      width: FontSize.verticalScale(15),
-                    }}></Image>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableOpacity>
+                      height: FontSize.scale(30),
+                      width: FontSize.verticalScale(30),
+                      borderRadius: 30,
+                    }}
+                    resizeMode="cover"
+                    source={item.avatar ? {uri: item.avatar} : avatar}></Image>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flex: 1,
+                    paddingRight: 10,
+                  }}>
+                  <View style={{flex: 1}}>
+                    <Text>{item.user_name}</Text>
+                    <Text>{item.title}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text>
+                        {moment(
+                          item.timetb.substring(0, 10),
+                          'YYYY-MM-DD',
+                        ).format('DD-MM-YYYY')}
+                      </Text>
+                      <Text style={{marginLeft: 5}}>
+                        {item.timetb.substring(11, 16)}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity
+                      style={{marginLeft: 5}}
+                      onPress={() => this._DeleteThongBao(item.id_tb)}>
+                      <Image
+                        source={deletee}
+                        style={{
+                          height: FontSize.scale(15),
+                          width: FontSize.verticalScale(15),
+                        }}></Image>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={[styles.khungchua]}
+                onPress={() =>
+                  Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao_CMT', {
+                    id_nguoidang: item,
+                  })
+                }>
+                <View></View>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderRadius: 30,
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    margin: 10,
+                  }}>
+                  <Image
+                    style={{
+                      height: FontSize.scale(30),
+                      width: FontSize.verticalScale(30),
+                      borderRadius: 30,
+                    }}
+                    resizeMode="cover"
+                    source={item.avatar ? {uri: item.avatar} : avatar}></Image>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flex: 1,
+                    paddingRight: 10,
+                  }}>
+                  <View style={{flex: 1}}>
+                    <Text>{item.user_name}</Text>
+                    <Text>{item.title}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text>
+                        {moment(
+                          item.timetb.substring(0, 10),
+                          'YYYY-MM-DD',
+                        ).format('DD-MM-YYYY')}
+                      </Text>
+                      <Text style={{marginLeft: 5}}>
+                        {item.timetb.substring(11, 16)}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity
+                      style={{marginLeft: 5}}
+                      onPress={() => this._DeleteThongBao(item.id_tb)}>
+                      <Image
+                        source={deletee}
+                        style={{
+                          height: FontSize.scale(15),
+                          width: FontSize.verticalScale(15),
+                        }}></Image>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
         ) : (
           <TouchableOpacity
             style={{

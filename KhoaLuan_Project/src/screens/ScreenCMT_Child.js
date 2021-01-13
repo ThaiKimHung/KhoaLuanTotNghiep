@@ -83,7 +83,7 @@ export default class ScreenCMT_Child extends React.Component {
   };
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    // await console.log('id nguoi dang', id_nguoidang);
+    await console.log('id nguoi dang', id_nguoidang);
     await this.setState({
       // dsCmt: id_nguoidang,
       avatar_cmtlong: id_nguoidang.User_comment[0].avatar,
@@ -164,16 +164,18 @@ export default class ScreenCMT_Child extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async () => {
+  _AddThongBao = async (idcmt_cha) => {
     let strBody = JSON.stringify({
       title: 'Đã trả lời bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
+      id_bd: 0,
+      id_cmt: idcmt_cha,
     });
 
-    // console.log('strBody add Thông báo', strBody);
+    console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
-    // console.log('res add thông báo', res);
+    console.log('res add thông báo', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {
@@ -211,8 +213,8 @@ export default class ScreenCMT_Child extends React.Component {
     });
 
     let res = await AddComment_Child(strBody);
-    // console.log('res cmt', res);
-    // console.log('strBody cmt', strBody);
+    console.log('res cmt', res);
+    console.log('strBody cmt', strBody);
 
     if (res.status == 1) {
       this.setState({
@@ -221,7 +223,7 @@ export default class ScreenCMT_Child extends React.Component {
       await ROOTGlobal.GetChiTietBaiDang();
       await ROOTGlobal.GanDataChitiet();
       await this._GetDsCmt();
-      await this._AddThongBao();
+      await this._AddThongBao(this.state.id_cmtlon);
     } else {
       showMessage({
         message: 'Thông báo',

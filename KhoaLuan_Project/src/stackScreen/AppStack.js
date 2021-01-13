@@ -32,6 +32,8 @@ import ScreenTaoNhom from '../screens/ScreenTaoNhom';
 import ScreenThongTinCaNhan from '../screens/ScreenThongTinCaNhan';
 import ScreenCMT_Child_Nhom from '../screens/ScreenCMT_Child_Nhom';
 import ScreenCMT_Child_ThongBao from '../screens/ScreenCMT_Child_ThongBao';
+import ScreenDetailBaiDang_ThongBao_CMT from '../screens/ScreenDetailBaiDang_ThongBao_CMT';
+import ScreenCMT_Child_ThongBao_CMT from '../screens/ScreenCMT_Child_ThongBao_CMT';
 
 import ScreenBangTin from '../screens/ScreenBangTin';
 
@@ -231,8 +233,16 @@ const HomeStackScreen = () => (
       name="ScreenCMT_Child_ThongBao"
       component={ScreenCMT_Child_ThongBao}
     />
+    <HomeStack.Screen
+      name="ScreenDetailBaiDang_ThongBao_CMT"
+      component={ScreenDetailBaiDang_ThongBao_CMT}
+    />
     <HomeStack.Screen name="ScreenBangTin" component={ScreenBangTin} />
     <HomeStack.Screen name="Media" component={Media} />
+    <HomeStack.Screen
+      name="ScreenCMT_Child_ThongBao_CMT"
+      component={ScreenCMT_Child_ThongBao_CMT}
+    />
   </HomeStack.Navigator>
 );
 

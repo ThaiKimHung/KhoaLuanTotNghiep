@@ -342,8 +342,10 @@ async function CountSoLuong_ThongBao(iduser) {
   return res;
 }
 
-async function Danhdaudadoc() {
-  let res = await Utils.post_api(apiUser + `UpdateTinhTrangTrueAllThongBao`);
+async function Danhdaudadoc(iduser) {
+  let res = await Utils.post_api(
+    apiUser + `UpdateTinhTrangTrueAllThongBao?id_user=${iduser}`,
+  );
   return res;
 }
 
@@ -403,6 +405,14 @@ async function Delete_Media(id_media) {
     true,
     'DELETE',
   );
+  return res;
+}
+
+async function getDSComentViewDetail(iduser, idcmt) {
+  let res = await Utils.get_api(
+    apiUser + `getDSComentViewDetail?id_user=${iduser}&id_cmt=${idcmt}`,
+  );
+  // this.BanThongBao();
   return res;
 }
 
@@ -466,4 +476,5 @@ export {
   GetDSNhanVien,
   Delete_Media,
   AddThongBao_Like,
+  getDSComentViewDetail,
 };

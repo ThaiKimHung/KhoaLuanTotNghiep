@@ -205,6 +205,21 @@ export default class ScreenTaoNhom extends React.Component {
               </Text>
             </View>
           </View>
+          <View
+            style={{
+              margin: 10,
+              borderWidth: 1,
+              borderRadius: 20,
+              width: FontSize.verticalScale(150),
+              height: FontSize.scale(30),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#007DE3',
+            }}>
+            <TouchableOpacity>
+              <Text>Thay đổi password</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <TouchableOpacity
           style={{

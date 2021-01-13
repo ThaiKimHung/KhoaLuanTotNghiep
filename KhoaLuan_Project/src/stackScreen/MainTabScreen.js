@@ -146,7 +146,7 @@ export default class MainTabScreen extends React.Component {
               // Prevent default action
               // ROOTGlobal.DemSoLuong();
               ROOTGlobal.GetDsAllBaiDang();
-              ROOTGlobal.ScrollHome();
+              // ROOTGlobal.ScrollHome();
             },
           }}
           options={{
@@ -209,7 +209,7 @@ export default class MainTabScreen extends React.Component {
                       borderRadius: 10,
                       width: FontSize.verticalScale(20),
                     }}>
-                    <Text>{soluong}</Text>
+                    <Text style={{color: '#FFFFFF'}}>{soluong}</Text>
                   </View>
                 ) : // <View></View>
                 null}

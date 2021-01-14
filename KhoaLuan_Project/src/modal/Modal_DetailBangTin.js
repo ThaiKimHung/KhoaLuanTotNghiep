@@ -16,7 +16,7 @@ import Utils from '../apis/Utils';
 import {GetDetailMedia} from '../apis/apiUser';
 import FontSize from '../components/size';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const logo = require('../assets/images/Jeelogo.png');
 const disconnected = require('../assets/images/disconected.png');
 export default class Modal_DetailBangTin extends Component {
@@ -46,7 +46,7 @@ export default class Modal_DetailBangTin extends Component {
 
   _GetThongTin = async () => {
     let res = await GetDetailMedia(await this.state.idbangtin);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       await this.setState({
         thongtinBT: res.Data[0],

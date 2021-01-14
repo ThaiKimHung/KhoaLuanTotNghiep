@@ -15,7 +15,7 @@ import FontSize from '../components/size';
 import {SearchBar} from 'react-native-elements';
 import {GetAllUser, GetDSNhanVien} from '../apis/apiUser';
 import Utils from '../apis/Utils';
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 import {ROOTGlobal} from '../apis/dataGlobal';
 // const congratulation = require('../assets/images/congratulations.png');
 
@@ -63,7 +63,7 @@ export default class ScreenAllUser extends React.Component {
 
   _GetAllUser = async () => {
     let res = await GetDSNhanVien();
-    console.log('ress all user', res);
+    // console.log('ress all user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,

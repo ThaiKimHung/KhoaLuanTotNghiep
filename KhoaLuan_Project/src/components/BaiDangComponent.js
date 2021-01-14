@@ -37,7 +37,7 @@ import {nkey} from '../apis/keyStore';
 import moment from 'moment';
 import Utils from '../apis/Utils';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -88,7 +88,7 @@ export default class BaiDangComponenet extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like bài đăng', strBody);
+    // console.log('strBody add Thông báo like bài đăng', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       0,
@@ -96,7 +96,7 @@ export default class BaiDangComponenet extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like bài đăng', res);
+    // console.log('res add thông báo like bài đăng', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {
@@ -105,7 +105,7 @@ export default class BaiDangComponenet extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like cmt', strBody);
+    // console.log('strBody add Thông báo like cmt', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       idcmt,
@@ -113,7 +113,7 @@ export default class BaiDangComponenet extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like cmt', res);
+    // console.log('res add thông báo like cmt', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
@@ -598,18 +598,21 @@ export default class BaiDangComponenet extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 activeOpacity={0.8}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
                   });
                 }}
-                onPress={async () => {
+                onPress={async (e) => {
                   await this.TaoLike(
                     item.Id_BaiDang,
                     this.id_like,
                     await Utils.ngetStorage(nkey.id_user),
                   );
                   await this._AddThongBao_LikeBaiDang(item.Id_BaiDang);
+                  // console?.log(e.nativeEvent.pageY);
                 }}>
                 <View style={{flexDirection: 'row'}}>
                   <Image style={styles.imageLike_Commnet} source={thich} />

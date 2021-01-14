@@ -90,7 +90,7 @@ export default class Test2 extends React.Component {
     // console.log('strBody tin nhanh', strBody);
 
     let res = await PostBaiDang(strBody);
-    console.log('ress tin nhanh', res);
+    // console.log('ress tin nhanh', res);
     if (res.status == 1) {
       let thanhcong = res.status;
       // this.props.navigation.navigate('Home', {DangBaiThanhCong: thanhcong});
@@ -169,7 +169,7 @@ export default class Test2 extends React.Component {
       this.setState({refresh: false});
       alert('thất bại tìm kiếm');
     }
-    await console.log('ds thành viên', this.state.dsNhom);
+    // await console.log('ds thành viên', this.state.dsNhom);
   };
 
   _renderActive = () => {
@@ -178,7 +178,7 @@ export default class Test2 extends React.Component {
   // _keyExtractor = ({ item, index }) => index.toString();
   _callBack = (item) => {
     this.state.selectLyDo.push(item.Username);
-    console.log(this.state.selectLyDo);
+    // console.log(this.state.selectLyDo);
     // this.setState(() => {
     this._renderActive();
     this._render_Dang();
@@ -188,7 +188,7 @@ export default class Test2 extends React.Component {
 
   _keyExtrac = (item, index) => `${item.ID_user}`;
   _renderPH = ({item, index}) => {
-    console.log(item);
+    // console.log(item);
     return (
       <View
         key={index}
@@ -310,7 +310,7 @@ export default class Test2 extends React.Component {
     // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
-    console.log('res add thông báo', res);
+    // console.log('res add thông báo', res);
   };
 
   _render_Dang = () => {

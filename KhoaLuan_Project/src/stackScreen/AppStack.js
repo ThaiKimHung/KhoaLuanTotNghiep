@@ -34,6 +34,7 @@ import ScreenCMT_Child_Nhom from '../screens/ScreenCMT_Child_Nhom';
 import ScreenCMT_Child_ThongBao from '../screens/ScreenCMT_Child_ThongBao';
 import ScreenDetailBaiDang_ThongBao_CMT from '../screens/ScreenDetailBaiDang_ThongBao_CMT';
 import ScreenCMT_Child_ThongBao_CMT from '../screens/ScreenCMT_Child_ThongBao_CMT';
+import ScreenThayDoiPass from '../screens/ScreenThayDoiPass';
 
 import ScreenBangTin from '../screens/ScreenBangTin';
 
@@ -243,6 +244,7 @@ const HomeStackScreen = () => (
       name="ScreenCMT_Child_ThongBao_CMT"
       component={ScreenCMT_Child_ThongBao_CMT}
     />
+    <HomeStack.Screen name="ScreenThayDoiPass" component={ScreenThayDoiPass} />
   </HomeStack.Navigator>
 );
 

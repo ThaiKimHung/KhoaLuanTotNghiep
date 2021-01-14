@@ -61,7 +61,7 @@ export default class ModalLike_Nhom extends Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like bài đăng', strBody);
+    // console.log('strBody add Thông báo like bài đăng', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       0,
@@ -69,7 +69,7 @@ export default class ModalLike_Nhom extends Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like bài đăng', res);
+    // console.log('res add thông báo like bài đăng', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {

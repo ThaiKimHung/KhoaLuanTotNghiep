@@ -24,8 +24,7 @@ import {Login, PostTinhTrang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const logout = require('../assets/images/logout.png');
 const addgroup = require('../assets/images/add-group.png');
 export default class ScreenCaiDat extends React.Component {

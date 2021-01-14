@@ -62,7 +62,7 @@ export default class ModalLike_CMT_Child_Nhom extends Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like cmt', strBody);
+    // console.log('strBody add Thông báo like cmt', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       idcmt,
@@ -70,7 +70,7 @@ export default class ModalLike_CMT_Child_Nhom extends Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like cmt', res);
+    // console.log('res add thông báo like cmt', res);
   };
 
   _AddCommentLike = async (idcmt, idlike) => {
@@ -79,7 +79,7 @@ export default class ModalLike_CMT_Child_Nhom extends Component {
       idlike,
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log(res);
+    // console.log(res);
     if (res.status == 1) {
       // Utils.goscreen(this, 'ScreenDetaiBaiDang_Nhom');
       await ROOTGlobal.GetDSCmt_Child_Nhom();
@@ -104,11 +104,11 @@ export default class ModalLike_CMT_Child_Nhom extends Component {
 
   GanData = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('this', this.props);
+    // console.log('this', this.props);
     this.idbcmt = await id_nguoidang.id_cmt;
     this.iduser = await Utils.ngetStorage(nkey.id_user);
-    console.log('item nhan ', id_nguoidang);
-    await console.log(this.idbcmt);
+    // console.log('item nhan ', id_nguoidang);
+    // await console.log(this.idbcmt);
   };
 
   _renderItem = ({item, index}) => {

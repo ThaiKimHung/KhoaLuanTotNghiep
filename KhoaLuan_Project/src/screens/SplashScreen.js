@@ -30,9 +30,9 @@ import {
 import {nGlobalKeys} from '../apis/globalKey';
 import {ROOTGlobal} from '../apis/dataGlobal';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const logo = require('../assets/images/Jeelogo.png');
-const bg = require('../assets/images/bg.png');
+// const bg = require('../assets/images/bg.png');
 const add = require('../assets/images/add.png');
 
 export default class SplashScreen2 extends React.Component {

@@ -18,7 +18,7 @@ import {GetDSUser_filter_InGroup, addUserGroup} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 const check = require('../assets/images/check.png');
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const add = require('../assets/images/add.png');
 

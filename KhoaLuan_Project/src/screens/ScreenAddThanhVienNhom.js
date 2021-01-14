@@ -17,7 +17,7 @@ import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import GoBack from '../components/GoBack';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 // const congratulation = require('../assets/images/congratulations.png');
 const Online = () => {
   return (

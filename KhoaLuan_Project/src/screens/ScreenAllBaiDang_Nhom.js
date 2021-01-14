@@ -24,7 +24,7 @@ import SvgUri from 'react-native-svg-uri';
 import {GetDSBaiDang_Nhom} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 import {colors} from 'react-native-elements';
 export default class ScreenAllBaiDang_Nhom extends React.Component {
   constructor(props) {

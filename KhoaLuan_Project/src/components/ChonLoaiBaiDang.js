@@ -14,7 +14,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import FontSize from './size';
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 import {nGlobalKeys} from '../apis/globalKey';
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';

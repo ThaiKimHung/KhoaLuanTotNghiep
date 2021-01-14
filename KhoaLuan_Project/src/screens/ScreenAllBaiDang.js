@@ -25,7 +25,7 @@ import {GetDSBaiDang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {colors} from 'react-native-elements';
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 export default class ScreenAllBaiDang extends React.Component {
   constructor(props) {
     super(props);

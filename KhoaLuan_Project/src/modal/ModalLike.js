@@ -29,6 +29,8 @@ export default class ModalLike extends Component {
     this.state = {
       display: true,
       DSLike: [],
+      x: Utils.ngetParam(this, 'x', 0) - 90,
+      y: Utils.ngetParam(this, 'y', 0) - 70,
     };
     // this.DSLike = [];
     this.idbaidang = '';
@@ -62,7 +64,7 @@ export default class ModalLike extends Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like bài đăng', strBody);
+    // console.log('strBody add Thông báo like bài đăng', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       0,
@@ -70,7 +72,7 @@ export default class ModalLike extends Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like bài đăng', res);
+    // console.log('res add thông báo like bài đăng', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {
@@ -94,7 +96,7 @@ export default class ModalLike extends Component {
     const {item = {}} = this.props.route.params.id_nguoidang;
     this.idbaidang = item.Id_BaiDang;
     this.iduser = await Utils.ngetStorage(nkey.id_user);
-    // console.log('item nhan liek', this.idbaidang);
+    const {event = {}} = this.props.route.params;
   };
 
   _renderItem = ({item, index}) => {
@@ -118,22 +120,22 @@ export default class ModalLike extends Component {
 
   async componentDidMount() {
     // await this._GetDSLike();
-    await this.GanDSLike();
     await this.GanData();
+    await this.GanDSLike();
   }
 
   render() {
-    const {display} = this.state;
-    // console.log('this modal like', this.props);
+    const {display, x, y} = this.state;
+    console.log('this modal like', x, y);
     return (
-      <View style={styles.container}>
+      <View style={{}}>
         <Modal animationType="slide" visible={display} transparent={true}>
           <TouchableOpacity
             onPress={() => this.change()}
             style={{
               flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
+              // justifyContent: 'center',
+              // alignItems: 'center',
             }}>
             <TouchableWithoutFeedback>
               <View
@@ -141,8 +143,11 @@ export default class ModalLike extends Component {
                   height: FontSize.scale(38),
                   //   width: '50%',
                   backgroundColor: 'white',
-                  justifyContent: 'center',
+                  // justifyContent: 'center',
                   borderRadius: 10,
+                  position: 'absolute',
+                  left: x,
+                  top: y,
                 }}>
                 <View
                   style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>

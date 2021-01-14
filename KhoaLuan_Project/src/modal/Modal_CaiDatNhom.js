@@ -59,7 +59,7 @@ export default class Modal_CaiDatNhom extends Component {
   NhanThongTin = async () => {
     const {id_nguoidang = {}} = this.props.route.params.id_nguoidang;
     // console.log('this modal xóa sửa', this.props);
-    console.log('id_nguoidang modal xóa sửa', id_nguoidang);
+    // console.log('id_nguoidang modal xóa sửa', id_nguoidang);
     // let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
 
     await this.setState({
@@ -69,7 +69,7 @@ export default class Modal_CaiDatNhom extends Component {
 
   _Delete_Group = async () => {
     let res = await deleteGroup(await this.state.idgroup);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.status == 1) {
       await ROOTGlobal.GetDsNhom();
       await Utils.goscreen(this, 'NhomScreen');

@@ -35,7 +35,7 @@ import {
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -76,7 +76,7 @@ export default class BaiDangNhomComponent extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like bài đăng', strBody);
+    // console.log('strBody add Thông báo like bài đăng', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       0,
@@ -84,7 +84,7 @@ export default class BaiDangNhomComponent extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like bài đăng', res);
+    // console.log('res add thông báo like bài đăng', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {
@@ -101,7 +101,7 @@ export default class BaiDangNhomComponent extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like cmt', res);
+    // console.log('res add thông báo like cmt', res);
   };
 
   TaoLike = async (idbaidang, idlike, iduser) => {

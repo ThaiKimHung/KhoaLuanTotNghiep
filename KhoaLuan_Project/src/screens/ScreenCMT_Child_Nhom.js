@@ -37,7 +37,8 @@ import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 
-const avatar_mau = require('../assets/images/avatar.png');
+const avatar_mau = require('../assets/images/avatar.jpg');
+
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -170,7 +171,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like cmt', strBody);
+    // console.log('strBody add Thông báo like cmt', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       idcmt,
@@ -178,7 +179,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like cmt', res);
+    // console.log('res add thông báo like cmt', res);
   };
 
   DangCmt_Child = async () => {

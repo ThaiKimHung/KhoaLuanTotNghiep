@@ -30,7 +30,7 @@ import {ImageBackground} from 'react-native';
 import {touch} from 'react-native-fs';
 
 const plus = require('../assets/images/plus.png');
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const cancel = require('../assets/images/cancel.png');
 export default class ScreenBangTin extends React.Component {
   constructor(props) {

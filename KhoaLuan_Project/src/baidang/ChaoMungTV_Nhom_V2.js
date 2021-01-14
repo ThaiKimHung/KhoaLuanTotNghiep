@@ -59,7 +59,7 @@ export default class ChaoMungTV_Nhom_V2 extends React.Component {
 
   _GetAllUser = async () => {
     let res = await GetDSNhanVien();
-    console.log('ress all user bên search user', res);
+    // console.log('ress all user bên search user', res);
     if (res.status == 1) {
       this.setState({
         dsUser: res.Data,

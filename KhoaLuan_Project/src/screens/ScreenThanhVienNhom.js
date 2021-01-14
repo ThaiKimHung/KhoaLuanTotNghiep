@@ -22,8 +22,7 @@ import {
 import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const update = require('../assets/images/up-arrow.png');
 const de_lete = require('../assets/images/cancel.png');

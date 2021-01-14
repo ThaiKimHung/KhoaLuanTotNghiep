@@ -26,7 +26,7 @@ import {nkey} from '../apis/keyStore';
 import moment from 'moment';
 import {ROOTGlobal} from '../apis/dataGlobal';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const daubacham = require('../assets/images/daubacham_doc.png');
 const seen = require('../assets/images/double-check.png');
@@ -313,13 +313,13 @@ export default class SearchUser extends React.Component {
             <Text style={styles.title}>Thông báo</Text>
           </View>
         </View>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <TouchableOpacity
             style={{alignItems: 'flex-end'}}
             onPress={() => this._DanhdaudadocAll()}>
             <Text>Đánh dấu đã đọc tất cả</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         <View style={styles.footer}>
           <FlatList

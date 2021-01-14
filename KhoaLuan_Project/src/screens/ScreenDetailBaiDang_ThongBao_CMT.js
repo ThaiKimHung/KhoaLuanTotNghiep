@@ -41,7 +41,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-const avatar_mau = require('../assets/images/avatar.png');
+const avatar_mau = require('../assets/images/avatar.jpg');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -79,12 +79,14 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
       idcmt: '',
       hinh: '',
       image: '',
+      khenthuong: '',
+      loaibaidang: '',
     };
     // this.idBaiDang = '';
     // this.id_user = '';
     this.id_like = 1;
     ROOTGlobal.GetChiTietBaiDang_ThongBao = this._GetChiTietBaiDang;
-    // ROOTGlobal.GanDataChitiet = this.GanData;
+    ROOTGlobal.GanDataChitiet_Detail_Thongbao = this.GanData;
   }
 
   _BanThongBao = async () => {
@@ -157,18 +159,30 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     await this.GanData();
   };
 
+  nhanData = async () => {
+    const {id_nguoidang = {}} = this.props.route.params;
+    await Utils.setGlobal(nGlobalKeys.idcmt, id_nguoidang.id_cmt);
+    // console.log('id bài đăng', id_nguoidang);
+    console.log('this', id_nguoidang.id_cmt);
+    await this.setState({
+      // idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
+      idcmt: id_nguoidang.id_cmt,
+    });
+  };
+
   _GetChiTietBaiDang = async () => {
     // console.log('hi');
     let id_user = await Utils.ngetStorage(nkey.id_user);
-
-    let res = await getDSComentViewDetail(id_user, this.state.idcmt);
+    let idcmt = await Utils.getGlobal(nGlobalKeys.idcmt);
+    console.log('idcmt', idcmt);
+    let res = await getDSComentViewDetail(id_user, idcmt);
     console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.data,
         refresh: false,
       });
-      this.GanData();
+      await this.GanData();
       // await console.log('chi tiết bd', this.state.ChiTietBD);
       // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
     } else {
@@ -179,7 +193,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
   };
 
   GanData = async () => {
-    this.setState({
+    await this.setState({
       user: await this.state.ChiTietBD[0].User_DangBai[0].ID_user,
       avatar_user: await this.state.ChiTietBD[0].User_DangBai[0].avatar,
       username: await this.state.ChiTietBD[0].User_DangBai[0].Username,
@@ -194,14 +208,16 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
       hinh: await this.state.ChiTietBD[0].hinhanh,
       image: await this.state.ChiTietBD[0].image,
       idbaidang: await this.state.ChiTietBD[0].Id_BaiDang,
+      khenthuong: await this.state.ChiTietBD[0].KhenThuong,
+      loaibaidang: await this.state.ChiTietBD[0].Id_LoaiBaiDang,
       // title: await this.state.ChiTietBD[0].title,
       // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
-    await Utils.setGlobal(nGlobalKeys.idbaidang, this.state.id_baidang);
+    // await Utils.setGlobal(nGlobalKeys.idbaidang, this.state.id_baidang);
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
     // await console.log('day', this.state.day);
-    await console.log('ngay', this.state.idbaidang);
+    await console.log('ngay', this.state.khenthuong);
     // await console.log('time', this.state.time);
   };
 
@@ -330,7 +346,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
           )}
           <TouchableOpacity
             onPress={() =>
-              Utils.goscreen(this, 'ScreenCMT_Child_ThongBao', {
+              Utils.goscreen(this, 'ScreenCMT_Child_ThongBao_CMT', {
                 id_nguoidang: item,
                 index: index.toString(),
               })
@@ -350,7 +366,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
       idlike,
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log('ress add like', res);
+    // console.log('ress add like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
       await this.GanData();
@@ -389,17 +405,6 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     }
   };
 
-  nhanData = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    // await Utils.setGlobal(nGlobalKeys.idbaidang, id_nguoidang.id_baidang);
-    // console.log('id bài đăng', id_nguoidang);
-    // console.log('this', this.props.route.params);
-    await this.setState({
-      // idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
-      idcmt: id_nguoidang.id_cmt,
-    });
-  };
-
   loadNoiDung = () => {
     // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
@@ -409,7 +414,9 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     // this.id_user = user.ID_user;
     let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
-    switch (idbaidang) {
+    let khenthuong1 = this.state.khenthuong ? this.state.khenthuong[0] : {};
+    // console.log(khenthuong1);
+    switch (this.state.loaibaidang) {
       case 1:
         return (
           <View style={styles.footer} onPress={this.props.onPress}>
@@ -462,11 +469,11 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
                 width={FontSize.scale(45)}
                 height={FontSize.verticalScale(45)}
                 source={{
-                  uri: khenthuong.icon,
+                  uri: khenthuong1.icon,
                 }}
               />
               <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
-                {khenthuong.tieude_kt}
+                {khenthuong1.tieude_kt}
               </Text>
             </Animatable.View>
 
@@ -668,7 +675,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     return (
       <View style={styles.container}>
         <GoBack
-          name=""
+          name="oh"
           onPress={() => {
             Utils.goscreen(this, 'ScreenThongBao');
             ROOTGlobal.GetDsThongBao();

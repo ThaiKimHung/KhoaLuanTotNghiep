@@ -62,7 +62,7 @@ export default class ModalLike_CMT_Thongbao extends Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like cmt', strBody);
+    // console.log('strBody add Thông báo like cmt', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       idcmt,
@@ -70,7 +70,7 @@ export default class ModalLike_CMT_Thongbao extends Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like cmt', res);
+    // console.log('res add thông báo like cmt', res);
   };
 
   _AddCommentLike = async (idcmt, idlike) => {

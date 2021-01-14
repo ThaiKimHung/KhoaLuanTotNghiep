@@ -30,6 +30,7 @@ const ROOTGlobal = {
   GetDSCmt_Child_Thongbao: () => {},
   DsMedia: () => {},
   ScrollHome: () => {},
+  GanDataChitiet_Detail_Thongbao: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

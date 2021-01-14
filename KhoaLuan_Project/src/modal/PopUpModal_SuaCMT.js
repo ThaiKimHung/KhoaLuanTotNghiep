@@ -73,9 +73,9 @@ export default class PopUpModal_SuaCMT extends Component {
       // UpdatedDate: null,
       UpdatedBy: id_user,
     });
-    console.log('strBody cmt', strBody);
+    // console.log('strBody cmt', strBody);
     let res = await Update_CMT(strBody);
-    console.log('res cmt', res);
+    // console.log('res cmt', res);
 
     if (res.status == 1) {
       showMessage({

@@ -23,7 +23,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const edite = require('../assets/images/edit2.png');
 
@@ -107,9 +107,10 @@ export default class ScreenTaoNhom extends React.Component {
                   }}
                   resizeMode="cover"
                   source={
-                    this.state.thongtin
-                      ? {uri: this.state.thongtin[0].Avatar}
-                      : avatar
+                    // this.state.thongtin
+                    //   ? {uri: this.state.thongtin[0].Avatar}
+                    //   :
+                    avatar
                   }></Image>
               </View>
             </TouchableOpacity>
@@ -216,7 +217,8 @@ export default class ScreenTaoNhom extends React.Component {
               alignItems: 'center',
               backgroundColor: '#007DE3',
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Utils.goscreen(this, 'ScreenThayDoiPass')}>
               <Text>Thay đổi password</Text>
             </TouchableOpacity>
           </View>

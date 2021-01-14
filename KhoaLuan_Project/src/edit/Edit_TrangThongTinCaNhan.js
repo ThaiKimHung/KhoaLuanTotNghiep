@@ -39,7 +39,7 @@ import dataGioitinh from '../data/Dulieu';
 const goback = require('../assets/images/go-back-left-arrow.png');
 const check = require('../assets/images/check.png');
 const calendar = require('../assets/images/calendar.png');
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const editpic = require('../assets/images/photo-camera-interface-symbol-for-button.png');
 const dropdown = require('../assets/images/caret-down.png');
 export default class Screen_EditBaiDang extends React.Component {

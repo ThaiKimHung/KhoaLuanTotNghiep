@@ -16,7 +16,7 @@ import {SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 
 const goback = require('../assets/images/go-back-left-arrow.png');
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 // const congratulation = require('../assets/images/congratulations.png');
 export default class SearchUser extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ export default class SearchUser extends React.Component {
   }
   _GetAllUser = async () => {
     let res = await GetAllUser();
-    console.log('ress all user bên search user', res);
+    // console.log('ress all user bên search user', res);
     if (res.status == 1) {
       this.setState({
         DsUser: res.Data,

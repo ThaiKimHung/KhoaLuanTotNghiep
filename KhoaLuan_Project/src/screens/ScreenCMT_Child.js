@@ -37,7 +37,7 @@ import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 
-const avatar_mau = require('../assets/images/avatar.png');
+const avatar_mau = require('../assets/images/avatar.jpg');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -172,10 +172,10 @@ export default class ScreenCMT_Child extends React.Component {
       id_cmt: idcmt_cha,
     });
 
-    console.log('strBody add Thông báo', strBody);
+    // console.log('strBody add Thông báo', strBody);
     let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
-    console.log('res add thông báo', res);
+    // console.log('res add thông báo', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {
@@ -184,7 +184,7 @@ export default class ScreenCMT_Child extends React.Component {
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
-    console.log('strBody add Thông báo like cmt', strBody);
+    // console.log('strBody add Thông báo like cmt', strBody);
     let res = await AddThongBao_Like(
       await Utils.ngetStorage(nkey.id_user),
       idcmt,
@@ -192,7 +192,7 @@ export default class ScreenCMT_Child extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like cmt', res);
+    // console.log('res add thông báo like cmt', res);
   };
 
   DangCmt_Child = async () => {
@@ -213,8 +213,8 @@ export default class ScreenCMT_Child extends React.Component {
     });
 
     let res = await AddComment_Child(strBody);
-    console.log('res cmt', res);
-    console.log('strBody cmt', strBody);
+    // console.log('res cmt', res);
+    // console.log('strBody cmt', strBody);
 
     if (res.status == 1) {
       this.setState({

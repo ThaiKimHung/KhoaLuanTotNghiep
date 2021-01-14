@@ -383,6 +383,7 @@ async function GetDetailMedia(idbangtin) {
   );
   return res;
 }
+
 async function addMedia(tieude, iduser, strbody) {
   let res = await Utils.post_api(
     apiUser + `addMedia?tieude=${tieude}&template=null&id_user=${iduser}`,
@@ -411,6 +412,14 @@ async function Delete_Media(id_media) {
 async function getDSComentViewDetail(iduser, idcmt) {
   let res = await Utils.get_api(
     apiUser + `getDSComentViewDetail?id_user=${iduser}&id_cmt=${idcmt}`,
+  );
+  // this.BanThongBao();
+  return res;
+}
+
+async function UpdatePass(iduser, pass) {
+  let res = await Utils.post_api(
+    apiUser + `UpdatePass?id_user=${iduser}&pass=${pass}`,
   );
   // this.BanThongBao();
   return res;
@@ -477,4 +486,5 @@ export {
   Delete_Media,
   AddThongBao_Like,
   getDSComentViewDetail,
+  UpdatePass,
 };

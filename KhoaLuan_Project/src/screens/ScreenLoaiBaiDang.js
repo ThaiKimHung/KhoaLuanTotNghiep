@@ -18,7 +18,7 @@ import Utils from '../apis/Utils';
 import {nkey} from '../apis/keyStore';
 import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 export default class ScreenLoaiBaiDang extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +41,7 @@ export default class ScreenLoaiBaiDang extends React.Component {
 
   _GetDsLoaiBaiDang = async () => {
     let res = await GetLoaiBaiDang(this.state.userID);
-    console.log('res ds loại bài đăng', res);
+    // console.log('res ds loại bài đăng', res);
     if (res.status === 1) {
       await this.setState({
         DsLoaiBaiDang: res.data,

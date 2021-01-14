@@ -16,7 +16,7 @@ import {Avatar, SearchBar} from 'react-native-elements';
 import {GetAllUser} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 
-const avatar = require('../assets/images/avatar.png');
+const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
 // const congratulation = require('../assets/images/congratulations.png');
 export default class SearchUser extends React.Component {

@@ -37,7 +37,7 @@ export default class Test extends Component {
     // alert(5);
     // console.log('hi');
     let res = await BanThongBao();
-    console.log('res thong báo', res);
+    // console.log('res thong báo', res);
   };
   // sendNotification = (data) => {
   //   let headers = {

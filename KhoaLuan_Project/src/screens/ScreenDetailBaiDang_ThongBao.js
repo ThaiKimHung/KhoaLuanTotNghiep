@@ -39,8 +39,7 @@ import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
-const avatar_mau = require('../assets/images/avatar.png');
+const avatar_mau = require('../assets/images/avatar.jpg');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -77,6 +76,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       idbaidang: '',
       hinh: '',
       image: '',
+      khenthuong: '',
+      loaibaidang: '',
     };
     // this.idBaiDang = '';
     // this.id_user = '';
@@ -116,7 +117,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like bài đăng', res);
+    // console.log('res add thông báo like bài đăng', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {
@@ -383,6 +384,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       group: await this.state.ChiTietBD[0].Group,
       hinh: await this.state.ChiTietBD[0].hinhanh,
       image: await this.state.ChiTietBD[0].image,
+      khenthuong: await this.state.ChiTietBD[0].KhenThuong,
+      loaibaidang: await this.state.ChiTietBD[0].Id_LoaiBaiDang,
       // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
@@ -410,6 +413,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     // this.id_user = user.ID_user;
     let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
+    let khenthuong1 = this.state.khenthuong ? this.state.khenthuong[0] : {};
     switch (idbaidang) {
       case 1:
         return (
@@ -474,11 +478,11 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                 width={FontSize.scale(45)}
                 height={FontSize.verticalScale(45)}
                 source={{
-                  uri: khenthuong.icon,
+                  uri: khenthuong1.icon,
                 }}
               />
               <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
-                {khenthuong.tieude_kt}
+                {khenthuong1.tieude_kt}
               </Text>
             </Animatable.View>
 

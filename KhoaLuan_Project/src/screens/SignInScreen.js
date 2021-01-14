@@ -29,7 +29,7 @@ const user = require('../assets/images/user.png');
 const lock = require('../assets/images/locked-padlock.png');
 const visibility = require('../assets/images/visibility.png');
 const invisible = require('../assets/images/invisible.png');
-const bg = require('../assets/images/bg.png');
+// const bg = require('../assets/images/bg.png');
 
 // const res = '';
 export default class SignInScreen extends React.Component {

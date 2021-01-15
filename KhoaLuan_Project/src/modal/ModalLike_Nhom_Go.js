@@ -14,11 +14,16 @@ import {
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import Utils from '../apis/Utils';
-import {AddLike, AddThongBao, BanThongBao} from '../apis/apiUser';
+import {
+  AddLike,
+  AddThongBao,
+  BanThongBao,
+  AddThongBao_Like,
+} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import {ROOTGlobal} from '../apis/dataGlobal';
-export default class ModalLike_Detail extends Component {
+export default class ModalLike_Nhom_Go extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,9 +76,9 @@ export default class ModalLike_Detail extends Component {
     let res = await AddLike(idbaidang, idlike, iduser);
     // console.log('ress add like', res);
     if (res.status == 1) {
-      Utils.goscreen(this, 'ScreenDetailBaiDang');
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      Utils.goscreen(this, 'BaiDangNhom');
+      await ROOTGlobal.getGo();
+      // await this._AddThongBao_Like();
     }
   };
   GanDSLike = async () => {
@@ -84,13 +89,11 @@ export default class ModalLike_Detail extends Component {
       });
     }
   };
-
   GanData = async () => {
-    const id_nguoidang = this.props.route.params.id_nguoidang.route.params
-      .id_nguoidang;
-    this.idbaidang = id_nguoidang.Id_BaiDang;
+    const {item = {}} = this.props.route.params.id_nguoidang;
+    this.idbaidang = item.Id_BaiDang;
     this.iduser = await Utils.ngetStorage(nkey.id_user);
-    // console.log('item nhan liek', id_nguoidang);
+    // console.log('item nhan liek', this.idbaidang);
   };
 
   _renderItem = ({item, index}) => {
@@ -120,10 +123,7 @@ export default class ModalLike_Detail extends Component {
 
   render() {
     const {display} = this.state;
-    // console.log(
-    //   'this modal like',
-    //   this.props.route.params.id_nguoidang.route.params.id_nguoidang,
-    // );
+    // console.log('this modal like', this.props);
     const po_X = this.props.route.params.x;
     const po_Y = this.props.route.params.y;
     return (
@@ -133,7 +133,7 @@ export default class ModalLike_Detail extends Component {
             onPress={() => this.change()}
             style={{
               flex: 1,
-              // justifyContent: 'center', alignItems: 'center'
+              //  justifyContent: 'center', alignItems: 'center'
             }}>
             <TouchableWithoutFeedback>
               <View

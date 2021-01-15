@@ -28,7 +28,7 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
-export default class PopUpModal_XoaSua_Detail extends Component {
+export default class PopUpModal_XoaSua_Detail_Nhom_Go extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,7 +73,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
         thanhcong: true,
       });
       this.xoathanhcong();
-      await ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.getGo();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -107,7 +107,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     this.setState({
       display: !this.state.display,
     });
-    Utils.goscreen(this, 'Home');
+    Utils.goscreen(this, 'BaiDangNhom');
   };
 
   loadNoiDungChinhSua = () => {};
@@ -152,10 +152,13 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                         padding: 5,
                       }}
                       onPress={() => {
-                        Utils.goscreen(this, 'Screen_EditBaiDang_Detail', {
-                          id_nguoidang: this.props.route.params,
-                        });
-                        // alert('Đang cập nhật');
+                        Utils.goscreen(
+                          this,
+                          'Screen_EditBaiDang_Detail_Nhom_Go',
+                          {
+                            id_nguoidang: this.props.route.params,
+                          },
+                        );
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
@@ -199,9 +202,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                       // }}
                     >
                       <Image source={edite} style={styles.image_st1}></Image>
-                      <Text style={{fontSize: 20, color: '#696969'}}>
-                        Sửa nè
-                      </Text>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
                     </View>
 
                     <View

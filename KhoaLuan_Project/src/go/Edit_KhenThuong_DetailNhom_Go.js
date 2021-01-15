@@ -39,7 +39,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
+export default class Edit_KhenThuong_DetailNhom_Go extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

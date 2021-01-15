@@ -29,8 +29,6 @@ export default class ModalLike extends Component {
     this.state = {
       display: true,
       DSLike: [],
-      x: Utils.ngetParam(this, 'x', 0) - 90,
-      y: Utils.ngetParam(this, 'y', 0) - 70,
     };
     // this.DSLike = [];
     this.idbaidang = '';
@@ -125,8 +123,11 @@ export default class ModalLike extends Component {
   }
 
   render() {
-    const {display, x, y} = this.state;
-    console.log('this modal like', x, y);
+    const {display} = this.state;
+
+    const po_X = this.props.route.params.x;
+    const po_Y = this.props.route.params.y;
+
     return (
       <View style={{}}>
         <Modal animationType="slide" visible={display} transparent={true}>
@@ -146,8 +147,8 @@ export default class ModalLike extends Component {
                   // justifyContent: 'center',
                   borderRadius: 10,
                   position: 'absolute',
-                  left: x,
-                  top: y,
+                  left: po_X,
+                  top: po_Y,
                 }}>
                 <View
                   style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>

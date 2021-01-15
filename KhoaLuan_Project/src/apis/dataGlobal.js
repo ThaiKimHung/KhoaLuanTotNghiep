@@ -31,6 +31,7 @@ const ROOTGlobal = {
   DsMedia: () => {},
   ScrollHome: () => {},
   GanDataChitiet_Detail_Thongbao: () => {},
+  GetChiTietBaiDang_Nhom_Go: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

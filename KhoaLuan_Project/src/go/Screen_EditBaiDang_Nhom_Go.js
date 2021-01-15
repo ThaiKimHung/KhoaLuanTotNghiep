@@ -32,7 +32,7 @@ const search = require('../assets/images/search.png');
 const pickimage = require('../assets/images/pickimage.png');
 const camera = require('../assets/images/photo-camera-interface-symbol-for-button.png');
 const close = require('../assets/images/cancel.png');
-export default class Screen_EditBaiDang extends React.Component {
+export default class Screen_EditBaiDang_Nhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -191,7 +191,8 @@ export default class Screen_EditBaiDang extends React.Component {
       Utils.goback(this);
       // await ROOTGlobal.GetDsAllBaiDang();
       ROOTGlobal.GetChiTietBaiDang();
-      ROOTGlobal.GetDsAllBaiDang();
+      ROOTGlobal.getGo();
+      // ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -318,7 +319,7 @@ export default class Screen_EditBaiDang extends React.Component {
         );
 
       case 2:
-        return Utils.goscreen(this, 'Edit_KhenThuong', {
+        return Utils.goscreen(this, 'Edit_KhenThuong_Nhom_Go', {
           id_nguoidang: this.props.route.params,
         });
       case 3:
@@ -423,7 +424,7 @@ export default class Screen_EditBaiDang extends React.Component {
           </View>
         );
       case 4:
-        return Utils.goscreen(this, 'Edit_ChaoMungTV', {
+        return Utils.goscreen(this, 'Edit_ChaoMungTV_Nhom_Go', {
           id_nguoidang: this.props.route.params,
         });
       case 6:

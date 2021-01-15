@@ -23,12 +23,12 @@ import Utils from '../apis/Utils';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useRoute} from '@react-navigation/native';
+// import {useRoute} from '@react-navigation/native';
 import {ROOTGlobal} from '../apis/dataGlobal';
 const deviceHeight = Dimensions.get('window').height;
 const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
-export default class PopUpModal_XoaSua_Detail extends Component {
+export default class PopUpModal_XoaSua_Nhom_Go extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +43,6 @@ export default class PopUpModal_XoaSua_Detail extends Component {
     this.setState({
       id_user: await Utils.ngetStorage(nkey.id_user),
     });
-    // await console.log('lưu iduser', this.state.id_user);
   }
   change() {
     this.setState({
@@ -56,8 +55,9 @@ export default class PopUpModal_XoaSua_Detail extends Component {
   XoaBaiDang = async () => {
     //xóa like
     let res_like = await DeleteLikeTrongBaiDang(this.state.idBaiDang);
-    // xóa cmt
+    // console.log('res like', res_like);
     let res_cmt = await DeleteCommentTrongBaiDang(this.state.idBaiDang);
+    // console.log('res cmt', res_cmt);
 
     //xóa bài đăng
     let res = await DeleteBaiDang(this.state.idBaiDang);
@@ -73,7 +73,7 @@ export default class PopUpModal_XoaSua_Detail extends Component {
         thanhcong: true,
       });
       this.xoathanhcong();
-      await ROOTGlobal.GetDsAllBaiDang();
+      ROOTGlobal.getGo();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -91,26 +91,25 @@ export default class PopUpModal_XoaSua_Detail extends Component {
 
   NhanThongTin = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    // console.log('this detail modal', this.props);
-    // console.log('DetailBaiDang modal', id_nguoidang);
-    let user = id_nguoidang[0].User_DangBai[0].ID_user;
-    let idbaidang = id_nguoidang[0].Id_BaiDang;
-    // await console.log('user', idbaidang);
+    // console.log('this modal xóa sửa', this.props);
+    // console.log('id_nguoidang modal xóa sửa', id_nguoidang);
+    let user = id_nguoidang ? id_nguoidang.User_DangBai[0] : {};
+
     await this.setState({
-      idBaiDang: idbaidang ? idbaidang : null,
-      id_NguoiDang: user ? user : null,
+      idBaiDang: id_nguoidang ? id_nguoidang.Id_BaiDang : null,
+      id_NguoiDang: user ? user.ID_user : null,
     });
-    // await console.log('this , truyền vào', this.state.id_NguoiDang);
   };
 
   xoathanhcong = () => {
     this.setState({
       display: !this.state.display,
     });
-    Utils.goscreen(this, 'Home');
+    // this.props.navigation.navigate('HomeScreen', {
+    //   delete_thanhcong,
+    // });
+    Utils.goscreen(this, 'BaiDangNhom');
   };
-
-  loadNoiDungChinhSua = () => {};
 
   async componentDidMount() {
     await this._getThongTin();
@@ -119,7 +118,6 @@ export default class PopUpModal_XoaSua_Detail extends Component {
 
   render() {
     const {display} = this.state;
-    // console.log('this modal popup detail', this);
     return (
       <View>
         <Modal
@@ -141,10 +139,12 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                   width: '100%',
                   paddingHorizontal: 10,
                   maxHeight: deviceHeight * 0.4,
-                  borderRadius: 10,
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                  // height: '50%',
                 }}>
                 {this.state.id_NguoiDang == this.state.id_user ? (
-                  <View style={{marginTop: 5}}>
+                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
                     <TouchableOpacity
                       style={{
                         flexDirection: 'row',
@@ -152,10 +152,9 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                         padding: 5,
                       }}
                       onPress={() => {
-                        Utils.goscreen(this, 'Screen_EditBaiDang_Detail', {
+                        Utils.goscreen(this, 'Screen_EditBaiDang_Nhom_Go', {
                           id_nguoidang: this.props.route.params,
                         });
-                        // alert('Đang cập nhật');
                       }}>
                       <Image source={edite} style={styles.image_st}></Image>
                       <Text style={{fontSize: 20}}>Sửa</Text>
@@ -186,22 +185,15 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View style={{marginTop: 5}}>
+                  <View style={{marginTop: 5, height: FontSize.Height(50)}}>
                     <View
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         padding: 5,
-                      }}
-                      // onPress={() => {
-                      //   this.change(),
-                      //     this.props.navigation.navigate('SearchUser');
-                      // }}
-                    >
+                      }}>
                       <Image source={edite} style={styles.image_st1}></Image>
-                      <Text style={{fontSize: 20, color: '#696969'}}>
-                        Sửa nè
-                      </Text>
+                      <Text style={{fontSize: 20, color: '#696969'}}>Sửa</Text>
                     </View>
 
                     <View
@@ -210,7 +202,8 @@ export default class PopUpModal_XoaSua_Detail extends Component {
                         alignItems: 'center',
                         padding: 5,
                       }}
-                      onPress={() => this.change()}>
+                      // onPress={() => this.change()}
+                    >
                       <Image source={delet} style={styles.image_st1}></Image>
                       <Text style={{fontSize: 20, color: '#696969'}}>Xóa</Text>
                     </View>

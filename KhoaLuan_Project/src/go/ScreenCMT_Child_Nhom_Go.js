@@ -38,6 +38,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 
 const avatar_mau = require('../assets/images/avatar.jpg');
+
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
 const daubacham = require('../assets/images/daubacham.png');
@@ -48,7 +49,7 @@ const welcome = require('../assets/images/welcome.png');
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenCMT_Child extends React.Component {
+export default class ScreenCMT_Child_Nhom_Go extends React.Component {
   constructor(props) {
     super(props);
     this.item = Utils.ngetParam(this, 'id_nguoidang');
@@ -66,9 +67,8 @@ export default class ScreenCMT_Child extends React.Component {
       hi: [],
       like: '',
       likecmt: '',
-      dsCmt_user: '',
     };
-    ROOTGlobal.GetDSCmt = this._GetDsCmt;
+    ROOTGlobal.GetDSCmt_Child_Nhom = this._GetDsCmt;
   }
 
   EmptyListMessage = ({item}) => {
@@ -83,9 +83,8 @@ export default class ScreenCMT_Child extends React.Component {
   };
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    await console.log('id nguoi dang', id_nguoidang);
-    await this.setState({
-      // dsCmt: id_nguoidang,
+    console.log('idn guoi dang', id_nguoidang);
+    this.setState({
       avatar_cmtlong: id_nguoidang.User_comment[0].avatar,
       username_cmtlon: id_nguoidang.User_comment[0].Username,
       noidung_cmtlon: id_nguoidang.NoiDung_cmt,
@@ -94,19 +93,18 @@ export default class ScreenCMT_Child extends React.Component {
       like: id_nguoidang.Like,
       likecmt: id_nguoidang.Like_Comment ? id_nguoidang.Like_Comment[0] : '',
     });
-    // await console.log('like cmt');
   };
 
   hamloadLienTuc = () => {
     setInterval(async () => {
       await this._GetDsCmt();
+      // console.log('hi');
     }, 5000);
   };
 
   _GetDsCmt = async () => {
     let id_user = await Utils.ngetStorage(nkey.id_user);
     let res = await GetDSCommnet(id_user, this.state.id_baidang);
-    //    console.log('res ds cmt', res);
 
     const {Comment_child = []} = res.data;
     const arrNew = [];
@@ -124,7 +122,6 @@ export default class ScreenCMT_Child extends React.Component {
       });
       await this.setState({
         dsCmt_Child: this.state.dsCmt.map((e) => e.Comment_child),
-        // dsCmt_user: this.state.dsCmt.map((e) => e.User_comment),
       });
     } else {
       this.setState({
@@ -133,12 +130,20 @@ export default class ScreenCMT_Child extends React.Component {
     }
   };
 
-  ganData = async () => {
-    let usercmt = (await this.state.dsCmt) ? this.state.dsCmt[0] : '';
-    // await console.log('ds cmt user', this.state.dsCmt_Child);
-    // await this.setState({
-    // await
-    // })
+  _BanThongBao = async () => {
+    let res = await BanThongBao();
+  };
+
+  _AddThongBao = async () => {
+    let strBody = JSON.stringify({
+      title: 'Đã trả lời bình luận của bạn',
+      create_tb_by: await Utils.ngetStorage(nkey.id_user),
+    });
+
+    // console.log('strBody add Thông báo', strBody);
+    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
+    await this._BanThongBao();
+    // console.log('res add thông báo', res);
   };
 
   _AddCommentLike = async (idcmt) => {
@@ -158,24 +163,6 @@ export default class ScreenCMT_Child extends React.Component {
     // console.log('res dele like', res);
     await this._GetDsCmt();
     // await this.GanData();
-  };
-
-  _BanThongBao = async () => {
-    let res = await BanThongBao();
-  };
-
-  _AddThongBao = async (idcmt_cha) => {
-    let strBody = JSON.stringify({
-      title: 'Đã trả lời bình luận của bạn',
-      create_tb_by: await Utils.ngetStorage(nkey.id_user),
-      id_bd: 0,
-      id_cmt: idcmt_cha,
-    });
-
-    // console.log('strBody add Thông báo', strBody);
-    let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
-    await this._BanThongBao();
-    // console.log('res add thông báo', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {
@@ -220,10 +207,10 @@ export default class ScreenCMT_Child extends React.Component {
       this.setState({
         text_Cmt: '',
       });
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GetChiTietBaiDang_Nhom_Go();
+      // await ROOTGlobal.GanDataChitiet_Nhom();
       await this._GetDsCmt();
-      await this._AddThongBao(this.state.id_cmtlon);
+      await this._AddThongBao();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -232,8 +219,8 @@ export default class ScreenCMT_Child extends React.Component {
         duration: 1500,
         icon: 'danger',
       });
-      await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GanDataChitiet();
+      await ROOTGlobal.GetChiTietBaiDang_Nhom_Go();
+      // await ROOTGlobal.GanDataChitiet_Nhom();
     }
   };
 
@@ -242,8 +229,7 @@ export default class ScreenCMT_Child extends React.Component {
   };
 
   _renderItem2 = ({item, index}) => {
-    // console.log(item);
-    let userCmt = item.User_comment ? item.User_comment[0] : '';
+    // console.log('item', item);
     let likecmt = item.Like_child;
     let like_comment = item.Like_Comment_child
       ? item.Like_Comment_child[0]
@@ -252,7 +238,7 @@ export default class ScreenCMT_Child extends React.Component {
       <View>
         <View style={{marginLeft: 10}}>
           <View style={styles.khung_TungCmt}>
-            <TouchableOpacity>
+            <View>
               <View
                 style={{
                   marginLeft: 5,
@@ -275,23 +261,24 @@ export default class ScreenCMT_Child extends React.Component {
                       : avatar_mau
                   }></Image>
               </View>
-            </TouchableOpacity>
-            <View style={{flex: 1}}>
-              <TouchableOpacity
-                onLongPress={() =>
-                  Utils.goscreen(this, 'PopUpModal_CMT_Child', {
-                    Detail_Cmt: item,
-                  })
-                }
-                style={styles.khung_tenUser_Cmt}>
+            </View>
+            <TouchableOpacity
+              style={{flex: 1}}
+              onLongPress={() => {
+                // alert(5),
+                Utils.goscreen(this, 'PopUpModal_CMT_Child_Nhom_Go', {
+                  Detail_Cmt: item,
+                });
+              }}>
+              <View style={styles.khung_tenUser_Cmt}>
                 <Text style={styles.txt_TenUser_Cmt}>
                   {item.User_comment_child[0].Username}
                 </Text>
                 <Text style={{marginLeft: 15, marginBottom: 5}}>
                   {item.NoiDung_cmt}
                 </Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -301,7 +288,7 @@ export default class ScreenCMT_Child extends React.Component {
             {likecmt ? (
               <TouchableOpacity
                 onLongPress={async (e) => {
-                  Utils.goscreen(this, 'ModalLike_CMT_Child', {
+                  Utils.goscreen(this, 'ModalLike_CMT_Child_Nhom', {
                     id_nguoidang: item,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
@@ -316,7 +303,7 @@ export default class ScreenCMT_Child extends React.Component {
             ) : (
               <TouchableOpacity
                 onLongPress={async (e) => {
-                  Utils.goscreen(this, 'ModalLike_CMT_Child', {
+                  Utils.goscreen(this, 'ModalLike_CMT_Child_Nhom', {
                     id_nguoidang: item,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
@@ -337,9 +324,8 @@ export default class ScreenCMT_Child extends React.Component {
 
   componentDidMount = async () => {
     await this.NhanData_Child();
-
+    // (await this.DSCMT_Child();
     await this._GetDsCmt();
-    await this.ganData();
     await this.hamloadLienTuc();
   };
 
@@ -348,13 +334,14 @@ export default class ScreenCMT_Child extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={() => {
-            Utils.goscreen(this, 'ScreenDetailBaiDang');
-            ROOTGlobal.GetDsAllBaiDang();
+          onPress={async () => {
+            Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom_Go');
+            await ROOTGlobal.GetChiTietBaiDang_Nhom();
+            await ROOTGlobal.GanDataChitiet_Nhom();
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>
-            <View>
+            <TouchableOpacity>
               <View
                 style={{
                   marginLeft: 5,
@@ -375,7 +362,7 @@ export default class ScreenCMT_Child extends React.Component {
                       : avatar_mau
                   }></Image>
               </View>
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 // flex: 1,
@@ -412,16 +399,11 @@ export default class ScreenCMT_Child extends React.Component {
                 <Text style={{marginLeft: 10, color: 'black'}}>Thích</Text>
               </View>
             )}
-
-            {/* <View>
-              <Text style={{marginLeft: 10}}>Trả lời</Text>
-            </View> */}
           </View>
         </View>
         <View style={styles.footer}>
           <FlatList
             data={this.state.dsCmt_Child[this.index]}
-            // data={this.state.dsCmt_Child}
             renderItem={this._renderItem2}
             keyExtractor={(item, index) => index.toString()}
             refreshing={this.state.refresh}

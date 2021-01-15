@@ -11,7 +11,6 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  ImageBackground,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/Feather';
@@ -22,7 +21,6 @@ import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
 import GoBack from '../components/GoBack';
 import ImagePicker from 'react-native-image-crop-picker';
-
 import {Update_BaiDang, File_Updatebaidang} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -32,7 +30,7 @@ const search = require('../assets/images/search.png');
 const pickimage = require('../assets/images/pickimage.png');
 const camera = require('../assets/images/photo-camera-interface-symbol-for-button.png');
 const close = require('../assets/images/cancel.png');
-export default class Screen_EditBaiDang extends React.Component {
+export default class Screen_EditBaiDang_Detail_Nhom_Go extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,6 +38,7 @@ export default class Screen_EditBaiDang extends React.Component {
       tieude: '',
       Image: '',
       camera: '',
+      idbaidang: 0,
     };
     this.id_nguoidang = {};
   }
@@ -54,13 +53,17 @@ export default class Screen_EditBaiDang extends React.Component {
     });
   }
 
-  nhanData = () => {
+  nhanData = async () => {
     this.id_nguoidang = this.props.route.params.id_nguoidang.id_nguoidang;
-    // console.log('this id người đăng ', this.id_nguoidang.Id_BaiDang);
+    // console.log('this id người đăng ', this.id_nguoidang);
     this.setState({
-      tieude: this.id_nguoidang.title,
-      noidung: this.id_nguoidang.NoiDung,
+      tieude: this.id_nguoidang[0].title,
+      noidung: this.id_nguoidang[0].NoiDung,
+      idbaidang: this.id_nguoidang[0].Id_BaiDang,
     });
+    // const {id_nguoidang = {}} = this.props.route.params;
+    // await console.log('tieu de', this.id_nguoidang);
+    // await console.log('noi dung', this.state.idbaidang);
   };
   openGalary = () => {
     ImagePicker.openPicker({
@@ -128,7 +131,7 @@ export default class Screen_EditBaiDang extends React.Component {
           }));
     }
     // console.log('strBody file ảnh Galary---------', strBody);
-    let res = await File_Updatebaidang(this.id_nguoidang.Id_BaiDang, strBody);
+    let res = await File_Updatebaidang(await this.state.idbaidang, strBody);
     // console.log('res file ảnh Galary-----', res);
   };
 
@@ -146,7 +149,7 @@ export default class Screen_EditBaiDang extends React.Component {
           }));
     }
     // console.log('strBody file ảnh Camera ---------', strBody);
-    let res = await File_Updatebaidang(this.id_nguoidang.Id_BaiDang, strBody);
+    let res = await File_Updatebaidang(await this.state.idbaidang, strBody);
     // console.log('res file ảnh Camera-----', res);
   };
 
@@ -159,8 +162,8 @@ export default class Screen_EditBaiDang extends React.Component {
   };
 
   EditBaiDang = async () => {
-    let idbaidang = this.id_nguoidang.Id_BaiDang;
-    let id_loaibaidang = this.id_nguoidang.Id_LoaiBaiDang;
+    let idbaidang = this.id_nguoidang[0].Id_BaiDang;
+    let id_loaibaidang = this.id_nguoidang[0].Id_LoaiBaiDang;
     // const today = new Date();
     // const date =
     //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
@@ -178,7 +181,7 @@ export default class Screen_EditBaiDang extends React.Component {
 
     // console.log('strBody tin nhanh', strBody);
     let res = await Update_BaiDang(strBody);
-    // console.log('res update bài đăng screen edit bai dang', res);
+    // console.log('res update bài đăng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -187,11 +190,13 @@ export default class Screen_EditBaiDang extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      // Utils.goscreen(this, 'Home');
-      Utils.goback(this);
+      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+      //   Utils.gobac;
       // await ROOTGlobal.GetDsAllBaiDang();
-      ROOTGlobal.GetChiTietBaiDang();
-      ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.GetChiTietBaiDang_Nhom();
+
+      await ROOTGlobal.GetDsAllBaiDang_Nhom();
+      await ROOTGlobal.GanDataChitiet_Nhom();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -206,14 +211,13 @@ export default class Screen_EditBaiDang extends React.Component {
   loadNoidungChiTiet = () => {
     // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params.id_nguoidang;
-    // console.log('this screen Detail bài đăng', id_nguoidang);
+    // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
-    // console.log('this screen Detail user', user);
     this.idBaiDang = id_nguoidang.Id_BaiDang;
     this.id_user = user.ID_user;
-    let idloaibaidang = id_nguoidang.Id_LoaiBaiDang;
-    // console.log('ids loai bd', idloaibaidang);
-
+    let idloaibaidang = id_nguoidang[0].Id_LoaiBaiDang;
+    // console.log('id loai bd', id_nguoidang[0].hinhanh);
+    let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     switch (idloaibaidang) {
       case 1:
         return (
@@ -318,7 +322,7 @@ export default class Screen_EditBaiDang extends React.Component {
         );
 
       case 2:
-        return Utils.goscreen(this, 'Edit_KhenThuong', {
+        return Utils.goscreen(this, 'Edit_ChaoMung_Detail_Nhom_Go', {
           id_nguoidang: this.props.route.params,
         });
       case 3:
@@ -423,7 +427,7 @@ export default class Screen_EditBaiDang extends React.Component {
           </View>
         );
       case 4:
-        return Utils.goscreen(this, 'Edit_ChaoMungTV', {
+        return Utils.goscreen(this, 'Edit_ChaoMung_Detail_Nhom_Go', {
           id_nguoidang: this.props.route.params,
         });
       case 6:
@@ -509,7 +513,7 @@ export default class Screen_EditBaiDang extends React.Component {
                 style={styles.textinput}
                 onChangeText={(text) => this.handleTieuDe(text)}
                 value={this.state.tieude}></TextInput>
-              {id_nguoidang.hinhanh ? (
+              {id_nguoidang[0].hinhanh ? (
                 <View style={{marginTop: 5}}>
                   <Image
                     source={{uri: id_nguoidang.image}}
@@ -803,7 +807,7 @@ export default class Screen_EditBaiDang extends React.Component {
                 onChangeText={(text) => this.handleNoiDung(text)}
                 value={this.state.noidung}></TextInput>
 
-              {id_nguoidang.hinhanh ? (
+              {id_nguoidang[0].hinhanh ? (
                 <View style={{marginTop: 5}}>
                   <Image
                     source={{uri: id_nguoidang.image}}
@@ -1078,6 +1082,18 @@ export default class Screen_EditBaiDang extends React.Component {
                 style={styles.textinput}
                 onChangeText={(text) => this.handleTieuDe(text)}
                 value={this.state.tieude}></TextInput>
+
+              {id_nguoidang[0].hinhanh ? (
+                <View style={{marginTop: 5}}>
+                  <Image
+                    source={{uri: id_nguoidang.image}}
+                    style={{
+                      height: FontSize.scale(200),
+                      width: '100%',
+                      backgroundColor: 'blue',
+                    }}></Image>
+                </View>
+              ) : null}
             </View>
             <View style={styles.footer}>
               <Text
@@ -1281,15 +1297,15 @@ export default class Screen_EditBaiDang extends React.Component {
         );
     }
   };
-  componentDidMount() {
-    this.nhanData();
-    this.loadNoidungChiTiet();
-  }
+
+  componentDidMount = async () => {
+    await this.nhanData();
+  };
 
   render() {
     // const user = this.props.route.params ? this.props.route.params : '';
-    // console.log('user khen thưởng', user);
-    // console.log('props edit bài đăng', this.props);
+    // console.log('this .props edit detail', user);
+    // console.log('props edit bài đăng chi tiết', this.props);
     return <View style={styles.container}>{this.loadNoidungChiTiet()}</View>;
   }
 }
@@ -1312,6 +1328,7 @@ const styles = StyleSheet.create({
     // height: '10%',
     // width: '100%',
     padding: 10,
+    // backgroundColor: 'green',
   },
 
   textinput: {

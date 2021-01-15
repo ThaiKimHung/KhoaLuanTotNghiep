@@ -141,20 +141,28 @@ export default class ModalLike_CMT extends Component {
     //   'this modal like',
     //   this.props.route.params.id_nguoidang.route.params.id_nguoidang,
     // );
+    const po_X = this.props.route.params.x;
+    const po_Y = this.props.route.params.y;
     return (
       <View style={styles.container}>
         <Modal animationType="slide" visible={display} transparent={true}>
           <TouchableOpacity
             onPress={() => this.change()}
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            style={{
+              flex: 1,
+              // , justifyContent: 'center', alignItems: 'center'
+            }}>
             <TouchableWithoutFeedback>
               <View
                 style={{
                   height: FontSize.scale(38),
                   //   width: '50%',
                   backgroundColor: 'white',
-                  justifyContent: 'center',
+                  // justifyContent: 'center',
                   borderRadius: 10,
+                  position: 'absolute',
+                  left: po_X,
+                  top: po_Y,
                 }}>
                 <View
                   style={{flex: 1, backgroundColor: 'blue', borderRadius: 10}}>

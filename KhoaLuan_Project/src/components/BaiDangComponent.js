@@ -572,10 +572,13 @@ export default class BaiDangComponenet extends React.Component {
             {dslike ? (
               // đây sẽ là  delete
               <TouchableOpacity
+                // activeOpacity={1}
                 style={styles.khung_Thich}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
                   });
                 }}
                 onPress={() => {
@@ -597,7 +600,7 @@ export default class BaiDangComponenet extends React.Component {
 
               <TouchableOpacity
                 style={styles.khung_Thich}
-                activeOpacity={0.8}
+                // activeOpacity={1}
                 onLongPress={async (e) => {
                   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
@@ -623,7 +626,7 @@ export default class BaiDangComponenet extends React.Component {
 
             <TouchableOpacity
               style={styles.khung_BinhLuan}
-              activeOpacity={0.8}
+              // activeOpacity={0.8}
               onPress={this.props.onPress}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>

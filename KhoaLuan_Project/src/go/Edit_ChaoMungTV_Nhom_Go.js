@@ -20,26 +20,23 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import SvgUri from 'react-native-svg-uri';
-import GoBack from '../components/GoBack';
-
+import {ROOTGlobal} from '../apis/dataGlobal';
 import {
-  GetDSKhenThuong,
-  AddBaiDang_KhenThuong,
-  AddBaiDang_KhenThuong_Nhom,
-  Update_BaiDang_KhenThuong,
+  PostBaiDang,
+  PostBaiDang_Nhom,
+  GetDSGroup,
+  Update_BaiDang,
   GetDSNhanVien,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 
-import {ROOTGlobal} from '../apis/dataGlobal';
 import _ from 'lodash';
-const cancel = require('../assets/images/cancel.png');
-const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
-const group = require('../assets/images/group_people.png');
+const goback = require('../assets/images/go-back-left-arrow.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
+const cancel = require('../assets/images/cancel.png');
+export default class Edit_ChaoMungTV_Nhom_Go extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,24 +53,28 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       mangtam: [],
       isOpen: false,
       nhomSelected: '',
+      idbaidang: '',
+      idloaibaidang: '',
       title: '',
       noidung: '',
       itemSelec_chuyenve: 0,
-      idbaidang: '',
-      idloaibaidang: '',
       isActive_User: false,
       dsUser: '',
       tenUser: [],
       refresh: true,
     };
   }
-  EmptyListMessage = ({item}) => {
-    return (
-      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
-        No Data Found
-      </Text>
-    );
-  };
+  handleNoiDung(text) {
+    this.setState({
+      noidung: text,
+    });
+    // alert(text);
+  }
+  // handleNoidung(text) {
+  //   this.setState({
+  //     haveValue_Noidung: text,
+  //   });
+  // }
 
   _GetAllUser = async () => {
     let res = await GetDSNhanVien();
@@ -130,143 +131,49 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       </View>
     );
   };
-  _GetDsKhenThuong = async () => {
-    let res = await GetDSKhenThuong();
-    // console.log('res ds khen thưởng', res);
-    if (res.status === 1) {
-      this.setState({
-        DsKhenThuong: res.Data,
-        refresh: false,
-      });
-    } else {
-      this.setState({
-        refresh: false,
-      });
-    }
-  };
-
-  handleNoiDung(text) {
-    this.setState({
-      noidung: text,
-    });
-  }
 
   ChuyenData = async (item) => {
-    Utils.goscreen(this, 'Edit_KhenThuong_DetailNhom');
+    Utils.goscreen(this, 'Edit_ChaoMungTV_Nhom');
     this.setState({
       DataChuyenVe: item,
     });
   };
 
-  renderItem = ({item, index}) => {
-    return (
-      <View>
-        {this.state.selectedItem == item.ID_khenthuong ? (
-          <TouchableOpacity
-            onPress={() => {
-              if (this.state.selectedItem == item.ID_khenthuong) {
-                this.setState({
-                  selectedItem: '',
-                });
-              }
-            }}
-            style={[
-              styles.khung,
-              {
-                marginLeft: index % 2 != 0 ? 5 : 0,
-                backgroundColor: '#87CEFF',
-              },
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                selectedItem: item.ID_khenthuong,
-              });
-            }}
-            style={[
-              styles.khung,
-              {marginLeft: index % 2 != 0 ? 5 : 0, backgroundColor: 'yellow'},
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
-  };
-
-  GanData = async () => {
-    const {
-      id_nguoidang = {},
-    } = this.props.route.params.id_nguoidang.id_nguoidang;
-    // console.log('id', id_nguoidang);
-    let tit = id_nguoidang.title;
-    let khenthuong = id_nguoidang[0].KhenThuong
-      ? id_nguoidang[0].KhenThuong[0]
-      : '';
-    this.setState({
-      title: id_nguoidang[0].title,
-      noidung: id_nguoidang[0].NoiDung,
-      selectedItem: khenthuong.id_khenthuong,
-      idbaidang: id_nguoidang[0].Id_BaiDang,
-      idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
-    });
-    // await console.log('loại khen thưởng', this.state.itemSelec_chuyenve);
-    // await console.log('title', this.state.title);
-    // await console.log('noi dung', this.state.noidung);
-    // await console.log('item', this.state.selectedItem);
+  GanDataSauKhiChuyenVe = () => {
+    this.state.DataChuyenVe
+      ? this.setState({
+          userSelected: this.state.DataChuyenVe.ID_user,
+        })
+      : null;
+    // console.log('user selected', this.state.userSelected);
   };
 
   EditBaiDang = async () => {
+    // const today = new Date();
+    // const date =
+    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+    // const time = today.getHours() + ':' + today.getMinutes();
     let ten = '';
     for (var i = 0; i < this.state.tenUser.length; i++) {
       ten += this.state.tenUser[i] + ' ';
     }
     // let user = _.size(tenUser);
     let title_ne = _.size(this.state.tenUser) > 0 ? ten : this.state.title;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
       title: title_ne,
       NoiDung: this.state.noidung,
       Id_Group: this.state.group ? this.state.group.id_group : 0,
-      id_khenthuong: await this.state.selectedItem,
+      id_khenthuong: 0,
       typepost: '',
       // UpdateDate: date + 'T' + time,
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
 
-    // console.log('strBody edit khen thưởng', strBody);
-    let res = await Update_BaiDang_KhenThuong(strBody);
-    // console.log('res update edit khen thưởng', res);
+    // console.log('strBody edit CMTVM', strBody);
+    let res = await Update_BaiDang(strBody);
+    // console.log('res update edit CMTVM', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -275,12 +182,10 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      // Utils.goscreen(this, 'Home');
-      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
-      await ROOTGlobal.GetDsAllBaiDang_Nhom();
-      await ROOTGlobal.GetChiTietBaiDang_Nhom();
-      await ROOTGlobal.GanDataChitiet_Nhom();
+      Utils.goscreen(this, 'BaiDangNhom');
+      // await ROOTGlobal.GetDsAllBaiDang();
       // await ROOTGlobal.GetChiTietBaiDang();
+      await ROOTGlobal.getGo();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -291,37 +196,64 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       });
     }
   };
+
+  _GetDSGroup = async () => {
+    let res = await GetDSGroup(await Utils.ngetStorage(nkey.id_user));
+    // let res = await GetDSGroup(1);
+    // console.log('res ds group', res);
+    if (res.status == 1) {
+      this.setState({
+        dsNhom: res.Data,
+      });
+      // console.log('state', this.state.dsNhom);
+    }
+  };
+
+  ganData = async () => {
+    const {
+      id_nguoidang = {},
+    } = this.props.route.params.id_nguoidang.id_nguoidang;
+    // console.log('id người đằng', id_nguoidang);
+    this.setState({
+      title: id_nguoidang.title,
+      noidung: id_nguoidang.NoiDung,
+      group: id_nguoidang ? id_nguoidang.Group[0] : '',
+      idbaidang: id_nguoidang.Id_BaiDang,
+      idloaibaidang: id_nguoidang.Id_LoaiBaiDang,
+    });
+    // await console.log('data mang ve', this.state.DataChuyenVe);
+    // await console.log('ten', this.state.title);
+    // await console.log('id bai dang', this.state.idbaidang);
+
+    // console.log('noi dung', this.noidung);
+  };
+
   componentDidMount = async () => {
     await this._GetAllUser();
-    await this._GetDsKhenThuong();
-    await this.GanData();
+    await this._GetDSGroup();
+    // await this.LaymangTam();
+    await this.ganData();
   };
+
   render() {
     const {isActive_User, selectLyDo, tenUser} = this.state;
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
-
+    // let group = id_nguoidang.Group[0].ten_group;
+    // console.log('check group', group);
+    // console.log('id nguoi dang', id_nguoidang);
+    // console.log('this detail props chào mừng', this.props);
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.back}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'space-between',
-              // backgroundColor: '#007DE3',
-            }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View
-              style={{
-                flexDirection: 'row',
-                margin: 5,
-                alignItems: 'center',
-                width: '100%',
-              }}>
+              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() => {
-                  Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+                  Utils.goscreen(this, 'BaiDangNhom');
+                  // Utils.goback(this/);
                 }}>
                 <Image
                   source={goback}
@@ -330,23 +262,20 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
                     width: FontSize.verticalScale(18),
                   }}></Image>
               </TouchableOpacity>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                }}>
-                <Text style={styles.title}>Sửa khen thưởng</Text>
-              </View>
-              <View style={{justifyContent: 'center'}}>
-                <TouchableOpacity onPress={() => this.EditBaiDang()}>
-                  <Text style={styles.textDang}>Sửa</Text>
-                </TouchableOpacity>
-              </View>
+
+              <Text style={styles.title}>Sửa bài đăng CMTVM</Text>
             </View>
+            <TouchableOpacity
+              onPress={() => this.EditBaiDang()}
+              style={{justifyContent: 'center'}}>
+              <Text style={styles.textDang}>Sửa</Text>
+
+              {/* {this._render_Dang()} */}
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.header}>
+        <View style={styles.footer}>
           <View style={styles.khung_Nhap}>
             <Text
               style={{
@@ -438,72 +367,60 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
                 placeholder="Mời bạn nhập nội dung"
                 style={{fontSize: FontSize.reSize(20)}}
                 onChangeText={(text) => this.handleNoiDung(text)}
-                value={
-                  this.state.noidung
-                  // ? this.setState({})
-                  // : this.state.haveValue_NoiDung
-                }></TextInput>
+                value={this.state.noidung}></TextInput>
             </View>
           </View>
         </View>
-
-        <View style={styles.footer}>
-          {this.state.DsKhenThuong.length != 0 ? (
-            <FlatList
-              data={this.state.DsKhenThuong}
-              renderItem={this.renderItem}
-              ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
-              numColumns={2}
-              keyExtractor={(item, index) => index.toString()}
-              ListEmptyComponent={this.EmptyListMessage}
-              refreshing={this.state.refresh}
-              onRefresh={() => {
-                this.setState({refresh: true}, this._GetDsKhenThuong);
-              }}
-            />
-          ) : (
-            <ActivityIndicator size="large" color="#0000ff" />
-          )}
-        </View>
-      </ScrollView>
+      </View>
     );
   }
 }
+
 const widthScreen = Dimensions.get('screen').width;
 const heightScreen = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: 'yellow',
   },
   header: {
-    backgroundColor: '#9C9C9C',
-    // justifyContent: 'center',
-    // flex: 1,
-    height: 'auto',
-    padding: 10,
-    borderRadius: 10,
-    marginHorizontal: 10,
-    // marginVertical: 10,
+    height: FontSize.scale(45),
+    justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#007DE3',
   },
   footer: {
-    height: 'auto',
-    // width: '100%',
-    padding: 10,
-    // position: 'absolute',
+    flex: 1,
+    // backgroundColor: '#FFCC99',
   },
-  khung: {
-    // flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    borderRadius: 10,
-    height: FontSize.scale(heightScreen / 2.5),
-    width: FontSize.verticalScale(widthScreen / 2.5),
+  title: {
+    fontSize: FontSize.reSize(20),
+    marginLeft: 10,
   },
-  container_khung: {
-    width: FontSize.verticalScale(100),
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 2,
+  textDang: {
+    fontSize: FontSize.reSize(20),
+    marginRight: 10,
+  },
+  textDang_invisibale: {
+    fontSize: FontSize.reSize(20),
+    marginRight: 10,
+    color: '#696969',
+  },
+  khung_tieude: {
+    // height: FontSize.scale(40),
+    backgroundColor: '#DDDDDD80',
+    borderRadius: 20,
+    marginBottom: 5,
+    marginTop: 10,
+    padding: 5,
+  },
+  khung_noidung: {
+    // height: FontSize.scale(40),
+    backgroundColor: '#DDDDDD80',
+    borderRadius: 20,
+    marginBottom: 5,
+    marginTop: 10,
+    padding: 5,
   },
   khung_DS: {
     // width: FontSize.verticalScale(100),
@@ -516,7 +433,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 20,
     fontSize: FontSize.reSize(20),
-    maxHeight: 150,
+  },
+  khung_Nhap: {
+    marginHorizontal: 10,
+    marginTop: 20,
   },
   thanh_search: {
     height: FontSize.scale(40),
@@ -532,36 +452,5 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     tintColor: '#696969',
     marginLeft: 10,
-  },
-  back: {
-    flexDirection: 'row',
-    height: FontSize.scale(45),
-    backgroundColor: '#007DE3',
-    alignItems: 'center',
-    // justifyContent: 'center',
-    // marginBottom: 10,
-  },
-  title: {
-    fontSize: FontSize.reSize(20),
-    marginLeft: 10,
-    // textAlign: 'center',
-  },
-  textDang: {
-    fontSize: FontSize.reSize(20),
-    marginRight: 10,
-  },
-  textDang_invisibale: {
-    fontSize: FontSize.reSize(20),
-    marginRight: 10,
-    color: '#696969',
-    textAlign: 'center',
-  },
-  khung_tieude: {
-    // height: FontSize.scale(40),
-    backgroundColor: '#DDDDDD80',
-    borderRadius: 20,
-    marginBottom: 5,
-    marginTop: 10,
-    padding: 5,
   },
 });

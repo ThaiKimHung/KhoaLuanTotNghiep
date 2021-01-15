@@ -27,6 +27,7 @@ import {
   AddBaiDang_KhenThuong,
   AddBaiDang_KhenThuong_Nhom,
   Update_BaiDang_KhenThuong,
+  Update_BaiDang,
   GetDSNhanVien,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -39,7 +40,7 @@ const goback = require('../assets/images/go-back-left-arrow.png');
 const search = require('../assets/images/search.png');
 const group = require('../assets/images/group_people.png');
 const dropdown = require('../assets/images/caret-down.png');
-export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
+export default class Edit_KhenThuong_DetailNhom_Go extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -130,21 +131,6 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
       </View>
     );
   };
-  _GetDsKhenThuong = async () => {
-    let res = await GetDSKhenThuong();
-    // console.log('res ds khen thưởng', res);
-    if (res.status === 1) {
-      this.setState({
-        DsKhenThuong: res.Data,
-        refresh: false,
-      });
-    } else {
-      this.setState({
-        refresh: false,
-      });
-    }
-  };
-
   handleNoiDung(text) {
     this.setState({
       noidung: text,
@@ -152,71 +138,10 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
   }
 
   ChuyenData = async (item) => {
-    Utils.goscreen(this, 'Edit_KhenThuong_DetailNhom');
+    Utils.goscreen(this, 'Edit_ChaoMung_Detail_Nhom');
     this.setState({
       DataChuyenVe: item,
     });
-  };
-
-  renderItem = ({item, index}) => {
-    return (
-      <View>
-        {this.state.selectedItem == item.ID_khenthuong ? (
-          <TouchableOpacity
-            onPress={() => {
-              if (this.state.selectedItem == item.ID_khenthuong) {
-                this.setState({
-                  selectedItem: '',
-                });
-              }
-            }}
-            style={[
-              styles.khung,
-              {
-                marginLeft: index % 2 != 0 ? 5 : 0,
-                backgroundColor: '#87CEFF',
-              },
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                selectedItem: item.ID_khenthuong,
-              });
-            }}
-            style={[
-              styles.khung,
-              {marginLeft: index % 2 != 0 ? 5 : 0, backgroundColor: 'yellow'},
-            ]}>
-            <View style={styles.khung_DS}>
-              <SvgUri
-                width={FontSize.scale(100)}
-                height={FontSize.verticalScale(100)}
-                source={{
-                  uri: item.icon,
-                }}
-              />
-              <Text style={{margin: 5, textAlign: 'center'}}>
-                {item.tieude}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
   };
 
   GanData = async () => {
@@ -225,13 +150,10 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
     } = this.props.route.params.id_nguoidang.id_nguoidang;
     // console.log('id', id_nguoidang);
     let tit = id_nguoidang.title;
-    let khenthuong = id_nguoidang[0].KhenThuong
-      ? id_nguoidang[0].KhenThuong[0]
-      : '';
+
     this.setState({
       title: id_nguoidang[0].title,
       noidung: id_nguoidang[0].NoiDung,
-      selectedItem: khenthuong.id_khenthuong,
       idbaidang: id_nguoidang[0].Id_BaiDang,
       idloaibaidang: id_nguoidang[0].Id_LoaiBaiDang,
     });
@@ -248,10 +170,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
     }
     // let user = _.size(tenUser);
     let title_ne = _.size(this.state.tenUser) > 0 ? ten : this.state.title;
-    // const today = new Date();
-    // const date =
-    //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
-    // const time = today.getHours() + ':' + today.getMinutes();
+
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
@@ -265,7 +184,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
     });
 
     // console.log('strBody edit khen thưởng', strBody);
-    let res = await Update_BaiDang_KhenThuong(strBody);
+    let res = await Update_BaiDang(strBody);
     // console.log('res update edit khen thưởng', res);
     if (res.status == 1) {
       showMessage({
@@ -276,9 +195,10 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
         icon: 'success',
       });
       // Utils.goscreen(this, 'Home');
-      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
-      await ROOTGlobal.GetDsAllBaiDang_Nhom();
+      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom_Go');
       await ROOTGlobal.GetChiTietBaiDang_Nhom();
+      await ROOTGlobal.getGo();
+
       await ROOTGlobal.GanDataChitiet_Nhom();
       // await ROOTGlobal.GetChiTietBaiDang();
     } else {
@@ -293,15 +213,12 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
   };
   componentDidMount = async () => {
     await this._GetAllUser();
-    await this._GetDsKhenThuong();
     await this.GanData();
   };
   render() {
     const {isActive_User, selectLyDo, tenUser} = this.state;
-    const {
-      id_nguoidang = {},
-    } = this.props.route.params.id_nguoidang.id_nguoidang;
-
+    const {id_nguoidang = {}} = this.props.route.params;
+    // console.log('id người dăng test- ------', id_nguoidang);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.back}>
@@ -335,7 +252,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
                   flex: 1,
                   alignItems: 'center',
                 }}>
-                <Text style={styles.title}>Sửa khen thưởng</Text>
+                <Text style={styles.title}>Sửa CMTV Nhóm</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
                 <TouchableOpacity onPress={() => this.EditBaiDang()}>
@@ -447,24 +364,7 @@ export default class Edit_KhenThuong_Detail_Nhom extends React.Component {
           </View>
         </View>
 
-        <View style={styles.footer}>
-          {this.state.DsKhenThuong.length != 0 ? (
-            <FlatList
-              data={this.state.DsKhenThuong}
-              renderItem={this.renderItem}
-              ItemSeparatorComponent={() => <View style={{height: 10}}></View>}
-              numColumns={2}
-              keyExtractor={(item, index) => index.toString()}
-              ListEmptyComponent={this.EmptyListMessage}
-              refreshing={this.state.refresh}
-              onRefresh={() => {
-                this.setState({refresh: true}, this._GetDsKhenThuong);
-              }}
-            />
-          ) : (
-            <ActivityIndicator size="large" color="#0000ff" />
-          )}
-        </View>
+        <View style={styles.footer}></View>
       </ScrollView>
     );
   }
@@ -476,13 +376,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#9C9C9C',
+    // backgroundColor: '#9C9C9C',
     // justifyContent: 'center',
     // flex: 1,
     height: 'auto',
-    padding: 10,
-    borderRadius: 10,
+    // padding: 10,
+    // borderRadius: 10,
     marginHorizontal: 10,
+    marginVertical: 10,
     // marginVertical: 10,
   },
   footer: {

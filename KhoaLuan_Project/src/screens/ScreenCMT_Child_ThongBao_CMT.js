@@ -289,9 +289,11 @@ export default class ScreenCMT_Child_ThongBao_CMT extends React.Component {
           }}>
           {likecmt ? (
             <TouchableOpacity
-              onLongPress={async () => {
+              onLongPress={async (e) => {
                 Utils.goscreen(this, 'ModalLike_CMT_Child_Thongbao', {
                   id_nguoidang: item,
+                  x: e.nativeEvent.pageX,
+                  y: e.nativeEvent.pageY,
                 });
               }}
               onPress={() => this._DeleteCommentLike(item.id_cmt)}>
@@ -302,11 +304,15 @@ export default class ScreenCMT_Child_ThongBao_CMT extends React.Component {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              onLongPress={async () => {
-                Utils.goscreen(this, 'ModalLike_CMT_Child_Thongbao', {
-                  id_nguoidang: item,
-                });
-              }}
+              onLongPress={
+                (async = (e) => {
+                  Utils.goscreen(this, 'ModalLike_CMT_Child_Thongbao', {
+                    id_nguoidang: item,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
+                  });
+                })
+              }
               onPress={() => {
                 this._AddCommentLike(item.id_cmt);
                 this._AddThongBao_LikeCMT(item.id_cmt);

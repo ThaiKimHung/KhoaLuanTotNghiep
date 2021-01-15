@@ -26,10 +26,12 @@ import {
   PostBaiDang_Nhom,
   GetDSGroup,
   Update_BaiDang,
+  GetDSNhanVien,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
-
+import _ from 'lodash';
+const cancel = require('../assets/images/cancel.png');
 const search = require('../assets/images/search.png');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const dropdown = require('../assets/images/caret-down.png');
@@ -55,6 +57,10 @@ export default class Edit_ChaoMungTV extends React.Component {
       title: '',
       noidung: '',
       itemSelec_chuyenve: 0,
+      isActive_User: false,
+      dsUser: '',
+      tenUser: [],
+      refresh: true,
     };
   }
   handleNoiDung(text) {
@@ -68,6 +74,61 @@ export default class Edit_ChaoMungTV extends React.Component {
   //     haveValue_Noidung: text,
   //   });
   // }
+  _GetAllUser = async () => {
+    let res = await GetDSNhanVien();
+    // console.log('ress all user bên search user', res);
+    if (res.status == 1) {
+      this.setState({
+        dsUser: res.Data,
+        refresh: false,
+      });
+    } else {
+      this.setState({refresh: false});
+      alert('thất bại tải ds user');
+    }
+    // await console.log('ds thành viên', this.state.dsUser);
+  };
+
+  _renderActiveUser = () => {
+    this.setState({isActive_User: !this.state.isActive_User});
+  };
+  // _keyExtractor = ({ item, index }) => index.toString();
+
+  _callBackUser = async (item) => {
+    // this.setState({
+    //   noidung:
+    // });
+    this.state.tenUser.push(item.hoten);
+    // await console.log(this.state.tenUser);
+    // this.setState(() => {
+    this._renderActiveUser();
+    // () => this._render_Dang();
+    // });
+  };
+
+  _keyExtracUser = (item, index) => `${item.id_NV}`;
+  _renderPHUser = ({item, index}) => {
+    // console.log(item);
+    return (
+      <View
+        key={index}
+        style={{
+          backgroundColor: 'white',
+        }}>
+        <TouchableOpacity
+          onPress={() => this._callBackUser(item)}
+          style={{paddingHorizontal: 15, paddingVertical: 16}}>
+          <Text>{item.hoten}</Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: 2,
+            width: '100%',
+            // backgroundColor: colors.black_20,
+          }}></View>
+      </View>
+    );
+  };
 
   ChuyenData = async (item) => {
     Utils.goscreen(this, 'Edit_ChaoMungTV_Detail');
@@ -90,12 +151,17 @@ export default class Edit_ChaoMungTV extends React.Component {
     // const date =
     //   today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
     // const time = today.getHours() + ':' + today.getMinutes();
+    let ten = '';
+    for (var i = 0; i < this.state.tenUser.length; i++) {
+      ten += this.state.tenUser[i] + ' ';
+    }
+    // let user = _.size(tenUser);
+    let title_ne = _.size(this.state.tenUser) > 0 ? ten : this.state.title;
+
     let strBody = JSON.stringify({
       ID_BaiDang: await this.state.idbaidang,
       Id_LoaiBaiDang: await this.state.idloaibaidang,
-      title: this.state.DataChuyenVe
-        ? this.state.DataChuyenVe.Username
-        : this.state.title,
+      title: title_ne,
       NoiDung: this.state.noidung,
       Id_Group: this.state.group ? this.state.group.id_group : 0,
       id_khenthuong: 0,
@@ -163,13 +229,13 @@ export default class Edit_ChaoMungTV extends React.Component {
   };
 
   componentDidMount = async () => {
+    await this._GetAllUser();
     await this._GetDSGroup();
     // await this.LaymangTam();
     await this.ganData();
   };
 
   render() {
-    const {isActive, selectLyDo} = this.state;
     const {
       id_nguoidang = {},
     } = this.props.route.params.id_nguoidang.id_nguoidang;
@@ -177,6 +243,7 @@ export default class Edit_ChaoMungTV extends React.Component {
     // console.log('check group', group);
     // console.log('id nguoi dang', id_nguoidang);
     // console.log('this detail props chào mừng', this.props);
+    const {isActive_User, selectLyDo, tenUser} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -218,27 +285,74 @@ export default class Edit_ChaoMungTV extends React.Component {
               }}>
               Chọn thành viên:
             </Text>
-            <TouchableOpacity
-              style={styles.thanh_search}
-              onPress={() => {
-                Utils.goscreen(this, 'SearchUser', {
-                  chuyenData: this.ChuyenData,
-                });
-              }}>
-              <Image source={search} style={styles.icon}></Image>
-
-              <Text
+            <View style={{marginTop: 5}}>
+              <View
                 style={{
-                  fontSize: FontSize.reSize(20),
-                  marginLeft: 10,
-                  color: '#000000',
-                  flex: 1,
+                  borderWidth: 1,
+                  padding: 15,
+                  borderRadius: 20,
+                  borderColor: '#DDDDDD80',
+                  backgroundColor: '#DDDDDD80',
                 }}>
-                {this.state.DataChuyenVe
-                  ? this.state.DataChuyenVe.Username
-                  : this.state.title}
-              </Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this._renderActiveUser}
+                  style={[
+                    {
+                      fontSize: 14,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <Text style={[{fontSize: 18, flex: 1}]}>
+                    {_.size(tenUser) > 0
+                      ? tenUser.map((item, index) => item + ' ')
+                      : this.state.title}
+                    {/* {tenUser.map((item, index) => item + ' ')} */}
+
+                    {/* {noidung} */}
+                  </Text>
+
+                  <Image
+                    source={dropdown}
+                    style={[{tintColor: '#4F4F4F80', width: 20, height: 18}]}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+                {_.size(tenUser) > 0 ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({
+                        tenUser: [],
+                      });
+                    }}>
+                    <Image
+                      source={cancel}
+                      style={{
+                        height: FontSize.scale(20),
+                        width: FontSize.verticalScale(20),
+                      }}></Image>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+              {isActive_User == true ? (
+                <FlatList
+                  style={{
+                    marginTop: 1,
+                    backgroundColor: 'white',
+                    height: FontSize.scale(200),
+                    borderRadius: 10,
+                    borderWidth: 2,
+                    borderColor: 'gray',
+                    borderBottomColor: 'white',
+                  }}
+                  data={this.state.dsUser}
+                  renderItem={this._renderPHUser}
+                  keyExtractor={this._keyExtracUser}
+                />
+              ) : null}
+            </View>
             <Text
               style={{
                 fontWeight: 'bold',

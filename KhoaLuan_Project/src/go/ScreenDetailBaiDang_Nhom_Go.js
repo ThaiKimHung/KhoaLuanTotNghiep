@@ -39,6 +39,7 @@ import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 const avatar_mau = require('../assets/images/avatar.jpg');
 const like = require('../assets/images/like.png');
 const commnet = require('../assets/images/comment.png');
@@ -54,7 +55,7 @@ const light = require('../assets/images/light-bulb.png');
 
 const windowWidth = Dimensions.get('window').width;
 
-export default class ScreenDetailBaiDang_ThongBao extends React.Component {
+export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,24 +73,23 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       title: '',
       noidung: '',
       day: '',
-      group: '',
-      idbaidang: '',
+      khenthuong: '',
+      thichcmt: '',
       hinh: '',
       image: '',
-      khenthuong: '',
-      loaibaidang: '',
+      // ngay: '',
+      // time: '',
     };
-    // this.idBaiDang = '';
-    // this.id_user = '';
+    this.idBaiDang = '';
+    this.id_user = '';
     this.id_like = 1;
-    ROOTGlobal.GetChiTietBaiDang_ThongBao = this._GetChiTietBaiDang;
-    // ROOTGlobal.GanDataChitiet = this.GanData;
+    ROOTGlobal.GetChiTietBaiDang_Nhom_Go = this._GetChiTietBaiDang;
+    // ROOTGlobal.GanDataChitiet_Nhom = this.GanData;
   }
 
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
-
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
       title: 'Đã bình luận một bài viết',
@@ -101,6 +101,34 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     let res = await AddThongBao(await Utils.ngetStorage(nkey.id_user), strBody);
     await this._BanThongBao();
     // console.log('res add thông báo', res);
+  };
+
+  hamloadLienTuc = () => {
+    setInterval(async () => {
+      await this._GetChiTietBaiDang();
+      // await this.hamTru();
+      // console.log('hi');
+    }, 5000);
+  };
+
+  _GetChiTietBaiDang = async () => {
+    let id_user = await Utils.ngetStorage(nkey.id_user);
+
+    let res = await GetChiTietBaiDang(id_user, this.idBaiDang);
+    // console.log('res chi tiết bài đăng', res);
+    if (res.status == 1) {
+      this.setState({
+        ChiTietBD: res.data,
+        refresh: false,
+      });
+      // await console.log('chi tiết bd', this.state.ChiTietBD);
+      // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
+      this.GanData();
+    } else {
+      this.setState({
+        refresh: true,
+      });
+    }
   };
 
   _AddThongBao_LikeBaiDang = async (idbaidang) => {
@@ -136,13 +164,14 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     await this._BanThongBao();
     // console.log('res add thông báo like cmt', res);
   };
-
   _AddCommentLike = async (idcmt) => {
+    // alert(5);
     let res = await Comment_like(
       await idcmt,
       1,
       await Utils.ngetStorage(nkey.id_user),
     );
+    // console.log(res);
     await this._GetChiTietBaiDang();
     await this.GanData();
     // await this._AddThongBao_LikeCMT();
@@ -154,27 +183,9 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     // console.log('res dele like', res);
     await this._GetChiTietBaiDang();
     await this.GanData();
+    // await this._AddThongBao_LikeCMT();
   };
 
-  _GetChiTietBaiDang = async () => {
-    let id_user = await Utils.ngetStorage(nkey.id_user);
-
-    let res = await GetChiTietBaiDang(id_user, await this.state.idbaidang);
-    // console.log('res chi tiết bài đăng', res);
-    if (res.status == 1) {
-      this.setState({
-        ChiTietBD: res.data,
-        refresh: false,
-      });
-      await this.GanData();
-      // await console.log('chi tiết bd', this.state.ChiTietBD);
-      // await console.log('chi user', this.state.ChiTietBD[0].User_DangBai);
-    } else {
-      this.setState({
-        refresh: false,
-      });
-    }
-  };
   GetData = () => {
     if (this.props.route.params != null) {
       this.setState({
@@ -189,7 +200,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
     let strBody = JSON.stringify({
-      ID_BaiDang: this.state.idbaidang,
+      ID_BaiDang: this.idBaiDang,
       NoiDung_cmt: this.state.text_Cmt,
       typepost: '',
       // CreatedDate: date + 'T' + time,
@@ -235,13 +246,13 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
 
   _renderItem = ({item, index}) => {
     let userCmt = item.User_comment ? item.User_comment[0] : '';
-    let likecmt = item.Like;
     let like_comment = item.Like_Comment ? item.Like_Comment[0] : '';
+    let likecmt = item.Like;
     // console.log('length', item.Comment_child.length);
     return (
       <View>
         <View style={styles.khung_TungCmt}>
-          <TouchableOpacity>
+          <View>
             <View
               style={{
                 marginLeft: 5,
@@ -260,12 +271,12 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                   userCmt.avatar ? {uri: userCmt.avatar} : avatar_mau
                 }></Image>
             </View>
-          </TouchableOpacity>
+          </View>
           <View style={{flex: 1}}>
             <TouchableOpacity
               style={styles.khung_tenUser_Cmt}
               onLongPress={() => {
-                Utils.goscreen(this, 'PopUpModal_CMT_ThongBao', {
+                Utils.goscreen(this, 'PopUpModal_CMT_Nhom_Go', {
                   Detail_Cmt: item,
                 });
               }}>
@@ -284,7 +295,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
           {likecmt ? (
             <TouchableOpacity
               onLongPress={async (e) => {
-                Utils.goscreen(this, 'ModalLike_CMT_Thongbao', {
+                Utils.goscreen(this, 'ModalLike_CMT_Nhom', {
                   id_nguoidang: item,
                   x: e.nativeEvent.pageX,
                   y: e.nativeEvent.pageY,
@@ -299,7 +310,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
           ) : (
             <TouchableOpacity
               onLongPress={async (e) => {
-                Utils.goscreen(this, 'ModalLike_CMT_Thongbao', {
+                Utils.goscreen(this, 'ModalLike_CMT_Nhom', {
                   id_nguoidang: item,
                   x: e.nativeEvent.pageX,
                   y: e.nativeEvent.pageY,
@@ -314,7 +325,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
           )}
           <TouchableOpacity
             onPress={() =>
-              Utils.goscreen(this, 'ScreenCMT_Child_ThongBao', {
+              Utils.goscreen(this, 'ScreenCMT_Child_Nhom_Go', {
                 id_nguoidang: item,
                 index: index.toString(),
               })
@@ -328,12 +339,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     );
   };
 
-  TaoLike = async (idlike) => {
-    let res = await AddLike(
-      this.state.idbaidang,
-      idlike,
-      await Utils.ngetStorage(nkey.id_user),
-    );
+  TaoLike = async (idbaidang, idlike, iduser) => {
+    let res = await AddLike(idbaidang, idlike, iduser);
     // console.log('ress add like', res);
     if (res.status == 1) {
       await this._GetChiTietBaiDang();
@@ -374,7 +381,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
   };
 
   GanData = async () => {
-    this.setState({
+    await this.setState({
       user: await this.state.ChiTietBD[0].User_DangBai[0].ID_user,
       avatar_user: await this.state.ChiTietBD[0].User_DangBai[0].avatar,
       username: await this.state.ChiTietBD[0].User_DangBai[0].Username,
@@ -385,36 +392,25 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       title: await this.state.ChiTietBD[0].title,
       noidung: await this.state.ChiTietBD[0].NoiDung,
       day: await this.state.ChiTietBD[0].CreatedDate,
-      group: await this.state.ChiTietBD[0].Group,
+      khenthuong: await this.state.ChiTietBD[0].KhenThuong,
       hinh: await this.state.ChiTietBD[0].hinhanh,
       image: await this.state.ChiTietBD[0].image,
-      khenthuong: await this.state.ChiTietBD[0].KhenThuong,
-      loaibaidang: await this.state.ChiTietBD[0].Id_LoaiBaiDang,
       // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
     // await console.log('day', this.state.day);
-    await console.log('ngay', this.state.image);
+    // await console.log('ngay', this.state.ngay);
     // await console.log('time', this.state.time);
   };
 
-  nhanData = async () => {
-    const {id_nguoidang = {}} = this.props.route.params;
-    await Utils.setGlobal(nGlobalKeys.idbaidang, id_nguoidang.id_baidang);
-    // console.log('id bài đăng', id_nguoidang.id_baidang);
-    this.setState({
-      idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
-    });
-  };
-
   loadNoiDung = () => {
-    // console.log('this detail', this);
+    console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
-    // this.idBaiDang = id_nguoidang.Id_BaiDang;
-    // this.id_user = user.ID_user;
+    this.idBaiDang = id_nguoidang.Id_BaiDang;
+    this.id_user = user.ID_user;
     let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     let khenthuong1 = this.state.khenthuong ? this.state.khenthuong[0] : {};
@@ -441,7 +437,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                 </Text>
               </View>
             </View>
-            {id_nguoidang.hinhanh ? (
+            {/* {id_nguoidang.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
@@ -451,7 +447,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
         );
       case 2:
@@ -498,14 +494,14 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                 alignItems: 'center',
               }}
               onPress={this.props.onPress}>
-              {/* <View
+              <View
                 style={{
                   marginLeft: 5,
                   borderRadius: 30,
                   height: FontSize.scale(40),
                   width: FontSize.verticalScale(40),
                 }}>
-                <Image
+                {/* <Image
                   style={{
                     height: FontSize.scale(40),
                     width: FontSize.verticalScale(40),
@@ -518,8 +514,8 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                           uri: this.state.avatar_user,
                         }
                       : avatar_mau
-                  }></Image>
-              </View> */}
+                  }></Image> */}
+              </View>
               <Text>{this.state.title}</Text>
               <Text style={{fontSize: FontSize.reSize(20)}}>
                 {this.state.noidung}
@@ -595,10 +591,10 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
         );
       case 6:
         return (
-          <View style={styles.footer}>
+          <View style={{paddingHorizontal: 10}}>
             <Text>{this.state.title}</Text>
             {/* <Text>{this.state.noidung}</Text> */}
-            {this.state.hinh ? (
+            {this.state.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}
@@ -613,7 +609,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
         );
       case 7:
         return (
-          <View style={styles.footer} onPress={this.props.onPress}>
+          <View style={{paddingHorizontal: 10}} onPress={this.props.onPress}>
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="pulse"
@@ -633,7 +629,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                 </Text>
               </View>
             </View>
-            {this.state.hinh ? (
+            {this.state.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}
@@ -646,6 +642,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             ) : null}
           </View>
         );
+
       default:
         return (
           <View style={styles.footer}>
@@ -668,30 +665,29 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
   };
 
   async componentDidMount() {
-    await this.nhanData();
-    // await this.GetData();
+    await this.GetData();
     await this._GetChiTietBaiDang();
-    // await this.GanData();
+    await this.GanData();
+    await this.hamloadLienTuc();
     // console.log()
-    // await this.hamloadLienTuc();
   }
 
   render() {
-    // console.log('this detail', this);
-    // const {id_nguoidang = {}} = this.props.route.params;
-    // console.log('this detail', id_nguoidang);
-    // this.idBaiDang = id_nguoidang.Id_BaiDang;
+    console.log('this detail', this.route);
+    const {id_nguoidang = {}} = this.props.route.params;
+    this.idBaiDang = id_nguoidang.Id_BaiDang;
     // let day = id_nguoidang.CreatedDate;
     let ngay = this.state.day.substring(0, 10);
     let time = this.state.day.substring(11, 16);
-    let group = this.state.group ? this.state.group[0] : {};
+    let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
+
     return (
       <View style={styles.container}>
         <GoBack
           name=""
           onPress={() => {
-            Utils.goscreen(this, 'ScreenThongBao');
-            ROOTGlobal.GetDsThongBao();
+            Utils.goscreen(this, 'BaiDangNhom');
+            ROOTGlobal.getGo();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 
@@ -729,27 +725,6 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
               <View style={styles.khung_tenUser}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styles.txt_TenUser}>{this.state.username}</Text>
-                  {group ? (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        // justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 5,
-                      }}>
-                      <Image
-                        source={arrow}
-                        style={{
-                          height: FontSize.scale(10),
-                          width: FontSize.verticalScale(10),
-                        }}></Image>
-                      <TouchableOpacity style={{marginLeft: 5}}>
-                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                          {group.ten_group}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  ) : null}
                 </View>
 
                 <View
@@ -769,7 +744,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() => {
-                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail_ThongBao', {
+                Utils.goscreen(this, 'PopUpModal_XoaSua_Detail_Nhom_Go', {
                   id_nguoidang: this.state.ChiTietBD,
                 });
               }}>
@@ -786,14 +761,14 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onLongPress={async (e) => {
-                  Utils.goscreen(this, 'ModalLike_Detail_ThongBao', {
+                  Utils.goscreen(this, 'ModalLike_Detail_Nhom_Go', {
                     id_nguoidang: this.props,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
                   });
                 }}
                 onPress={() => {
-                  this.DeleteLike(this.state.idbaidang);
+                  this.DeleteLike(this.idBaiDang);
                 }}>
                 <SvgUri
                   width={FontSize.scale(20)}
@@ -815,15 +790,19 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onLongPress={async (e) => {
-                  Utils.goscreen(this, 'ModalLike_Detail_ThongBao', {
+                  Utils.goscreen(this, 'ModalLike_Detail_Nhom_Go', {
                     id_nguoidang: this.props,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
                   });
                 }}
                 onPress={async () => {
-                  await this.TaoLike(this.id_like);
-                  await this._AddThongBao_LikeBaiDang(this.state.idbaidang);
+                  this.TaoLike(
+                    this.idBaiDang,
+                    this.id_like,
+                    await Utils.ngetStorage(nkey.id_user),
+                  );
+                  this._AddThongBao_LikeBaiDang(this.idBaiDang);
                 }}>
                 <Image style={styles.imageLike_Commnet1} source={thich} />
                 <Text
@@ -867,9 +846,9 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
         <View
           style={{
             // flex: 1,
-            justifyContent: 'flex-end',
-            // position: 'absolute',
-            // bottom: 0,
+            // justifyContent: 'flex-end',
+            position: 'absolute',
+            bottom: 0,
             flexDirection: 'row',
             alignItems: 'center',
             marginLeft: 5,
@@ -1011,6 +990,7 @@ const styles = StyleSheet.create({
   imageLike_Commnet: {
     height: FontSize.scale(20),
     width: FontSize.verticalScale(20),
+    // tintColor: '#696969',
   },
   imageLike_Commnet1: {
     height: FontSize.scale(20),

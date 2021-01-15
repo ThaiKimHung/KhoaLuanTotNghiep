@@ -163,10 +163,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     switch (loaibaidang) {
       case 1:
         return (
-          <View
-            style={styles.footer}
-            //  onPress={this.props.onPress}
-          >
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="pulse"
@@ -197,7 +194,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                   }}></Image>
               </View>
             ) : null}
-          </View>
+          </TouchableOpacity>
         );
       case 2:
         return (
@@ -235,11 +232,10 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               </Text>
             </Animatable.View>
 
-            <View
+            <TouchableOpacity
               style={styles.footer1}
-              // onPress={this.props.onPress}
-            >
-              <View
+              onPress={this.props.onPress}>
+              {/* <View
                 style={{
                   marginLeft: 5,
                   borderRadius: 30,
@@ -254,22 +250,19 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                   }}
                   resizeMode="cover"
                   source={user.avatar ? {uri: user.avatar} : avatar}></Image>
-              </View>
+              </View> */}
               <Text style={{fontSize: FontSize.reSize(30), fontWeight: 'bold'}}>
                 {item.title}
               </Text>
               <Text style={{fontSize: FontSize.reSize(20)}}>
                 {item.NoiDung}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         );
       case 3:
         return (
-          <View
-            style={styles.footer}
-            // onPress={this.props.onPress}
-          >
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="shake"
@@ -293,62 +286,67 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               <View>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
-          </View>
+          </TouchableOpacity>
         );
       case 4:
         return (
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: '#1C86EE',
               margin: 5,
-            }}>
+            }}
+            onPress={this.props.onPress}>
             <ImageBackground source={welcome} style={styles.image}>
-              <View
-                style={styles.footer1}
-                // onPress={this.props.onPress}
-              >
-                <Text>{item.title}</Text>
+              <View style={styles.footer1}>
+                <Text
+                  style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
+                  {item.title}
+                </Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
               </View>
             </ImageBackground>
-          </View>
+          </TouchableOpacity>
         );
       case 6:
         return (
-          <View
-            style={styles.footer}
-            // onPress={this.props.onPress}
-          >
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
             <Text>{item.title}</Text>
-
+            {/* <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.NoiDung}
+              </Text> */}
             {item.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
-          </View>
+          </TouchableOpacity>
         );
       case 7:
         return (
-          <View
-            style={styles.footer}
-            // onPress={this.props.onPress}
-          >
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="tada"
@@ -361,8 +359,10 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                   height: FontSize.scale(50),
                   width: FontSize.verticalScale(50),
                 }}></Animatable.Image>
-              <View>
-                <Text>{item.title}</Text>
+              <View style={{marginLeft: 10}}>
+                <Text style={{fontSize: FontSize.reSize(25)}}>
+                  {item.title}
+                </Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
@@ -372,14 +372,18 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
-          </View>
+          </TouchableOpacity>
         );
       default:
         return (
@@ -393,7 +397,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -440,8 +444,9 @@ export default class BaiDangNhomComponent_Go extends React.Component {
     let dslike = item.Like ? item.Like : null;
     let loaibaidang = item.Id_LoaiBaiDang;
     let group = item.Group ? item.Group[0] : {};
-    // console.log('this bài đăng component', group);
+    // console.log('this bài đăng component', this.props);
     this.item = item.Id_BaiDang;
+    // console.log(this.props);
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -483,9 +488,22 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               </View>
             </View>
 
-            <View style={styles.khung_daubacham}>
-              <Image style={styles.daubacham} source={daubacham} />
-            </View>
+            <TouchableOpacity
+              style={styles.khung_daubacham}
+              onPress={() =>
+                Utils.goscreen(this.props.nthis, 'PopUpModal_XoaSua_Nhom_Go', {
+                  id_nguoidang: item,
+                })
+              }>
+              <Image
+                style={{
+                  height: FontSize.scale(20),
+                  width: FontSize.verticalScale(20),
+                  // tintColor: '#007DE3',
+                }}
+                source={daubacham}
+              />
+            </TouchableOpacity>
           </View>
 
           {/* khung chứa nội dung bài đăng và cmt*/}
@@ -513,6 +531,14 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               // đây sẽ là  delete
               <TouchableOpacity
                 style={styles.khung_Thich}
+                onLongPress={async (e) => {
+                  Utils.goscreen(this.props.nthis, 'ModalLike_Nhom_Go', {
+                    id_nguoidang: this.props,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
+                  });
+                  // alert(5);
+                }}
                 onPress={() => {
                   this.DeleteLike(item.Id_BaiDang);
                 }}>
@@ -532,12 +558,15 @@ export default class BaiDangNhomComponent_Go extends React.Component {
 
               <TouchableOpacity
                 style={styles.khung_Thich}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(
-                    this.props.nthis.props.nthis,
-                    'ModalLike_Nhom',
+                    this.props.nthis,
+                    'ModalLike_Nhom_Go',
+
                     {
                       id_nguoidang: this.props,
+                      x: e.nativeEvent.pageX,
+                      y: e.nativeEvent.pageY,
                     },
                   );
                 }}
@@ -556,25 +585,12 @@ export default class BaiDangNhomComponent_Go extends React.Component {
               </TouchableOpacity>
             )}
 
-            <View style={styles.khung_BinhLuan} onPress={this.props.onPress}>
-              <Image
-                style={{
-                  height: FontSize.scale(17),
-                  width: FontSize.verticalScale(18),
-                  marginRight: 2,
-                  tintColor: '#69696930',
-                }}
-                source={binhluan}
-              />
-              <Text
-                style={{
-                  marginLeft: FontSize.reSize(5),
-                  textAlign: 'center',
-                  color: '#69696930',
-                }}>
-                Bình luận
-              </Text>
-            </View>
+            <TouchableOpacity
+              style={styles.khung_BinhLuan}
+              onPress={this.props.onPress}>
+              <Image style={styles.imageLike_Commnet} source={binhluan} />
+              <Text style={styles.text_Like_cmt}>Bình luận</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

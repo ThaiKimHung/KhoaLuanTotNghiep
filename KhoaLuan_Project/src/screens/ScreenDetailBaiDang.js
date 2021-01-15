@@ -289,9 +289,11 @@ export default class ScreenDetailBaiDang extends React.Component {
           }}>
           {likecmt ? (
             <TouchableOpacity
-              onLongPress={async () => {
+              onLongPress={async (e) => {
                 Utils.goscreen(this, 'ModalLike_CMT', {
                   id_nguoidang: item,
+                  x: e.nativeEvent.pageX,
+                  y: e.nativeEvent.pageY,
                 });
               }}
               onPress={() => {
@@ -304,9 +306,11 @@ export default class ScreenDetailBaiDang extends React.Component {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              onLongPress={async () => {
+              onLongPress={async (e) => {
                 Utils.goscreen(this, 'ModalLike_CMT', {
                   id_nguoidang: item,
+                  x: e.nativeEvent.pageX,
+                  y: e.nativeEvent.pageY,
                 });
               }}
               onPress={() => {
@@ -496,7 +500,7 @@ export default class ScreenDetailBaiDang extends React.Component {
                 alignItems: 'center',
               }}
               onPress={this.props.onPress}>
-              <View
+              {/* <View
                 style={{
                   marginLeft: 5,
                   borderRadius: 30,
@@ -517,7 +521,7 @@ export default class ScreenDetailBaiDang extends React.Component {
                         }
                       : avatar_mau
                   }></Image>
-              </View>
+              </View> */}
               <Text>{this.state.title}</Text>
               <Text style={{fontSize: FontSize.reSize(20)}}>
                 {this.state.noidung}
@@ -564,7 +568,7 @@ export default class ScreenDetailBaiDang extends React.Component {
         return (
           <View style={styles.footer1}>
             <ImageBackground source={welcome} style={styles.image}>
-              <View
+              {/* <View
                 style={{
                   marginLeft: 5,
                   borderRadius: 30,
@@ -585,7 +589,7 @@ export default class ScreenDetailBaiDang extends React.Component {
                         }
                       : avatar_mau
                   }></Image>
-              </View>
+              </View> */}
               <Text>{this.state.title}</Text>
               <Text>{this.state.noidung}</Text>
             </ImageBackground>
@@ -782,10 +786,13 @@ export default class ScreenDetailBaiDang extends React.Component {
           <View style={styles.khungLike_Commnet}>
             {this.state.dslike ? (
               <TouchableOpacity
+                // activeOpacity={1}
                 style={styles.khung_Thich}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(this, 'ModalLike_Detail', {
                     id_nguoidang: this.props,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
                   });
                 }}
                 onPress={() => {
@@ -809,10 +816,13 @@ export default class ScreenDetailBaiDang extends React.Component {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
+                // activeOpacity={1}
                 style={styles.khung_Thich}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(this, 'ModalLike_Detail', {
                     id_nguoidang: this.props,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
                   });
                 }}
                 onPress={async () => {

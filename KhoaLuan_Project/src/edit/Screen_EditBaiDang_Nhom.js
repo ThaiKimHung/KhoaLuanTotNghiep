@@ -1053,7 +1053,7 @@ export default class Screen_EditBaiDang_Nhom extends React.Component {
                   <View style={{justifyContent: 'center'}}>
                     <TouchableOpacity
                       onPress={() => {
-                        this.EditBaiDang(), this, AddAnh();
+                        this.EditBaiDang(), this.AddAnh();
                       }}>
                       <Text style={styles.textDang}>Sửa</Text>
                     </TouchableOpacity>

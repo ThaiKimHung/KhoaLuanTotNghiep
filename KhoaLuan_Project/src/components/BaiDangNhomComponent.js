@@ -237,7 +237,7 @@ export default class BaiDangNhomComponent extends React.Component {
             <TouchableOpacity
               style={styles.footer1}
               onPress={this.props.onPress}>
-              <View
+              {/* <View
                 style={{
                   marginLeft: 5,
                   borderRadius: 30,
@@ -252,7 +252,7 @@ export default class BaiDangNhomComponent extends React.Component {
                   }}
                   resizeMode="cover"
                   source={user.avatar ? {uri: user.avatar} : avatar}></Image>
-              </View>
+              </View> */}
               <Text style={{fontSize: FontSize.reSize(30), fontWeight: 'bold'}}>
                 {item.title}
               </Text>
@@ -518,12 +518,14 @@ export default class BaiDangNhomComponent extends React.Component {
               // đây sẽ là  delete
               <TouchableOpacity
                 style={styles.khung_Thich}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(
                     this.props.nthis.props.nthis,
                     'ModalLike_Nhom',
                     {
                       id_nguoidang: this.props,
+                      x: e.nativeEvent.pageX,
+                      y: e.nativeEvent.pageY,
                     },
                   );
                 }}
@@ -546,12 +548,14 @@ export default class BaiDangNhomComponent extends React.Component {
 
               <TouchableOpacity
                 style={styles.khung_Thich}
-                onLongPress={async () => {
+                onLongPress={async (e) => {
                   Utils.goscreen(
                     this.props.nthis.props.nthis,
                     'ModalLike_Nhom',
                     {
                       id_nguoidang: this.props,
+                      x: e.nativeEvent.pageX,
+                      y: e.nativeEvent.pageY,
                     },
                   );
                 }}

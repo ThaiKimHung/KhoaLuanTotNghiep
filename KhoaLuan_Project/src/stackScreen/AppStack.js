@@ -68,6 +68,7 @@ import ModalLike_CMT_Thongbao from '../modal/ModalLike_CMT_Thongbao';
 import ModalLike_CMT_Child from '../modal/ModalLike_CMT_Child';
 import ModalLike_CMT_Child_Nhom from '../modal/ModalLike_CMT_Child_Nhom';
 import ModalLike_CMT_Child_Thongbao from '../modal/ModalLike_CMT_Child_Thongbao';
+import ModalLike_Nhom_Go from '../modal/ModalLike_Nhom_Go';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_V2 from '../baidang/KhenThuong_V2';
@@ -99,14 +100,31 @@ import Screen_EditBaiDang_Nhom from '../edit/Screen_EditBaiDang_Nhom';
 import Screen_EditBaiDang_Detail_Nhom from '../edit/Screen_EditBaiDang_Detail_Nhom';
 import Edit_KhenThuong_Nhom from '../edit/Edit_KhenThuong_Nhom';
 import Edit_ChaoMungTV_Nhom from '../edit/Edit_ChaoMungTV_Nhom';
-import Edit_KhenThuong_Detail_Nhom from '../edit/Edit_KhenThuong_Detail_Nhom';
-import Edit_ChaoMungTV_Detail_Nhom from '../edit/Edit_ChaoMungTV_Detail_Nhom';
+// import Edit_KhenThuong_Detail_Nhom from '../edit/Edit_KhenThuong_Detail_Nhom';
+// import Edit_ChaoMungTV_Detail_Nhom from '../edit/Edit_ChaoMungTV_Detail_Nhom';
 import Edit_TrangThongTinCaNhan from '../edit/Edit_TrangThongTinCaNhan';
-import Edit_ChaoMung_Detail_Nhom from '../edit/Edit_ChaoMung_Detail_Nhom ';
+import Edit_ChaoMung_Detail_Nhom from '../edit/Edit_ChaoMung_Detail_Nhom';
 import Edit_KhenThuong_DetailNhom from '../edit/Edit_KhenThuong_DetailNhom';
 
 import BaiDangNhom from '../go/BaiDangNhom';
 import ScreenDetailBaiDang_ThongBao from '../screens/ScreenDetailBaiDang_ThongBao';
+import ScreenCMT_Child_Nhom_Go from '../go/ScreenCMT_Child_Nhom_Go';
+
+import Screen_EditBaiDang_Nhom_Go from '../go/Screen_EditBaiDang_Nhom_Go';
+import ScreenDetailBaiDang_Nhom_Go from '../go/ScreenDetailBaiDang_Nhom_Go';
+
+import PopUpModal_XoaSua_Nhom_Go from '../go/PopUpModal_XoaSua_Nhom_Go';
+import ModalLike_Detail_Nhom_Go from '../go/ModalLike_Detail_Nhom_Go';
+import PopUpModal_XoaSua_Detail_Nhom_Go from '../go/PopUpModal_XoaSua_Detail_Nhom_Go';
+import PopUpModal_CMT_Child_Nhom_Go from '../go/PopUpModal_CMT_Child_Nhom_Go';
+import PopUpModal_CMT_Nhom_Go from '../go/PopUpModal_CMT_Nhom_Go';
+import Screen_EditBaiDang_Detail_Nhom_Go from '../go/Screen_EditBaiDang_Detail_Nhom_Go';
+import PopUpModal_SuaCMT_Child_Nhom_Go from '../go/PopUpModal_SuaCMT_Child_Nhom_Go';
+import Edit_ChaoMungTV_Nhom_Go from '../go/Edit_ChaoMungTV_Nhom_Go';
+import Edit_KhenThuong_Nhom_Go from '../go/Edit_KhenThuong_Nhom_Go';
+import Edit_ChaoMung_Detail_Nhom_Go from '../go/Edit_ChaoMung_Detail_Nhom_Go';
+import Edit_KhenThuong_DetailNhom_Go from '../go/Edit_KhenThuong_DetailNhom_Go';
+
 import Test from '../screens/Test';
 
 // import
@@ -245,6 +263,38 @@ const HomeStackScreen = () => (
       component={ScreenCMT_Child_ThongBao_CMT}
     />
     <HomeStack.Screen name="ScreenThayDoiPass" component={ScreenThayDoiPass} />
+    <HomeStack.Screen
+      name="Screen_EditBaiDang_Nhom_Go"
+      component={Screen_EditBaiDang_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="ScreenDetailBaiDang_Nhom_Go"
+      component={ScreenDetailBaiDang_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="ScreenCMT_Child_Nhom_Go"
+      component={ScreenCMT_Child_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="Screen_EditBaiDang_Detail_Nhom_Go"
+      component={Screen_EditBaiDang_Detail_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="Edit_ChaoMungTV_Nhom_Go"
+      component={Edit_ChaoMungTV_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="Edit_KhenThuong_Nhom_Go"
+      component={Edit_KhenThuong_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="Edit_ChaoMung_Detail_Nhom_Go"
+      component={Edit_ChaoMung_Detail_Nhom_Go}
+    />
+    <HomeStack.Screen
+      name="Edit_KhenThuong_DetailNhom_Go"
+      component={Edit_KhenThuong_DetailNhom_Go}
+    />
   </HomeStack.Navigator>
 );
 
@@ -384,6 +434,31 @@ const AppStack = () => {
       <Stack.Screen
         name="ModalLike_CMT_Child_Thongbao"
         component={ModalLike_CMT_Child_Thongbao}
+      />
+      <Stack.Screen name="ModalLike_Nhom_Go" component={ModalLike_Nhom_Go} />
+      <Stack.Screen
+        name="PopUpModal_XoaSua_Nhom_Go"
+        component={PopUpModal_XoaSua_Nhom_Go}
+      />
+      <Stack.Screen
+        name="PopUpModal_XoaSua_Detail_Nhom_Go"
+        component={PopUpModal_XoaSua_Detail_Nhom_Go}
+      />
+      <Stack.Screen
+        name="ModalLike_Detail_Nhom_Go"
+        component={ModalLike_Detail_Nhom_Go}
+      />
+      <Stack.Screen
+        name="PopUpModal_CMT_Nhom_Go"
+        component={PopUpModal_CMT_Nhom_Go}
+      />
+      <Stack.Screen
+        name="PopUpModal_CMT_Child_Nhom_Go"
+        component={PopUpModal_CMT_Child_Nhom_Go}
+      />
+      <Stack.Screen
+        name="PopUpModal_SuaCMT_Child_Nhom_Go"
+        component={PopUpModal_SuaCMT_Child_Nhom_Go}
       />
     </Stack.Navigator>
   );

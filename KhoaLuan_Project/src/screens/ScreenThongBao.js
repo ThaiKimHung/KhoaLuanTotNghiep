@@ -59,7 +59,7 @@ export default class SearchUser extends React.Component {
 
   _DanhdaudadocAll = async () => {
     let res = await Danhdaudadoc(await Utils.ngetStorage(nkey.id_user));
-    console.log('res dánh dấu đã dọc', res);
+    // console.log('res dánh dấu đã dọc', res);
     await this._GetDSThongBao();
   };
 

@@ -83,7 +83,7 @@ export default class BaiDangNhomComponent_Go extends React.Component {
       strBody,
     );
     await this._BanThongBao();
-    console.log('res add thông báo like bài đăng', res);
+    // console.log('res add thông báo like bài đăng', res);
   };
 
   _AddThongBao_LikeCMT = async (idcmt) => {

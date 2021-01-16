@@ -57,13 +57,13 @@ export default class ScreenBangTin extends React.Component {
 
   _GetDsMedia = async () => {
     let res = await GetDSMedia();
-    // console.log('res ds loại bài đăng', res);
+    console.log('res ds loại bài đăng', res);
     if (res.status == 1) {
       this.setState({
         dsBangTin: res.Data,
         refresh: false,
       });
-      // console.log('ds loại bài đăng', this.state.dsBangTin);
+      console.log('ds loại bài đăng', this.state.dsBangTin);
     } else {
       this.setState({
         refresh: false,

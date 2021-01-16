@@ -190,13 +190,14 @@ export default class Screen_EditBaiDang_Detail_Nhom_Go extends React.Component {
         duration: 1500,
         icon: 'success',
       });
-      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+      Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom_Go');
       //   Utils.gobac;
       // await ROOTGlobal.GetDsAllBaiDang();
       await ROOTGlobal.GetChiTietBaiDang_Nhom();
 
       await ROOTGlobal.GetDsAllBaiDang_Nhom();
       await ROOTGlobal.GanDataChitiet_Nhom();
+      await ROOTGlobal.getGo();
     } else {
       showMessage({
         message: 'Thông báo',

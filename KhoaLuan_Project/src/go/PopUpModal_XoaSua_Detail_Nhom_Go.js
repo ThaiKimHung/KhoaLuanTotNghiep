@@ -45,13 +45,14 @@ export default class PopUpModal_XoaSua_Detail_Nhom_Go extends Component {
     });
     // await console.log('lưu iduser', this.state.id_user);
   }
-  change() {
+  change = async () => {
     this.setState({
       display: !this.state.display,
     });
     // this.props.navigation.goBack();
     Utils.goback(this, '');
-  }
+    await ROOTGlobal.GetChiTietBaiDang_Nhom_Go();
+  };
 
   XoaBaiDang = async () => {
     //xóa like
@@ -107,7 +108,7 @@ export default class PopUpModal_XoaSua_Detail_Nhom_Go extends Component {
     this.setState({
       display: !this.state.display,
     });
-    Utils.goscreen(this, 'BaiDangNhom');
+    Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom_Go');
   };
 
   loadNoiDungChinhSua = () => {};

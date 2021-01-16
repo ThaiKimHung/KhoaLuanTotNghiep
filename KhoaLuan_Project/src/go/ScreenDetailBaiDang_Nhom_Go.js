@@ -405,7 +405,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
   };
 
   loadNoiDung = () => {
-    console.log('this detail', this);
+    // console.log('this detail', this);
     const {id_nguoidang = {}} = this.props.route.params;
     // console.log('this ChiTietBaiDang screen Detail bài đăng', id_nguoidang);
     let user = id_nguoidang.User_DangBai ? id_nguoidang.User_DangBai[0] : {};
@@ -584,8 +584,12 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
                       : avatar_mau
                   }></Image>
               </View> */}
-              <Text>{this.state.title}</Text>
-              <Text>{this.state.noidung}</Text>
+              <Text style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
+                {this.state.title}
+              </Text>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {this.state.noidung}
+              </Text>
             </ImageBackground>
           </View>
         );
@@ -594,7 +598,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
           <View style={{paddingHorizontal: 10}}>
             <Text>{this.state.title}</Text>
             {/* <Text>{this.state.noidung}</Text> */}
-            {this.state.hinhanh ? (
+            {this.state.hinh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}
@@ -629,7 +633,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
                 </Text>
               </View>
             </View>
-            {this.state.hinhanh ? (
+            {this.state.hinh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}
@@ -648,7 +652,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
           <View style={styles.footer}>
             <Text>{this.state.title}</Text>
             <Text>{this.state.noidung}</Text>
-            {this.state.hinhanh ? (
+            {this.state.hinh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}
@@ -673,7 +677,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
   }
 
   render() {
-    console.log('this detail', this.route);
+    // console.log('this detail', this.route);
     const {id_nguoidang = {}} = this.props.route.params;
     this.idBaiDang = id_nguoidang.Id_BaiDang;
     // let day = id_nguoidang.CreatedDate;

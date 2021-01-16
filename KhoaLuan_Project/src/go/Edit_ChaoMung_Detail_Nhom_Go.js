@@ -238,7 +238,7 @@ export default class Edit_KhenThuong_DetailNhom_Go extends React.Component {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
+                  Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom_Go');
                 }}>
                 <Image
                   source={goback}

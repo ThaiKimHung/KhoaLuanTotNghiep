@@ -251,9 +251,10 @@ export default class Edit_ChaoMungTV_Nhom_Go extends React.Component {
             <View
               style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   Utils.goscreen(this, 'BaiDangNhom');
                   // Utils.goback(this/);
+                  await ROOTGlobal.getGo();
                 }}>
                 <Image
                   source={goback}

@@ -49,7 +49,7 @@ export default class PopUpModal_SuaCMT extends Component {
   }
   GanData = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    await console.log('id nguoi dang', id_nguoidang);
+    // await console.log('id nguoi dang', id_nguoidang);
     this.setState({
       id_baidang: id_nguoidang.Id_BaiDang,
       id_cmt: id_nguoidang.id_cmt,

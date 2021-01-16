@@ -132,7 +132,7 @@ export default class ModalLike_Detail_Nhom_Go extends Component {
 
     const po_X = this.props.route.params.x;
     const po_Y = this.props.route.params.y;
-    console.log(po_X, po_Y);
+    // console.log(po_X, po_Y);
     return (
       <View style={styles.container}>
         <Modal animationType="slide" visible={display} transparent={true}>

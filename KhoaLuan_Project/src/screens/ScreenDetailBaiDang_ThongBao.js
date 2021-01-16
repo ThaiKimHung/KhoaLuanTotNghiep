@@ -588,8 +588,12 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                       : avatar_mau
                   }></Image>
               </View> */}
-              <Text>{this.state.title}</Text>
-              <Text>{this.state.noidung}</Text>
+              <Text style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
+                {this.state.title}
+              </Text>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {this.state.noidung}
+              </Text>
             </ImageBackground>
           </View>
         );
@@ -651,7 +655,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
           <View style={styles.footer}>
             <Text>{this.state.title}</Text>
             <Text>{this.state.noidung}</Text>
-            {this.state.hinhanh ? (
+            {this.state.hinh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}

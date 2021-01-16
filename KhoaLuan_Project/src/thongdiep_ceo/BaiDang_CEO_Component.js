@@ -50,7 +50,7 @@ const arrow = require('../assets/images/right-arrow-black-triangle.png');
 import moment from 'moment';
 import Utils from '../apis/Utils';
 
-export default class BaiDangNhomComponent extends React.Component {
+export default class BaiDang_CEO_Component extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +65,6 @@ export default class BaiDangNhomComponent extends React.Component {
     this.item = {};
     // ROOTGlobal.GetDsAllBaiDang_Nhom = this.GetDsAllBaiDang_Nhom;
   }
-
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
@@ -110,14 +109,13 @@ export default class BaiDangNhomComponent extends React.Component {
     // this.setState({
     //   thich: !this.state.thich,
     // });
-    await ROOTGlobal.GetDsAllBaiDang_Nhom();
-    // await this._AddThongBao_Like();
+    await ROOTGlobal.getGo();
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
     // console.log('ress xóa like', res);
-    await ROOTGlobal.GetDsAllBaiDang_Nhom();
+    await ROOTGlobal.getGo();
     // await this.GetDsAllBaiDang_Nhom;
   };
 
@@ -133,26 +131,6 @@ export default class BaiDangNhomComponent extends React.Component {
         />
       </TouchableOpacity>
     );
-  };
-
-  ChuyenData = async (item) => {
-    // const {ds = {}} = item;
-    // console.log('item', item);
-    // console.log('ds', ds);
-    Utils.goscreen(this.props.nthis.props.nthis, 'ScreenBaiDangNhom');
-    await this.setState({
-      DataChuyenVe: item,
-    });
-    this.GanDataSauKhiChuyenVe();
-    // await console.log('data liek chuyeern veef', this.state.DataChuyenVe);
-  };
-
-  GanDataSauKhiChuyenVe = async () => {
-    await this.setState({
-      likeSelected: this.state.DataChuyenVe.ID_like,
-    });
-
-    // await console.log('data liek ', this.state.likeSelected);
   };
 
   loadNoiDung = () => {
@@ -288,10 +266,14 @@ export default class BaiDangNhomComponent extends React.Component {
               <View>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -299,15 +281,14 @@ export default class BaiDangNhomComponent extends React.Component {
         );
       case 4:
         return (
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: '#1C86EE',
               margin: 5,
-            }}>
+            }}
+            onPress={this.props.onPress}>
             <ImageBackground source={welcome} style={styles.image}>
-              <TouchableOpacity
-                style={styles.footer1}
-                onPress={this.props.onPress}>
+              <View style={styles.footer1}>
                 <Text
                   style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
                   {item.title}
@@ -315,23 +296,29 @@ export default class BaiDangNhomComponent extends React.Component {
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
-              </TouchableOpacity>
+              </View>
             </ImageBackground>
-          </View>
+          </TouchableOpacity>
         );
       case 6:
         return (
           <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
             <Text>{item.title}</Text>
-
+            {/* <Text style={{fontSize: FontSize.reSize(20)}}>
+                {item.NoiDung}
+              </Text> */}
             {item.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -352,8 +339,10 @@ export default class BaiDangNhomComponent extends React.Component {
                   height: FontSize.scale(50),
                   width: FontSize.verticalScale(50),
                 }}></Animatable.Image>
-              <View>
-                <Text>{item.title}</Text>
+              <View style={{marginLeft: 10}}>
+                <Text style={{fontSize: FontSize.reSize(25)}}>
+                  {item.title}
+                </Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
@@ -363,10 +352,14 @@ export default class BaiDangNhomComponent extends React.Component {
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -378,13 +371,13 @@ export default class BaiDangNhomComponent extends React.Component {
             <Text>{item.title}</Text>
             <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
             {item.hinhanh ? (
-              <View>
+              <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -393,22 +386,22 @@ export default class BaiDangNhomComponent extends React.Component {
     }
   };
 
-  TaoLike_Like = async () => {
-    Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
-      chuyenData: this.ChuyenData,
-    });
+  // TaoLike_Like = async () => {
+  //   Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+  //     chuyenData: this.ChuyenData,
+  //   });
 
-    await this.TaoLike(
-      this.item.Id_BaiDang,
-      this.state.likeSelected,
-      await Utils.ngetStorage(nkey.id_user),
-    );
+  //   await this.TaoLike(
+  //     this.item.Id_BaiDang,
+  //     this.state.likeSelected,
+  //     await Utils.ngetStorage(nkey.id_user),
+  //   );
 
-    // switch(this.state.likeSelected){
-    //   case 1:
+  //   // switch(this.state.likeSelected){
+  //   //   case 1:
 
-    // }
-  };
+  //   // }
+  // };
 
   componentDidMount = async () => {
     // this._GetDSLike();
@@ -420,24 +413,24 @@ export default class BaiDangNhomComponent extends React.Component {
   render() {
     const {item = {}} = this.props;
 
-    let user = item.User_DangBai ? item.User_DangBai[0] : {};
-    let Solike = item.Like_BaiDang.length;
-    let SoComment = item.Coment.length;
-    // console.log('onpress', this.props.onPress);
-    let day = item.CreatedDate;
-    let ngay = day.substring(0, 10);
-    let time = day.substring(11, 16);
-    // this.idbaidang = item.Id_BaiDang;
-    let dslike = item.Like ? item.Like : null;
-    let loaibaidang = item.Id_LoaiBaiDang;
-    let group = item.Group ? item.Group[0] : {};
-    // console.log('this bài đăng component', group);
-    this.item = item.Id_BaiDang;
+    // let user = item.User_DangBai ? item.User_DangBai[0] : {};
+    // let Solike = item.Like_BaiDang.length;
+    // let SoComment = item.Coment.length;
+    // // console.log('onpress', this.props.onPress);
+    // let day = item.CreatedDate;
+    // let ngay = day.substring(0, 10);
+    // let time = day.substring(11, 16);
+    // // this.idbaidang = item.Id_BaiDang;
+    // let dslike = item.Like ? item.Like : null;
+    // let loaibaidang = item.Id_LoaiBaiDang;
+    // let group = item.Group ? item.Group[0] : {};
+    // console.log('this bài đăng component', this.props);
+    // this.item = item.Id_BaiDang;
+    // console.log(this.props);
     return (
       <View style={styles.container}>
-        {/* khung chứa avata và khung text input*/}
         <View>
-          <View style={styles.header}>
+          {/* <View style={styles.header}>
             <TouchableOpacity style={{flexDirection: 'row'}}>
               <View
                 style={{
@@ -477,13 +470,9 @@ export default class BaiDangNhomComponent extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() =>
-                Utils.goscreen(
-                  this.props.nthis.props.nthis,
-                  'PopUpModal_XoaSua_Nhom',
-                  {
-                    id_nguoidang: item,
-                  },
-                )
+                Utils.goscreen(this.props.nthis, 'PopUpModal_XoaSua_Nhom_Go', {
+                  id_nguoidang: item,
+                })
               }>
               <Image
                 style={{
@@ -494,14 +483,25 @@ export default class BaiDangNhomComponent extends React.Component {
                 source={daubacham}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
 
-          {/* khung chứa nội dung bài đăng và cmt*/}
+          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+            <Text>{item.title}</Text>
+            <Text>{item.noidung}</Text>
+            {item.hinhanh ? (
+              <View style={{marginVertical: 5}}>
+                <Image
+                  source={{uri: item.imgmedia}}
+                  style={{
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    backgroundColor: 'blue',
+                  }}></Image>
+              </View>
+            ) : null}
+          </TouchableOpacity>
 
-          <this.loadNoiDung></this.loadNoiDung>
-
-          {/* khung chứa số like và cmt */}
-          <View style={styles.khung_DemSoLike_Comt}>
+          {/* <View style={styles.khung_DemSoLike_Comt}>
             <TouchableOpacity style={styles.khung_DemSoLike}>
               <View style={{flexDirection: 'row', padding: 3}}>
                 <Image style={styles.imageLike_Commnet} source={like} />
@@ -512,25 +512,22 @@ export default class BaiDangNhomComponent extends React.Component {
                 <Text> {SoComment}</Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
 
         <View>
-          <View style={styles.khungLike_Commnet}>
+          {/* <View style={styles.khungLike_Commnet}>
             {dslike ? (
               // đây sẽ là  delete
               <TouchableOpacity
                 style={styles.khung_Thich}
                 onLongPress={async (e) => {
-                  Utils.goscreen(
-                    this.props.nthis.props.nthis,
-                    'ModalLike_Nhom',
-                    {
-                      id_nguoidang: this.props,
-                      x: e.nativeEvent.pageX,
-                      y: e.nativeEvent.pageY,
-                    },
-                  );
+                  Utils.goscreen(this.props.nthis, 'ModalLike_Nhom_Go', {
+                    id_nguoidang: this.props,
+                    x: e.nativeEvent.pageX,
+                    y: e.nativeEvent.pageY,
+                  });
+                  // alert(5);
                 }}
                 onPress={() => {
                   this.DeleteLike(item.Id_BaiDang);
@@ -553,8 +550,9 @@ export default class BaiDangNhomComponent extends React.Component {
                 style={styles.khung_Thich}
                 onLongPress={async (e) => {
                   Utils.goscreen(
-                    this.props.nthis.props.nthis,
-                    'ModalLike_Nhom',
+                    this.props.nthis,
+                    'ModalLike_Nhom_Go',
+
                     {
                       id_nguoidang: this.props,
                       x: e.nativeEvent.pageX,
@@ -563,27 +561,27 @@ export default class BaiDangNhomComponent extends React.Component {
                   );
                 }}
                 onPress={async () => {
-                  this.TaoLike(
+                  await this.TaoLike(
                     item.Id_BaiDang,
                     this.id_like,
                     await Utils.ngetStorage(nkey.id_user),
                   );
-                  this._AddThongBao_LikeBaiDang(item.Id_BaiDang);
+                  await this._AddThongBao_LikeBaiDang(item.Id_BaiDang);
                 }}>
                 <View style={{flexDirection: 'row'}}>
                   <Image style={styles.imageLike_Commnet} source={thich} />
                   <Text style={styles.text_Like_cmt}>Like</Text>
                 </View>
               </TouchableOpacity>
-            )}
+            )} */}
 
-            <TouchableOpacity
+          {/* <TouchableOpacity
               style={styles.khung_BinhLuan}
               onPress={this.props.onPress}>
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+          {/* </View> */}
         </View>
       </View>
     );
@@ -615,6 +613,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingHorizontal: 10,
+    paddingVertical: 10,
+    // borderRadius: 10,
   },
   footer1: {
     paddingHorizontal: 10,
@@ -648,10 +648,8 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
   daubacham: {
-    height: FontSize.scale(17),
-    width: FontSize.verticalScale(18),
-    marginRight: 2,
-    tintColor: '#4F4F4F',
+    height: FontSize.scale(20),
+    width: FontSize.verticalScale(20),
   },
   khungLike_Commnet: {
     borderTopWidth: 1,
@@ -673,6 +671,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    // backgroundColor: '#69696920',
   },
   text_Like_cmt: {
     marginLeft: FontSize.reSize(5),

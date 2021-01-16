@@ -23,6 +23,7 @@ async function GetLoaiBaiDang(user = '') {
   );
   return res;
 }
+
 async function GetAllUser() {
   let res = await Utils.get_api(apiUser + `GetDSUser`);
   return res;
@@ -425,6 +426,17 @@ async function UpdatePass(iduser, pass) {
   return res;
 }
 
+async function getDSThongDiep() {
+  let res = await Utils.get_api(apiUser + `getDSThongDiep`);
+  return res;
+}
+async function getDSThongDiepDetail(id_td = '') {
+  let res = await Utils.get_api(
+    apiUser + `getDSThongDiepDetail?id_td=${id_td}`,
+  );
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -487,4 +499,6 @@ export {
   AddThongBao_Like,
   getDSComentViewDetail,
   UpdatePass,
+  getDSThongDiep,
+  getDSThongDiepDetail,
 };

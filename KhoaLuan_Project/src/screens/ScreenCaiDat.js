@@ -27,6 +27,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 const avatar = require('../assets/images/avatar.jpg');
 const logout = require('../assets/images/logout.png');
 const addgroup = require('../assets/images/add-group.png');
+const boss = require('../assets/images/boss.png');
+
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);
@@ -137,6 +139,16 @@ export default class ScreenCaiDat extends React.Component {
                 Tạo Nhóm
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'BaiDang_CEO')}>
+              <Image source={boss} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Thông Điệp CEO
+              </Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.st_button}
               onPress={() =>

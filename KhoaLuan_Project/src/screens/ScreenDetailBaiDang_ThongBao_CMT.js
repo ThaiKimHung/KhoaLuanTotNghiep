@@ -163,7 +163,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     const {id_nguoidang = {}} = this.props.route.params;
     await Utils.setGlobal(nGlobalKeys.idcmt, id_nguoidang.id_cmt);
     // console.log('id bài đăng', id_nguoidang);
-    console.log('this', id_nguoidang.id_cmt);
+    // console.log('this', id_nguoidang.id_cmt);
     await this.setState({
       // idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
       idcmt: id_nguoidang.id_cmt,
@@ -174,9 +174,9 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     // console.log('hi');
     let id_user = await Utils.ngetStorage(nkey.id_user);
     let idcmt = await Utils.getGlobal(nGlobalKeys.idcmt);
-    console.log('idcmt', idcmt);
+    // console.log('idcmt', idcmt);
     let res = await getDSComentViewDetail(id_user, idcmt);
-    console.log('res chi tiết bài đăng', res);
+    // console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.data,
@@ -579,8 +579,12 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
                       : avatar_mau
                   }></Image>
               </View> */}
-              <Text>{this.state.title}</Text>
-              <Text>{this.state.noidung}</Text>
+              <Text style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
+                {this.state.title}
+              </Text>
+              <Text style={{fontSize: FontSize.reSize(20)}}>
+                {this.state.noidung}
+              </Text>
             </ImageBackground>
           </View>
         );
@@ -589,7 +593,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
           <View style={styles.footer}>
             <Text>{this.state.title}</Text>
             {/* <Text>{this.state.noidung}</Text> */}
-            {this.state.hinhanh ? (
+            {this.state.hinh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}
@@ -624,7 +628,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
                 </Text>
               </View>
             </View>
-            {this.state.hinhanh ? (
+            {this.state.hinh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: this.state.image}}

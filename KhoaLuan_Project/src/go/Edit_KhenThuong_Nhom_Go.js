@@ -269,7 +269,7 @@ export default class Edit_KhenThuong_Nhom_Go extends React.Component {
       Utils.goscreen(this, 'BaiDangNhom');
       // await ROOTGlobal.GetDsAllBaiDang();
       // await ROOTGlobal.GetChiTietBaiDang();
-      await ROOTGlobal.GetDsAllBaiDang_Nhom();
+      await ROOTGlobal.getGo();
     } else {
       showMessage({
         message: 'Thông báo',
@@ -309,11 +309,12 @@ export default class Edit_KhenThuong_Nhom_Go extends React.Component {
                 width: '100%',
               }}>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   Utils.goscreen(this, 'BaiDangNhom');
                   // this.setState({
                   //   DataChuyenVe: {},
                   // });
+                  await ROOTGlobal.getGo();
                 }}>
                 <Image
                   source={goback}

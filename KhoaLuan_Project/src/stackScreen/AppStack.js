@@ -106,13 +106,12 @@ import Edit_TrangThongTinCaNhan from '../edit/Edit_TrangThongTinCaNhan';
 import Edit_ChaoMung_Detail_Nhom from '../edit/Edit_ChaoMung_Detail_Nhom';
 import Edit_KhenThuong_DetailNhom from '../edit/Edit_KhenThuong_DetailNhom';
 
-import BaiDangNhom from '../go/BaiDangNhom';
 import ScreenDetailBaiDang_ThongBao from '../screens/ScreenDetailBaiDang_ThongBao';
-import ScreenCMT_Child_Nhom_Go from '../go/ScreenCMT_Child_Nhom_Go';
 
+import BaiDangNhom from '../go/BaiDangNhom';
+import ScreenCMT_Child_Nhom_Go from '../go/ScreenCMT_Child_Nhom_Go';
 import Screen_EditBaiDang_Nhom_Go from '../go/Screen_EditBaiDang_Nhom_Go';
 import ScreenDetailBaiDang_Nhom_Go from '../go/ScreenDetailBaiDang_Nhom_Go';
-
 import PopUpModal_XoaSua_Nhom_Go from '../go/PopUpModal_XoaSua_Nhom_Go';
 import ModalLike_Detail_Nhom_Go from '../go/ModalLike_Detail_Nhom_Go';
 import PopUpModal_XoaSua_Detail_Nhom_Go from '../go/PopUpModal_XoaSua_Detail_Nhom_Go';
@@ -125,6 +124,8 @@ import Edit_KhenThuong_Nhom_Go from '../go/Edit_KhenThuong_Nhom_Go';
 import Edit_ChaoMung_Detail_Nhom_Go from '../go/Edit_ChaoMung_Detail_Nhom_Go';
 import Edit_KhenThuong_DetailNhom_Go from '../go/Edit_KhenThuong_DetailNhom_Go';
 
+import BaiDang_CEO from '../thongdiep_ceo/BaiDang_CEO';
+import ScreenDetailBaiDang_CEO from '../thongdiep_ceo/ScreenDetailBaiDang_CEO';
 import Test from '../screens/Test';
 
 // import
@@ -294,6 +295,11 @@ const HomeStackScreen = () => (
     <HomeStack.Screen
       name="Edit_KhenThuong_DetailNhom_Go"
       component={Edit_KhenThuong_DetailNhom_Go}
+    />
+    <HomeStack.Screen name="BaiDang_CEO" component={BaiDang_CEO} />
+    <HomeStack.Screen
+      name="ScreenDetailBaiDang_CEO"
+      component={ScreenDetailBaiDang_CEO}
     />
   </HomeStack.Navigator>
 );

@@ -70,6 +70,8 @@ export default class SignInScreen extends React.Component {
       await Utils.nsetStorage(nkey.password, this.Password);
       //lưu lại avatar
       await Utils.nsetStorage(nkey.avatar, this.state.DsThongTinUser[0].Avatar);
+      await Utils.nsetStorage(nkey.ChucVu, this.state.DsThongTinUser[0].chucvu);
+      await console.log(await Utils.ngetStorage(nkey.ChucVu));
       //lưu user name
 
       // nếu là 1 thì đăng nhập thành công

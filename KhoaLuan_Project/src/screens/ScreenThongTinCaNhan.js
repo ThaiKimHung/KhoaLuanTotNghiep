@@ -107,10 +107,9 @@ export default class ScreenTaoNhom extends React.Component {
                   }}
                   resizeMode="cover"
                   source={
-                    // this.state.thongtin
-                    //   ? {uri: this.state.thongtin[0].Avatar}
-                    //   :
-                    avatar
+                    this.state.thongtin
+                      ? {uri: this.state.thongtin[0].Avatar}
+                      : avatar
                   }></Image>
               </View>
             </TouchableOpacity>

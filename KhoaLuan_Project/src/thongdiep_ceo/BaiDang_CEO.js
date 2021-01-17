@@ -28,6 +28,7 @@ import {
   AddLike,
   DeleteBaiDang_Like,
   getDSThongDiep,
+  AddLuotXem,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -40,6 +41,7 @@ import BaiDang_CEO_Component from './BaiDang_CEO_Component';
 const windowWidth = Dimensions.get('window').width;
 const goback = require('../assets/images/go-back-left-arrow.png');
 const bachamdoc = require('../assets/images/daubacham_doc.png');
+const arrow = require('../assets/images/right-arrow.png');
 export default class BaiDang extends React.Component {
   constructor(props) {
     super(props);
@@ -49,6 +51,7 @@ export default class BaiDang extends React.Component {
       idnhom: '',
       DSBaiThongDiep: '',
       refresh: true,
+      chucvu: '',
     };
     ROOTGlobal.GetDSBThongDiep = this._GetDSBThongDiep;
   }
@@ -104,17 +107,30 @@ export default class BaiDang extends React.Component {
   //   // await console.log('state id group', this.state.idgroup);
   // };
 
+  _AddLuotXem = async (idthongdiep) => {
+    let strBody = JSON.stringify({
+      id_thongdiep: idthongdiep,
+      id_user: await Utils.ngetStorage(nkey.id_user),
+    });
+    // console.log('boday', strBody);
+
+    let res = await AddLuotXem(strBody);
+    // console.log('res add lượt xem', res);
+  };
+
   _renderItem = ({item, index}) => {
+    // console.log(item.id_thongdiep);
     return (
       <BaiDang_CEO_Component
         key={index}
         item={item}
         nthis={this}
-        onPress={() =>
-          Utils.goscreen(this, 'ScreenDetailBaiDang_CEO', {
+        onPress={async () => {
+          await this._AddLuotXem(item.id_thongdiep);
+          await Utils.goscreen(this, 'ScreenDetailBaiDang_CEO', {
             id_nguoidang: item,
-          })
-        }></BaiDang_CEO_Component>
+          });
+        }}></BaiDang_CEO_Component>
     );
   };
 
@@ -122,9 +138,18 @@ export default class BaiDang extends React.Component {
     this.setState({refresh: true}, () => this._GetDSBThongDiep());
   };
 
+  layChucVu = async () => {
+    await this.setState({
+      chucvu: await Utils.ngetStorage(nkey.ChucVu),
+    });
+    // await console.log(this.state.chucvu);
+    // await console.log(await Utils.ngetStorage(nkey.ChucVu));
+  };
+
   componentDidMount = async () => {
     // await this.Nhandata();
     await this._GetDSBThongDiep();
+    await this.layChucVu();
   };
 
   render() {
@@ -149,6 +174,35 @@ export default class BaiDang extends React.Component {
             <Text style={styles.title}>Thông Điệp CEO</Text>
           </View>
         </View>
+        {this.state.chucvu === 'Phó giám đốc' ||
+        this.state.chucvu === 'Giám Đốc' ? (
+          <View
+            style={{
+              height: FontSize.scale(40),
+              justifyContent: 'center',
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+            }}>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: 10,
+              }}
+              onPress={() => Utils.goscreen(this, 'Tao_ThongDiep')}>
+              <Text style={{textAlign: 'center', fontSize: 18}}>
+                Tạo Thông Điệp
+              </Text>
+              <Image
+                source={arrow}
+                style={{
+                  height: FontSize.scale(15),
+                  width: FontSize.verticalScale(15),
+                }}></Image>
+            </TouchableOpacity>
+          </View>
+        ) : null}
 
         <View style={{flex: 1}}>
           <View>

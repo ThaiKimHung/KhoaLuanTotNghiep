@@ -126,6 +126,10 @@ import Edit_KhenThuong_DetailNhom_Go from '../go/Edit_KhenThuong_DetailNhom_Go';
 
 import BaiDang_CEO from '../thongdiep_ceo/BaiDang_CEO';
 import ScreenDetailBaiDang_CEO from '../thongdiep_ceo/ScreenDetailBaiDang_CEO';
+import Tao_ThongDiep from '../thongdiep_ceo/Tao_ThongDiep';
+import PopUpModal_XoaSua_Detail_ThongDiep_CEO from '../thongdiep_ceo/PopUpModal_XoaSua_Detail_ThongDiep_CEO';
+import Screen_EditThongDiep_Detail_CEO from '../thongdiep_ceo/Screen_EditThongDiep_Detail_CEO';
+
 import Test from '../screens/Test';
 
 // import
@@ -301,6 +305,11 @@ const HomeStackScreen = () => (
       name="ScreenDetailBaiDang_CEO"
       component={ScreenDetailBaiDang_CEO}
     />
+    <HomeStack.Screen name="Tao_ThongDiep" component={Tao_ThongDiep} />
+    <HomeStack.Screen
+      name="Screen_EditThongDiep_Detail_CEO"
+      component={Screen_EditThongDiep_Detail_CEO}
+    />
   </HomeStack.Navigator>
 );
 
@@ -465,6 +474,10 @@ const AppStack = () => {
       <Stack.Screen
         name="PopUpModal_SuaCMT_Child_Nhom_Go"
         component={PopUpModal_SuaCMT_Child_Nhom_Go}
+      />
+      <Stack.Screen
+        name="PopUpModal_XoaSua_Detail_ThongDiep_CEO"
+        component={PopUpModal_XoaSua_Detail_ThongDiep_CEO}
       />
     </Stack.Navigator>
   );

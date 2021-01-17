@@ -437,6 +437,58 @@ async function getDSThongDiepDetail(id_td = '') {
   return res;
 }
 
+async function AddThongDiep(strbody) {
+  let res = await Utils.post_api(apiUser + `addThongDiep`, strbody);
+  // this.BanThongBao();
+  return res;
+}
+
+async function UpdateThongDiep(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateThongDiep`, strbody);
+  // this.BanThongBao();
+  return res;
+}
+
+async function DeleteThongDiep(id_thongdiep) {
+  let res = await Utils.post_api(
+    apiUser + `DeleteThongDiep?id_thongdiep=${id_thongdiep}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
+async function File_ThongDiep(strbody) {
+  let res = await Utils.post_api(apiUser + `File_ThongDiep`, strbody);
+  return res;
+}
+
+async function File_Updatethongdiep(id_thongdiep, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `File_Updatethongdiep?id_thongdiep=${id_thongdiep}`,
+    strbody,
+  );
+  return res;
+}
+
+async function AddLuotXem(strbody) {
+  let res = await Utils.post_api(apiUser + `addLuotXem`, strbody);
+  // this.BanThongBao();
+  return res;
+}
+
+async function CountLuotXem(id_td = '') {
+  let res = await Utils.get_api(apiUser + `CountLuotXem?id_thongdiep=${id_td}`);
+  return res;
+}
+
+async function GetDSLuotXem(id_td = '') {
+  let res = await Utils.get_api(apiUser + `getDSLuotXem?id_thongdiep=${id_td}`);
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -501,4 +553,12 @@ export {
   UpdatePass,
   getDSThongDiep,
   getDSThongDiepDetail,
+  AddThongDiep,
+  UpdateThongDiep,
+  DeleteThongDiep,
+  File_ThongDiep,
+  File_Updatethongdiep,
+  AddLuotXem,
+  CountLuotXem,
+  GetDSLuotXem,
 };

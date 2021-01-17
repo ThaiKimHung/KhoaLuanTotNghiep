@@ -10,6 +10,7 @@ export const nkey = {
   id_user: 'id_user',
   avatar: 'avatar',
   Username: 'Username',
+  ChucVu: 'chucvu',
 
   phonenumber: 'phonenumber',
   password: 'password',

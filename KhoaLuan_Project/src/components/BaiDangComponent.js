@@ -196,17 +196,6 @@ export default class BaiDangComponenet extends React.Component {
                 </Text>
               </View>
             </View>
-            {item.hinhanh ? (
-              <View>
-                <Image
-                  source={{uri: item.image}}
-                  style={{
-                    height: FontSize.scale(200),
-                    width: '100%',
-                    backgroundColor: 'blue',
-                  }}></Image>
-              </View>
-            ) : null}
           </TouchableOpacity>
         );
       case 2:
@@ -437,6 +426,21 @@ export default class BaiDangComponenet extends React.Component {
     // }, 10000);
   };
 
+  _renderItem_DS = ({item, index}) => {
+    return (
+      <View style={{flexDirection: 'row'}}>
+        <SvgUri
+          width={FontSize.scale(20)}
+          height={FontSize.verticalScale(20)}
+          source={{
+            uri: item.icon,
+          }}
+        />
+        <Text>{item.tong}</Text>
+      </View>
+    );
+  };
+
   render() {
     const {item = {}} = this.props;
     // console.log('this', item);
@@ -453,6 +457,7 @@ export default class BaiDangComponenet extends React.Component {
     let group = item.Group ? item.Group[0] : {};
     // console.log('this bài đăng component', group);
     this.item = item.Id_BaiDang;
+    // let like_baidang = item.
     return (
       <View style={styles.container}>
         {/* khung chứa avata và khung text input*/}
@@ -553,6 +558,44 @@ export default class BaiDangComponenet extends React.Component {
           {this.loadNoiDung()}
 
           {/* khung chứa số like và cmt */}
+          {/* <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 5,
+            }}>
+            <View
+              style={{flexDirection: 'row', backgroundColor: 'green', flex: 1}}>
+              <TouchableOpacity
+                style={{
+                  // flexDirection: 'row',
+                  padding: 3,
+                  marginRight: 5,
+                  // justifyContent: 'center',
+                  // alignItems: 'center',
+                }}>
+                <View style={{flexDirection: 'row', padding: 3}}>
+                  <FlatList
+                    data={item.Like_BaiDang}
+                    renderItem={this._renderItem_DS}
+                    keyExtractor={(item, index) => index.toString()}
+                    // refreshing={this.state.refresh}
+                    // onRefresh={this._onRefresh}
+                    // ListEmptyComponent={this.EmptyListMessage}
+                    // ListFooterComponent={this.FoodterMessage}
+                    // initialNumToRender={10}
+                  ></FlatList>
+               
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.khung_DemSoLike}>
+              <View style={{flexDirection: 'row', marginLeft: 5}}>
+                <Image style={styles.imageLike_Commnet} source={commnet} />
+                <Text> {SoComment}</Text>
+              </View>
+            </TouchableOpacity>
+          </View> */}
           <View style={styles.khung_DemSoLike_Comt}>
             <TouchableOpacity style={styles.khung_DemSoLike}>
               <View style={{flexDirection: 'row', padding: 3}}>

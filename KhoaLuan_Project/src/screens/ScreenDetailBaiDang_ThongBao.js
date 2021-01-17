@@ -441,7 +441,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                 </Text>
               </View>
             </View>
-            {id_nguoidang.hinhanh ? (
+            {/* {id_nguoidang.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: id_nguoidang.image}}
@@ -451,7 +451,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                     backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
         );
       case 2:

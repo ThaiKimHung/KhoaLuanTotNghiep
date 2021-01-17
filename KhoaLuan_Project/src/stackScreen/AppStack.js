@@ -130,6 +130,10 @@ import Tao_ThongDiep from '../thongdiep_ceo/Tao_ThongDiep';
 import PopUpModal_XoaSua_Detail_ThongDiep_CEO from '../thongdiep_ceo/PopUpModal_XoaSua_Detail_ThongDiep_CEO';
 import Screen_EditThongDiep_Detail_CEO from '../thongdiep_ceo/Screen_EditThongDiep_Detail_CEO';
 
+import KhenThuong_LuuTru from '../khenthuong/KhenThuong_LuuTru';
+
+import TinTucNoiBo_LuuTru from '../tintucnoibo/TinTucNoiBo_LuuTru';
+
 import Test from '../screens/Test';
 
 // import
@@ -309,6 +313,12 @@ const HomeStackScreen = () => (
     <HomeStack.Screen
       name="Screen_EditThongDiep_Detail_CEO"
       component={Screen_EditThongDiep_Detail_CEO}
+    />
+
+    <HomeStack.Screen name="KhenThuong_LuuTru" component={KhenThuong_LuuTru} />
+    <HomeStack.Screen
+      name="TinTucNoiBo_LuuTru"
+      component={TinTucNoiBo_LuuTru}
     />
   </HomeStack.Navigator>
 );

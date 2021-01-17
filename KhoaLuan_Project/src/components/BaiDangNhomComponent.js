@@ -185,17 +185,6 @@ export default class BaiDangNhomComponent extends React.Component {
                 </Text>
               </View>
             </View>
-            {item.hinhanh ? (
-              <View>
-                <Image
-                  source={{uri: item.image}}
-                  style={{
-                    height: FontSize.scale(200),
-                    width: '100%',
-                    backgroundColor: 'blue',
-                  }}></Image>
-              </View>
-            ) : null}
           </TouchableOpacity>
         );
       case 2:

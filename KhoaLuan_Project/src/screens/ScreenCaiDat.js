@@ -28,7 +28,8 @@ const avatar = require('../assets/images/avatar.jpg');
 const logout = require('../assets/images/logout.png');
 const addgroup = require('../assets/images/add-group.png');
 const boss = require('../assets/images/boss.png');
-
+const medel = require('../assets/images/medal.png');
+const report = require('../assets/images/report.png');
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);
@@ -146,6 +147,24 @@ export default class ScreenCaiDat extends React.Component {
               <Image source={boss} style={styles.sizeimage}></Image>
               <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
                 Thông Điệp CEO
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'KhenThuong_LuuTru')}>
+              <Image source={medel} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Khen Thưởng
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'TinTucNoiBo_LuuTru')}>
+              <Image source={report} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Tin Tức Nội Bộ
               </Text>
             </TouchableOpacity>
 

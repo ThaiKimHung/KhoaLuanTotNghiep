@@ -489,6 +489,14 @@ async function GetDSLuotXem(id_td = '') {
   return res;
 }
 
+async function GetLuuTruKhenThuongUser() {
+  let res = await Utils.get_api(apiUser + `GetLuuTruKhenThuongUser`);
+  return res;
+}
+async function getDSBaiDang_TinTucNoiBo() {
+  let res = await Utils.get_api(apiUser + `getDSBaiDang_TinTucNoiBo`);
+  return res;
+}
 export {
   Login,
   Logout,
@@ -561,4 +569,6 @@ export {
   AddLuotXem,
   CountLuotXem,
   GetDSLuotXem,
+  GetLuuTruKhenThuongUser,
+  getDSBaiDang_TinTucNoiBo,
 };

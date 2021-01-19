@@ -493,10 +493,54 @@ async function GetLuuTruKhenThuongUser() {
   let res = await Utils.get_api(apiUser + `GetLuuTruKhenThuongUser`);
   return res;
 }
+
 async function getDSBaiDang_TinTucNoiBo() {
   let res = await Utils.get_api(apiUser + `getDSBaiDang_TinTucNoiBo`);
   return res;
 }
+
+async function getDSBaiDang_ThongBao() {
+  let res = await Utils.get_api(apiUser + `getDSBaiDang_ThongBao`);
+  return res;
+}
+
+async function addGhim(iduser, idthongdiep) {
+  let res = await Utils.post_api(
+    apiUser + `addGhim?id_user=${iduser}&id_thongdiep=${idthongdiep}`,
+  );
+  return res;
+}
+
+async function addTBLGhim(iduser, idthongdiep) {
+  let res = await Utils.post_api(
+    apiUser + `addTBLGhim?id_user=${iduser}&id_thongdiep=${idthongdiep}`,
+  );
+  return res;
+}
+
+async function DeleteGhim(iduser, id_thongdiep) {
+  let res = await Utils.post_api(
+    apiUser + `DeleteGhim?id_user=${iduser}&id_thongdiep=${id_thongdiep}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
+async function UpdateGhim(iduser, idthongdiep) {
+  let res = await Utils.post_api(
+    apiUser + `UpdateGhim?id_user=${iduser}&id_thongdiep=${idthongdiep}`,
+  );
+  return res;
+}
+
+async function getDSGhim(iduser) {
+  let res = await Utils.get_api(apiUser + `getDSGhim?id_user=${iduser}`);
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -571,4 +615,10 @@ export {
   GetDSLuotXem,
   GetLuuTruKhenThuongUser,
   getDSBaiDang_TinTucNoiBo,
+  getDSBaiDang_ThongBao,
+  addTBLGhim,
+  addGhim,
+  DeleteGhim,
+  UpdateGhim,
+  getDSGhim,
 };

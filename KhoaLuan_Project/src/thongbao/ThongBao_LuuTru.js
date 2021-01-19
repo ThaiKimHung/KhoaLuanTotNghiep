@@ -27,7 +27,7 @@ import {
   GetChiTietBaiDang,
   AddLike,
   DeleteBaiDang_Like,
-  GetLuuTruKhenThuongUser,
+  getDSBaiDang_ThongBao,
   AddLuotXem,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -44,7 +44,9 @@ const bachamdoc = require('../assets/images/daubacham_doc.png');
 const arrow = require('../assets/images/right-arrow.png');
 const avatar = require('../assets/images/avatar.jpg');
 const daubacham = require('../assets/images/daubacham.png');
-export default class KhenThuong_LuuTru extends React.Component {
+const sheld = require('../assets/images/shield.png');
+const noti = require('../assets/images/bell.png');
+export default class ThongBao_LuuTru extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,14 +70,14 @@ export default class KhenThuong_LuuTru extends React.Component {
   //   // await console.log('ten nhóm ======', await this.state.tennhom);
   // };
 
-  _GetLuuTruKhenThuongUser = async () => {
+  _getDSBaiDangThongBao = async () => {
     // const idgroup = this.props.nthis.props.route.params.screennhom;
     // const {id_nguoidang = {}} = this.props.nthis.props.route.params;
-    let res = await GetLuuTruKhenThuongUser();
+    let res = await getDSBaiDang_ThongBao();
     // console.log('Danh sách thông điệp:', res);
     if (res.status == 1) {
       this.setState({
-        DSBaiThongDiep: res.Data,
+        DSBaiThongDiep: res.data,
         refresh: false,
       });
     } else {
@@ -111,7 +113,7 @@ export default class KhenThuong_LuuTru extends React.Component {
 
   _renderItem = ({item, index}) => {
     // console.log(item);
-    let day = item.createdate;
+    let day = item.CreatedDate;
     let ngay = day.substring(0, 10);
     let time = day.substring(11, 16);
     return (
@@ -130,8 +132,8 @@ export default class KhenThuong_LuuTru extends React.Component {
           style={{
             // backgroundColor: '#1C86EE',
             margin: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
+            // justifyContent: 'center',
+            // alignItems: 'center',
           }}>
           <View style={{flexDirection: 'row', padding: 5}}>
             <TouchableOpacity style={{flexDirection: 'row'}}>
@@ -160,7 +162,7 @@ export default class KhenThuong_LuuTru extends React.Component {
                     fontSize: FontSize.reSize(20),
                     marginHorizontal: 5,
                   }}>
-                  {item.user_name}
+                  {item.username}
                 </Text>
               </View>
 
@@ -199,66 +201,47 @@ export default class KhenThuong_LuuTru extends React.Component {
               />
             </TouchableOpacity> */}
           </View>
-          <Animatable.View
-            animation="wobble"
-            iterationCount={10}
-            direction="alternate-reverse"
-            // easing="ease-out"s
-            duration={20000}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: '#007DE3',
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              marginBottom: 5,
-              borderRadius: 15,
-            }}>
-            <SvgUri
-              width={FontSize.scale(45)}
-              height={FontSize.verticalScale(45)}
-              source={{
-                uri: item.icon_kt,
-              }}
-            />
-            <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
-              {item.tieude_kt}
-            </Text>
-          </Animatable.View>
-
           <TouchableOpacity
-            style={{
-              paddingHorizontal: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+            style={styles.footer}
             onPress={() =>
               Utils.goscreen(this, 'ScreenDetailBaiDang', {
                 id_nguoidang: item,
               })
             }>
-            {/* <View
+            <View style={{flexDirection: 'row'}}>
+              <Animatable.Image
+                animation="shake"
+                iterationCount={10}
+                direction="alternate-reverse"
+                // easing="ease-out"s
+                duration={5000}
+                source={noti}
                 style={{
-                  marginLeft: 5,
-                  borderRadius: 30,
                   height: FontSize.scale(40),
                   width: FontSize.verticalScale(40),
-                }}>
+                }}></Animatable.Image>
+              <View style={{marginLeft: 10}}>
+                <Text>{item.title}</Text>
+                <Text style={{fontSize: FontSize.reSize(20)}}>
+                  {item.NoiDung}
+                </Text>
+              </View>
+            </View>
+            {/* {item.hinhanh ? (
+              <View>
                 <Image
+                  source={{uri: item.image}}
+                  // source={{
+                  //   uri:
+                  //     'https://i.pinimg.com/originals/a8/45/76/a84576a04c1874304735604d9f47d5a4.jpg',
+                  // }}
                   style={{
-                    height: FontSize.scale(40),
-                    width: FontSize.verticalScale(40),
-                    borderRadius: 30,
-                  }}
-                  resizeMode="cover"
-                  source={user.avatar ? {uri: user.avatar} : avatar}></Image>
-              </View> */}
-            <Text style={{fontSize: FontSize.reSize(30), fontWeight: 'bold'}}>
-              {item.tieude_baidang}
-            </Text>
-            <Text style={{fontSize: FontSize.reSize(20)}}>
-              {item.noidungbaidang}
-            </Text>
+                    height: FontSize.scale(200),
+                    width: '100%',
+                    // backgroundColor: 'blue',
+                  }}></Image>
+              </View>
+            ) : null} */}
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -266,7 +249,7 @@ export default class KhenThuong_LuuTru extends React.Component {
   };
 
   _onRefresh = () => {
-    this.setState({refresh: true}, () => this._GetLuuTruKhenThuongUser());
+    this.setState({refresh: true}, () => this._getDSBaiDangThongBao());
   };
 
   // layChucVu = async () => {
@@ -279,7 +262,7 @@ export default class KhenThuong_LuuTru extends React.Component {
 
   componentDidMount = async () => {
     // await this.Nhandata();
-    await this._GetLuuTruKhenThuongUser();
+    await this._getDSBaiDangThongBao();
     // await this.layChucVu();
   };
 
@@ -302,7 +285,7 @@ export default class KhenThuong_LuuTru extends React.Component {
                   width: FontSize.verticalScale(18),
                 }}></Image>
             </TouchableOpacity>
-            <Text style={styles.title}>Danh sách lưu trữ khen thưởng</Text>
+            <Text style={styles.title}>Danh sách lưu trữ thông báo</Text>
           </View>
         </View>
 

@@ -27,7 +27,7 @@ import {
   GetChiTietBaiDang,
   AddLike,
   DeleteBaiDang_Like,
-  getDSBaiDang_TinTucNoiBo,
+  getDSGhim,
   AddLuotXem,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
@@ -36,16 +36,13 @@ import {nkey} from '../apis/keyStore';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 
-// import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
-// import BaiDang_CEO_Component from './BaiDang_CEO_Component';
+import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
+import BaiDang_CEO_Component from './BaiDang_CEO_Component';
 const windowWidth = Dimensions.get('window').width;
 const goback = require('../assets/images/go-back-left-arrow.png');
 const bachamdoc = require('../assets/images/daubacham_doc.png');
 const arrow = require('../assets/images/right-arrow.png');
-const avatar = require('../assets/images/avatar.jpg');
-const daubacham = require('../assets/images/daubacham.png');
-const sheld = require('../assets/images/shield.png');
-export default class TinTucNoiBo_LuuTru extends React.Component {
+export default class BaiDang_Ghim extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,7 +53,7 @@ export default class TinTucNoiBo_LuuTru extends React.Component {
       refresh: true,
       chucvu: '',
     };
-    // ROOTGlobal.GetDSBThongDiep = this._GetDSBThongDiep;
+    ROOTGlobal.GetDSBaiDangGhim = this._GetDSBThongDiep;
   }
   // Nhandata = async () => {
   //   const {id_nguoidang = {}} = this.props.route.params;
@@ -69,14 +66,14 @@ export default class TinTucNoiBo_LuuTru extends React.Component {
   //   // await console.log('ten nhóm ======', await this.state.tennhom);
   // };
 
-  _GetLuuTruKhenThuongUser = async () => {
+  _GetDSBThongDiep = async () => {
     // const idgroup = this.props.nthis.props.route.params.screennhom;
     // const {id_nguoidang = {}} = this.props.nthis.props.route.params;
-    let res = await getDSBaiDang_TinTucNoiBo();
-    // console.log('Danh sách thông điệp:', res);
+    let res = await getDSGhim(await Utils.ngetStorage(nkey.id_user));
+    // console.log('Danh sách ghim:', res);
     if (res.status == 1) {
       this.setState({
-        DSBaiThongDiep: res.data,
+        DSBaiThongDiep: res.Data,
         refresh: false,
       });
     } else {
@@ -111,143 +108,53 @@ export default class TinTucNoiBo_LuuTru extends React.Component {
   // };
 
   _renderItem = ({item, index}) => {
-    // console.log(item);
-    let day = item.CreatedDate;
-    let ngay = day.substring(0, 10);
-    let time = day.substring(11, 16);
+    // console.log(item.id_thongdiep);
     return (
       <TouchableOpacity
-        onPress={() =>
-          Utils.goscreen(this, 'ScreenDetailBaiDang', {
-            id_nguoidang: item,
-          })
-        }
         style={{
           borderBottomWidth: 5,
           borderColor: '#69696920',
           backgroundColor: '#E9EBEE',
+        }}
+        onPress={async () => {
+          // await this._AddLuotXem(item.id_thongdiep);
+          await Utils.goscreen(this, 'ScreenDetailBaiDang_CEO', {
+            id_nguoidang: item,
+          });
         }}>
         <View
           style={{
-            // backgroundColor: '#1C86EE',
-            margin: 5,
-            // justifyContent: 'center',
-            // alignItems: 'center',
+            paddingHorizontal: 10,
+            paddingVertical: 10,
           }}>
-          <View style={{flexDirection: 'row', padding: 5}}>
-            <TouchableOpacity style={{flexDirection: 'row'}}>
-              <View
-                style={{
-                  marginLeft: 5,
-                  borderRadius: 30,
-                  height: FontSize.scale(30),
-                  width: FontSize.verticalScale(30),
-                }}>
-                <Image
-                  style={{
-                    height: FontSize.scale(30),
-                    width: FontSize.verticalScale(30),
-                    borderRadius: 20,
-                  }}
-                  resizeMode="cover"
-                  source={item.avatar ? {uri: item.avatar} : avatar}></Image>
-              </View>
-            </TouchableOpacity>
-            <View style={{flex: 1}}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: FontSize.reSize(20),
-                    marginHorizontal: 5,
-                  }}>
-                  {item.username}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginHorizontal: 5,
-                  marginTop: -2,
-                }}>
-                <Text style={{marginRight: 2}}>
-                  {moment(ngay, 'YYYY-MM-DD').format('DD-MM-YYYY')}
-                </Text>
-                <Text>{time}</Text>
-              </View>
-            </View>
-
-            {/* <TouchableOpacity
-              style={{padding: 5}}
-              // onPress={() =>
-              //   Utils.goscreen(
-              //     this.props.nthis.props.nthis,
-              //     'PopUpModal_XoaSua',
-              //     {
-              //       id_nguoidang: item,
-              //     },
-              //   )
-              // }
-            >
+          <Text>{item.title}</Text>
+          <Text>{item.noidung}</Text>
+          {item.media ? (
+            <View style={{marginVertical: 5}}>
               <Image
+                source={{uri: item.imgmedia}}
                 style={{
-                  height: FontSize.scale(20),
-                  width: FontSize.verticalScale(20),
-                  // tintColor: '#007DE3',
-                }}
-                source={daubacham}
-              />
-            </TouchableOpacity> */}
-          </View>
-          <TouchableOpacity
-            style={{paddingHorizontal: 10}}
-            onPress={() =>
-              Utils.goscreen(this, 'ScreenDetailBaiDang', {
-                id_nguoidang: item,
-              })
-            }>
-            <View style={{flexDirection: 'row'}}>
-              <Animatable.Image
-                animation="pulse"
-                iterationCount={10}
-                direction="alternate-reverse"
-                // easing="ease-out"s
-                duration={5000}
-                source={sheld}
-                style={{
-                  height: FontSize.scale(40),
-                  width: FontSize.verticalScale(40),
-                }}></Animatable.Image>
-              <View style={{marginLeft: 10}}>
-                <Text>{item.title}</Text>
-                <Text style={{fontSize: FontSize.reSize(20)}}>
-                  {item.NoiDung}
-                </Text>
-              </View>
+                  height: FontSize.scale(200),
+                  width: '100%',
+                  backgroundColor: 'blue',
+                }}></Image>
             </View>
-          </TouchableOpacity>
+          ) : null}
         </View>
       </TouchableOpacity>
     );
   };
 
   _onRefresh = () => {
-    this.setState({refresh: true}, () => this._GetLuuTruKhenThuongUser());
+    this.setState({refresh: true}, () => this._GetDSBThongDiep());
   };
 
-  // layChucVu = async () => {
-  //   await this.setState({
-  //     chucvu: await Utils.ngetStorage(nkey.ChucVu),
-  //   });
-  // await console.log(this.state.chucvu);
-  // await console.log(await Utils.ngetStorage(nkey.ChucVu));
-  // };
+  layChucVu = async () => {};
 
   componentDidMount = async () => {
     // await this.Nhandata();
-    await this._GetLuuTruKhenThuongUser();
-    // await this.layChucVu();
+    await this._GetDSBThongDiep();
+    await this.layChucVu();
   };
 
   render() {
@@ -269,7 +176,7 @@ export default class TinTucNoiBo_LuuTru extends React.Component {
                   width: FontSize.verticalScale(18),
                 }}></Image>
             </TouchableOpacity>
-            <Text style={styles.title}>Danh sách lưu trữ tin tức nội bộ</Text>
+            <Text style={styles.title}>Thông Điệp Đã Ghim</Text>
           </View>
         </View>
 

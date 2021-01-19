@@ -141,7 +141,7 @@ export default class Screen_EditThongDiep_Detail_CEO extends React.Component {
     }
     // console.log('strBody file ảnh Galary---------', strBody);
     let res = await File_Updatethongdiep(await this.state.idbaidang, strBody);
-    console.log('res file ảnh Galary-----', res);
+    // console.log('res file ảnh Galary-----', res);
   };
 
   _UP_FileBaiDang_Camera = async () => {

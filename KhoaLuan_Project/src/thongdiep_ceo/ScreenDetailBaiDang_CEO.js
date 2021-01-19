@@ -35,6 +35,10 @@ import {
   getDSThongDiepDetail,
   CountLuotXem,
   GetDSLuotXem,
+  addGhim,
+  addTBLGhim,
+  DeleteGhim,
+  UpdateGhim,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -55,7 +59,7 @@ const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const noti = require('../assets/images/bell.png');
 const sheld = require('../assets/images/shield.png');
 const light = require('../assets/images/light-bulb.png');
-
+const pin = require('../assets/images/pin.png');
 const windowWidth = Dimensions.get('window').width;
 
 export default class ScreenDetailBaiDang_CEO extends React.Component {
@@ -87,6 +91,7 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
       iduser: '',
       creaetby: '',
       soluotxem: '',
+      ghim: '',
     };
     this.idBaiDang = '';
     this.id_user = '';
@@ -99,7 +104,7 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
     let res = await getDSThongDiepDetail(this.state.idthongdiep);
-    // console.log('res chi tiết bài đăng', res);
+    console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.Data,
@@ -132,13 +137,14 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
       image: await this.state.ChiTietBD[0].imgmedia,
       chucvu: await this.state.ChiTietBD[0].chucvu,
       creaetby: await this.state.ChiTietBD[0].create_by,
+      ghim: await this.state.ChiTietBD[0].ghim,
       // thichcmt: await this.state.ChiTietBD[0].Like_Comment,
     });
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
-    // await console.log('day', this.state.day);
+    // await console.log('ghim', this.state.ghim);
     // await console.log('ngay', this.state.ngay);
-    // await console.log('time', this.state.hinh);
+    // await console.log('ava', this.state.avatar_user);
     await this.setState({
       iduser: await Utils.ngetStorage(nkey.id_user),
     });
@@ -182,10 +188,43 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
     }
   };
 
+  _AddGhim = async () => {
+    let res_tbl = await addTBLGhim(
+      await Utils.ngetStorage(nkey.id_user),
+      this.state.idthongdiep,
+    );
+
+    // console.log('res tbl', res_tbl);
+
+    let res = await addGhim(
+      await Utils.ngetStorage(nkey.id_user),
+      this.state.idthongdiep,
+    );
+
+    await this._GetChiTietBaiDang();
+    // console.log('res add ghim', res);
+  };
+
+  _DeleteGhim = async () => {
+    // await console.log('iduser', await Utils.ngetStorage(nkey.id_user));
+    // await console.log('id thong diep', await this.state.idthongdiep);
+    let res_up = await UpdateGhim(
+      await Utils.ngetStorage(nkey.id_user),
+      this.state.idthongdiep,
+    );
+    // console.log('update ghim', res_up);
+    let res = await DeleteGhim(
+      await Utils.ngetStorage(nkey.id_user),
+      this.state.idthongdiep,
+    );
+    await this._GetChiTietBaiDang();
+    // console.log('res delete ghim', res);
+  };
+
   _renderItem = ({item, index}) => {
     // console.log('item', item);
     let user = item.User_Xem ? item.User_Xem[0] : '';
-    // console.log('user', user);
+    // console.log('user', user.Avatar);
     return (
       <View style={{padding: 5}}>
         <Image
@@ -233,8 +272,10 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
         <GoBack
           name=""
           onPress={async () => {
-            Utils.goscreen(this, 'BaiDang_CEO');
+            // Utils.goscreen(this, 'BaiDang_CEO');
+            Utils.goback(this);
             await ROOTGlobal.GetDSBThongDiep();
+            await ROOTGlobal.GetDSBaiDangGhim();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 
@@ -253,7 +294,7 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
                   height: FontSize.scale(30),
                   width: FontSize.verticalScale(30),
                 }}>
-                <Image
+                {/* <Image
                   style={{
                     height: FontSize.scale(30),
                     width: FontSize.verticalScale(30),
@@ -266,7 +307,14 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
                           uri: this.state.avatar_user,
                         }
                       : avatar_mau
-                  }></Image>
+                  }></Image> */}
+                <Image
+                  style={{
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    borderRadius: 20,
+                  }}
+                  source={{uri: this.state.avatar_user}}></Image>
               </View>
 
               <View style={styles.khung_tenUser}>
@@ -324,6 +372,52 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
         </View>
 
         <View style={{marginLeft: 5}}>
+          {this.state.ghim == true ? (
+            <TouchableOpacity
+              style={{
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(80),
+                backgroundColor: '#007DE3',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 10,
+                flexDirection: 'row',
+              }}
+              onPress={() => this._DeleteGhim()}>
+              <Image
+                source={pin}
+                style={{
+                  height: FontSize.scale(15),
+                  width: FontSize.verticalScale(15),
+                  marginRight: 10,
+                }}></Image>
+              <Text>Đã ghim</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={{
+                height: FontSize.scale(30),
+                width: FontSize.verticalScale(80),
+                backgroundColor: '#696969',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 10,
+                flexDirection: 'row',
+              }}
+              onPress={() => this._AddGhim()}>
+              <Image
+                source={pin}
+                style={{
+                  height: FontSize.scale(15),
+                  width: FontSize.verticalScale(15),
+                  marginRight: 10,
+                }}></Image>
+              <Text>Ghim</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View style={{marginLeft: 5}}>
           <Text>Số lượt xem: {this.state.soluotxem}</Text>
         </View>
 
@@ -340,153 +434,6 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
             ListEmptyComponent={this.EmptyListMessage}
           />
         </View>
-
-        {/* <View style={{marginBottom: 5}}>
-          <View style={styles.khungLike_Commnet}>
-            {this.state.dslike ? (
-              <TouchableOpacity
-                style={styles.khung_Thich}
-                onLongPress={async (e) => {
-                  Utils.goscreen(this, 'ModalLike_Detail_Nhom_Go', {
-                    id_nguoidang: this.props,
-                    x: e.nativeEvent.pageX,
-                    y: e.nativeEvent.pageY,
-                  });
-                }}
-                onPress={() => {
-                  this.DeleteLike(this.idBaiDang);
-                }}>
-                <SvgUri
-                  width={FontSize.scale(20)}
-                  height={FontSize.verticalScale(20)}
-                  source={{
-                    uri: this.state.dslike.icon,
-                  }}
-                />
-                <Text
-                  style={{
-                    marginLeft: FontSize.reSize(5),
-                    textAlign: 'center',
-                    color: '#007DE3',
-                  }}>
-                  {this.state.dslike.title} ({this.state.solike})
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.khung_Thich}
-                onLongPress={async (e) => {
-                  Utils.goscreen(this, 'ModalLike_Detail_Nhom_Go', {
-                    id_nguoidang: this.props,
-                    x: e.nativeEvent.pageX,
-                    y: e.nativeEvent.pageY,
-                  });
-                }}
-                onPress={async () => {
-                  this.TaoLike(
-                    this.idBaiDang,
-                    this.id_like,
-                    await Utils.ngetStorage(nkey.id_user),
-                  );
-                  this._AddThongBao_LikeBaiDang(this.idBaiDang);
-                }}>
-                <Image style={styles.imageLike_Commnet1} source={thich} />
-                <Text
-                  style={{
-                    marginLeft: FontSize.reSize(5),
-                    textAlign: 'center',
-                    color: '#696969',
-                  }}>
-                  Like ({this.state.solike})
-                </Text>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity style={styles.khung_BinhLuan}>
-              <Image style={styles.imageLike_Commnet} source={binhluan} />
-              <Text
-                style={{
-                  marginLeft: FontSize.reSize(5),
-                  textAlign: 'center',
-                  color: '#696969',
-                }}>
-                Bình luận ({this.state.socmt})
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
-
-        {/* <View
-          style={{
-            // flex: 1,
-            // justifyContent: 'flex-end',
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginLeft: 5,
-          }}>
-          <TextInput
-            placeholder="Nhập nội dung cmt"
-            autoFocus={true}
-            style={{
-              margin: 5,
-              backgroundColor: '#C0C0C0',
-              borderRadius: 20,
-              padding: 5,
-              paddingLeft: 10,
-              flex: 1,
-              maxHeight: 150,
-            }}
-            multiline={true}
-            value={this.state.text_Cmt}
-            onChangeText={(text) =>
-              this.setState({
-                text_Cmt: text,
-              })
-            }></TextInput>
-
-          {this.state.text_Cmt ? (
-            <TouchableOpacity
-              style={{
-                marginRight: 5,
-                height: FontSize.scale(30),
-                width: FontSize.verticalScale(40),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => this.DangCmt()}>
-              <Image
-                source={send}
-                style={{
-                  height: FontSize.scale(28),
-                  width: FontSize.verticalScale(28),
-                  justifyContent: 'center',
-                  // padding: 10,
-                  // tintColor: '#007DE3',
-                }}></Image>
-            </TouchableOpacity>
-          ) : (
-            <View
-              style={{
-                marginRight: 5,
-                height: FontSize.scale(30),
-                width: FontSize.verticalScale(40),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={send}
-                style={{
-                  height: FontSize.scale(28),
-                  width: FontSize.verticalScale(28),
-                  justifyContent: 'center',
-                  // padding: 10,
-                  tintColor: '#696969',
-                }}></Image>
-            </View>
-          )}
-        </View> */}
       </View>
     );
   }

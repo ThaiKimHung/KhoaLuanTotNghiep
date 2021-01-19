@@ -58,7 +58,7 @@ export default class PopUpModal_XoaSua_Detail_ThongDiep_CEO extends Component {
   XoaBaiDang = async () => {
     //xóa bài đăng
     let res = await DeleteThongDiep(this.state.idThongDiep);
-    console.log('xóa ', res);
+    // console.log('xóa ', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

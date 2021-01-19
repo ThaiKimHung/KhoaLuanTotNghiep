@@ -134,6 +134,10 @@ import KhenThuong_LuuTru from '../khenthuong/KhenThuong_LuuTru';
 
 import TinTucNoiBo_LuuTru from '../tintucnoibo/TinTucNoiBo_LuuTru';
 
+import ThongBao_LuuTru from '../thongbao/ThongBao_LuuTru';
+
+import BaiDang_Ghim from '../thongdiep_ceo/BaiDang_Ghim';
+
 import Test from '../screens/Test';
 
 // import
@@ -320,6 +324,8 @@ const HomeStackScreen = () => (
       name="TinTucNoiBo_LuuTru"
       component={TinTucNoiBo_LuuTru}
     />
+    <HomeStack.Screen name="ThongBao_LuuTru" component={ThongBao_LuuTru} />
+    <HomeStack.Screen name="BaiDang_Ghim" component={BaiDang_Ghim} />
   </HomeStack.Navigator>
 );
 

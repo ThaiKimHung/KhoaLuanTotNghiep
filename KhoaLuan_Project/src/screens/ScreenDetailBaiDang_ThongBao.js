@@ -714,7 +714,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                   height: FontSize.scale(30),
                   width: FontSize.verticalScale(30),
                 }}>
-                <Image
+                {/* <Image
                   style={{
                     height: FontSize.scale(30),
                     width: FontSize.verticalScale(30),
@@ -722,12 +722,20 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                   }}
                   resizeMode="cover"
                   soure={
-                    this.state.avatar_user
-                      ? {
-                          uri: this.state.avatar_user,
-                        }
-                      : avatar_mau
-                  }></Image>
+                    // this.state.avatar_user
+                    //   ?
+                    {
+                      uri: this.state.avatar_user,
+                    }
+                    // : avatar_mau
+                  }></Image> */}
+                <Image
+                  style={{
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    borderRadius: 20,
+                  }}
+                  source={{uri: this.state.avatar_user}}></Image>
               </View>
 
               <View style={styles.khung_tenUser}>

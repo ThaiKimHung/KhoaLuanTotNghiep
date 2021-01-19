@@ -284,7 +284,7 @@ export default class BaiDangComponenet extends React.Component {
                 </Text>
               </View>
             </View>
-            {item.hinhanh ? (
+            {/* {item.hinhanh ? (
               <View>
                 <Image
                   source={{uri: item.image}}
@@ -298,7 +298,7 @@ export default class BaiDangComponenet extends React.Component {
                     // backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         );
       case 4:

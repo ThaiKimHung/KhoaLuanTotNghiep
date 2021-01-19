@@ -171,9 +171,9 @@ export default class Edit_ChaoMungTV extends React.Component {
       // UpdateDate: date + 'T' + time,
       UpdateBy: await Utils.ngetStorage(nkey.id_user),
     });
-    console.log('strBody edit CMTVM', strBody);
+    // console.log('strBody edit CMTVM', strBody);
     let res = await Update_BaiDang(strBody);
-    console.log('res update edit CMTVM', res);
+    // console.log('res update edit CMTVM', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

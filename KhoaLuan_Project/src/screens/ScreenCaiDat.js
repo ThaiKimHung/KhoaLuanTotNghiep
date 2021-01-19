@@ -30,6 +30,8 @@ const addgroup = require('../assets/images/add-group.png');
 const boss = require('../assets/images/boss.png');
 const medel = require('../assets/images/medal.png');
 const report = require('../assets/images/report.png');
+const bell = require('../assets/images/notification-bell.png');
+const post = require('../assets/images/post-it.png');
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);
@@ -149,6 +151,14 @@ export default class ScreenCaiDat extends React.Component {
                 Thông Điệp CEO
               </Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'BaiDang_Ghim')}>
+              <Image source={post} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Thông Điệp Đã Ghim
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.st_button}
@@ -165,6 +175,15 @@ export default class ScreenCaiDat extends React.Component {
               <Image source={report} style={styles.sizeimage}></Image>
               <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
                 Tin Tức Nội Bộ
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'ThongBao_LuuTru')}>
+              <Image source={bell} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Thông Báo
               </Text>
             </TouchableOpacity>
 

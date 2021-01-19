@@ -123,7 +123,7 @@ export default class ScreenTaoNhom extends React.Component {
                 height: FontSize.scale(50),
               }}>
               <Text style={{color: '#4F4F4F80', marginHorizontal: 10}}>
-                Username:
+                Tên user:
               </Text>
               <Text style={{fontSize: FontSize.reSize(25)}}>
                 {this.state.thongtin

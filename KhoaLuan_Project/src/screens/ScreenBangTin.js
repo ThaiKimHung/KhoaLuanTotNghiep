@@ -57,13 +57,13 @@ export default class ScreenBangTin extends React.Component {
 
   _GetDsMedia = async () => {
     let res = await GetDSMedia();
-    console.log('res ds loại bài đăng', res);
+    // console.log('res ds loại bài đăng', res);
     if (res.status == 1) {
       this.setState({
         dsBangTin: res.Data,
         refresh: false,
       });
-      console.log('ds loại bài đăng', this.state.dsBangTin);
+      // console.log('ds loại bài đăng', this.state.dsBangTin);
     } else {
       this.setState({
         refresh: false,
@@ -148,8 +148,7 @@ export default class ScreenBangTin extends React.Component {
                         }}
                         resizeMode="cover"
                         source={
-                          // item.hinhanh_user ? {uri: item.Avatar} :
-                          avatar
+                          item.hinhanh_user ? {uri: item.Avatar} : avatar
                         }></Image>
                     </View>
                     <Text
@@ -192,10 +191,7 @@ export default class ScreenBangTin extends React.Component {
                     // backgroundColor: 'green',
                     height: '80%',
                   }}>
-                  <Text>
-                    {item.title}
-                    (có hình của bản thân)
-                  </Text>
+                  <Text style={{color: '#FFFFFF'}}>{item.title}</Text>
                 </View>
                 {/* <Text style={{margin: 5, textAlign: 'center'}}>{item.username}</Text> */}
               </ImageBackground>
@@ -230,8 +226,7 @@ export default class ScreenBangTin extends React.Component {
                       }}
                       resizeMode="cover"
                       source={
-                        // item.hinhanh_user ? {uri: item.Avatar} :
-                        avatar
+                        item.hinhanh_user ? {uri: item.Avatar} : avatar
                       }></Image>
                   </View>
                   <Text style={{fontSize: FontSize.reSize(20), marginLeft: 10}}>
@@ -245,7 +240,7 @@ export default class ScreenBangTin extends React.Component {
                     // backgroundColor: 'green',
                     height: '80%',
                   }}>
-                  <Text>{item.title}(hình người ta)</Text>
+                  <Text style={{color: '#FFFFFF'}}>{item.title}</Text>
                 </View>
                 {/* <Text style={{margin: 5, textAlign: 'center'}}>{item.username}</Text> */}
               </ImageBackground>
@@ -286,8 +281,7 @@ export default class ScreenBangTin extends React.Component {
                         }}
                         resizeMode="cover"
                         source={
-                          // item.hinhanh_user ? {uri: item.Avatar} :
-                          avatar
+                          item.hinhanh_user ? {uri: item.Avatar} : avatar
                         }></Image>
                     </View>
                     <Text
@@ -331,7 +325,7 @@ export default class ScreenBangTin extends React.Component {
                     // backgroundColor: 'green',
                     height: '80%',
                   }}>
-                  <Text>{item.title}</Text>
+                  <Text style={{color: '#FFFFFF'}}>{item.title}</Text>
                 </View>
               </View>
             ) : (
@@ -364,8 +358,7 @@ export default class ScreenBangTin extends React.Component {
                       }}
                       resizeMode="cover"
                       source={
-                        // item.hinhanh_user ? {uri: item.Avatar} :
-                        avatar
+                        item.hinhanh_user ? {uri: item.Avatar} : avatar
                       }></Image>
                   </View>
                   <Text style={{fontSize: FontSize.reSize(20), marginLeft: 10}}>
@@ -379,7 +372,7 @@ export default class ScreenBangTin extends React.Component {
                     // backgroundColor: 'green',
                     height: '80%',
                   }}>
-                  <Text>{item.title}</Text>
+                  <Text style={{color: '#FFFFFF'}}>{item.title}</Text>
                 </View>
               </View>
             )}

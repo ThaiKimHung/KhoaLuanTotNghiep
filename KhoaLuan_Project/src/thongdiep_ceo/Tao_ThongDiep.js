@@ -176,9 +176,9 @@ export default class Tao_ThongDiep extends React.Component {
             name: '',
           }));
     }
-    console.log('strBody file ảnh Galary---------', strBody);
+    // console.log('strBody file ảnh Galary---------', strBody);
     let res = await File_ThongDiep(strBody);
-    console.log('res file ảnh Galary-----', res);
+    // console.log('res file ảnh Galary-----', res);
   };
 
   _FileBaiDang_Camera = async () => {

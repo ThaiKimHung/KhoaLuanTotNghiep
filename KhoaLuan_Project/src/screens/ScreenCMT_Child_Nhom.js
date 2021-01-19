@@ -83,7 +83,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
   };
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
-    console.log('idn guoi dang', id_nguoidang);
+    // console.log('idn guoi dang', id_nguoidang);
     this.setState({
       avatar_cmtlong: id_nguoidang.User_comment[0].avatar,
       username_cmtlon: id_nguoidang.User_comment[0].Username,

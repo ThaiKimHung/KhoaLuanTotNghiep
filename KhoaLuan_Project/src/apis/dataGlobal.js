@@ -34,6 +34,7 @@ const ROOTGlobal = {
   GetChiTietBaiDang_Nhom_Go: () => {},
   GetDSBThongDiep: () => {},
   GetDSDetailThongDiep: () => {},
+  GetDSBaiDangGhim: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

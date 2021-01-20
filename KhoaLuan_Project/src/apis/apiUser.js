@@ -378,6 +378,11 @@ async function GetDSMedia() {
   return res;
 }
 
+async function GetDS_MyMedia(iduser) {
+  let res = await Utils.get_api(apiUser + `GetDS_MyMedia?id_usser=${iduser}`);
+  return res;
+}
+
 async function GetDetailMedia(idbangtin) {
   let res = await Utils.get_api(
     apiUser + `GetDetailMedia?_idmedia=${idbangtin}`,
@@ -596,6 +601,7 @@ export {
   BanThongBao,
   CountSoLuong_ThongBao,
   GetDSMedia,
+  GetDS_MyMedia,
   GetDetailMedia,
   addMedia,
   GetDSNhanVien,

@@ -35,9 +35,10 @@ import ScreenCMT_Child_ThongBao from '../screens/ScreenCMT_Child_ThongBao';
 import ScreenDetailBaiDang_ThongBao_CMT from '../screens/ScreenDetailBaiDang_ThongBao_CMT';
 import ScreenCMT_Child_ThongBao_CMT from '../screens/ScreenCMT_Child_ThongBao_CMT';
 import ScreenThayDoiPass from '../screens/ScreenThayDoiPass';
+import TrangCaNhan from '../screens/TrangCaNhan';
 
 import ScreenBangTin from '../screens/ScreenBangTin';
-
+import BangTinCuaToi from '../screens/BangTinCuaToi';
 import BaiDangComponent from '../components/BaiDangComponent';
 
 import ModalComponent from '../modal/ModalComponent';
@@ -326,6 +327,8 @@ const HomeStackScreen = () => (
     />
     <HomeStack.Screen name="ThongBao_LuuTru" component={ThongBao_LuuTru} />
     <HomeStack.Screen name="BaiDang_Ghim" component={BaiDang_Ghim} />
+    <HomeStack.Screen name="BangTinCuaToi" component={BangTinCuaToi} />
+    <HomeStack.Screen name="TrangCaNhan" component={TrangCaNhan} />
   </HomeStack.Navigator>
 );
 

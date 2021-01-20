@@ -22,7 +22,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import ScreenAllBaiDang from './ScreenAllBaiDang';
 import FontSize from '../components/size';
 import {ROOTGlobal, rootGlobal} from '../apis/dataGlobal';
-import {GetDSMedia, Delete_Media} from '../apis/apiUser';
+import {GetDS_MyMedia, Delete_Media} from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import GoBack from '../components/GoBack';
@@ -33,7 +33,7 @@ const plus = require('../assets/images/plus.png');
 const avatar = require('../assets/images/avatar.jpg');
 const cancel = require('../assets/images/cancel.png');
 const hacker = require('../assets/images/hacker.png');
-export default class ScreenBangTin extends React.Component {
+export default class BangTinCuaToi extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +41,7 @@ export default class ScreenBangTin extends React.Component {
       refresh: true,
       userID: '',
     };
-    ROOTGlobal.DsMedia = this._GetDsMedia;
+    // ROOTGlobal.DsMedia = this._GetDsMedia;
   }
 
   async componentDidMount() {
@@ -57,8 +57,8 @@ export default class ScreenBangTin extends React.Component {
   };
 
   _GetDsMedia = async () => {
-    let res = await GetDSMedia();
-    // console.log('res ds loại bài đăng', res);
+    let res = await GetDS_MyMedia(await Utils.ngetStorage(nkey.id_user));
+    console.log('res ds loại bài đăng', res);
     if (res.status == 1) {
       this.setState({
         dsBangTin: res.Data,
@@ -388,69 +388,10 @@ export default class ScreenBangTin extends React.Component {
       <View style={styles.container}>
         <GoBack
           // nthis={this}
-          name="Bảng tin"
+          name="Bảng tin của tôi"
           onPress={() => {
             Utils.goback(this, '');
           }}></GoBack>
-        <TouchableOpacity
-          onPress={() => Utils.goscreen(this, 'Media')}
-          style={{
-            height: FontSize.scale(30),
-            justifyContent: 'space-between',
-            padding: 10,
-            borderRadius: 20,
-            marginHorizontal: 10,
-            marginTop: 5,
-            flexDirection: 'row',
-            borderWidth: 1,
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              marginLeft: 10,
-              textAlign: 'center',
-              fontSize: FontSize.reSize(20),
-            }}>
-            Thêm tin
-          </Text>
-          <Image
-            source={plus}
-            style={{
-              height: FontSize.scale(20),
-              width: FontSize.verticalScale(20),
-              justifyContent: 'center',
-            }}></Image>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => Utils.goscreen(this, 'BangTinCuaToi')}
-          style={{
-            height: FontSize.scale(30),
-            justifyContent: 'space-between',
-            padding: 10,
-            borderRadius: 20,
-            marginHorizontal: 10,
-            marginTop: 5,
-            flexDirection: 'row',
-            borderWidth: 1,
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              marginLeft: 10,
-              textAlign: 'center',
-              fontSize: FontSize.reSize(20),
-            }}>
-            Bảng tin của tôi
-          </Text>
-          <Image
-            source={hacker}
-            style={{
-              height: FontSize.scale(20),
-              width: FontSize.verticalScale(20),
-              justifyContent: 'center',
-            }}></Image>
-        </TouchableOpacity>
 
         <View style={styles.footer}>
           <FlatList

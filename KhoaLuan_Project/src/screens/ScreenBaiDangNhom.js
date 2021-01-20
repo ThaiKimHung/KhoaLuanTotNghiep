@@ -68,7 +68,12 @@ export default class ScreenBaiDangNhom extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.back}>
-          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
             <TouchableOpacity
               onPress={() => Utils.goback(this, '')}
               style={{justifyContent: 'center', marginLeft: 5}}>
@@ -80,6 +85,7 @@ export default class ScreenBaiDangNhom extends React.Component {
                 }}></Image>
             </TouchableOpacity>
             <Text style={styles.title}>{ten_group}</Text>
+
             {this.state.quyengroup == true ? (
               <TouchableOpacity
                 onPress={() =>

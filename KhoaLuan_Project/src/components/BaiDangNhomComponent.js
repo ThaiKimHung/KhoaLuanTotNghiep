@@ -15,7 +15,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from 'react-native';
-
+import _ from 'lodash';
 // import DanhSachLike from './DanhSachLike';
 // import ModalComponent from '../components/ModalComponent';
 
@@ -399,6 +399,47 @@ export default class BaiDangNhomComponent extends React.Component {
     // }
   };
 
+  _renderItem_DS = ({item, index}) => {
+    // console.log(item);
+    return (
+      <View>
+        {index < 2 ? (
+          <View style={{flexDirection: 'row'}}>
+            <SvgUri
+              width={FontSize.scale(20)}
+              height={FontSize.verticalScale(20)}
+              source={{
+                uri: item.icon,
+              }}
+            />
+            <Text>{item.tong}</Text>
+          </View>
+        ) : (
+          <View style={{flexDirection: 'row'}}>
+            {/* <SvgUri
+              width={FontSize.scale(20)}
+              height={FontSize.verticalScale(20)}
+              source={{
+                uri: item.icon,
+              }}
+            /> */}
+            <View
+              style={{
+                height: FontSize.scale(20),
+                width: FontSize.verticalScale(20),
+                backgroundColor: '#696969',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 20,
+              }}>
+              <Text>...</Text>
+            </View>
+          </View>
+        )}
+      </View>
+    );
+  };
+
   componentDidMount = async () => {
     // this._GetDSLike();
     // console.log('this bài đăng component did mount', this);
@@ -490,7 +531,52 @@ export default class BaiDangNhomComponent extends React.Component {
           <this.loadNoiDung></this.loadNoiDung>
 
           {/* khung chứa số like và cmt */}
-          <View style={styles.khung_DemSoLike_Comt}>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 5,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              {_.size(item.Like_BaiDang) > 0 ? (
+                <TouchableOpacity
+                  style={{
+                    // flexDirection: 'row',
+                    padding: 3,
+                    marginRight: 5,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                  }}>
+                  <View style={{flexDirection: 'row', padding: 3}}>
+                    <FlatList
+                      horizontal={true}
+                      data={item.Like_BaiDang}
+                      renderItem={this._renderItem_DS}
+                      keyExtractor={(item, index) => index.toString()}
+                      // refreshing={this.state.refresh}
+                      // onRefresh={this._onRefresh}
+                      // ListEmptyComponent={this.EmptyListMessage}
+                      // ListFooterComponent={this.FoodterMessage}
+                      // initialNumToRender={10}
+                    ></FlatList>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View style={{flexDirection: 'row', padding: 3}}>
+                  <Image style={styles.imageLike_Commnet} source={like} />
+                  <Text style={{textAlign: 'center'}}> {Solike}</Text>
+                </View>
+              )}
+            </View>
+
+            <TouchableOpacity style={styles.khung_DemSoLike}>
+              <View style={{flexDirection: 'row', marginLeft: 5}}>
+                <Image style={styles.imageLike_Commnet} source={commnet} />
+                <Text> {SoComment}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* <View style={styles.khung_DemSoLike_Comt}>
             <TouchableOpacity style={styles.khung_DemSoLike}>
               <View style={{flexDirection: 'row', padding: 3}}>
                 <Image style={styles.imageLike_Commnet} source={like} />
@@ -501,7 +587,7 @@ export default class BaiDangNhomComponent extends React.Component {
                 <Text> {SoComment}</Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
 
         <View>

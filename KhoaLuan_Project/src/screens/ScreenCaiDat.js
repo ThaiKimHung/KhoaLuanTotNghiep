@@ -32,6 +32,7 @@ const medel = require('../assets/images/medal.png');
 const report = require('../assets/images/report.png');
 const bell = require('../assets/images/notification-bell.png');
 const post = require('../assets/images/post-it.png');
+const face = require('../assets/images/face-recognition.png');
 export default class ScreenCaiDat extends React.Component {
   constructor(props) {
     super(props);
@@ -134,6 +135,15 @@ export default class ScreenCaiDat extends React.Component {
             </Text>
           </TouchableOpacity>
           <View style={styles.khung_CaiDat}>
+            <TouchableOpacity
+              style={styles.st_button}
+              onPress={() => Utils.goscreen(this, 'TrangCaNhan')}>
+              <Image source={face} style={styles.sizeimage}></Image>
+              <Text style={{fontSize: FontSize.reSize(20), marginLeft: 5}}>
+                Trang Cá Nhân
+              </Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.st_button}
               onPress={() => Utils.goscreen(this, 'ScreenTaoNhom')}>

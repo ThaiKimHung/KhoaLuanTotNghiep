@@ -32,6 +32,7 @@ import {
   Comment_like,
   DeleteComment_Like,
   AddThongBao_Like,
+  ShareBaiDang,
 } from '../apis/apiUser';
 import {ROOTGlobal} from '../apis/dataGlobal';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -52,6 +53,7 @@ const arrow = require('../assets/images/right-arrow-black-triangle.png');
 const noti = require('../assets/images/bell.png');
 const sheld = require('../assets/images/shield.png');
 const light = require('../assets/images/light-bulb.png');
+const share = require('../assets/images/share.png');
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -86,6 +88,7 @@ export default class ScreenDetailBaiDang extends React.Component {
       tengroup: '',
       hinh: '',
       image: '',
+      iduser: '',
     };
     this.idBaiDang = '';
     this.id_user = '';
@@ -166,7 +169,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     //   'loại bài đăng',
     //   await this.state.ChiTietBD[0].Id_LoaiBaiDang,
     // );
-    // await console.log('length', await this.state.group.length);
+    // await console.log('length', await this.state.user);
     // await console.log('day', this.state.day);
     // await console.log('ngay', this.state.ngay);
     // await console.log('like cmt cha', await this.state.thichcmt);
@@ -245,6 +248,23 @@ export default class ScreenDetailBaiDang extends React.Component {
         <Text style={{color: '#696969'}}>Hãy là người đầu tiên bình luận.</Text>
       </View>
     );
+  };
+
+  _ShareBaiDang = async (idbaidang) => {
+    let res = await ShareBaiDang(
+      await Utils.ngetStorage(nkey.id_user),
+      idbaidang,
+    );
+    console.log('res share bài đăng', res);
+    if (res.status == 1) {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Chia sẻ thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+    }
   };
 
   _renderItem = ({item, index}) => {
@@ -690,6 +710,9 @@ export default class ScreenDetailBaiDang extends React.Component {
     await this.GanData();
     await this.hamloadLienTuc();
     // console.log()
+    this.setState({
+      iduser: await Utils.ngetStorage(nkey.id_user),
+    });
   }
 
   render() {
@@ -869,6 +892,40 @@ export default class ScreenDetailBaiDang extends React.Component {
                 Bình luận ({this.state.socmt})
               </Text>
             </TouchableOpacity>
+
+            {this.state.user != this.state.iduser ? (
+              <TouchableOpacity
+                style={styles.khung_BinhLuan}
+                // activeOpacity={0.8}
+                onPress={() => this._ShareBaiDang(this.idBaiDang)}>
+                <Image style={styles.imageLike_Commnet} source={share} />
+                <Text style={styles.text_Like_cmt}>Chia sẻ</Text>
+              </TouchableOpacity>
+            ) : (
+              <View
+                style={styles.khung_BinhLuan}
+                // activeOpacity={0.8}
+                // onPress={this.props.onPress}
+              >
+                <Image
+                  style={{
+                    height: FontSize.scale(17),
+                    width: FontSize.verticalScale(18),
+                    marginRight: 2,
+                    tintColor: '#696969',
+                  }}
+                  source={share}
+                />
+                <Text
+                  style={{
+                    marginLeft: FontSize.reSize(5),
+                    textAlign: 'center',
+                    color: '#696969',
+                  }}>
+                  Chia sẻ
+                </Text>
+              </View>
+            )}
           </View>
         </View>
 

@@ -546,6 +546,25 @@ async function getDSGhim(iduser) {
   return res;
 }
 
+async function getTrangCaNhan(iduser) {
+  let res = await Utils.get_api(apiUser + `getTrangCaNhan?id_user=${iduser}`);
+  return res;
+}
+
+async function getDSBaiDangTrangCaNhan(iduser) {
+  let res = await Utils.get_api(
+    apiUser + `getDSBaiDangTrangCaNhan?id_user=${iduser}`,
+  );
+  return res;
+}
+
+async function ShareBaiDang(iduser, id_baidang) {
+  let res = await Utils.post_api(
+    apiUser + `ShareBaiDang?id_user=${iduser}&&id_baidang=${id_baidang}`,
+  );
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -627,4 +646,7 @@ export {
   DeleteGhim,
   UpdateGhim,
   getDSGhim,
+  getTrangCaNhan,
+  getDSBaiDangTrangCaNhan,
+  ShareBaiDang,
 };

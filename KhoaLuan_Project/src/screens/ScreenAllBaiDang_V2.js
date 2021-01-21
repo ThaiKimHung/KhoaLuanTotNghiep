@@ -79,10 +79,10 @@ export default class ScreenAllBaiDang extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    setInterval(async () => {
-      await this._GetDSBaiDang2();
-      await this.hamTru();
-    }, 1000);
+    // setInterval(async () => {
+    //   await this._GetDSBaiDang2();
+    //   await this.hamTru();
+    // }, 1000);
   };
 
   _GetDSBaiDang = async () => {

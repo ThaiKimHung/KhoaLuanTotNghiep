@@ -19,7 +19,7 @@ import {
 // import DanhSachLike from './DanhSachLike';
 // import ModalComponent from '../components/ModalComponent';
 
-import FontSize from '../components/size';
+import FontSize from './size';
 import SvgUri from 'react-native-svg-uri';
 import * as Animatable from 'react-native-animatable';
 
@@ -31,13 +31,12 @@ import {
   AddThongBao,
   BanThongBao,
   AddThongBao_Like,
-  ShareBaiDang,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import moment from 'moment';
 import Utils from '../apis/Utils';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+
 import _ from 'lodash';
 
 const avatar = require('../assets/images/avatar.jpg');
@@ -55,7 +54,7 @@ const share = require('../assets/images/share.png');
 
 const windowWidth = Dimensions.get('window').width;
 
-export default class BaiDangComponenet extends React.Component {
+export default class BaiDang_TrangCaNhan_Component extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,23 +72,6 @@ export default class BaiDangComponenet extends React.Component {
 
   _BanThongBao = async () => {
     let res = await BanThongBao();
-  };
-
-  _ShareBaiDang = async (idbaidang) => {
-    let res = await ShareBaiDang(
-      await Utils.ngetStorage(nkey.id_user),
-      idbaidang,
-    );
-    console.log('res share bài đăng', res);
-    if (res.status == 1) {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Chia sẻ thành công',
-        type: 'success',
-        duration: 1500,
-        icon: 'success',
-      });
-    }
   };
 
   _AddThongBao = async () => {
@@ -496,7 +478,7 @@ export default class BaiDangComponenet extends React.Component {
     const {item = {}} = this.props;
     // console.log('this', item);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
-    let iduserr = user ? user.ID_user : '';
+    // let iduserr = user ? user.ID_user : '';
     // console.log(iduserr);
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;
@@ -733,12 +715,13 @@ export default class BaiDangComponenet extends React.Component {
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>
             </TouchableOpacity>
-
+            {/* 
             {iduserr != this.state.iduser ? (
               <TouchableOpacity
                 style={styles.khung_BinhLuan}
                 // activeOpacity={0.8}
-                onPress={() => this._ShareBaiDang(item.Id_BaiDang)}>
+                // onPress={this.props.onPress}
+              >
                 <Image style={styles.imageLike_Commnet} source={share} />
                 <Text style={styles.text_Like_cmt}>Chia sẻ</Text>
               </TouchableOpacity>
@@ -766,7 +749,7 @@ export default class BaiDangComponenet extends React.Component {
                   Chia sẻ
                 </Text>
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>

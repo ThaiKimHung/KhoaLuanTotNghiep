@@ -11,9 +11,10 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import {Avatar, SearchBar} from 'react-native-elements';
-import {GetUserProfile} from '../apis/apiUser';
+import {getTrangCaNhan, getDSBaiDangTrangCaNhan} from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
 import {nGlobalKeys} from '../apis/globalKey';
@@ -22,48 +23,166 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
-import {ImageBackground} from 'react-native';
-
+import BaiDang_TrangCaNhan_Component from '../components/BaiDang_TrangCaNhan_Component';
+const editpic = require('../assets/images/photo-camera-interface-symbol-for-button.png');
 const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
 const edite = require('../assets/images/edit2.png');
 const backgroud = require('../assets/images/background.png');
 
-export default class ScreenTaoNhom extends React.Component {
+export default class TrangCaNhan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       thongtin: '',
-      ngay: '',
+      avatar: '',
+      username: '',
+      DSBaiDang: '',
+      refresh: true,
+      image: '',
+      path: '',
+      image_bia: '',
+      path_bia: '',
+      databaidang: [],
+      dataDSBaiDang: [],
+      idcanhan: '',
     };
-    ROOTGlobal.GetProfileUserTrangCaNhan = this._GetUserProfile;
+    // ROOTGlobal.GetProfileUserTrangCaNhan = this._GetUserProfile;
   }
+
   _GetUserProfile = async () => {
-    let res = await GetUserProfile(await Utils.ngetStorage(nkey.id_user));
-    // console.log('res get user thoong tin ============', res);
+    let res = await getTrangCaNhan(await Utils.ngetStorage(nkey.id_user));
+    console.log('res get user thoong tin ============', res);
     if (res.status == 1) {
       this.setState({
-        thongtin: res.Data,
+        thongtin: res.Data[0],
       });
-      // await console.log('state ', this.state.thongtin);
-      await this.setState({
-        ngay: await this.state.thongtin[0].ngaysinh,
-      });
-      // await console.log('ngay ', this.state.ngay);
-      await Utils.nsetStorage(nkey.avatar, this.state.thongtin[0].Avatar);
-      await Utils.nsetStorage(nkey.Username, this.state.thongtin[0].Username);
+      await this.GanData();
     } else {
+      // alert('thất bại tải thông tin cá nhân');
+    }
+  };
+
+  _GetDSBaiDangTrangCaNhan = async () => {
+    let res = await getDSBaiDangTrangCaNhan(
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    console.log('res ds bài đăng cá nhân ============', res);
+    if (res.status == 1) {
+      this.setState({
+        DSBaiDang: res.data.map((item) => item.DataBaiDang[0]),
+        refresh: false,
+      });
+
+      this.setState({
+        refresh: false,
+      });
       alert('thất bại tải thông tin cá nhân');
     }
   };
 
+  openGalary = async () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    })
+      .then((image) => {
+        // console.log('image--------', image);
+        this.setState({
+          image: image,
+          path: image.path,
+        });
+        // console.log('state image =====', this.state.image);
+        // console.log('path image =====', this.state.path);
+        // this.hamTest();
+      })
+      .catch((e) => {
+        // alert(e);
+      });
+  };
+
+  openGalary_AnhBia = async () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    })
+      .then((image) => {
+        // console.log('image--------', image);
+        this.setState({
+          image_bia: image,
+          path_bia: image.path,
+        });
+        // console.log('state image =====', this.state.image);
+        // console.log('path image =====', this.state.path);
+        // this.hamTest();
+      })
+      .catch((e) => {
+        // alert(e);
+      });
+  };
+
+  GanData = async () => {
+    this.setState({
+      username: this.state.thongtin.user_name,
+      avatar: this.state.thongtin.Avatar,
+      idcanhan: this.state.thongtin.id_canhan,
+    });
+    // await console.log(this.state.idcanhan);
+  };
+
+  _onScroll = () => {
+    // alert('5');
+    this.flatListRef.scrollToIndex({animated: true, index: 0});
+    // flatListRef.scrollToIndex({animated: true, index: 0});
+  };
+
+  _onRefresh = () => {
+    this.setState({refresh: true}, () => this._GetDSBaiDangTrangCaNhan());
+  };
+
+  EmptyListMessage = ({item}) => {
+    return (
+      <Text style={styles.emptyListStyle} onPress={() => getItem(item)}>
+        No Data Found
+      </Text>
+    );
+  };
+  FoodterMessage = ({item}) => {
+    return (
+      <View onPress={() => getItem(item)}>
+        <ActivityIndicator size="small" color="#0078D7"></ActivityIndicator>
+      </View>
+    );
+  };
+
+  _renderItem = ({item, index}) => {
+    // console.log(item);
+    return (
+      <BaiDang_TrangCaNhan_Component
+        key={index}
+        item={item}
+        nthis={this}
+        onPress={() =>
+          Utils.goscreen(this, 'ScreenDetailBaiDang', {
+            id_nguoidang: item,
+          })
+        }></BaiDang_TrangCaNhan_Component>
+    );
+  };
+
   componentDidMount = async () => {
     await this._GetUserProfile();
+    await this._GetDSBaiDangTrangCaNhan();
   };
 
   render() {
+    // console.log('list bai đang nhé em:', this.state.DSBaiDang);
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View
@@ -71,7 +190,7 @@ export default class ScreenTaoNhom extends React.Component {
               <TouchableOpacity
                 onPress={async () => {
                   Utils.goback(this, '');
-                  ROOTGlobal.GetProfileUser();
+                  // ROOTGlobal.GetProfileUser();
                 }}>
                 <Image
                   source={goback}
@@ -90,12 +209,35 @@ export default class ScreenTaoNhom extends React.Component {
           <View style={{marginTop: 10}}>
             <View>
               <ImageBackground
-                source={backgroud}
+                source={
+                  this.state.image_bia ? {uri: this.state.path_bia} : backgroud
+                }
                 style={{
                   height: FontSize.scale(200),
                   width: FontSize.verticalScale(340),
                 }}>
-                <TouchableOpacity
+                <View
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 30,
+                    position: 'absolute',
+                    top: 0,
+                    right: 10,
+                  }}>
+                  <TouchableOpacity onPress={() => this.openGalary_AnhBia()}>
+                    <Image
+                      source={editpic}
+                      style={{
+                        height: FontSize.scale(20),
+                        width: FontSize.verticalScale(20),
+                      }}></Image>
+                  </TouchableOpacity>
+                </View>
+                <View
                   style={{
                     alignItems: 'center',
                     padding: 10,
@@ -106,166 +248,110 @@ export default class ScreenTaoNhom extends React.Component {
                   <View
                     style={{
                       marginLeft: 5,
-                      borderRadius: 30,
+                      borderRadius: 50,
                       height: FontSize.scale(60),
                       width: FontSize.verticalScale(60),
                       // padding: 10,
                     }}>
-                    <Image
-                      style={{
-                        height: FontSize.scale(60),
-                        width: FontSize.verticalScale(60),
-                        borderRadius: 50,
-                      }}
-                      resizeMode="cover"
-                      source={
-                        // this.state.thongtin
-                        //   ? {uri: this.state.thongtin[0].Avatar}
-                        //   :
-                        avatar
-                      }></Image>
+                    {this.state.image == '' ? (
+                      <ImageBackground
+                        style={{
+                          height: FontSize.scale(60),
+                          width: FontSize.verticalScale(60),
+                          borderRadius: 50,
+                          // backgroundColor: 'yellow',
+                        }}
+                        resizeMode="cover"
+                        source={
+                          this.state.thongtin
+                            ? {uri: this.state.avatar}
+                            : avatar
+                        }>
+                        <TouchableOpacity
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#69696920',
+                            width: '100%',
+                            height: '40%',
+                            borderTopRightRadius: 10,
+                            borderTopLeftRadius: 10,
+                          }}
+                          onPress={() => this.openGalary()}>
+                          <Image
+                            source={editpic}
+                            style={{
+                              height: FontSize.scale(15),
+                              width: FontSize.verticalScale(15),
+                            }}></Image>
+                        </TouchableOpacity>
+                      </ImageBackground>
+                    ) : (
+                      <ImageBackground
+                        style={{
+                          height: FontSize.scale(60),
+                          width: FontSize.verticalScale(60),
+                          borderRadius: 50,
+                          backgroundColor: 'blue',
+                        }}
+                        resizeMode="cover"
+                        source={
+                          this.state.path ? {uri: this.state.path} : avatar
+                        }>
+                        <TouchableOpacity
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#69696920',
+                            width: '100%',
+                            height: '40%',
+                            borderTopRightRadius: 10,
+                            borderTopLeftRadius: 10,
+                          }}
+                          onPress={() => this.openGalary()}>
+                          <Image
+                            source={editpic}
+                            style={{
+                              height: FontSize.scale(15),
+                              width: FontSize.verticalScale(15),
+                            }}></Image>
+                        </TouchableOpacity>
+                      </ImageBackground>
+                    )}
                   </View>
-                  <Text style={{fontSize: FontSize.reSize(25)}}>Hùng</Text>
-                </TouchableOpacity>
+
+                  <Text style={{fontSize: FontSize.reSize(25)}}>
+                    {this.state.username}
+                  </Text>
+                </View>
               </ImageBackground>
             </View>
-
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderColor: '#4F4F4F50',
-                borderRadius: 10,
-                height: FontSize.scale(50),
-              }}>
-              <Text style={{color: '#4F4F4F80', marginHorizontal: 10}}>
-                Tên user:
-              </Text>
-              <Text style={{fontSize: FontSize.reSize(25)}}>
-               
-                Hùng
-              </Text>
-            </View> */}
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderColor: '#4F4F4F50',
-                borderRadius: 10,
-                height: FontSize.scale(50),
-              }}>
-              <Text style={{color: '#4F4F4F80', marginHorizontal: 10}}>
-                {' '}
-                Địa chỉ:{' '}
-              </Text>
-              <Text style={{fontSize: FontSize.reSize(25)}}>
-                {this.state.thongtin
-                  ? this.state.thongtin[0].diachi
-                  : 'Loading...'}
-              </Text>
-            </View> */}
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderColor: '#4F4F4F50',
-                borderRadius: 10,
-                height: FontSize.scale(50),
-              }}>
-              <Text style={{color: '#4F4F4F80', marginHorizontal: 10}}>
-                Giới tính:
-              </Text>
-              <Text style={{fontSize: FontSize.reSize(25)}}>
-                {this.state.thongtin
-                  ? this.state.thongtin[0].gioitinh
-                  : 'Loading...'}
-              </Text>
-            </View> */}
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderColor: '#4F4F4F50',
-                borderRadius: 10,
-                height: FontSize.scale(50),
-              }}>
-              <Text style={{color: '#4F4F4F80', marginHorizontal: 10}}>
-                Ngày sinh
-              </Text>
-              <Text style={{fontSize: FontSize.reSize(25)}}>
-                {moment(this.state.ngay.substring(0, 10), 'YYYY-MM-DD').format(
-                  'DD-MM-YYYY',
-                )}
-              </Text>
-            </View> */}
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderColor: '#4F4F4F50',
-                borderRadius: 10,
-                height: FontSize.scale(50),
-              }}>
-              <Text style={{color: '#4F4F4F80', marginHorizontal: 10}}>
-                Số điện thoại
-              </Text>
-              <Text style={{fontSize: FontSize.reSize(25)}}>
-                {this.state.thongtin
-                  ? this.state.thongtin[0].sdt
-                  : 'Loading...'}
-              </Text>
-            </View> */}
           </View>
-          {/* <View
-            style={{
-              margin: 10,
-              borderWidth: 1,
-              borderRadius: 20,
-              width: FontSize.verticalScale(150),
-              height: FontSize.scale(30),
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#007DE3',
-            }}>
-            <TouchableOpacity
-              onPress={() => Utils.goscreen(this, 'ScreenThayDoiPass')}>
-              <Text>Thay đổi password</Text>
-            </TouchableOpacity>
-          </View> */}
+          <View style={{marginTop: 60}}>
+            <FlatList
+              ref={(ref) => {
+                this.flatListRef = ref;
+              }}
+              data={this.state.DSBaiDang}
+              onScroll={(e) => {
+                this.setState({search: e.nativeEvent.contentOffset.y});
+              }}
+              renderItem={this._renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              refreshing={this.state.refresh}
+              onRefresh={this._onRefresh}
+              ListEmptyComponent={this.EmptyListMessage}
+              ListFooterComponent={this.FoodterMessage}
+              initialNumToRender={10}
+              // ListHeaderComponent={this.HeaderMessage}
+            />
+          </View>
         </View>
-        {/* <TouchableOpacity
-          style={{
-            position: 'absolute',
-            bottom: 20,
-            right: 20,
-            backgroundColor: 'blue',
-            height: FontSize.scale(45),
-            width: FontSize.verticalScale(45),
-            borderRadius: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() =>
-            Utils.goscreen(this, 'Edit_TrangThongTinCaNhan', {
-              thongtin: this.state.thongtin,
-            })
-          }>
-          <Image
-            style={{
-              height: FontSize.scale(18),
-              width: FontSize.verticalScale(18),
-              // borderRadius: 50,
-              tintColor: '#FFFFFF',
-            }}
-            resizeMode="contain"
-            source={edite}></Image>
-        </TouchableOpacity> */}
-      </View>
+      </ScrollView>
     );
   }
 }

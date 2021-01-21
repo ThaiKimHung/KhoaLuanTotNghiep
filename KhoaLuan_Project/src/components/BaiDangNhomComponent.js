@@ -31,6 +31,7 @@ import {
   AddThongBao,
   BanThongBao,
   AddThongBao_Like,
+  ShareBaiDang,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
@@ -47,6 +48,8 @@ const sheld = require('../assets/images/shield.png');
 const light = require('../assets/images/light-bulb.png');
 const windowWidth = Dimensions.get('window').width;
 const arrow = require('../assets/images/right-arrow-black-triangle.png');
+const share = require('../assets/images/share.png');
+
 import moment from 'moment';
 import Utils from '../apis/Utils';
 
@@ -59,6 +62,7 @@ export default class BaiDangNhomComponent extends React.Component {
       DaLike: [],
       DataChuyenVe: [],
       likeSelected: {},
+      iduser: '',
     };
     this.id_like = 1;
     this.id_user = '';
@@ -66,6 +70,22 @@ export default class BaiDangNhomComponent extends React.Component {
     // ROOTGlobal.GetDsAllBaiDang_Nhom = this.GetDsAllBaiDang_Nhom;
   }
 
+  _ShareBaiDang = async (idbaidang) => {
+    let res = await ShareBaiDang(
+      await Utils.ngetStorage(nkey.id_user),
+      idbaidang,
+    );
+    console.log('res share bài đăng', res);
+    if (res.status == 1) {
+      showMessage({
+        message: 'Thông báo',
+        description: 'Chia sẻ thành công',
+        type: 'success',
+        duration: 1500,
+        icon: 'success',
+      });
+    }
+  };
   _BanThongBao = async () => {
     let res = await BanThongBao();
   };
@@ -445,12 +465,16 @@ export default class BaiDangNhomComponent extends React.Component {
     // console.log('this bài đăng component did mount', this);
     // this.CheckLike();
     // await this.GanDataSauKhiChuyenVe();
+    this.setState({
+      iduser: await Utils.ngetStorage(nkey.id_user),
+    });
   };
 
   render() {
     const {item = {}} = this.props;
 
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
+    let iduserr = user ? user.ID_user : '';
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;
     // console.log('onpress', this.props.onPress);
@@ -658,6 +682,40 @@ export default class BaiDangNhomComponent extends React.Component {
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>
             </TouchableOpacity>
+
+            {iduserr != this.state.iduser ? (
+              <TouchableOpacity
+                style={styles.khung_BinhLuan}
+                // activeOpacity={0.8}
+                onPress={() => this._ShareBaiDang(item.Id_BaiDang)}>
+                <Image style={styles.imageLike_Commnet} source={share} />
+                <Text style={styles.text_Like_cmt}>Chia sẻ</Text>
+              </TouchableOpacity>
+            ) : (
+              <View
+                style={styles.khung_BinhLuan}
+                // activeOpacity={0.8}
+                // onPress={this.props.onPress}
+              >
+                <Image
+                  style={{
+                    height: FontSize.scale(17),
+                    width: FontSize.verticalScale(18),
+                    marginRight: 2,
+                    tintColor: '#696969',
+                  }}
+                  source={share}
+                />
+                <Text
+                  style={{
+                    marginLeft: FontSize.reSize(5),
+                    textAlign: 'center',
+                    color: '#696969',
+                  }}>
+                  Chia sẻ
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>

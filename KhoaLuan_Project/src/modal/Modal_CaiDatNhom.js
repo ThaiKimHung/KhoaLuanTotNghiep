@@ -31,7 +31,7 @@ const edite = require('../assets/images/edit.png');
 const delet = require('../assets/images/delete.png');
 const add_group = require('../assets/images/add-group.png');
 const team = require('../assets/images/team.png');
-
+const manager = require('../assets/images/product-management.png');
 export default class Modal_CaiDatNhom extends Component {
   constructor(props) {
     super(props);
@@ -154,6 +154,22 @@ export default class Modal_CaiDatNhom extends Component {
                     <Image source={add_group} style={styles.image_st}></Image>
                     <Text style={{fontSize: 20}}>Thêm thành viên</Text>
                   </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      padding: 5,
+                    }}
+                    onPress={() =>
+                      Utils.goscreen(this, 'ScreenQuanLyBaiDangNhom', {
+                        id_nguoidang: this.props.route.params,
+                      })
+                    }>
+                    <Image source={manager} style={styles.image_st}></Image>
+                    <Text style={{fontSize: 20}}>Quản lý bài đăng nhóm</Text>
+                  </TouchableOpacity>
+
                   <TouchableOpacity
                     style={{
                       flexDirection: 'row',

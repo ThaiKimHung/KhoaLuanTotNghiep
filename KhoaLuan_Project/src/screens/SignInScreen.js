@@ -46,7 +46,7 @@ export default class SignInScreen extends React.Component {
 
   _loginJee = async () => {
     let res = await Login(this.Username, this.Password);
-    console.log('ress đăng nhập', res);
+    // console.log('ress đăng nhập', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -71,7 +71,7 @@ export default class SignInScreen extends React.Component {
       //lưu lại avatar
       await Utils.nsetStorage(nkey.avatar, this.state.DsThongTinUser[0].Avatar);
       await Utils.nsetStorage(nkey.ChucVu, this.state.DsThongTinUser[0].chucvu);
-      await console.log(await Utils.ngetStorage(nkey.ChucVu));
+      // await console.log(await Utils.ngetStorage(nkey.ChucVu));
       //lưu user name
 
       // nếu là 1 thì đăng nhập thành công

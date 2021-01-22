@@ -66,7 +66,7 @@ export default class TrangCaNhan extends React.Component {
 
   _GetFlow = async () => {
     let res = await getFlow(await Utils.ngetStorage(nkey.id_user));
-    console.log('res get flow', res);
+    // console.log('res get flow', res);
     if (res.status == 1) {
       this.setState({
         // tongfl: res.Data.map((item) => item.tong),

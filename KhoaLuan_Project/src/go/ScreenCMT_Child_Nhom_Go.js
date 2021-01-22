@@ -68,6 +68,7 @@ export default class ScreenCMT_Child_Nhom_Go extends React.Component {
       like: '',
       likecmt: '',
     };
+    this.inter = 0;
     ROOTGlobal.GetDSCmt_Child_Nhom = this._GetDsCmt;
   }
 
@@ -96,10 +97,14 @@ export default class ScreenCMT_Child_Nhom_Go extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    setInterval(async () => {
+    this.inter = setInterval(async () => {
       await this._GetDsCmt();
       // console.log('hi');
     }, 5000);
+  };
+
+  hamclearInterval = () => {
+    clearInterval(this.inter);
   };
 
   _GetDsCmt = async () => {
@@ -338,6 +343,7 @@ export default class ScreenCMT_Child_Nhom_Go extends React.Component {
             Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom_Go');
             await ROOTGlobal.GetChiTietBaiDang_Nhom();
             await ROOTGlobal.GanDataChitiet_Nhom();
+            await this.hamclearInterval();
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>

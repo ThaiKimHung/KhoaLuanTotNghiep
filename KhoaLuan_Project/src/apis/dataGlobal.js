@@ -41,6 +41,7 @@ const ROOTGlobal = {
 
   BatDauCLear: () => {},
   GetDSBaiDang_User: () => {},
+  GetDSBaiDang_QL_Nhom: () => {},
 };
 
 // -- Các hàm xử lý thao tác với biến gốc ROOTGlobal

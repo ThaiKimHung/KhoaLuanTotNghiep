@@ -83,6 +83,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
     this.idBaiDang = '';
     this.id_user = '';
     this.id_like = 1;
+    this.inter = 0;
     ROOTGlobal.GetChiTietBaiDang_Nhom_Go = this._GetChiTietBaiDang;
     // ROOTGlobal.GanDataChitiet_Nhom = this.GanData;
   }
@@ -104,11 +105,14 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    setInterval(async () => {
+    this.inter = setInterval(async () => {
       await this._GetChiTietBaiDang();
       // await this.hamTru();
       // console.log('hi');
     }, 5000);
+  };
+  hamclearInterval = () => {
+    clearInterval(this.inter);
   };
 
   _GetChiTietBaiDang = async () => {

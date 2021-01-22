@@ -38,7 +38,7 @@ export default class ChonLoaiBaiDang extends React.Component {
     }
   }
   componentDidMount() {
-    this.getAva();
+    // this.getAva();
   }
 
   render() {

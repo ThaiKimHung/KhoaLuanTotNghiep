@@ -104,7 +104,7 @@ export default class ScreenDetailBaiDang_CEO extends React.Component {
     let id_user = await Utils.ngetStorage(nkey.id_user);
 
     let res = await getDSThongDiepDetail(this.state.idthongdiep);
-    console.log('res chi tiết bài đăng', res);
+    // console.log('res chi tiết bài đăng', res);
     if (res.status == 1) {
       this.setState({
         ChiTietBD: res.Data,

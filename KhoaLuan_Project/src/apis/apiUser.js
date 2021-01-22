@@ -627,6 +627,13 @@ async function DeleteFlow(idcanhan, idcr) {
   return res;
 }
 
+async function BaidangGroup_Datasource(idgroup) {
+  let res = await Utils.get_api(
+    apiUser + `BaidangGroup_Datasource?id_group=${idgroup}`,
+  );
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -719,4 +726,5 @@ export {
   addFlow,
   CheckFlow,
   DeleteFlow,
+  BaidangGroup_Datasource,
 };

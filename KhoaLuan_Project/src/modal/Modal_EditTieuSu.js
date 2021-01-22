@@ -43,7 +43,7 @@ export default class Modal_EditTieuSu extends Component {
       tieusu: this.state.texttieusu,
     });
     let res = await UpdateTrangCaNhan(strBody);
-    console.log('res updaet', res);
+    // console.log('res updaet', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

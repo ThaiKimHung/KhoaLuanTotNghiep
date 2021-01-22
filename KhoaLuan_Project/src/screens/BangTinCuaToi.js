@@ -58,7 +58,7 @@ export default class BangTinCuaToi extends React.Component {
 
   _GetDsMedia = async () => {
     let res = await GetDS_MyMedia(await Utils.ngetStorage(nkey.id_user));
-    console.log('res ds loại bài đăng', res);
+    // console.log('res ds loại bài đăng', res);
     if (res.status == 1) {
       this.setState({
         dsBangTin: res.Data,

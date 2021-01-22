@@ -428,7 +428,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       await Utils.ngetStorage(nkey.id_user),
       idbaidang,
     );
-    console.log('res share bài đăng', res);
+    // console.log('res share bài đăng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',

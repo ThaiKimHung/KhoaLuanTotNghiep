@@ -20,6 +20,7 @@ import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 // const congratulation = require('../assets/images/congratulations.png');
 import {ROOTGlobal} from '../apis/dataGlobal';
+
 export default class NhomScreen extends React.Component {
   constructor(props) {
     super(props);

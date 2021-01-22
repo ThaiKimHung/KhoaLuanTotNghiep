@@ -40,6 +40,8 @@ import TrangCaNhan_User from '../screens/TrangCaNhan_User';
 import ScreenBangTin from '../screens/ScreenBangTin';
 import BangTinCuaToi from '../screens/BangTinCuaToi';
 import User_TheoDoi from '../screens/User_TheoDoi';
+import ScreenQuanLyBaiDangNhom from '../screens/ScreenQuanLyBaiDangNhom';
+
 import BaiDangComponent from '../components/BaiDangComponent';
 
 import ModalComponent from '../modal/ModalComponent';
@@ -73,6 +75,7 @@ import ModalLike_CMT_Child_Thongbao from '../modal/ModalLike_CMT_Child_Thongbao'
 import ModalLike_Nhom_Go from '../modal/ModalLike_Nhom_Go';
 import Modal_EditTieuSu from '../modal/Modal_EditTieuSu';
 import PopUpModal_Xoa_ChiaSe from '../modal/PopUpModal_Xoa_ChiaSe';
+import PopUpModal_Xoa_QuanLy_Nhom from '../modal/PopUpModal_Xoa_QuanLy_Nhom';
 
 import KhenThuong from '../baidang/KhenThuong';
 import KhenThuong_V2 from '../baidang/KhenThuong_V2';
@@ -334,6 +337,10 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="TrangCaNhan" component={TrangCaNhan} />
     <HomeStack.Screen name="TrangCaNhan_User" component={TrangCaNhan_User} />
     <HomeStack.Screen name="User_TheoDoi" component={User_TheoDoi} />
+    <HomeStack.Screen
+      name="ScreenQuanLyBaiDangNhom"
+      component={ScreenQuanLyBaiDangNhom}
+    />
   </HomeStack.Navigator>
 );
 
@@ -507,6 +514,10 @@ const AppStack = () => {
       <Stack.Screen
         name="PopUpModal_Xoa_ChiaSe"
         component={PopUpModal_Xoa_ChiaSe}
+      />
+      <Stack.Screen
+        name="PopUpModal_Xoa_QuanLy_Nhom"
+        component={PopUpModal_Xoa_QuanLy_Nhom}
       />
     </Stack.Navigator>
   );

@@ -139,7 +139,7 @@ export default class TrangCaNhan_User extends React.Component {
       this.state.allowEdit,
       await Utils.ngetStorage(nkey.id_user),
     );
-    console.log('res ds bài đăng cá nhân ============', res);
+    // console.log('res ds bài đăng cá nhân ============', res);
     if (res.status == 1) {
       this.setState({
         DSBaiDang: res.data.map((item) => item.DataBaiDang[0]),

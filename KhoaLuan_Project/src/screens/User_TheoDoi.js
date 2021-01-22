@@ -32,7 +32,7 @@ export default class User_TheoDoi extends React.Component {
   }
 
   _renderItem = ({item, index}) => {
-    console.log(item);
+    // console.log(item);
     return (
       <TouchableOpacity style={[styles.khungchua]}>
         <View

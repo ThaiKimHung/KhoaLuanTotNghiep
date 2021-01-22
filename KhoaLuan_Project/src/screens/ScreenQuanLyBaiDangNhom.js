@@ -34,13 +34,13 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import moment from 'moment';
 
 import ChonLoaiBaiDang from '../components/ChonLoaiBaiDang';
-import ScreenAllBaiDang_Nhom from './ScreenAllBaiDang_Nhom';
+import ScreenAllBaiDang_QuanLy_Nhom from './ScreenAllBaiDang_QuanLy_Nhom';
 
 const windowWidth = Dimensions.get('window').width;
 const goback = require('../assets/images/go-back-left-arrow.png');
 const bachamdoc = require('../assets/images/daubacham_doc.png');
 
-export default class ScreenBaiDangNhom extends React.Component {
+export default class ScreenQuanLyBaiDangNhom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,47 +85,13 @@ export default class ScreenBaiDangNhom extends React.Component {
                   width: FontSize.verticalScale(18),
                 }}></Image>
             </TouchableOpacity>
-            <Text style={styles.title}>{ten_group}</Text>
-
-            {this.state.quyengroup == true ? (
-              <TouchableOpacity
-                onPress={() =>
-                  Utils.goscreen(this, 'Modal_CaiDatNhom', {
-                    id_nguoidang: this.props.route.params,
-                  })
-                }
-                style={{
-                  justifyContent: 'center',
-                  margin: 5,
-                  backgroundColor: '#FFFFFF',
-                  height: FontSize.scale(22),
-                  width: FontSize.verticalScale(22),
-                  alignItems: 'center',
-                }}>
-                <Image
-                  source={bachamdoc}
-                  style={{
-                    height: FontSize.scale(20),
-                    width: FontSize.verticalScale(18),
-                    // marginRight: 5,
-                    // justifyContent: 'center',
-                  }}></Image>
-              </TouchableOpacity>
-            ) : null}
+            <Text style={styles.title}>Quản lý bài đăng nhóm</Text>
           </View>
         </View>
 
-        <ChonLoaiBaiDang
-          onPress={() => {
-            // this.props.navigation.navigate('ScreenLoaiBaiDang');
-            Utils.goscreen(this, 'ScreenLoaiBaiDang', {
-              screennhom: this.props.route.params.id_nguoidang.ID_group,
-              tennhom: this.props.route.params.id_nguoidang.Ten_Group,
-            });
-          }}></ChonLoaiBaiDang>
-
         <View style={{flex: 1}}>
-          <ScreenAllBaiDang_Nhom nthis={this}></ScreenAllBaiDang_Nhom>
+          <ScreenAllBaiDang_QuanLy_Nhom
+            nthis={this}></ScreenAllBaiDang_QuanLy_Nhom>
         </View>
       </View>
     );

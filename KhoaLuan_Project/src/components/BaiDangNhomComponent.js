@@ -75,7 +75,7 @@ export default class BaiDangNhomComponent extends React.Component {
       await Utils.ngetStorage(nkey.id_user),
       idbaidang,
     );
-    console.log('res share bài đăng', res);
+    // console.log('res share bài đăng', res);
     if (res.status == 1) {
       showMessage({
         message: 'Thông báo',
@@ -340,7 +340,7 @@ export default class BaiDangNhomComponent extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -375,7 +375,7 @@ export default class BaiDangNhomComponent extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -393,7 +393,7 @@ export default class BaiDangNhomComponent extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}

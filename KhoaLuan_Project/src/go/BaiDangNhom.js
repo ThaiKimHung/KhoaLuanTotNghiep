@@ -134,7 +134,7 @@ export default class BaiDangNhom extends React.Component {
     // let id_gruop = this.props.route.params.id_nguoidang.ID_group;
     // let ten_group = this.props.route.params.id_nguoidang.Ten_Group;
     // console.log('id group screen all bài đăng', id_gruop, ten_group);
-    console.log('this bai dang nhom:', this.props);
+    // console.log('this bai dang nhom:', this.props);
     return (
       <View style={styles.container}>
         <View style={styles.back}>

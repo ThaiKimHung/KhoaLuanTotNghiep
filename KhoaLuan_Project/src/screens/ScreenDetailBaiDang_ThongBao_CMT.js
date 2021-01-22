@@ -681,6 +681,18 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     }
   };
 
+  hamloadLienTuc = () => {
+    this.inter = setInterval(async () => {
+      await this._GetChiTietBaiDang();
+      // await this.hamTru();
+      // console.log('hi');
+    }, 5000);
+  };
+
+  hamclearInterval = () => {
+    clearInterval(this.inter);
+  };
+
   async componentDidMount() {
     await this.nhanData();
     // await this.GetData();
@@ -688,6 +700,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     // await this.GanData();
     // console.log()
     // await this.hamloadLienTuc();
+    await this.hamloadLienTuc();
     this.setState({
       iduser: await Utils.ngetStorage(nkey.id_user),
     });
@@ -706,9 +719,10 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={() => {
+          onPress={async () => {
             Utils.goscreen(this, 'ScreenThongBao');
-            ROOTGlobal.GetDsThongBao();
+            await ROOTGlobal.GetDsThongBao();
+            await this.hamclearInterval();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 

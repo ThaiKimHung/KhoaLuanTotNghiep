@@ -19,6 +19,7 @@ import {
   getDSBaiDangTrangCaNhan,
   UpdateTrangCaNhan,
   UpdateAnhBia,
+  getDSBaiDangFlowTrangCaNhan,
 } from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -28,7 +29,7 @@ import {ROOTGlobal} from '../apis/dataGlobal';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
-import BaiDang_TrangCaNhan_Component from '../components/BaiDang_TrangCaNhan_Component';
+import BaiDang_TrangCaNhan_Component_User from '../components/BaiDang_TrangCaNhan_Component_User';
 const editpic = require('../assets/images/photo-camera-interface-symbol-for-button.png');
 const avatar = require('../assets/images/avatar.jpg');
 const goback = require('../assets/images/go-back-left-arrow.png');
@@ -38,7 +39,7 @@ const edit = require('../assets/images/edit2.png');
 const check = require('../assets/images/check.png');
 const cancel = require('../assets/images/cancel.png');
 
-export default class TrangCaNhan extends React.Component {
+export default class TrangCaNhan_User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,13 +57,22 @@ export default class TrangCaNhan extends React.Component {
       iduser: '',
       hinhanhbia: '',
       anhbia: '',
+      allowEdit: '',
     };
-    ROOTGlobal.GetUserTrangCaNhan = this._GetUserProfile;
-    ROOTGlobal.GetDSBaiDang_CaNhan = this._GetDSBaiDangTrangCaNhan;
+    ROOTGlobal.GetDSBaiDang_User = this._GetDSBaiDangTrangCaNhan;
+    // ROOTGlobal.GetDSBaiDang_CaNhan = this._GetDSBaiDangTrangCaNhan;
   }
 
+  Laydata = async () => {
+    const {id_nguoidang = {}} = this.props.route.params;
+    this.setState({
+      allowEdit: id_nguoidang.AllowEdit,
+    });
+    // console.log('this', id_nguoidang);
+  };
+
   _GetUserProfile = async () => {
-    let res = await getTrangCaNhan(await Utils.ngetStorage(nkey.id_user));
+    let res = await getTrangCaNhan(this.state.allowEdit);
     // console.log('res get user thoong tin ============', res);
     if (res.status == 1) {
       this.setState({
@@ -88,10 +98,11 @@ export default class TrangCaNhan extends React.Component {
   };
 
   _GetDSBaiDangTrangCaNhan = async () => {
-    let res = await getDSBaiDangTrangCaNhan(
+    let res = await getDSBaiDangFlowTrangCaNhan(
+      this.state.allowEdit,
       await Utils.ngetStorage(nkey.id_user),
     );
-    // console.log('res ds bài đăng cá nhân ============', res);
+    console.log('res ds bài đăng cá nhân ============', res);
     if (res.status == 1) {
       this.setState({
         DSBaiDang: res.data.map((item) => item.DataBaiDang[0]),
@@ -185,7 +196,7 @@ export default class TrangCaNhan extends React.Component {
   _renderItem = ({item, index}) => {
     // console.log(item);
     return (
-      <BaiDang_TrangCaNhan_Component
+      <BaiDang_TrangCaNhan_Component_User
         key={index}
         item={item}
         nthis={this}
@@ -194,11 +205,12 @@ export default class TrangCaNhan extends React.Component {
             id_nguoidang: item,
             // baidangcanhan: this.state.dsBaidangcanhan,
           })
-        }></BaiDang_TrangCaNhan_Component>
+        }></BaiDang_TrangCaNhan_Component_User>
     );
   };
 
   componentDidMount = async () => {
+    await this.Laydata();
     await this._GetUserProfile();
     await this._GetDSBaiDangTrangCaNhan();
   };
@@ -232,117 +244,28 @@ export default class TrangCaNhan extends React.Component {
         <View style={styles.footer}>
           <View style={{marginTop: 10}}>
             <View>
-              {this.state.Image == '' ? (
-                <ImageBackground
-                  source={
-                    this.state.hinhanhbia ? {uri: this.state.anhbia} : backgroud
-                  }
+              <ImageBackground
+                source={
+                  // this.state.hinhanhbia ? {uri: this.state.anhbia} :
+                  backgroud
+                }
+                style={{
+                  height: FontSize.scale(200),
+                  width: FontSize.verticalScale(340),
+                }}>
+                <View
                   style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(340),
-                  }}>
-                  {this.state.Image == '' ? (
-                    <View
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        height: FontSize.scale(30),
-                        width: FontSize.verticalScale(30),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 30,
-                        position: 'absolute',
-                        top: 0,
-                        right: 10,
-                      }}>
-                      <TouchableOpacity onPress={() => this.openGalary()}>
-                        <Image
-                          source={editpic}
-                          style={{
-                            height: FontSize.scale(20),
-                            width: FontSize.verticalScale(20),
-                          }}></Image>
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <View>
-                      <TouchableOpacity onPress={() => this._UpdateAnhBia()}>
-                        <Image
-                          source={check}
-                          style={{
-                            height: FontSize.scale(20),
-                            width: FontSize.verticalScale(20),
-                            margin: 5,
-                          }}></Image>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => this.xoaAnh()}>
-                        <Image
-                          source={cancel}
-                          style={{
-                            margin: 5,
-                            height: FontSize.scale(20),
-                            width: FontSize.verticalScale(20),
-                          }}></Image>
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                </ImageBackground>
-              ) : (
-                <ImageBackground
-                  source={
-                    this.state.Image
-                      ? {uri: this.state.Image.path}
-                      : this.state.anhbia
-                  }
-                  style={{
-                    height: FontSize.scale(200),
-                    width: FontSize.verticalScale(340),
-                  }}>
-                  {this.state.Image == '' ? (
-                    <View
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        height: FontSize.scale(30),
-                        width: FontSize.verticalScale(30),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 30,
-                        position: 'absolute',
-                        top: 0,
-                        right: 10,
-                      }}>
-                      <TouchableOpacity onPress={() => this.openGalary()}>
-                        <Image
-                          source={editpic}
-                          style={{
-                            height: FontSize.scale(20),
-                            width: FontSize.verticalScale(20),
-                          }}></Image>
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <View>
-                      <TouchableOpacity onPress={() => this._UpdateAnhBia()}>
-                        <Image
-                          source={check}
-                          style={{
-                            height: FontSize.scale(20),
-                            width: FontSize.verticalScale(20),
-                            margin: 5,
-                          }}></Image>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => this.xoaAnh()}>
-                        <Image
-                          source={cancel}
-                          style={{
-                            margin: 5,
-                            height: FontSize.scale(20),
-                            width: FontSize.verticalScale(20),
-                          }}></Image>
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                </ImageBackground>
-              )}
+                    backgroundColor: '#FFFFFF',
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 30,
+                    position: 'absolute',
+                    top: 0,
+                    right: 10,
+                  }}></View>
+              </ImageBackground>
             </View>
           </View>
 
@@ -385,25 +308,6 @@ export default class TrangCaNhan extends React.Component {
                   // backgroundColor: 'green',
                 }}>
                 <Text>{this.state.tieusu}</Text>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: ' blue',
-                    height: FontSize.scale(20),
-                    width: FontSize.verticalScale(20),
-                  }}
-                  onPress={() =>
-                    Utils.goscreen(this, 'Modal_EditTieuSu', {
-                      id_nguoidang: this.state.thongtin,
-                    })
-                  }>
-                  <Image
-                    source={edit}
-                    style={{
-                      height: FontSize.scale(15),
-                      width: FontSize.verticalScale(15),
-                      marginLeft: 5,
-                    }}></Image>
-                </TouchableOpacity>
               </View>
             </View>
           </View>

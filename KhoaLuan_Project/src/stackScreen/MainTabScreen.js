@@ -113,9 +113,9 @@ export default class MainTabScreen extends React.Component {
   };
 
   ham = async () => {
-    // setInterval(async () => {
-    //   this._DemSoLuongThongBao();
-    // }, 1000);
+    setInterval(async () => {
+      this._DemSoLuongThongBao();
+    }, 1000);
   };
 
   componentDidMount = async () => {

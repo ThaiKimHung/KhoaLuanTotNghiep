@@ -83,10 +83,23 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     };
     // this.idBaiDang = '';
     // this.id_user = '';
+    this.inter = 0;
     this.id_like = 1;
     ROOTGlobal.GetChiTietBaiDang_ThongBao = this._GetChiTietBaiDang;
     // ROOTGlobal.GanDataChitiet = this.GanData;
   }
+
+  hamloadLienTuc = () => {
+    this.inter = setInterval(async () => {
+      await this._GetChiTietBaiDang();
+      // await this.hamTru();
+      // console.log('hi');
+    }, 5000);
+  };
+
+  hamclearInterval = () => {
+    clearInterval(this.inter);
+  };
 
   _BanThongBao = async () => {
     let res = await BanThongBao();
@@ -700,6 +713,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     this.setState({
       iduser: await Utils.ngetStorage(nkey.id_user),
     });
+    await this.hamloadLienTuc();
   }
 
   render() {
@@ -715,9 +729,10 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={() => {
+          onPress={async () => {
             Utils.goscreen(this, 'ScreenThongBao');
-            ROOTGlobal.GetDsThongBao();
+            await ROOTGlobal.GetDsThongBao();
+            await this.hamclearInterval();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 

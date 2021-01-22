@@ -93,6 +93,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     this.idBaiDang = '';
     this.id_user = '';
     this.id_like = 1;
+    this.inter = 0;
     ROOTGlobal.GetChiTietBaiDang = this._GetChiTietBaiDang;
     ROOTGlobal.GanDataChitiet = this.GanData;
   }
@@ -116,11 +117,16 @@ export default class ScreenDetailBaiDang extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    setInterval(async () => {
+    this.inter = setInterval(async () => {
       await this._GetChiTietBaiDang();
       // await this.hamTru();
       // console.log('hi');
     }, 5000);
+  };
+
+  hamclearInterval = () => {
+    clearInterval(this.inter);
+    // alert('clear nè');
   };
 
   _GetChiTietBaiDang = async () => {
@@ -727,9 +733,11 @@ export default class ScreenDetailBaiDang extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={() => {
+          onPress={async () => {
             Utils.goback(this, '');
-            ROOTGlobal.GetDsAllBaiDang();
+            await ROOTGlobal.GetDsAllBaiDang();
+            await this.hamclearInterval();
+            // await ROOTGlobal.BatDauCLear();
           }}></GoBack>
         {/* khung chứa avata và khung text input*/}
 

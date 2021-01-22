@@ -565,6 +565,38 @@ async function ShareBaiDang(iduser, id_baidang) {
   return res;
 }
 
+async function UpdateTrangCaNhan(strbody) {
+  let res = await Utils.post_api(apiUser + `UpdateTrangCaNhan`, strbody);
+  return res;
+}
+
+async function UpdateAnhBia(idcanhan, strbody) {
+  let res = await Utils.post_api(
+    apiUser + `UpdateAnhBia?id_canhan=${idcanhan}`,
+    strbody,
+  );
+  return res;
+}
+
+async function deleteBaiDangChiaSe(id_thongdiep) {
+  let res = await Utils.post_api(
+    apiUser + `deleteBaiDangChiaSe?id_baidangcanhan=${id_thongdiep}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
+async function getDSBaiDangFlowTrangCaNhan(idcurent, iduser) {
+  let res = await Utils.get_api(
+    apiUser +
+      `getDSBaiDangFlowTrangCaNhan?id_curent=${idcurent}&id_user=${iduser}`,
+  );
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -649,4 +681,8 @@ export {
   getTrangCaNhan,
   getDSBaiDangTrangCaNhan,
   ShareBaiDang,
+  UpdateTrangCaNhan,
+  UpdateAnhBia,
+  deleteBaiDangChiaSe,
+  getDSBaiDangFlowTrangCaNhan,
 };

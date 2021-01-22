@@ -43,8 +43,10 @@ export default class ScreenAllBaiDang extends React.Component {
       searchText: '',
       filteredData: [],
     };
+    this.inter = 0;
     ROOTGlobal.GetDsAllBaiDang = this._GetDSBaiDang;
     ROOTGlobal.ScrollHome = this._onScroll;
+    // ROOTGlobal.BatDauCLear = this.hamloadLienTuc;
   }
   componentDidMount = async () => {
     await this._GetDSBaiDang();
@@ -79,10 +81,15 @@ export default class ScreenAllBaiDang extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    // setInterval(async () => {
-    //   await this._GetDSBaiDang2();
-    //   await this.hamTru();
-    // }, 1000);
+    this.inter = setInterval(async () => {
+      await this._GetDSBaiDang2();
+      await this.hamTru();
+    }, 1000);
+    // alert('bat dau ne');
+  };
+
+  hamclearInterval = () => {
+    clearInterval(this.inter);
   };
 
   _GetDSBaiDang = async () => {
@@ -129,11 +136,12 @@ export default class ScreenAllBaiDang extends React.Component {
         key={index}
         item={item}
         nthis={this}
-        onPress={() =>
+        onPress={async () => {
           Utils.goscreen(this.props.nthis, 'ScreenDetailBaiDang', {
             id_nguoidang: item,
-          })
-        }></BaiDangComponent>
+          });
+          // await this.hamclearInterval();
+        }}></BaiDangComponent>
     );
   };
 

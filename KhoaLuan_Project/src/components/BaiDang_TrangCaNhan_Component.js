@@ -126,14 +126,14 @@ export default class BaiDang_TrangCaNhan_Component extends React.Component {
     // this.setState({
     //   thich: !this.state.thich,
     // });
-    await ROOTGlobal.GetDsAllBaiDang();
+    await ROOTGlobal.GetDSBaiDang_CaNhan();
     // await this._AddThongBao_Like();
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
     // console.log('ress xóa like', res);
-    await ROOTGlobal.GetDsAllBaiDang();
+    await ROOTGlobal.GetDSBaiDang_CaNhan();
   };
 
   _renderItem = ({item, index}) => {
@@ -476,7 +476,7 @@ export default class BaiDang_TrangCaNhan_Component extends React.Component {
 
   render() {
     const {item = {}} = this.props;
-    // console.log('this', item);
+    // console.log('this', this.props);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
     // let iduserr = user ? user.ID_user : '';
     // console.log(iduserr);
@@ -568,13 +568,9 @@ export default class BaiDang_TrangCaNhan_Component extends React.Component {
             <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() =>
-                Utils.goscreen(
-                  this.props.nthis.props.nthis,
-                  'PopUpModal_XoaSua',
-                  {
-                    id_nguoidang: item,
-                  },
-                )
+                Utils.goscreen(this.props.nthis, 'PopUpModal_Xoa_ChiaSe', {
+                  id_nguoidang: item,
+                })
               }>
               <Image
                 style={{
@@ -659,7 +655,7 @@ export default class BaiDang_TrangCaNhan_Component extends React.Component {
                 // activeOpacity={1}
                 style={styles.khung_Thich}
                 onLongPress={async (e) => {
-                  Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+                  Utils.goscreen(this.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
@@ -686,7 +682,7 @@ export default class BaiDang_TrangCaNhan_Component extends React.Component {
                 style={styles.khung_Thich}
                 // activeOpacity={1}
                 onLongPress={async (e) => {
-                  Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+                  Utils.goscreen(this.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,

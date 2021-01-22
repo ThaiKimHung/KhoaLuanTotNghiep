@@ -67,6 +67,7 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
       like: '',
       likecmt: '',
     };
+    this.inter = 0;
     ROOTGlobal.GetDSCmt_Child_Thongbao = this._GetDsCmt;
   }
 
@@ -80,6 +81,7 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
       </View>
     );
   };
+
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
     // await console.log('id nguoi dang', id_nguoidang);
@@ -97,9 +99,13 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    setInterval(async () => {
+    this.inter = setInterval(async () => {
       await this._GetDsCmt();
     }, 5000);
+  };
+
+  hamclearInterval = () => {
+    clearInterval(this.inter);
   };
 
   _GetDsCmt = async () => {
@@ -168,6 +174,7 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
     await this._BanThongBao();
     // console.log('res add thông báo', res);
   };
+
   _AddThongBao_LikeCMT = async (idcmt) => {
     let strBody = JSON.stringify({
       title: 'Đã bày tỏ cảm xúc với một bình luận của bạn',
@@ -337,9 +344,10 @@ export default class ScreenCMT_Child_ThongBao extends React.Component {
       <View style={styles.container}>
         <GoBack
           name=""
-          onPress={() => {
+          onPress={async () => {
             Utils.goscreen(this, 'ScreenDetailBaiDang_ThongBao');
-            ROOTGlobal.GetChiTietBaiDang_ThongBao();
+            await ROOTGlobal.GetChiTietBaiDang_ThongBao();
+            await this.hamclearInterval();
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>

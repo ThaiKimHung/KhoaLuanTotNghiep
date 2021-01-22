@@ -68,6 +68,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       like: '',
       likecmt: '',
     };
+    this.inter = 0;
     ROOTGlobal.GetDSCmt_Child_Nhom = this._GetDsCmt;
   }
 
@@ -81,6 +82,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       </View>
     );
   };
+
   NhanData_Child = async () => {
     const {id_nguoidang = {}} = this.props.route.params;
     // console.log('idn guoi dang', id_nguoidang);
@@ -96,7 +98,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
   };
 
   hamloadLienTuc = () => {
-    setInterval(async () => {
+    this.inter = setInterval(async () => {
       await this._GetDsCmt();
       // console.log('hi');
     }, 5000);
@@ -321,6 +323,9 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
       </View>
     );
   };
+  hamclearInterval = () => {
+    clearInterval(this.inter);
+  };
 
   componentDidMount = async () => {
     await this.NhanData_Child();
@@ -338,6 +343,7 @@ export default class ScreenCMT_Child_Nhom extends React.Component {
             Utils.goscreen(this, 'ScreenDetailBaiDang_Nhom');
             await ROOTGlobal.GetChiTietBaiDang_Nhom();
             await ROOTGlobal.GanDataChitiet_Nhom();
+            await this.hamclearInterval();
           }}></GoBack>
         <View style={styles.header}>
           <View style={styles.khung_TungCmt}>

@@ -77,8 +77,11 @@ export default class ModalLike extends Component {
     let res = await AddLike(idbaidang, idlike, iduser);
     // console.log('ress add like', res);
     if (res.status == 1) {
-      Utils.goscreen(this, 'Home');
+      // Utils.goscreen(this, 'Home');
+      this.change();
       await ROOTGlobal.GetDsAllBaiDang();
+      await ROOTGlobal.GetDSBaiDang_User();
+      await ROOTGlobal.GetDSBaiDang_CaNhan();
       // await this._AddThongBao_Like();
     }
   };

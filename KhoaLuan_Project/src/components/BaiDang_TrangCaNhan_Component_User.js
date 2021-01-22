@@ -19,7 +19,7 @@ import {
 // import DanhSachLike from './DanhSachLike';
 // import ModalComponent from '../components/ModalComponent';
 
-import FontSize from '../components/size';
+import FontSize from './size';
 import SvgUri from 'react-native-svg-uri';
 import * as Animatable from 'react-native-animatable';
 
@@ -31,13 +31,12 @@ import {
   AddThongBao,
   BanThongBao,
   AddThongBao_Like,
-  ShareBaiDang,
 } from '../apis/apiUser';
 import {nGlobalKeys} from '../apis/globalKey';
 import {nkey} from '../apis/keyStore';
 import moment from 'moment';
 import Utils from '../apis/Utils';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+
 import _ from 'lodash';
 
 const avatar = require('../assets/images/avatar.jpg');
@@ -55,7 +54,7 @@ const share = require('../assets/images/share.png');
 
 const windowWidth = Dimensions.get('window').width;
 
-export default class BaiDangComponenet extends React.Component {
+export default class BaiDang_TrangCaNhan_Component_User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,23 +72,6 @@ export default class BaiDangComponenet extends React.Component {
 
   _BanThongBao = async () => {
     let res = await BanThongBao();
-  };
-
-  _ShareBaiDang = async (idbaidang) => {
-    let res = await ShareBaiDang(
-      await Utils.ngetStorage(nkey.id_user),
-      idbaidang,
-    );
-    console.log('res share bài đăng', res);
-    if (res.status == 1) {
-      showMessage({
-        message: 'Thông báo',
-        description: 'Chia sẻ thành công',
-        type: 'success',
-        duration: 1500,
-        icon: 'success',
-      });
-    }
   };
 
   _AddThongBao = async () => {
@@ -140,18 +122,18 @@ export default class BaiDangComponenet extends React.Component {
 
   TaoLike = async (idbaidang, idlike, iduser) => {
     let res = await AddLike(idbaidang, idlike, iduser);
-    // console.log('ress add like', res);
+    console.log('ress add like', res);
     // this.setState({
     //   thich: !this.state.thich,
     // });
-    await ROOTGlobal.GetDsAllBaiDang();
+    await ROOTGlobal.GetDSBaiDang_User();
     // await this._AddThongBao_Like();
   };
 
   DeleteLike = async (idbaidang) => {
     let res = await DeleteBaiDang_Like(idbaidang);
     // console.log('ress xóa like', res);
-    await ROOTGlobal.GetDsAllBaiDang();
+    await ROOTGlobal.GetDSBaiDang_User();
   };
 
   _renderItem = ({item, index}) => {
@@ -494,9 +476,9 @@ export default class BaiDangComponenet extends React.Component {
 
   render() {
     const {item = {}} = this.props;
-    // console.log('this', item);
+    // console.log('this', this.props);
     let user = item.User_DangBai ? item.User_DangBai[0] : {};
-    let iduserr = user ? user.ID_user : '';
+    // let iduserr = user ? user.ID_user : '';
     // console.log(iduserr);
     let Solike = item.Like_BaiDang.length;
     let SoComment = item.Coment.length;
@@ -536,19 +518,7 @@ export default class BaiDangComponenet extends React.Component {
             </TouchableOpacity>
             <View style={styles.khung_tenUser}>
               <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity
-                  onPress={() =>
-                    Utils.goscreen(
-                      this.props.nthis.props.nthis,
-                      'TrangCaNhan_User',
-                      {
-                        id_nguoidang: item,
-                      },
-                    )
-                  }>
-                  <Text style={styles.txt_TenUser}>{user.Username}</Text>
-                </TouchableOpacity>
-
+                <Text style={styles.txt_TenUser}>{user.Username}</Text>
                 {group ? (
                   <View
                     style={{
@@ -595,16 +565,12 @@ export default class BaiDangComponenet extends React.Component {
               </View>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.khung_daubacham}
               onPress={() =>
-                Utils.goscreen(
-                  this.props.nthis.props.nthis,
-                  'PopUpModal_XoaSua',
-                  {
-                    id_nguoidang: item,
-                  },
-                )
+                Utils.goscreen(this.props.nthis, 'PopUpModal_Xoa_ChiaSe', {
+                  id_nguoidang: item,
+                })
               }>
               <Image
                 style={{
@@ -614,7 +580,7 @@ export default class BaiDangComponenet extends React.Component {
                 }}
                 source={daubacham}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           {/* khung chứa nội dung bài đăng và cmt*/}
@@ -689,7 +655,7 @@ export default class BaiDangComponenet extends React.Component {
                 // activeOpacity={1}
                 style={styles.khung_Thich}
                 onLongPress={async (e) => {
-                  Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+                  Utils.goscreen(this.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
@@ -716,7 +682,7 @@ export default class BaiDangComponenet extends React.Component {
                 style={styles.khung_Thich}
                 // activeOpacity={1}
                 onLongPress={async (e) => {
-                  Utils.goscreen(this.props.nthis.props.nthis, 'ModalLike', {
+                  Utils.goscreen(this.props.nthis, 'ModalLike', {
                     id_nguoidang: this.props,
                     x: e.nativeEvent.pageX,
                     y: e.nativeEvent.pageY,
@@ -745,12 +711,13 @@ export default class BaiDangComponenet extends React.Component {
               <Image style={styles.imageLike_Commnet} source={binhluan} />
               <Text style={styles.text_Like_cmt}>Bình luận</Text>
             </TouchableOpacity>
-
+            {/* 
             {iduserr != this.state.iduser ? (
               <TouchableOpacity
                 style={styles.khung_BinhLuan}
                 // activeOpacity={0.8}
-                onPress={() => this._ShareBaiDang(item.Id_BaiDang)}>
+                // onPress={this.props.onPress}
+              >
                 <Image style={styles.imageLike_Commnet} source={share} />
                 <Text style={styles.text_Like_cmt}>Chia sẻ</Text>
               </TouchableOpacity>
@@ -778,7 +745,7 @@ export default class BaiDangComponenet extends React.Component {
                   Chia sẻ
                 </Text>
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>

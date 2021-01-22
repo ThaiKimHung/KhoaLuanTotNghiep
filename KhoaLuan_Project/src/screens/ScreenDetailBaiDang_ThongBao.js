@@ -641,7 +641,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -676,7 +676,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}
@@ -694,7 +694,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
                   style={{
                     height: FontSize.scale(200),
                     width: '100%',
-                    backgroundColor: 'blue',
+                    // backgroundColor: 'blue',
                   }}></Image>
               </View>
             ) : null}

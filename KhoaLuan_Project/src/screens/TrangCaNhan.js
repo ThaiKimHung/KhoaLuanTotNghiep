@@ -19,6 +19,7 @@ import {
   getDSBaiDangTrangCaNhan,
   UpdateTrangCaNhan,
   UpdateAnhBia,
+  getFlow,
 } from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -37,7 +38,7 @@ const backgroud = require('../assets/images/background.png');
 const edit = require('../assets/images/edit2.png');
 const check = require('../assets/images/check.png');
 const cancel = require('../assets/images/cancel.png');
-
+const follow = require('../assets/images/follow_user.png');
 export default class TrangCaNhan extends React.Component {
   constructor(props) {
     super(props);
@@ -56,10 +57,28 @@ export default class TrangCaNhan extends React.Component {
       iduser: '',
       hinhanhbia: '',
       anhbia: '',
+      getfl: '',
+      tongfl: '',
     };
     ROOTGlobal.GetUserTrangCaNhan = this._GetUserProfile;
     ROOTGlobal.GetDSBaiDang_CaNhan = this._GetDSBaiDangTrangCaNhan;
   }
+
+  _GetFlow = async () => {
+    let res = await getFlow(await Utils.ngetStorage(nkey.id_user));
+    console.log('res get flow', res);
+    if (res.status == 1) {
+      this.setState({
+        // tongfl: res.Data.map((item) => item.tong),
+        tongfl: res.Data[0].tong,
+        getfl: res.Data.map((item) =>
+          item.Flow.map((item1) => item1.TT_User_Flow[0]),
+        ),
+      });
+      // await console.log('tong fl', await this.state.tongfl);
+      // await console.log('ds fl', await this.state.getfl);
+    }
+  };
 
   _GetUserProfile = async () => {
     let res = await getTrangCaNhan(await Utils.ngetStorage(nkey.id_user));
@@ -201,6 +220,7 @@ export default class TrangCaNhan extends React.Component {
   componentDidMount = async () => {
     await this._GetUserProfile();
     await this._GetDSBaiDangTrangCaNhan();
+    await this._GetFlow();
   };
 
   render() {
@@ -346,12 +366,12 @@ export default class TrangCaNhan extends React.Component {
             </View>
           </View>
 
-          <View style={{height: FontSize.scale(80), alignItems: 'center'}}>
+          <View style={{height: FontSize.scale(100), alignItems: 'center'}}>
             <View
               style={{
                 alignItems: 'center',
                 padding: 10,
-                position: 'absolute',
+                // position: 'absolute',
                 // bottom: -60,
                 // left: 150,
               }}>
@@ -403,6 +423,29 @@ export default class TrangCaNhan extends React.Component {
                       width: FontSize.verticalScale(15),
                       marginLeft: 5,
                     }}></Image>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  marginBottom: 10,
+                  flexDirection: 'row',
+                  // backgroundColor: 'blue',
+                  // width: FontSize.verticalScale(200),
+                }}>
+                <TouchableOpacity
+                  style={{flexDirection: 'row'}}
+                  onPress={() =>
+                    Utils.goscreen(this, 'User_TheoDoi', {
+                      id_nguoidang: this.state.getfl,
+                    })
+                  }>
+                  <Image
+                    source={follow}
+                    style={{
+                      height: FontSize.scale(20),
+                      width: FontSize.verticalScale(20),
+                    }}></Image>
+                  <Text>Có {this.state.tongfl} người theo dõi</Text>
                 </TouchableOpacity>
               </View>
             </View>

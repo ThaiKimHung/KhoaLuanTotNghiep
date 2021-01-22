@@ -20,6 +20,9 @@ import {
   UpdateTrangCaNhan,
   UpdateAnhBia,
   getDSBaiDangFlowTrangCaNhan,
+  CheckFlow,
+  addFlow,
+  DeleteFlow,
 } from '../apis/apiUser';
 import Utils from '../apis/Utils';
 import FontSize from '../components/size';
@@ -38,6 +41,7 @@ const backgroud = require('../assets/images/background.png');
 const edit = require('../assets/images/edit2.png');
 const check = require('../assets/images/check.png');
 const cancel = require('../assets/images/cancel.png');
+const follow = require('../assets/images/follow.png');
 
 export default class TrangCaNhan_User extends React.Component {
   constructor(props) {
@@ -58,6 +62,8 @@ export default class TrangCaNhan_User extends React.Component {
       hinhanhbia: '',
       anhbia: '',
       allowEdit: '',
+      checkfl: '',
+      iduser: '',
     };
     ROOTGlobal.GetDSBaiDang_User = this._GetDSBaiDangTrangCaNhan;
     // ROOTGlobal.GetDSBaiDang_CaNhan = this._GetDSBaiDangTrangCaNhan;
@@ -69,6 +75,37 @@ export default class TrangCaNhan_User extends React.Component {
       allowEdit: id_nguoidang.AllowEdit,
     });
     // console.log('this', id_nguoidang);
+  };
+
+  _CheckFollow = async () => {
+    let res = await CheckFlow(
+      this.state.allowEdit,
+      await Utils.ngetStorage(nkey.id_user),
+    );
+    // console.log('res chekc', res);
+
+    await this.setState({
+      checkfl: res.data.check,
+    });
+    // await console.log(this.state.checkfl);
+  };
+
+  _AddFL = async () => {
+    let res = await addFlow(
+      await Utils.ngetStorage(nkey.id_user),
+      this.state.allowEdit,
+    );
+    // console.log('res add fl', res);
+    await this._CheckFollow();
+  };
+
+  _DeleteFl = async () => {
+    let res = await DeleteFlow(
+      await Utils.ngetStorage(nkey.id_user),
+      this.state.allowEdit,
+    );
+    // console.log('res delete fl', res);
+    await this._CheckFollow();
   };
 
   _GetUserProfile = async () => {
@@ -212,6 +249,11 @@ export default class TrangCaNhan_User extends React.Component {
   componentDidMount = async () => {
     await this.Laydata();
     await this._GetUserProfile();
+
+    await this._CheckFollow();
+    await this.setState({
+      iduser: await Utils.ngetStorage(nkey.id_user),
+    });
     await this._GetDSBaiDangTrangCaNhan();
   };
 
@@ -269,7 +311,12 @@ export default class TrangCaNhan_User extends React.Component {
             </View>
           </View>
 
-          <View style={{height: FontSize.scale(80), alignItems: 'center'}}>
+          <View
+            style={{
+              height: FontSize.scale(150),
+              flex: 1,
+              alignItems: 'center',
+            }}>
             <View
               style={{
                 alignItems: 'center',
@@ -309,10 +356,48 @@ export default class TrangCaNhan_User extends React.Component {
                 }}>
                 <Text>{this.state.tieusu}</Text>
               </View>
+
+              {this.state.allowEdit != this.state.iduser ? (
+                <View style={{borderWidth: 1, padding: 5, marginTop: 5}}>
+                  {this.state.checkfl == false ? (
+                    <TouchableOpacity
+                      onPress={() => this._AddFL()}
+                      style={{flexDirection: 'row'}}>
+                      <Image
+                        source={follow}
+                        style={{
+                          height: FontSize.scale(20),
+                          width: FontSize.verticalScale(20),
+                          marginRight: 5,
+                        }}></Image>
+                      <Text>Follow</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => this._DeleteFl()}
+                      style={{flexDirection: 'row'}}>
+                      <Image
+                        source={follow}
+                        style={{
+                          height: FontSize.scale(20),
+                          width: FontSize.verticalScale(20),
+                          marginRight: 5,
+                        }}></Image>
+                      <Text>Đã Follow</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              ) : null}
             </View>
           </View>
 
-          <View style={{marginTop: 60}}>
+          <View
+            style={
+              {
+                // marginTop: 60,
+                // flex: 1,
+              }
+            }>
             <FlatList
               ref={(ref) => {
                 this.flatListRef = ref;

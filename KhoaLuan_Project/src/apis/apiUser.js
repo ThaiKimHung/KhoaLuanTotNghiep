@@ -597,6 +597,36 @@ async function getDSBaiDangFlowTrangCaNhan(idcurent, iduser) {
   return res;
 }
 
+async function getFlow(iduser) {
+  let res = await Utils.get_api(apiUser + `getFlow?id_canhan=${iduser}`);
+  return res;
+}
+
+async function addFlow(idcanhan, idcr) {
+  let res = await Utils.post_api(
+    apiUser + `addFlow?id_canhan=${idcanhan}&id_cr=${idcr}`,
+  );
+  return res;
+}
+
+async function CheckFlow(idcr, iduser) {
+  let res = await Utils.get_api(
+    apiUser + `CheckFlow?id_cr=${idcr}&id_canhan=${iduser}`,
+  );
+  return res;
+}
+
+async function DeleteFlow(idcanhan, idcr) {
+  let res = await Utils.post_api(
+    apiUser + `DeleteFlow?id_canhan=${idcanhan}&id_cr=${idcr}`,
+    null,
+    false,
+    true,
+    'DELETE',
+  );
+  return res;
+}
+
 export {
   Login,
   Logout,
@@ -685,4 +715,8 @@ export {
   UpdateAnhBia,
   deleteBaiDangChiaSe,
   getDSBaiDangFlowTrangCaNhan,
+  getFlow,
+  addFlow,
+  CheckFlow,
+  DeleteFlow,
 };

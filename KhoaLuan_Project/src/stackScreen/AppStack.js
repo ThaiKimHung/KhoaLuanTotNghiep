@@ -39,6 +39,7 @@ import TrangCaNhan from '../screens/TrangCaNhan';
 import TrangCaNhan_User from '../screens/TrangCaNhan_User';
 import ScreenBangTin from '../screens/ScreenBangTin';
 import BangTinCuaToi from '../screens/BangTinCuaToi';
+import User_TheoDoi from '../screens/User_TheoDoi';
 import BaiDangComponent from '../components/BaiDangComponent';
 
 import ModalComponent from '../modal/ModalComponent';
@@ -332,6 +333,7 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="BangTinCuaToi" component={BangTinCuaToi} />
     <HomeStack.Screen name="TrangCaNhan" component={TrangCaNhan} />
     <HomeStack.Screen name="TrangCaNhan_User" component={TrangCaNhan_User} />
+    <HomeStack.Screen name="User_TheoDoi" component={User_TheoDoi} />
   </HomeStack.Navigator>
 );
 

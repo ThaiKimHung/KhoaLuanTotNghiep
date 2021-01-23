@@ -220,7 +220,7 @@ export default class ThongBao extends React.Component {
 
   _AddThongBao = async (tieude) => {
     let strBody = JSON.stringify({
-      title: 'Đã tạo thông báo ' + tieude,
+      title: 'Đã tạo thông báo : ' + tieude,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

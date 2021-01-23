@@ -65,7 +65,7 @@ export default class ChaoMungTV extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng chào mừng thành viên mới',
+      title: 'Đã thêm 1 bài đăng chào mừng thành viên mới: ',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

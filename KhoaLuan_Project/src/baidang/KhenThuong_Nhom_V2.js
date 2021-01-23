@@ -147,9 +147,9 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async () => {
+  _AddThongBao = async (ten) => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng khen thưởng',
+      title: 'Đã thêm 1 bài đăng khen thưởng: ' + ten,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 
@@ -195,7 +195,7 @@ export default class KhenThuong_Nhom_V2 extends React.Component {
       this.setState({
         DataChuyenVe: '',
       });
-      await this._AddThongBao();
+      await this._AddThongBao(ten);
       await ROOTGlobal.GetDsAllBaiDang_Nhom();
     } else {
       showMessage({

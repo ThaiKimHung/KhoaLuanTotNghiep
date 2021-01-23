@@ -157,10 +157,12 @@ export default class ScreenCMT_Child_ThongBao_CMT extends React.Component {
     let res = await BanThongBao();
   };
 
-  _AddThongBao = async () => {
+  _AddThongBao = async (idcmt_cha) => {
     let strBody = JSON.stringify({
       title: 'Đã trả lời bình luận của bạn',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
+      id_bd: 0,
+      id_cmt: idcmt_cha,
     });
 
     // console.log('strBody add Thông báo', strBody);
@@ -214,7 +216,7 @@ export default class ScreenCMT_Child_ThongBao_CMT extends React.Component {
       await ROOTGlobal.GetChiTietBaiDang_ThongBao();
       // await ROOTGlobal.GanDataChitiet();
       await this._GetDsCmt();
-      await this._AddThongBao();
+      await this._AddThongBao(this.state.id_cmtlon);
     } else {
       showMessage({
         message: 'Thông báo',

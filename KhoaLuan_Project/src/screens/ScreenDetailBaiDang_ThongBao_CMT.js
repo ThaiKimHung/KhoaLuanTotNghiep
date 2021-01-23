@@ -114,7 +114,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã bình luận một bài viết',
+      title: 'Đã bình luận một bài viết: ',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
       id_cmt: 1,
     });
@@ -182,7 +182,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     const {id_nguoidang = {}} = this.props.route.params;
     await Utils.setGlobal(nGlobalKeys.idcmt, id_nguoidang.id_cmt);
     // console.log('id bài đăng', id_nguoidang);
-    // console.log('this', id_nguoidang.id_cmt);
+    console.log('this', id_nguoidang.id_cmt);
     await this.setState({
       // idbaidang: await Utils.getGlobal(nGlobalKeys.idbaidang),
       idcmt: id_nguoidang.id_cmt,
@@ -236,7 +236,7 @@ export default class ScreenDetailBaiDang_ThongBao_CMT extends React.Component {
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
     // await console.log('day', this.state.day);
-    await console.log('ngay', this.state.khenthuong);
+    // await console.log('ngay', this.state.khenthuong);
     // await console.log('time', this.state.time);
   };
 

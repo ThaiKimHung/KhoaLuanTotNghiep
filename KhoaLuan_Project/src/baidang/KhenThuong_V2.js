@@ -159,7 +159,7 @@ export default class KhenThuong_V2 extends React.Component {
 
   _AddThongBao = async (ten) => {
     let strBody = JSON.stringify({
-      title: 'Đã tạo một khen thưởng nhân viên:' + ten,
+      title: 'Đã tạo một khen thưởng nhân viên: ' + ten,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

@@ -93,7 +93,7 @@ export default class ScreenDetailBaiDang_Nhom_Go extends React.Component {
   };
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã bình luận một bài viết',
+      title: 'Đã bình luận một bài viết: ',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
       id_cmt: 1,
     });

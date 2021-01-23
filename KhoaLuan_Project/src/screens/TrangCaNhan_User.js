@@ -79,8 +79,8 @@ export default class TrangCaNhan_User extends React.Component {
 
   _CheckFollow = async () => {
     let res = await CheckFlow(
-      this.state.allowEdit,
       await Utils.ngetStorage(nkey.id_user),
+      this.state.allowEdit,
     );
     // console.log('res chekc', res);
 
@@ -91,9 +91,10 @@ export default class TrangCaNhan_User extends React.Component {
   };
 
   _AddFL = async () => {
+    // console.log(this.state.allowEdit);
     let res = await addFlow(
-      await Utils.ngetStorage(nkey.id_user),
       this.state.allowEdit,
+      await Utils.ngetStorage(nkey.id_user),
     );
     // console.log('res add fl', res);
     await this._CheckFollow();
@@ -101,8 +102,8 @@ export default class TrangCaNhan_User extends React.Component {
 
   _DeleteFl = async () => {
     let res = await DeleteFlow(
-      await Utils.ngetStorage(nkey.id_user),
       this.state.allowEdit,
+      await Utils.ngetStorage(nkey.id_user),
     );
     // console.log('res delete fl', res);
     await this._CheckFollow();
@@ -288,8 +289,7 @@ export default class TrangCaNhan_User extends React.Component {
             <View>
               <ImageBackground
                 source={
-                  // this.state.hinhanhbia ? {uri: this.state.anhbia} :
-                  backgroud
+                  this.state.hinhanhbia ? {uri: this.state.anhbia} : backgroud
                 }
                 style={{
                   height: FontSize.scale(200),
@@ -335,8 +335,7 @@ export default class TrangCaNhan_User extends React.Component {
                 }}>
                 <Image
                   source={
-                    // this.state.thongtin ? {uri: this.state.avatar} :
-                    avatar
+                    this.state.thongtin ? {uri: this.state.avatar} : avatar
                   }
                   style={{
                     height: FontSize.scale(50),

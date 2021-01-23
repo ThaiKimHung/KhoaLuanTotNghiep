@@ -220,7 +220,8 @@ export default class TinTucNoiBo extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã thêm 1 bài đăng tin tức nội bộ',
+      title:
+        'Đã thêm 1 bài đăng tin tức nội bộ: ' + this.state.haveValue_TieuDe,
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

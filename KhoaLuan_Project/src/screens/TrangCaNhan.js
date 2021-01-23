@@ -385,8 +385,7 @@ export default class TrangCaNhan extends React.Component {
                 }}>
                 <Image
                   source={
-                    // this.state.thongtin ? {uri: this.state.avatar} :
-                    avatar
+                    this.state.thongtin ? {uri: this.state.avatar} : avatar
                   }
                   style={{
                     height: FontSize.scale(50),

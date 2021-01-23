@@ -104,7 +104,7 @@ export default class ScreenDetailBaiDang extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã bình luận một bài viết',
+      title: 'Đã bình luận một bài viết :',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
       // id_bd: 0,
       id_cmt: 1,
@@ -176,7 +176,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     //   await this.state.ChiTietBD[0].Id_LoaiBaiDang,
     // );
     // await console.log('length', await this.state.user);
-    // await console.log('day', this.state.day);
+    // await console.log('day', this.state.avatar_user);
     // await console.log('ngay', this.state.ngay);
     // await console.log('like cmt cha', await this.state.thichcmt);
   };
@@ -729,6 +729,7 @@ export default class ScreenDetailBaiDang extends React.Component {
     let ngay = this.state.day.substring(0, 10);
     let time = this.state.day.substring(11, 16);
     let group = id_nguoidang.Group ? id_nguoidang.Group[0] : {};
+    // console.log(this.state.avatar_user);
     return (
       <View style={styles.container}>
         <GoBack
@@ -756,7 +757,7 @@ export default class ScreenDetailBaiDang extends React.Component {
                   height: FontSize.scale(30),
                   width: FontSize.verticalScale(30),
                 }}>
-                <Image
+                {/* <Image
                   style={{
                     height: FontSize.scale(30),
                     width: FontSize.verticalScale(30),
@@ -764,12 +765,20 @@ export default class ScreenDetailBaiDang extends React.Component {
                   }}
                   resizeMode="cover"
                   soure={
-                    this.state.avatar_user
-                      ? {
-                          uri: this.state.avatar_user,
-                        }
-                      : avatar_mau
-                  }></Image>
+                    // this.state.avatar_user
+                    //   ?
+                    {
+                      uri: this.state.avatar_user,
+                    }
+                    // : avatar_mau
+                  }></Image> */}
+                <Image
+                  source={{uri: this.state.avatar_user}}
+                  style={{
+                    height: FontSize.scale(30),
+                    width: FontSize.verticalScale(30),
+                    borderRadius: 20,
+                  }}></Image>
               </View>
 
               <View style={styles.khung_tenUser}>

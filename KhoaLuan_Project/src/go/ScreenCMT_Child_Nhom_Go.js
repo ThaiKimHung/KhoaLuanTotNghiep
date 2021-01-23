@@ -141,7 +141,7 @@ export default class ScreenCMT_Child_Nhom_Go extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã trả lời bình luận của bạn',
+      title: 'Đã trả lời bình luận của bạn :',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
     });
 

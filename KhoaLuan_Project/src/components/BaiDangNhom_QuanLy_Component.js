@@ -125,6 +125,7 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                   width: FontSize.verticalScale(40),
                 }}></Animatable.Image>
               <View style={{marginLeft: 10}}>
+                <Text>{item.tenloaibaidang}</Text>
                 <Text>{item.title}</Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
@@ -142,7 +143,7 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Animatable.View
+            {/* <Animatable.View
               animation="wobble"
               iterationCount={10}
               direction="alternate-reverse"
@@ -157,21 +158,26 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                 marginBottom: 5,
                 borderRadius: 15,
               }}>
-              {/* <SvgUri
+              <SvgUri
                 width={FontSize.scale(45)}
                 height={FontSize.verticalScale(45)}
                 source={{
                   uri: khenthuong.icon,
                 }}
-              /> */}
+              />
               <Text style={{fontWeight: 'bold', fontSize: FontSize.reSize(25)}}>
-                {/* {khenthuong.tieude_kt} */}khen thưởng
+                {khenthuong.tieude_kt}
               </Text>
-            </Animatable.View>
+            </Animatable.View> */}
 
             <TouchableOpacity
-              style={styles.footer1}
-              onPress={this.props.onPress}>
+              style={{
+                paddingHorizontal: 10,
+                // justifyContent: 'center',
+                // alignItems: 'center',
+              }}
+              // onPress={this.props.onPress}
+            >
               {/* <View
                 style={{
                   marginLeft: 5,
@@ -188,6 +194,7 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                   resizeMode="cover"
                   source={user.avatar ? {uri: user.avatar} : avatar}></Image>
               </View> */}
+              <Text>{item.tenloaibaidang}</Text>
               <Text style={{fontSize: FontSize.reSize(30), fontWeight: 'bold'}}>
                 {item.title}
               </Text>
@@ -199,7 +206,10 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
         );
       case 3:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <TouchableOpacity
+            style={styles.footer}
+            // onPress={this.props.onPress}
+          >
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="shake"
@@ -213,6 +223,7 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                   width: FontSize.verticalScale(40),
                 }}></Animatable.Image>
               <View style={{marginLeft: 10}}>
+                <Text>{item.tenloaibaidang}</Text>
                 <Text>{item.title}</Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
@@ -242,7 +253,9 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
             <ImageBackground source={welcome} style={styles.image}>
               <TouchableOpacity
                 style={styles.footer1}
-                onPress={this.props.onPress}>
+                // onPress={this.props.onPress}
+              >
+                <Text>{item.tenloaibaidang}</Text>
                 <Text
                   style={{fontSize: FontSize.reSize(25), fontWeight: 'bold'}}>
                   {item.title}
@@ -256,10 +269,14 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
         );
       case 6:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <TouchableOpacity
+            style={styles.footer}
+            // onPress={this.props.onPress}
+          >
+            <Text>{item.tenloaibaidang}</Text>
             <Text>{item.title}</Text>
 
-            {item.hinhanh ? (
+            {/* {item.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
@@ -269,12 +286,15 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                     // backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         );
       case 7:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <TouchableOpacity
+            style={styles.footer}
+            // onPress={this.props.onPress}
+          >
             <View style={{flexDirection: 'row'}}>
               <Animatable.Image
                 animation="tada"
@@ -288,13 +308,14 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                   width: FontSize.verticalScale(50),
                 }}></Animatable.Image>
               <View>
+                <Text>{item.tenloaibaidang}</Text>
                 <Text>{item.title}</Text>
                 <Text style={{fontSize: FontSize.reSize(20)}}>
                   {item.NoiDung}
                 </Text>
               </View>
             </View>
-            {item.hinhanh ? (
+            {/* {item.hinhanh ? (
               <View style={{marginVertical: 5}}>
                 <Image
                   source={{uri: item.image}}
@@ -304,15 +325,18 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                     // backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         );
       default:
         return (
-          <TouchableOpacity style={styles.footer} onPress={this.props.onPress}>
+          <TouchableOpacity
+            style={styles.footer}
+            //  onPress={this.props.onPress}
+          >
             <Text>{item.title}</Text>
             <Text style={{fontSize: FontSize.reSize(20)}}>{item.NoiDung}</Text>
-            {item.hinhanh ? (
+            {/* {item.hinhanh ? (
               <View>
                 <Image
                   source={{uri: item.image}}
@@ -322,7 +346,7 @@ export default class BaiDangNhom_QuanLy_Component extends React.Component {
                     // backgroundColor: 'blue',
                   }}></Image>
               </View>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         );
     }

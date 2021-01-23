@@ -60,7 +60,7 @@ export default class ScreenAllBaiDang_QuanLy_Nhom extends React.Component {
     // console.log('id bài đăng', this.state.id_user, idgroup);
 
     let res = await BaidangGroup_Datasource(this.state.idgroup);
-    // console.log('Danh sách bài đăng Screen all bài đăng:', res);
+    console.log('Danh sách bài đăng Screen all bài đăng:', res);
     if (res.status == 1) {
       await this.setState({
         DSBaiDangNhom: res.data,

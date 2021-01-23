@@ -107,7 +107,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
 
   _AddThongBao = async () => {
     let strBody = JSON.stringify({
-      title: 'Đã bình luận một bài viết',
+      title: 'Đã bình luận một bài viết: ',
       create_tb_by: await Utils.ngetStorage(nkey.id_user),
       id_cmt: 1,
     });
@@ -410,7 +410,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     // this.solike = this.state.ChiTietBD[0].Like_BaiDang.length;
     // await console.log('length', this.state.ChiTietBD[0].Coment.Comment_child);
     // await console.log('day', this.state.day);
-    await console.log('ngay', this.state.image);
+    // await console.log('ngay', this.state.image);
     // await console.log('time', this.state.time);
   };
 
@@ -450,7 +450,7 @@ export default class ScreenDetailBaiDang_ThongBao extends React.Component {
     let idbaidang = id_nguoidang.Id_LoaiBaiDang;
     let khenthuong = id_nguoidang.KhenThuong ? id_nguoidang.KhenThuong[0] : {};
     let khenthuong1 = this.state.khenthuong ? this.state.khenthuong[0] : {};
-    switch (idbaidang) {
+    switch (this.state.loaibaidang) {
       case 1:
         return (
           <View style={styles.footer} onPress={this.props.onPress}>

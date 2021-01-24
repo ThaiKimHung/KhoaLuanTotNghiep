@@ -1,0 +1,10 @@
+Tạo project: react-native init AwesomeProject
+run android : react-native run-android
+format code : alt shift f
+distributionUrl=https\://services.gradle.org/distributions/gradle-6.3-all.zip
+debug : cmd or ctrl + m or shake your device
+
+Ctrl Alt E: export zeelin
+
+cd android && ./gradlew clean
+cd android && ./gradlew cleanBuildCache

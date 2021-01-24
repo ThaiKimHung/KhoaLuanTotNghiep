@@ -1,0 +1,4 @@
+#E9EBEE màu nền all
+#007DE3 màu xanh biển button
+#696969 màu xám
+#4F4F4F
